@@ -178,3 +178,25 @@ class OntologyStore(Protocol):
 
     def incidents_for_supplier(self, supplier_id: str) -> list[dict]:
         ...
+
+    # -- GenerateNotificationDraft output (P5) -----------------------------
+
+    def record_notification_draft(
+        self, *, id: str, supplier_ref: str, body: str, status: str,
+        created_at: int, cites: list,
+    ) -> None:
+        """Persist a NotificationDraft + its cites links (empty cites refused
+        upstream by GenerateNotificationDraft). status is always 'draft' — no
+        send path exists (CLAUDE.md guardrail)."""
+        ...
+
+    def notification_drafts(self) -> list[dict]:
+        ...
+
+    def draft_for_supplier(self, supplier_id: str) -> dict | None:
+        """The NotificationDraft for a supplier, if one was generated."""
+        ...
+
+    def draft_cites(self, draft_ref: str) -> list[dict]:
+        """cites links (evidence_ref, evidence_kind) of a NotificationDraft."""
+        ...

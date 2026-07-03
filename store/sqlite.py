@@ -127,6 +127,23 @@ CREATE TABLE IF NOT EXISTS compromise_incident (
     status       TEXT,                             -- open | acknowledged
     path         TEXT
 );
+-- GenerateNotificationDraft output (P5). Deterministic template body; status
+-- stays 'draft' — there is NO send capability anywhere (CLAUDE.md guardrail:
+-- 통보는 초안 생성까지, 자동 발송 없음).
+CREATE TABLE IF NOT EXISTS notification_draft (
+    id           TEXT PRIMARY KEY,
+    supplier_ref TEXT REFERENCES supplier(id),
+    body         TEXT,                             -- masked; never a raw secret
+    status       TEXT,                             -- draft (only value)
+    created_at   INTEGER
+);
+-- NotificationDraft cites Exposure/Device (provenance; empty ⇒ action refused).
+CREATE TABLE IF NOT EXISTS draft_cites (
+    draft_ref     TEXT REFERENCES notification_draft(id),
+    evidence_ref  TEXT,                            -- exposure id | device id
+    evidence_kind TEXT,                            -- exposure | device
+    PRIMARY KEY (draft_ref, evidence_ref)
+);
 """
 
 
@@ -552,6 +569,55 @@ class SqliteOntologyStore:
 
     def incidents_for_supplier(self, supplier_id: str) -> list[dict]:
         return self._incident_rows("WHERE supplier_ref=?", (supplier_id,))
+
+    # -- GenerateNotificationDraft output (P5) ------------------------------
+
+    def record_notification_draft(
+        self, *, id: str, supplier_ref: str, body: str, status: str,
+        created_at: int, cites: list,
+    ) -> None:
+        """Persist a NotificationDraft + its cites links. `cites` is a list of
+        (evidence_ref, evidence_kind) — the caller (GenerateNotificationDraft)
+        has already refused an empty list (provenance is mandatory). `status` is
+        always 'draft'; nothing here can send it."""
+        c = self.conn
+        c.execute(
+            "INSERT INTO notification_draft(id,supplier_ref,body,status,created_at) "
+            "VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET "
+            "body=excluded.body, status=excluded.status, created_at=excluded.created_at",
+            (id, supplier_ref, body, status, created_at),
+        )
+        c.execute("DELETE FROM draft_cites WHERE draft_ref=?", (id,))
+        for ref, kind in cites:
+            c.execute(
+                "INSERT INTO draft_cites(draft_ref,evidence_ref,evidence_kind) "
+                "VALUES(?,?,?) ON CONFLICT(draft_ref,evidence_ref) DO NOTHING",
+                (id, ref, kind),
+            )
+        c.commit()
+
+    def notification_drafts(self) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT * FROM notification_draft ORDER BY id"
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+    def draft_for_supplier(self, supplier_id: str) -> dict | None:
+        row = self.conn.execute(
+            "SELECT * FROM notification_draft WHERE supplier_ref=? "
+            "ORDER BY id LIMIT 1",
+            (supplier_id,),
+        ).fetchone()
+        return dict(row) if row else None
+
+    def draft_cites(self, draft_ref: str) -> list[dict]:
+        """cites links (evidence_ref, evidence_kind) of a NotificationDraft."""
+        rows = self.conn.execute(
+            "SELECT evidence_ref, evidence_kind FROM draft_cites "
+            "WHERE draft_ref=? ORDER BY evidence_kind, evidence_ref",
+            (draft_ref,),
+        ).fetchall()
+        return [dict(r) for r in rows]
 
 
 # SqliteOntologyStore structurally implements OntologyStore.
