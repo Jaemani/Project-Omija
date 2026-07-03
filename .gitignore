@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Secrets / env
+.env
+*.env
+.env.*
+*.secret
+secrets/
+credentials.json
+
+# OS
+.DS_Store
+
+# Node
+node_modules/
+dist/
+
+# Local tool state
+.tokensave/
+.claude/settings.local.json
