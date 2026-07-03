@@ -1,0 +1,90 @@
+# eval/ground_truth.yaml — hand-authored evaluation ground truth (P6).
+#
+# Authored BY HAND from the mock CONSTANTS in `adapter/mock.py` +
+# `registry/suppliers.yaml`. It is deliberately NOT reverse-engineered from the
+# pipeline's own output — that would be circular (the pipeline would grade
+# itself). Every block below cites the constant it is derived from, so this file
+# can be re-checked against the mock by eye and only needs updating when those
+# constants change.
+#
+# GUARDRAIL / HONESTY NOTE: the mock corpus is SYNTHETIC (*.example domains),
+# SMALL (7 suppliers, 25 records) and CLEAN (email domains match registered
+# suppliers 1:1, no ambiguous/adversarial records). Precision/recall computed
+# against this fixture therefore sit at their CEILING and prove the pipe is
+# wired correctly end-to-end — they are NOT a claim about field performance on
+# messy real StealthMole data. `scripts/p6_eval.py` prints this caveat too.
+
+# --- supplier-level classification -------------------------------------------
+
+# Truly actively-compromised suppliers.
+# Source: adapter/mock.py ACTIVE_DOMAINS = {supplier-a.example, avionics-g.example}
+# (recent infected_at + has_cookie=true + account_type in {vpn,admin} + RedLine),
+# mapped to ids via registry/suppliers.yaml domains.
+active_suppliers: [sup-a, sup-g]
+
+# Clean suppliers — no exposures at all.
+# Source: adapter/mock.py SEED_SUPPLIERS entries with clean=true
+# (logistics-e.example=sup-e, metals-f.example=sup-f) → _build() skips them.
+clean_suppliers: [sup-e, sup-f]
+
+# Exposed but NOT actively compromised (only stale / non-privileged signals).
+# Source: the remaining non-clean SEED_SUPPLIERS not in ACTIVE_DOMAINS.
+exposed_nonactive_suppliers: [sup-b, sup-c, sup-d]
+
+# --- exposure -> supplier attribution (correlation ground truth) -------------
+# Each raw-record id (from adapter/mock._gen_* naming) belongs to the supplier
+# that owns its domain (registry domains <-> SEED_SUPPLIERS ids). CorrelateExposure
+# must attribute each exposure to EXACTLY this supplier. Record ids are the
+# adapter `id` fields, which become the Exposure `source_ref`.
+exposure_attribution:
+
+  # supplier-a.example -> sup-a. Active domain: _gen_cds emits the extra
+  # `-active` record (vpn cookie) on top of the 4 standard module records.
+  sup-a:
+    - cds-supplier-a.example-active
+    - cds-supplier-a.example-stale
+    - ub-supplier-a.example-0
+    - cl-supplier-a.example-0
+    - cb-supplier-a.example-0
+
+  # supplier-b.example -> sup-b. Non-active: only the stale cds record + 3 standard.
+  sup-b:
+    - cds-supplier-b.example-stale
+    - ub-supplier-b.example-0
+    - cl-supplier-b.example-0
+    - cb-supplier-b.example-0
+
+  # supplier-c.example -> sup-c. RESOLUTION_DOMAIN: _gen_variant adds the j.kim /
+  # jkim entity-resolution pair (one analyst, two email spellings) on top of the
+  # 4 standard records. Both variant records still attribute to sup-c.
+  sup-c:
+    - cds-supplier-c.example-stale
+    - ub-supplier-c.example-0
+    - ub-supplier-c.example-jkim-dotted
+    - cl-supplier-c.example-0
+    - cl-supplier-c.example-jkim
+    - cb-supplier-c.example-0
+
+  # parts-d.example -> sup-d. RECIRC_DOMAIN: _gen_recirc adds the `cb-...-recirc`
+  # duplicate (same identity/host/secret_type as the ub record). Attribution
+  # still counts it as sup-d's exposure; dedup only affects the SCORE count.
+  sup-d:
+    - cds-parts-d.example-stale
+    - ub-parts-d.example-0
+    - cl-parts-d.example-0
+    - cb-parts-d.example-0
+    - cb-parts-d.example-recirc
+
+  # avionics-g.example -> sup-g. Active domain (admin cookie), same shape as sup-a.
+  sup-g:
+    - cds-avionics-g.example-active
+    - cds-avionics-g.example-stale
+    - ub-avionics-g.example-0
+    - cl-avionics-g.example-0
+    - cb-avionics-g.example-0
+
+# --- golden-time (response-speed) assumption ---------------------------------
+# Analyst wall-clock to review ONE item — a raw record in the bare-enumeration
+# baseline, or a ranked supplier card in our triage. Stated openly so the
+# golden-time figures are a transparent, deterministic multiplication.
+minutes_per_review_item: 3
