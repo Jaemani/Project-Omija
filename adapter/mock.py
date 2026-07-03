@@ -7,7 +7,11 @@ company data (CLAUDE.md guardrail). Every record carries `_mock: true`.
 Coverage guarantees (asserted by tests):
 - all four modules (cds/ub/cl/cb) produce records,
 - at least one cds ACTIVE-compromise record: recent `infected_at`,
-  `has_cookie=true`, `account_type ∈ {vpn,admin}`, malware (RedLine).
+  `has_cookie=true`, `account_type ∈ {vpn,admin}`, malware (RedLine),
+- an entity-resolution variant pair (`j.kim@` / `jkim@`, same person, two email
+  spellings) on `RESOLUTION_DOMAIN` — drives EntityResolver MergeProposal (P2),
+- a recirculation duplicate on `RECIRC_DOMAIN`: the same (identity, host,
+  secret_type) re-appears in a second module — drives the dedup rule (P2).
 
 Passwords/cookies here are obviously synthetic strings; they exist so
 `normalize()` can be shown to strip them (masking). They are NOT real leaked
@@ -43,6 +47,17 @@ SEED_SUPPLIERS: dict[str, dict] = {
 # Domains that carry a deliberate active-compromise case (recent stealer +
 # session cookie on vpn/admin). Must be non-clean.
 ACTIVE_DOMAINS = {"supplier-a.example", "avionics-g.example"}
+
+# Domain carrying an entity-resolution VARIANT pair: one analyst under two email
+# spellings, `j.kim@` (dotted) and `jkim@` (undotted). They land as two distinct
+# Identity rows at ingest; EntityResolver proposes merging them (P2, decision 2).
+RESOLUTION_DOMAIN = "supplier-c.example"
+
+# Domain carrying a RECIRCULATION duplicate: a combo-list (cb) record re-includes
+# the same credential already seen in the ub binder — same identity, same host,
+# same secret_type. Exposure-scale must count it once (dedup, P2 decision 3);
+# provenance keeps both records and module diversity is a confidence signal.
+RECIRC_DOMAIN = "parts-d.example"
 
 
 class MockExposureSource:
@@ -107,6 +122,10 @@ class MockExposureSource:
             self._gen_ub(domain)
             self._gen_cl(domain)
             self._gen_cb(domain)
+            if domain == RESOLUTION_DOMAIN:
+                self._gen_variant(domain)
+            if domain == RECIRC_DOMAIN:
+                self._gen_recirc(domain)
 
     def _pw(self, tag: str) -> str:
         # Obviously-synthetic password; long enough that a 2-char mask != full.
@@ -184,6 +203,44 @@ class MockExposureSource:
             "password": self._pw("cb"),
             "host": domain,
             "leak_date": DEMO_NOW - 200 * DAY,
+            "_mock": True,
+        })
+
+    def _gen_variant(self, domain: str) -> None:
+        """Two records for the SAME analyst under two email spellings —
+        `j.kim@` (dotted) and `jkim@` (undotted). Distinct Identity rows at
+        ingest; EntityResolver proposes merging them (P2 decision 2). Different
+        host/secret_type on purpose: this is an identity-merge case (one person,
+        two spellings), NOT a dedup case (same credential recirculated)."""
+        self._corpus[domain]["ub"].append({
+            "id": f"ub-{domain}-jkim-dotted",
+            "user": f"j.kim@{domain}",
+            "password": self._pw("ub-jkim"),
+            "host": f"https://portal.{domain}/sso",
+            "leak_date": DEMO_NOW - 20 * DAY,
+            "_mock": True,
+        })
+        self._corpus[domain]["cl"].append({
+            "id": f"cl-{domain}-jkim",
+            "user": f"jkim@{domain}",
+            "password": self._pw("cl-jkim"),
+            "host": f"vcs.{domain}",
+            "leak_date": DEMO_NOW - 75 * DAY,
+            "_mock": True,
+        })
+
+    def _gen_recirc(self, domain: str) -> None:
+        """A combo-list (cb) record that RE-CIRCULATES the credential already
+        seen in the ub binder: same identity (`ops@`), same host, same
+        secret_type (plaintext). Exposure-scale must count this once (dedup, P2
+        decision 3); provenance keeps both records, and the module diversity
+        {ub, cb} it creates is used as a confidence signal."""
+        self._corpus[domain]["cb"].append({
+            "id": f"cb-{domain}-recirc",
+            "user": f"ops@{domain}",
+            "password": self._pw("cb-recirc"),
+            "host": f"https://mail.{domain}/login",   # identical to the ub host
+            "leak_date": DEMO_NOW - 8 * DAY,
             "_mock": True,
         })
 

@@ -109,3 +109,72 @@ class OntologyStore(Protocol):
 
     def infected_devices(self) -> list[dict]:
         ...
+
+    # -- entity resolution (P2) --------------------------------------------
+
+    def identities(self) -> list[dict]:
+        """(id, email, username, domain_ref) for every Identity — input to
+        EntityResolver."""
+        ...
+
+    def record_merge_proposal(
+        self, *, id: str, identity_a: str, identity_b: str, basis: str,
+        status: str, created_at: int,
+    ) -> None:
+        """Persist a MergeProposal (candidate pair + basis + status=pending).
+        Nothing is merged here — human-on-the-loop."""
+        ...
+
+    def merge_proposals(self, status: str | None = None) -> list[dict]:
+        """MergeProposals, optionally filtered by status."""
+        ...
+
+    def set_merge_proposal_status(self, proposal_id: str, status: str) -> None:
+        """Transition a MergeProposal (pending → confirmed | rejected)."""
+        ...
+
+    def merge_identities(self, *, keep_id: str, drop_id: str) -> None:
+        """Merge two Identities: repoint all Exposure/Device/match links from
+        `drop_id` onto `keep_id`, then drop the variant. Confirm-only."""
+        ...
+
+    # -- active-compromise path (P3) ---------------------------------------
+
+    def infected_device_paths(self) -> list[dict]:
+        """Device → Identity → Domain → Supplier rows (left half of the active-
+        compromise path); FlagActiveCompromise appends Supplier → Prime →
+        Program."""
+        ...
+
+    # -- ComputeRisk output (P3) -------------------------------------------
+
+    def record_risk_assessment(
+        self, *, id: str, supplier_ref: str, score: float, grade: str,
+        active_flag: bool, computed_at: int, components: dict, evidence: list,
+    ) -> None:
+        """Persist a RiskAssessment + evidenced_by links (non-empty evidence
+        enforced upstream by ComputeRisk)."""
+        ...
+
+    def risk_assessments(self) -> list[dict]:
+        ...
+
+    def risk_evidence(self, assessment_ref: str) -> list[dict]:
+        """evidenced_by links (evidence_ref, evidence_kind) of an assessment."""
+        ...
+
+    # -- FlagActiveCompromise output (P3) ----------------------------------
+
+    def record_incident(
+        self, *, id: str, supplier_ref: str, opened_at: int, status: str,
+        path: list,
+    ) -> None:
+        """Persist a CompromiseIncident with its traverses `path` (Device→…→
+        Program). No incident without a complete path (enforced upstream)."""
+        ...
+
+    def incidents(self) -> list[dict]:
+        ...
+
+    def incidents_for_supplier(self, supplier_id: str) -> list[dict]:
+        ...

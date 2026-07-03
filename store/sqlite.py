@@ -7,6 +7,7 @@ graph reads that OSDK will serve are exercised locally today.
 
 from __future__ import annotations
 
+import json
 import sqlite3
 
 from adapter.base import Exposure
@@ -87,6 +88,44 @@ CREATE TABLE IF NOT EXISTS exposure_match (
     supplier_id  TEXT REFERENCES supplier(id),
     match_basis  TEXT,                             -- human-readable provenance
     matched_at   INTEGER
+);
+-- P2/P3 derived objects + provenance links --------------------------------
+-- EntityResolver proposal (human-on-the-loop: merged only on confirm). The
+-- identity columns are HISTORICAL references (no FK) so a confirmed merge can
+-- delete the dropped Identity row without breaking this audit record.
+CREATE TABLE IF NOT EXISTS merge_proposal (
+    id          TEXT PRIMARY KEY,
+    identity_a  TEXT,                              -- canonical (keep)
+    identity_b  TEXT,                              -- variant (drop on confirm)
+    basis       TEXT,                              -- rule provenance
+    status      TEXT,                              -- pending | confirmed | rejected
+    created_at  INTEGER
+);
+-- ComputeRisk output. `components` is the JSON score breakdown (explainability).
+CREATE TABLE IF NOT EXISTS risk_assessment (
+    id           TEXT PRIMARY KEY,
+    supplier_ref TEXT REFERENCES supplier(id),
+    score        REAL,
+    grade        TEXT,
+    active_flag  INTEGER,
+    computed_at  INTEGER,
+    components   TEXT
+);
+-- RiskAssessment evidenced_by Exposure/Device (provenance; empty ⇒ action refused).
+CREATE TABLE IF NOT EXISTS risk_evidence (
+    assessment_ref TEXT REFERENCES risk_assessment(id),
+    evidence_ref   TEXT,                           -- exposure id | device id
+    evidence_kind  TEXT,                           -- exposure | device
+    PRIMARY KEY (assessment_ref, evidence_ref)
+);
+-- FlagActiveCompromise output. `path` is the JSON traverses path (Device→…→
+-- Program); no incident without a complete path (ontology.md §3).
+CREATE TABLE IF NOT EXISTS compromise_incident (
+    id           TEXT PRIMARY KEY,
+    supplier_ref TEXT REFERENCES supplier(id),
+    opened_at    INTEGER,
+    status       TEXT,                             -- open | acknowledged
+    path         TEXT
 );
 """
 
@@ -323,7 +362,8 @@ class SqliteOntologyStore:
     _EXP_SELECT = """
         SELECT e.id, e.module, e.secret_type, e.masked_value, e.secret_present,
                e.host, e.observed_at, e.fetched_at, e.source, e.source_ref,
-               e.confidence, e.is_mock, i.email, i.username, i.domain_ref,
+               e.confidence, e.is_mock, i.id AS identity_ref, i.email, i.username,
+               i.domain_ref,
                d.supplier_id, dev.malware, dev.infected_at, dev.has_session_cookie,
                dev.account_type, m.match_basis, ts.kind AS threat_kind,
                ts.name AS threat_name
@@ -351,6 +391,167 @@ class SqliteOntologyStore:
             "SELECT * FROM infected_device ORDER BY id"
         ).fetchall()
         return [dict(r) for r in rows]
+
+    # -- entity resolution (P2) --------------------------------------------
+
+    def identities(self) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT id, email, username, domain_ref FROM identity ORDER BY id"
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+    def record_merge_proposal(
+        self, *, id: str, identity_a: str, identity_b: str, basis: str,
+        status: str, created_at: int,
+    ) -> None:
+        """Persist an EntityResolver MergeProposal. Re-proposing keeps an
+        already-confirmed status (status is not overwritten on conflict)."""
+        self.conn.execute(
+            "INSERT INTO merge_proposal(id,identity_a,identity_b,basis,status,created_at) "
+            "VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET "
+            "basis=excluded.basis, created_at=excluded.created_at",
+            (id, identity_a, identity_b, basis, status, created_at),
+        )
+        self.conn.commit()
+
+    def merge_proposals(self, status: str | None = None) -> list[dict]:
+        if status is None:
+            rows = self.conn.execute(
+                "SELECT * FROM merge_proposal ORDER BY id"
+            ).fetchall()
+        else:
+            rows = self.conn.execute(
+                "SELECT * FROM merge_proposal WHERE status=? ORDER BY id", (status,)
+            ).fetchall()
+        return [dict(r) for r in rows]
+
+    def set_merge_proposal_status(self, proposal_id: str, status: str) -> None:
+        self.conn.execute(
+            "UPDATE merge_proposal SET status=? WHERE id=?", (status, proposal_id)
+        )
+        self.conn.commit()
+
+    def merge_identities(self, *, keep_id: str, drop_id: str) -> None:
+        """Repoint every Exposure/Device/match link from `drop_id` onto
+        `keep_id`, carry over any missing identity attributes, then delete the
+        variant row. Called only by `confirm_merge` (human approval)."""
+        if keep_id == drop_id:
+            return
+        c = self.conn
+        for table in ("credential_exposure", "infected_device", "exposure_match"):
+            c.execute(
+                f"UPDATE {table} SET identity_ref=? WHERE identity_ref=?",
+                (keep_id, drop_id),
+            )
+        c.execute(
+            "UPDATE identity SET "
+            "email=COALESCE(email,(SELECT email FROM identity WHERE id=?)), "
+            "username=COALESCE(username,(SELECT username FROM identity WHERE id=?)), "
+            "domain_ref=COALESCE(domain_ref,(SELECT domain_ref FROM identity WHERE id=?)) "
+            "WHERE id=?",
+            (drop_id, drop_id, drop_id, keep_id),
+        )
+        c.execute("DELETE FROM identity WHERE id=?", (drop_id,))
+        c.commit()
+
+    # -- active-compromise path (P3) ---------------------------------------
+
+    def infected_device_paths(self) -> list[dict]:
+        """Device → Identity → Domain → Supplier rows (the left half of the
+        active-compromise path). FlagActiveCompromise appends Supplier → Prime →
+        Program from `propagation_for_supplier`."""
+        rows = self.conn.execute(
+            "SELECT dev.id AS device_id, dev.exposure_ref, dev.identity_ref, "
+            "       dev.malware, dev.infected_at, dev.has_session_cookie, "
+            "       dev.account_type, dev.os, "
+            "       i.email, i.username, i.domain_ref, "
+            "       d.supplier_id, s.name AS supplier_name "
+            "FROM infected_device dev "
+            "JOIN identity i      ON dev.identity_ref = i.id "
+            "LEFT JOIN domain d   ON i.domain_ref = d.fqdn "
+            "LEFT JOIN supplier s ON d.supplier_id = s.id "
+            "ORDER BY dev.id"
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+    # -- ComputeRisk output (P3) -------------------------------------------
+
+    def record_risk_assessment(
+        self, *, id: str, supplier_ref: str, score: float, grade: str,
+        active_flag: bool, computed_at: int, components: dict,
+        evidence: list,
+    ) -> None:
+        """Persist a RiskAssessment + its evidenced_by links. `evidence` is a
+        list of (evidence_ref, evidence_kind) — the caller (ComputeRisk) has
+        already refused an empty list (provenance is mandatory)."""
+        c = self.conn
+        c.execute(
+            "INSERT INTO risk_assessment("
+            "id,supplier_ref,score,grade,active_flag,computed_at,components"
+            ") VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET "
+            "score=excluded.score, grade=excluded.grade, "
+            "active_flag=excluded.active_flag, computed_at=excluded.computed_at, "
+            "components=excluded.components",
+            (id, supplier_ref, score, grade, int(active_flag), computed_at,
+             json.dumps(components)),
+        )
+        c.execute("DELETE FROM risk_evidence WHERE assessment_ref=?", (id,))
+        for ref, kind in evidence:
+            c.execute(
+                "INSERT INTO risk_evidence(assessment_ref,evidence_ref,evidence_kind) "
+                "VALUES(?,?,?) ON CONFLICT(assessment_ref,evidence_ref) DO NOTHING",
+                (id, ref, kind),
+            )
+        c.commit()
+
+    def risk_assessments(self) -> list[dict]:
+        rows = self.conn.execute("SELECT * FROM risk_assessment").fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            d["components"] = json.loads(d["components"]) if d.get("components") else {}
+            d["active_flag"] = bool(d.get("active_flag"))
+            out.append(d)
+        return out
+
+    def risk_evidence(self, assessment_ref: str) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT evidence_ref, evidence_kind FROM risk_evidence "
+            "WHERE assessment_ref=? ORDER BY evidence_kind, evidence_ref",
+            (assessment_ref,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+    # -- FlagActiveCompromise output (P3) ----------------------------------
+
+    def record_incident(
+        self, *, id: str, supplier_ref: str, opened_at: int, status: str,
+        path: list,
+    ) -> None:
+        self.conn.execute(
+            "INSERT INTO compromise_incident(id,supplier_ref,opened_at,status,path) "
+            "VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET "
+            "opened_at=excluded.opened_at, status=excluded.status, path=excluded.path",
+            (id, supplier_ref, opened_at, status, json.dumps(path)),
+        )
+        self.conn.commit()
+
+    def _incident_rows(self, where: str = "", params: tuple = ()) -> list[dict]:
+        rows = self.conn.execute(
+            f"SELECT * FROM compromise_incident {where} ORDER BY id", params
+        ).fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            d["path"] = json.loads(d["path"]) if d.get("path") else []
+            out.append(d)
+        return out
+
+    def incidents(self) -> list[dict]:
+        return self._incident_rows()
+
+    def incidents_for_supplier(self, supplier_id: str) -> list[dict]:
+        return self._incident_rows("WHERE supplier_ref=?", (supplier_id,))
 
 
 # SqliteOntologyStore structurally implements OntologyStore.
