@@ -30,3 +30,23 @@ StealthMole 실접근 없이(내일 열림) 어댑터 계약·목·로컬 파이
 - **화면**(`scripts/p1_report.py` → `out/p1_report.html`, gitignore): 업체별 노출 리스트(module·ThreatSource·source host·fetched_at·**마스킹** 비밀·source_ref) + Supplier→Prime→Program 전파 경로 + **활성 신호(최근 infected_at+cookie+vpn/admin) 상단 강조**. CLI 요약. 원문 비밀 렌더 0(정규식 스윕 가드).
 - **검증**: registry→normalize→correlate→screen 22 레코드 전량 매칭(5개 업체, 활성 2, unmatched 0), 원문 비밀 유출 0. pytest 42/42 통과(기존 23 + registry 5 + correlate 9 + report 5).
 - 이유: 얇게라도 끝단(화면)까지 관통해 온톨로지 경유 귀속·전파·활성 트리아지를 한 번에 시연하고, 이후 P2(엔티티 해소·전파 확장)·P3(스코어링) 확장점을 확정. 새 구조 결정(ADR)은 없음—기존 SQLite 검증 스토어(ADR-0003) 위 스키마 확장.
+
+## 2026-07-03 — P2: 엔티티 해소 + 전파 경로 질의
+한 사람의 여러 신원 변형을 하나로 병합(제안→사람 확인)하고, 활성침해 탐지가 쓸 다중홉 경로 질의를 스토어에 추가. 온톨로지 스멜테스트 (2)엔티티 해소·(1)다중홉 질의를 실제 코드로 충족.
+- **파생 객체 추가**: `MergeProposal`(id·후보쌍·basis·status=pending) — 온톨로지 §0 (2)엔티티 해소를 상태 있는 제안 객체로 못박음. `merge_proposal` 테이블(신원 컬럼은 **FK 없는 이력 참조** — confirm 시 변형 신원 행 삭제해도 감사 레코드 보존).
+- **액션 추가**: `EntityResolver`(`actions/entity_resolver.py`) — **룰 기반**(LLM 없음, 데모 결정성; 의미 병합은 AIP Logic 담당). email local-part 정규화(소문자·`+tag` 제거·점 제거: `J.Kim+ci@`→`jkim`) 후 **같은 도메인 내** 동일 핸들 충돌 쌍을 MergeProposal로 기록. **자동 확정 금지**(human-on-the-loop): `confirm_merge()` 호출 시에만 `merge_identities`가 Exposure/Device/match 링크를 병합·변형 신원 삭제, 전 Exposure(provenance) 보존.
+- **중복 제거 규칙**(decision 3): 같은 `(identity, host, secret_type)`가 여러 모듈에 걸치면(재유통 콤보) **노출 규모 카운트는 1**(`dedup_exposures`). provenance는 전 레코드 보존, 소스 다양성(모듈 수)은 **신뢰도 가산 신호**로 사용. `exposures_for_supplier`에 `identity_ref` 컬럼 추가(dedup 키).
+- **다중홉 질의 추가**: `store.infected_device_paths()` — Device→Identity→Domain→Supplier 좌반부(활성침해 경로). Supplier→Prime→Program 우반부는 기존 `propagation_for_supplier`와 결합해 full path(Device→…→Program) 구성(P3 FlagActiveCompromise가 사용).
+- **목 확장**(재현성): 엔티티 해소 시연용 변형쌍 `j.kim@`/`jkim@`(supplier-c, 서로 다른 host/type=신원병합 케이스) + dedup 시연용 재유통쌍(parts-d: ub 자격증명을 cb가 동일 identity·host·plaintext로 재포함). seed 결정성 유지, 레코드 22→25. **기존 테스트 42개 무회귀**(모두 관계형/부분문자열 단언이라 카운트 하드코딩 없음 — 갱신 불필요).
+- **검증**: EntityResolver가 변형쌍 정확히 1건 제안(pending), confirm 후 신원 -1·Exposure 보존, dedup가 parts-d 5→4 카운트. Protocol(`store/base.py`)에 신규 메서드 선언(hot-swap 계약 유지).
+
+## 2026-07-03 — P3: 활성침해 가중 스코어링 + 경로 존재 탐지 (핵심 차별점)
+"유출 나열"이 아니라 "지금 뚫리는 중"을 순위 상단으로 강제. 활성침해를 **그래프 경로 존재**로 탐지하고, 스코어에 지배적 가중을 부여.
+- **파생 객체 추가**: `RiskAssessment`(supplier_ref·score·grade·active_flag·computed_at·**components 기여분 JSON**·evidenced_by[]) + `CompromiseIncident`(supplier_ref·opened_at·status=open·**path[] traverses**). `risk_assessment`·`risk_evidence`·`compromise_incident` 테이블.
+- **스코어링 설정 한 곳**(`actions/scoring.py`, decision 5): 가중치·임계값 투명 config(`SCORING` dict). 공식(architecture.md §3 준수): base = Σ(노출 규모[dedup] + 최근성 decay(반감기) + 비밀유형 가중[cookie/token/plaintext↑ > hash] + 모듈 신뢰도·소스 다양성) → criticality·tier 곱 → **[0,base_cap] 클램프**. **활성침해 성립 시 활성 밴드 [active_floor..100]로 상향** = 비활성(≤base_cap)보다 **구조적으로 항상 상단**(핵심 차별점 보장). 밴드 내부는 base 품질+기기 최근성으로 서열. 각 기여분 `components`에 저장(설명가능성). grade: 즉시(≥70)/주의(≥40)/관찰.
+- **액션 추가**:
+  - `ComputeRisk`(`actions/compute_risk.py`): RiskAssessment 생성. **evidenced_by 비면 액션 거부**(`EvidenceRequired` 예외) — provenance 강제(ontology.md §3). 활성 여부는 추측 없이 **CompromiseIncident 존재**로 판정. clean 업체는 근거 없어 미평가.
+  - `FlagActiveCompromise`(`actions/flag_active.py`): 경로 성립 조건 = InfectedDevice(infected_at ≤14일) AND has_session_cookie AND account_type∈{vpn,admin} AND Device→Identity→Domain→Supplier 경로 AND Supplier→Prime→Program 연결. 성립 시 CompromiseIncident(full path traverses) 생성, **경로 미완성 시 거부**. 활성 판정은 정의된 필드·경로로만(추측 금지).
+- **순위 스크립트**(`scripts/p3_rank.py`): 전체 파이프(mock→normalize→correlate→**resolve**→**flag**→**score**) → 순위 테이블(Supplier·score·grade·활성·최근 신호·evidence 수) + Incident 경로(Device→…→Program 텍스트 체인) + 상위 업체 기여분. RESULT가 "활성 업체 전부 비활성보다 상단" 불변식 검증.
+- **검증**: 순위 상위 2 = 활성 업체(sup-a 96.67·sup-g 95.76, 즉시), 비활성 최고 56.97 → **활성-on-top 보장 성립**. Incident 정확히 2건(활성 도메인만, 각 6홉 full path). evidence 없는 ComputeRisk 거부, traverses 없는 Incident 거부, dedup 카운트, grade 임계값 모두 테스트. pytest **61/61 통과**(기존 42 + entity_resolver 6 + scoring 5 + flag_active 3 + compute_risk 4 + p3_rank 1). 원문 비밀 유출 0.
+- 이유·설계원칙: 스코어링 가중 근거는 ADR-0005(활성침해 지배·dedup·decay). 새 파생 객체 3종은 스멜테스트 (3)액션 상태전이·(4)provenance 그래프를 코드로 충족(RiskAssessment→evidenced_by, CompromiseIncident→traverses). 기존 SQLite 검증 스토어(ADR-0003) 위 스키마 확장 — day-1 AIP Logic으로 hot-swap.
