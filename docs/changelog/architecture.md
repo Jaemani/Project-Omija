@@ -51,6 +51,11 @@ StealthMole 실접근 없이(내일 열림) 어댑터 계약·목·로컬 파이
 - **검증**: 순위 상위 2 = 활성 업체(sup-a 96.67·sup-g 95.76, 즉시), 비활성 최고 56.97 → **활성-on-top 보장 성립**. Incident 정확히 2건(활성 도메인만, 각 6홉 full path). evidence 없는 ComputeRisk 거부, traverses 없는 Incident 거부, dedup 카운트, grade 임계값 모두 테스트. pytest **61/61 통과**(기존 42 + entity_resolver 6 + scoring 5 + flag_active 3 + compute_risk 4 + p3_rank 1). 원문 비밀 유출 0.
 - 이유·설계원칙: 스코어링 가중 근거는 ADR-0005(활성침해 지배·dedup·decay). 새 파생 객체 3종은 스멜테스트 (3)액션 상태전이·(4)provenance 그래프를 코드로 충족(RiskAssessment→evidenced_by, CompromiseIncident→traverses). 기존 SQLite 검증 스토어(ADR-0003) 위 스키마 확장 — day-1 AIP Logic으로 hot-swap.
 
+## 2026-07-03 — P4 순위 대시보드 + 전파 그래프 뷰
+- **화면(`scripts/p4_dashboard.py` → `out/dashboard.html`)**: 전체 파이프 실행 후 **자기완결 정적 HTML 1파일** 생성. 외부 CDN·네트워크 의존 0(오프라인 데모 안전 — 해커톤 백업). 바닐라 JS + inline CSS/SVG. *구조 결정 아님(ADR 불요)이나 자기완결 HTML 선택 이유는 이 1줄로 기록: 심사장 네트워크·CDN 불확실성 하에 재현성 확보.*
+- **구성(architecture.md §6)**: (1) 순위 테이블 — Supplier·score·grade(즉시/주의/관찰 색상)·활성 플래그·최근 신호 시각·evidence 수, **활성 상단 고정**(`data-active` 정렬 불변식). (2) 드릴다운 — 행 클릭 시 Exposure/Device 상세(module·host·마스킹 비밀·ThreatSource·source_ref·fetched_at) + 점수 기여분(components) + leak/infected 타임라인 + **P5 통보 초안 미리보기**(P4↔P5 연결). (3) **전파 그래프 뷰** — Incident 경로 Device→Identity→Domain→Supplier→Prime→Program를 SVG 노드-엣지로, 활성 경로 빨강 하이라이트; 비활성/clean 업체는 Supplier→Prime→Program 골격(Prime·Program 노드는 공유·dedup되어 다수 협력사→동일 원청 수렴 시각화). (4) 필터 tier/활성만/grade.
+- 헤더에 "모의 데이터(합성 도메인) · 방어적 조기경보 데모 · 비밀 마스킹 · 자동 발송 없음" 명시. 원문 비밀 렌더 0(마스킹 스윕 테스트). 테스트 +4: 대시보드 원문 비밀 부재·활성 상단·그래프/드릴다운/필터 존재·자기완결(외부 리소스 참조 0)·p4 스모크. pytest 71/71.
+
 ## 2026-07-03 — P5 조치 권고 + 통보 초안(발송 없음)
 - **객체 추가**: `NotificationDraft`(supplier_ref·body·status=draft·created_at) + `draft_cites`(NotificationDraft **cites**→Exposure/Device) 테이블 신설(ontology.md §1 baseline 반영). `store/base.py` Protocol에 선언(hot-swap 계약 유지).
 - **GenerateNotificationDraft 액션**(`actions/notify_draft.py`, ontology.md §5): **결정적 템플릿 기반**(LLM 호출 없음 — AIP Logic 단계 몫, 데모 재현성). 대상 = 순위 상위(활성 상단이므로 활성침해 업체 포함, top 3). 본문(한국어, 방산 협력사 보안담당 수신 가정): (a) 탐지 요약(관측됨) (b) 활성이면 경로 요약(감염기기→계정→귀사→원청 프로그램) (c) 방어 조치 권고(비밀번호 리셋·세션/쿠키 폐기·MFA·계정 격리·감염기기 재이미징·VPN 세션 감사) (d) 근거 목록(source_ref 인용) (e) 하단 고지("분석가 검토·승인 전 발송 금지"). "관측됨/추정됨" 구분, 과장·단정 금지. **cites(evidence_refs) 비면 액션 거부**(`CitationRequired`). status는 항상 `draft` — **코드베이스에 발송 경로 없음**(smtp/send 스모크 테스트로 강제).
