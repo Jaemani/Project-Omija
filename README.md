@@ -33,6 +33,17 @@ StealthMole API는 **내일** 열림. 오늘 P0-A로 목 어댑터+온톨로지+
 ## MVP 우선순위 (24H, 깊이 타협 없이)
 목 어댑터(P0-A) → 샘플 협력사 5~10 → 상관+엔티티 해소 → 활성침해 가중 스코어 → 순위 대시보드 → 전파 그래프 뷰 → 상위 업체 통보 초안. 내일 실 데이터 swap. **온톨로지·AIP 깊이 타협 금지.**
 
+## 실행 (P0-A — 목 어댑터 + 로컬 파이프, 네트워크·시크릿 불필요)
+Python 3.12 고정(OSDK 호환, ADR-0004), uv 관리. StealthMole 실 API 호출 없음.
+```bash
+uv sync                              # .venv 생성 + 의존성(httpx, pyjwt, pytest)
+uv run pytest -q                     # 어댑터·정규화·JWT계약·스토어 왕복 테스트
+uv run python scripts/p0_pipe.py     # 목 → normalize → SQLite → read-back 요약
+```
+- 코드: `adapter/`(실|목 어댑터 + `normalize`), `store/`(온톨로지 동일 스키마 SQLite 검증 스토어, `OntologyStore` Protocol로 Foundry/OSDK hot-swap).
+- Foundry/OSDK 수동 단계(콘솔): `docs/runbooks/foundry-day1.md`.
+- 키는 `.env`(gitignore) — `.env.example`에 이름만. day-1(P0-B)에 실 어댑터 연결.
+
 ## 합법·윤리 (반드시)
 StealthMole 제공 데이터 + 공개정보만. 무단 스캐닝·침투·크리덴셜 재사용 **절대 금지**. 데모=합성 도메인. 통보는 초안 "생성"까지(발송 없음). 유출 비밀번호 **마스킹**. 방어적 조기경보 목적.
 

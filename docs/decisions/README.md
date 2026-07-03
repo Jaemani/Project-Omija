@@ -7,6 +7,8 @@
 |---|---|---|
 | [0001](./0001-repo-structure.md) | repo 구조·문서 분리 | 승인 |
 | [0002](./0002-execution-delegation.md) | 실행 위임 모델 | 승인 |
+| [0003](./0003-local-validation-store.md) | 로컬 검증 스토어 (Foundry 대기용) | 승인 |
+| [0004](./0004-python-312-pin.md) | Python 3.12 고정 (OSDK 호환) | 승인 |
 
 ## 템플릿
 새 ADR 작성 시 아래 형식을 그대로 사용, 파일명은 `NNNN-짧은-제목.md`.
