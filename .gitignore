@@ -23,6 +23,9 @@ credentials.json
 node_modules/
 dist/
 
+# Generated reports
+out/
+
 # Local tool state
 .tokensave/
 .claude/settings.local.json

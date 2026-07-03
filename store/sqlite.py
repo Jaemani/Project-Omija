@@ -16,7 +16,26 @@ CREATE TABLE IF NOT EXISTS supplier (
     id          TEXT PRIMARY KEY,
     name        TEXT,
     tier        INTEGER,
-    criticality TEXT
+    criticality TEXT                                 -- numeric 1..3 (registry) or label
+);
+CREATE TABLE IF NOT EXISTS prime (
+    id          TEXT PRIMARY KEY,
+    name        TEXT
+);
+CREATE TABLE IF NOT EXISTS program (
+    id          TEXT PRIMARY KEY,
+    name        TEXT,
+    sensitivity TEXT
+);
+CREATE TABLE IF NOT EXISTS supplies (               -- Supplier supplies Prime (N:M)
+    supplier_id TEXT REFERENCES supplier(id),
+    prime_id    TEXT REFERENCES prime(id),
+    PRIMARY KEY (supplier_id, prime_id)
+);
+CREATE TABLE IF NOT EXISTS runs (                   -- Prime runs Program (N:M)
+    prime_id    TEXT REFERENCES prime(id),
+    program_id  TEXT REFERENCES program(id),
+    PRIMARY KEY (prime_id, program_id)
 );
 CREATE TABLE IF NOT EXISTS domain (
     fqdn        TEXT PRIMARY KEY,
@@ -58,6 +77,16 @@ CREATE TABLE IF NOT EXISTS infected_device (
     has_session_cookie INTEGER,
     account_type       TEXT,
     os                 TEXT
+);
+-- CorrelateExposure provenance: why an Exposure is attributed to a Supplier
+-- (email-domain match basis). No score/decision without a basis row (§5).
+CREATE TABLE IF NOT EXISTS exposure_match (
+    exposure_ref TEXT PRIMARY KEY REFERENCES credential_exposure(id),
+    identity_ref TEXT REFERENCES identity(id),
+    domain_ref   TEXT REFERENCES domain(fqdn),
+    supplier_id  TEXT REFERENCES supplier(id),
+    match_basis  TEXT,                             -- human-readable provenance
+    matched_at   INTEGER
 );
 """
 
@@ -107,6 +136,41 @@ class SqliteOntologyStore:
             "INSERT INTO domain(fqdn,supplier_id) VALUES(?,?) "
             "ON CONFLICT(fqdn) DO UPDATE SET supplier_id=excluded.supplier_id",
             (fqdn, supplier_id),
+        )
+        self.conn.commit()
+
+    def upsert_prime(self, *, id: str, name: str) -> None:
+        self.conn.execute(
+            "INSERT INTO prime(id,name) VALUES(?,?) "
+            "ON CONFLICT(id) DO UPDATE SET name=excluded.name",
+            (id, name),
+        )
+        self.conn.commit()
+
+    def upsert_program(self, *, id: str, name: str, sensitivity: str | None = None) -> None:
+        self.conn.execute(
+            "INSERT INTO program(id,name,sensitivity) VALUES(?,?,?) "
+            "ON CONFLICT(id) DO UPDATE SET name=excluded.name, "
+            "sensitivity=excluded.sensitivity",
+            (id, name, sensitivity),
+        )
+        self.conn.commit()
+
+    def link_supplies(self, *, supplier_id: str, prime_id: str) -> None:
+        """Supplier supplies Prime (N:M)."""
+        self.conn.execute(
+            "INSERT INTO supplies(supplier_id,prime_id) VALUES(?,?) "
+            "ON CONFLICT(supplier_id,prime_id) DO NOTHING",
+            (supplier_id, prime_id),
+        )
+        self.conn.commit()
+
+    def link_runs(self, *, prime_id: str, program_id: str) -> None:
+        """Prime runs Program (N:M)."""
+        self.conn.execute(
+            "INSERT INTO runs(prime_id,program_id) VALUES(?,?) "
+            "ON CONFLICT(prime_id,program_id) DO NOTHING",
+            (prime_id, program_id),
         )
         self.conn.commit()
 
@@ -166,6 +230,61 @@ class SqliteOntologyStore:
         c.commit()
         return exp.id
 
+    # -- CorrelateExposure support (email-domain → Supplier) ----------------
+
+    def registered_domains(self) -> dict[str, str]:
+        """{fqdn: supplier_id} for every owned Domain (correlation key set)."""
+        rows = self.conn.execute("SELECT fqdn, supplier_id FROM domain").fetchall()
+        return {r["fqdn"]: r["supplier_id"] for r in rows}
+
+    def exposures_for_correlation(self) -> list[dict]:
+        """(exposure_id, source_ref, identity_id, email) for every Exposure —
+        the input to `CorrelateExposure`."""
+        rows = self.conn.execute(
+            "SELECT e.id AS exposure_id, e.source_ref, i.id AS identity_id, i.email "
+            "FROM credential_exposure e JOIN identity i ON e.identity_ref = i.id "
+            "ORDER BY e.id"
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+    def attach_identity_domain(self, identity_id: str, domain_ref: str) -> None:
+        """Confirm Identity belongs_to Domain (set by correlation, not ingest)."""
+        self.conn.execute(
+            "UPDATE identity SET domain_ref=? WHERE id=?", (domain_ref, identity_id)
+        )
+        self.conn.commit()
+
+    def record_correlation(
+        self, *, exposure_ref: str, identity_ref: str, domain_ref: str,
+        supplier_id: str, match_basis: str, matched_at: int,
+    ) -> None:
+        """Persist CorrelateExposure provenance (match basis)."""
+        self.conn.execute(
+            "INSERT INTO exposure_match("
+            "exposure_ref,identity_ref,domain_ref,supplier_id,match_basis,matched_at"
+            ") VALUES(?,?,?,?,?,?) ON CONFLICT(exposure_ref) DO UPDATE SET "
+            "identity_ref=excluded.identity_ref, domain_ref=excluded.domain_ref, "
+            "supplier_id=excluded.supplier_id, match_basis=excluded.match_basis, "
+            "matched_at=excluded.matched_at",
+            (exposure_ref, identity_ref, domain_ref, supplier_id, match_basis, matched_at),
+        )
+        self.conn.commit()
+
+    def correlations(self) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT * FROM exposure_match ORDER BY exposure_ref"
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+    def unmatched_exposures(self) -> list[dict]:
+        """Exposures whose Identity was never attributed to a Domain/Supplier."""
+        rows = self.conn.execute(
+            "SELECT e.id, e.module, e.source_ref, i.email "
+            "FROM credential_exposure e JOIN identity i ON e.identity_ref = i.id "
+            "WHERE i.domain_ref IS NULL ORDER BY e.id"
+        ).fetchall()
+        return [dict(r) for r in rows]
+
     # -- read-back ---------------------------------------------------------
 
     def suppliers(self) -> list[dict]:
@@ -174,16 +293,46 @@ class SqliteOntologyStore:
         ).fetchall()
         return [dict(r) for r in rows]
 
+    def primes(self) -> list[dict]:
+        rows = self.conn.execute("SELECT id,name FROM prime ORDER BY id").fetchall()
+        return [dict(r) for r in rows]
+
+    def programs(self) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT id,name,sensitivity FROM program ORDER BY id"
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+    def propagation_for_supplier(self, supplier_id: str) -> list[dict]:
+        """Supplier → Prime → Program propagation rows (ontology.md §2 upward
+        path). One row per (prime, program); program may be NULL if a prime runs
+        no program."""
+        rows = self.conn.execute(
+            "SELECT s.prime_id, p.name AS prime_name, "
+            "       r.program_id, pg.name AS program_name, pg.sensitivity "
+            "FROM supplies s "
+            "JOIN prime p        ON s.prime_id = p.id "
+            "LEFT JOIN runs r    ON r.prime_id = p.id "
+            "LEFT JOIN program pg ON r.program_id = pg.id "
+            "WHERE s.supplier_id = ? "
+            "ORDER BY s.prime_id, r.program_id",
+            (supplier_id,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
     _EXP_SELECT = """
         SELECT e.id, e.module, e.secret_type, e.masked_value, e.secret_present,
-               e.host, e.observed_at, e.source, e.source_ref, e.confidence,
-               e.is_mock, i.email, i.username, i.domain_ref, d.supplier_id,
-               dev.malware, dev.infected_at, dev.has_session_cookie,
-               dev.account_type
+               e.host, e.observed_at, e.fetched_at, e.source, e.source_ref,
+               e.confidence, e.is_mock, i.email, i.username, i.domain_ref,
+               d.supplier_id, dev.malware, dev.infected_at, dev.has_session_cookie,
+               dev.account_type, m.match_basis, ts.kind AS threat_kind,
+               ts.name AS threat_name
         FROM credential_exposure e
         JOIN identity i           ON e.identity_ref = i.id
         LEFT JOIN domain d        ON i.domain_ref = d.fqdn
         LEFT JOIN infected_device dev ON dev.exposure_ref = e.id
+        LEFT JOIN exposure_match m    ON m.exposure_ref = e.id
+        LEFT JOIN threat_source ts    ON e.threat_ref = ts.id
     """
 
     def exposures_for_supplier(self, supplier_id: str) -> list[dict]:
