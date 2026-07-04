@@ -8,7 +8,7 @@
 # constants change.
 #
 # GUARDRAIL / HONESTY NOTE: the mock corpus is SYNTHETIC (*.example domains),
-# SMALL (7 suppliers, 25 records) and CLEAN (email domains match registered
+# SMALL (8 suppliers, 30 records) and CLEAN (email domains match registered
 # suppliers 1:1, no ambiguous/adversarial records). Precision/recall computed
 # against this fixture therefore sit at their CEILING and prove the pipe is
 # wired correctly end-to-end — they are NOT a claim about field performance on
@@ -17,10 +17,14 @@
 # --- supplier-level classification -------------------------------------------
 
 # Truly actively-compromised suppliers.
-# Source: adapter/mock.py ACTIVE_DOMAINS = {supplier-a.example, avionics-g.example}
+# Source: adapter/mock.py ACTIVE_DOMAINS =
+#   {supplier-a.example, avionics-g.example, micro-h.example}
 # (recent infected_at + has_cookie=true + account_type in {vpn,admin} + RedLine),
-# mapped to ids via registry/suppliers.yaml domains.
-active_suppliers: [sup-a, sup-g]
+# mapped to ids via registry/suppliers.yaml domains. sup-h (micro-h.example) is
+# the MULTI-TIER terminal: it has no direct supplies edge and reaches its Program
+# only by subcontracting up to sup-f (tier-1), so its incident is opened via the
+# recursive traverse — still a true active compromise.
+active_suppliers: [sup-a, sup-g, sup-h]
 
 # Clean suppliers — no exposures at all.
 # Source: adapter/mock.py SEED_SUPPLIERS entries with clean=true
@@ -82,6 +86,16 @@ exposure_attribution:
     - ub-avionics-g.example-0
     - cl-avionics-g.example-0
     - cb-avionics-g.example-0
+
+  # micro-h.example -> sup-h. Active MULTI-TIER terminal (admin cookie), same
+  # record shape as sup-a/sup-g (5 records: active + stale cds, ub, cl, cb). Its
+  # risk reaches a Program only through the subcontract chain sup-h → sup-f.
+  sup-h:
+    - cds-micro-h.example-active
+    - cds-micro-h.example-stale
+    - ub-micro-h.example-0
+    - cl-micro-h.example-0
+    - cb-micro-h.example-0
 
 # --- golden-time (response-speed) assumption ---------------------------------
 # Analyst wall-clock to review ONE item — a raw record in the bare-enumeration

@@ -33,6 +33,16 @@ CREATE TABLE IF NOT EXISTS supplies (               -- Supplier supplies Prime (
     prime_id    TEXT REFERENCES prime(id),
     PRIMARY KEY (supplier_id, prime_id)
 );
+-- Supplier subcontracts_to Supplier (N:M): a lower-tier (e.g. tier-2) supplier
+-- delivers UP to a higher-tier (e.g. tier-1) parent supplier. This is the edge
+-- that makes the supply chain MULTI-TIER — risk propagates 2차→1차→Prime→Program
+-- and the reachable Prime/Program is found by a variable-depth WITH RECURSIVE
+-- traverse (ontology.md §2), not a flat join. Direction: sub → parent (upward).
+CREATE TABLE IF NOT EXISTS subcontracts (
+    sub_supplier_id    TEXT REFERENCES supplier(id),
+    parent_supplier_id TEXT REFERENCES supplier(id),
+    PRIMARY KEY (sub_supplier_id, parent_supplier_id)
+);
 CREATE TABLE IF NOT EXISTS runs (                   -- Prime runs Program (N:M)
     prime_id    TEXT REFERENCES prime(id),
     program_id  TEXT REFERENCES program(id),
@@ -121,11 +131,34 @@ CREATE TABLE IF NOT EXISTS risk_evidence (
 -- FlagActiveCompromise output. `path` is the JSON traverses path (Device→…→
 -- Program); no incident without a complete path (ontology.md §3).
 CREATE TABLE IF NOT EXISTS compromise_incident (
-    id           TEXT PRIMARY KEY,
-    supplier_ref TEXT REFERENCES supplier(id),
-    opened_at    INTEGER,
-    status       TEXT,                             -- open | acknowledged
-    path         TEXT
+    id             TEXT PRIMARY KEY,
+    supplier_ref   TEXT REFERENCES supplier(id),
+    opened_at      INTEGER,
+    status         TEXT,                           -- open | acknowledged
+    path           TEXT,                           -- representative traverses path (JSON)
+    blast_primes   TEXT,                           -- ALL reachable Primes (JSON) — blast radius
+    blast_programs TEXT                            -- ALL reachable Programs (JSON) — blast radius
+);
+-- PropagateRisk output (ontology.md §1 ProgramExposure): risk rolled UP the
+-- multi-tier graph onto a defense Program. Derived + evidence-mandatory: an
+-- exposure with no contributing CompromiseIncident/RiskAssessment is REFUSED
+-- (no ProgramExposure row without provenance — same rule as ComputeRisk).
+CREATE TABLE IF NOT EXISTS program_exposure (
+    id                TEXT PRIMARY KEY,
+    program_ref       TEXT REFERENCES program(id),
+    score             REAL,
+    grade             TEXT,
+    active_flag       INTEGER,
+    computed_at       INTEGER,
+    components        TEXT,                         -- JSON score breakdown (explainability)
+    contributing_paths TEXT                         -- JSON Supplier…→Prime→Program paths
+);
+-- ProgramExposure evidenced_by CompromiseIncident/RiskAssessment (empty ⇒ refused).
+CREATE TABLE IF NOT EXISTS program_exposure_evidence (
+    exposure_ref  TEXT REFERENCES program_exposure(id),
+    evidence_ref  TEXT,                             -- incident id | assessment id
+    evidence_kind TEXT,                             -- incident | assessment
+    PRIMARY KEY (exposure_ref, evidence_ref)
 );
 -- GenerateNotificationDraft output (P5). Deterministic template body; status
 -- stays 'draft' — there is NO send capability anywhere (CLAUDE.md guardrail:
@@ -227,6 +260,16 @@ class SqliteOntologyStore:
             "INSERT INTO runs(prime_id,program_id) VALUES(?,?) "
             "ON CONFLICT(prime_id,program_id) DO NOTHING",
             (prime_id, program_id),
+        )
+        self.conn.commit()
+
+    def link_subcontract(self, *, sub_supplier_id: str, parent_supplier_id: str) -> None:
+        """Supplier subcontracts_to Supplier (N:M): `sub` delivers up to `parent`
+        (2차→1차). The multi-tier edge that recursive propagation walks."""
+        self.conn.execute(
+            "INSERT INTO subcontracts(sub_supplier_id,parent_supplier_id) VALUES(?,?) "
+            "ON CONFLICT(sub_supplier_id,parent_supplier_id) DO NOTHING",
+            (sub_supplier_id, parent_supplier_id),
         )
         self.conn.commit()
 
@@ -376,6 +419,71 @@ class SqliteOntologyStore:
         ).fetchall()
         return [dict(r) for r in rows]
 
+    def propagation_paths(
+        self, supplier_id: str, *, depth_cap: int = 6
+    ) -> list[list[dict]]:
+        """VARIABLE-DEPTH upward propagation (ontology.md §2). Starting at
+        `supplier_id`, walk `subcontracts` edges upward (sub → parent, i.e.
+        2차→1차→…) recursively with a SQLite ``WITH RECURSIVE`` CTE. At EVERY
+        supplier reached that `supplies` a Prime, emit one path:
+
+            Supplier(start) …→ [intermediate Suppliers] …→ Prime → Program
+
+        Each path is a node list ``[{type,ref,name,...}, …]`` ending Prime,
+        Program (Program.ref may be None if the Prime runs no program). This is
+        the "flat table can't do it" query — a subcontract chain of unknown
+        depth resolved to the defense Program on top.
+
+        Cycle-safe by TWO mechanisms together (a depth cap alone can still blow
+        up combinatorially before the cap is reached): a running visited-path
+        string is threaded through the recursion and a supplier already on the
+        path is rejected with ``instr(...) = 0``, AND ``depth < depth_cap``
+        bounds total depth.
+        """
+        seed = f"/{supplier_id}/"
+        rows = self.conn.execute(
+            """
+            WITH RECURSIVE chain(start_id, cur_id, depth, sup_path) AS (
+                SELECT ?, ?, 0, ?
+                UNION ALL
+                SELECT c.start_id, sc.parent_supplier_id, c.depth + 1,
+                       c.sup_path || sc.parent_supplier_id || '/'
+                FROM chain c
+                JOIN subcontracts sc ON sc.sub_supplier_id = c.cur_id
+                WHERE c.depth < ?
+                  AND instr(c.sup_path, '/' || sc.parent_supplier_id || '/') = 0
+            )
+            SELECT c.sup_path, c.depth,
+                   s.prime_id, p.name AS prime_name,
+                   r.program_id, pg.name AS program_name, pg.sensitivity
+            FROM chain c
+            JOIN supplies s      ON s.supplier_id = c.cur_id
+            JOIN prime p         ON s.prime_id = p.id
+            LEFT JOIN runs r     ON r.prime_id = p.id
+            LEFT JOIN program pg ON r.program_id = pg.id
+            ORDER BY c.depth, c.sup_path, s.prime_id, r.program_id
+            """,
+            (supplier_id, supplier_id, seed, depth_cap),
+        ).fetchall()
+
+        names = {s["id"]: s["name"] for s in self.suppliers()}
+        paths: list[list[dict]] = []
+        for r in rows:
+            chain_ids = [x for x in r["sup_path"].split("/") if x]
+            nodes: list[dict] = [
+                {"type": "Supplier", "ref": sid, "name": names.get(sid, sid)}
+                for sid in chain_ids
+            ]
+            nodes.append(
+                {"type": "Prime", "ref": r["prime_id"], "name": r["prime_name"]}
+            )
+            nodes.append({
+                "type": "Program", "ref": r["program_id"],
+                "name": r["program_name"], "sensitivity": r["sensitivity"],
+            })
+            paths.append(nodes)
+        return paths
+
     _EXP_SELECT = """
         SELECT e.id, e.module, e.secret_type, e.masked_value, e.secret_present,
                e.host, e.observed_at, e.fetched_at, e.source, e.source_ref,
@@ -473,10 +581,33 @@ class SqliteOntologyStore:
 
     # -- active-compromise path (P3) ---------------------------------------
 
+    def device_compromised_suppliers(self, device_id: str) -> list[str]:
+        """Distinct Supplier ids a Device compromises, DERIVED as ``compromises =
+        leaked ∘ of`` (ontology.md §2): the identities of every Exposure the
+        Device leaked → their Domain → Supplier. Because ``belongs_to`` is
+        Identity→Domain N:1, cross-supplier reach can ONLY arise here (a Device
+        compromising Identities in different Suppliers), never from a single
+        Identity — so blast radius is aggregated at the DEVICE level over this
+        set. In the current corpus a device leaks one exposure → one supplier,
+        but the query unions over all leaked exposures, so it stays correct if
+        ``compromises`` becomes true N:M."""
+        rows = self.conn.execute(
+            "SELECT DISTINCT dm.supplier_id AS supplier_id "
+            "FROM infected_device dev "
+            # leaked: Device → Exposure  (∪ the device's own identity_ref)
+            "LEFT JOIN credential_exposure ce ON ce.id = dev.exposure_ref "
+            # of: Exposure → Identity
+            "LEFT JOIN identity i ON i.id = COALESCE(ce.identity_ref, dev.identity_ref) "
+            "LEFT JOIN domain dm ON dm.fqdn = i.domain_ref "
+            "WHERE dev.id = ? AND dm.supplier_id IS NOT NULL",
+            (device_id,),
+        ).fetchall()
+        return [r["supplier_id"] for r in rows]
+
     def infected_device_paths(self) -> list[dict]:
         """Device → Identity → Domain → Supplier rows (the left half of the
         active-compromise path). FlagActiveCompromise appends Supplier → Prime →
-        Program from `propagation_for_supplier`."""
+        Program from `propagation_paths`."""
         rows = self.conn.execute(
             "SELECT dev.id AS device_id, dev.exposure_ref, dev.identity_ref, "
             "       dev.malware, dev.infected_at, dev.has_session_cookie, "
@@ -543,13 +674,21 @@ class SqliteOntologyStore:
 
     def record_incident(
         self, *, id: str, supplier_ref: str, opened_at: int, status: str,
-        path: list,
+        path: list, blast_radius: dict | None = None,
     ) -> None:
+        """Persist a CompromiseIncident. `path` is the representative traverses
+        path; `blast_radius` = {"primes":[...],"programs":[...]} records EVERY
+        Prime/Program the incident reaches (not just the one on `path`) so a
+        single terminal-tier infection's full downstream reach is retained."""
+        blast = blast_radius or {}
         self.conn.execute(
-            "INSERT INTO compromise_incident(id,supplier_ref,opened_at,status,path) "
-            "VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET "
-            "opened_at=excluded.opened_at, status=excluded.status, path=excluded.path",
-            (id, supplier_ref, opened_at, status, json.dumps(path)),
+            "INSERT INTO compromise_incident("
+            "id,supplier_ref,opened_at,status,path,blast_primes,blast_programs) "
+            "VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET "
+            "opened_at=excluded.opened_at, status=excluded.status, path=excluded.path, "
+            "blast_primes=excluded.blast_primes, blast_programs=excluded.blast_programs",
+            (id, supplier_ref, opened_at, status, json.dumps(path),
+             json.dumps(blast.get("primes", [])), json.dumps(blast.get("programs", []))),
         )
         self.conn.commit()
 
@@ -561,6 +700,10 @@ class SqliteOntologyStore:
         for r in rows:
             d = dict(r)
             d["path"] = json.loads(d["path"]) if d.get("path") else []
+            d["blast_radius"] = {
+                "primes": json.loads(d["blast_primes"]) if d.get("blast_primes") else [],
+                "programs": json.loads(d["blast_programs"]) if d.get("blast_programs") else [],
+            }
             out.append(d)
         return out
 
@@ -569,6 +712,59 @@ class SqliteOntologyStore:
 
     def incidents_for_supplier(self, supplier_id: str) -> list[dict]:
         return self._incident_rows("WHERE supplier_ref=?", (supplier_id,))
+
+    # -- PropagateRisk / ProgramExposure output -----------------------------
+
+    def record_program_exposure(
+        self, *, id: str, program_ref: str, score: float, grade: str,
+        active_flag: bool, computed_at: int, components: dict,
+        contributing_paths: list, evidence: list,
+    ) -> None:
+        """Persist a ProgramExposure + its evidenced_by links. `evidence` is a
+        list of (evidence_ref, evidence_kind); the caller (PropagateRisk) has
+        already refused an empty list (provenance is mandatory)."""
+        c = self.conn
+        c.execute(
+            "INSERT INTO program_exposure("
+            "id,program_ref,score,grade,active_flag,computed_at,components,contributing_paths"
+            ") VALUES(?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET "
+            "score=excluded.score, grade=excluded.grade, active_flag=excluded.active_flag, "
+            "computed_at=excluded.computed_at, components=excluded.components, "
+            "contributing_paths=excluded.contributing_paths",
+            (id, program_ref, score, grade, int(active_flag), computed_at,
+             json.dumps(components), json.dumps(contributing_paths)),
+        )
+        c.execute("DELETE FROM program_exposure_evidence WHERE exposure_ref=?", (id,))
+        for ref, kind in evidence:
+            c.execute(
+                "INSERT INTO program_exposure_evidence(exposure_ref,evidence_ref,evidence_kind) "
+                "VALUES(?,?,?) ON CONFLICT(exposure_ref,evidence_ref) DO NOTHING",
+                (id, ref, kind),
+            )
+        c.commit()
+
+    def program_exposures(self) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT * FROM program_exposure ORDER BY score DESC, program_ref"
+        ).fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            d["components"] = json.loads(d["components"]) if d.get("components") else {}
+            d["contributing_paths"] = (
+                json.loads(d["contributing_paths"]) if d.get("contributing_paths") else []
+            )
+            d["active_flag"] = bool(d.get("active_flag"))
+            out.append(d)
+        return out
+
+    def program_exposure_evidence(self, exposure_ref: str) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT evidence_ref, evidence_kind FROM program_exposure_evidence "
+            "WHERE exposure_ref=? ORDER BY evidence_kind, evidence_ref",
+            (exposure_ref,),
+        ).fetchall()
+        return [dict(r) for r in rows]
 
     # -- GenerateNotificationDraft output (P5) ------------------------------
 

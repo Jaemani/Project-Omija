@@ -1,9 +1,11 @@
 """(c)/(d) FlagActiveCompromise: path detection accuracy + no-path refusal.
 
-Active compromise is a graph path, not a heuristic. Exactly the two seeded
-active suppliers get a CompromiseIncident (each with a full 6-hop path); a
-qualifying device whose supplier has no Prime→Program connection yields NO
-incident (the derived object is refused without its traverses path)."""
+Active compromise is a graph path, not a heuristic. Exactly the three seeded
+active suppliers get a CompromiseIncident (each with a complete VARIABLE-LENGTH
+path — sup-a/sup-g have the classic 6-node shape, sup-h the multi-tier terminal
+has a longer path with an intermediate Supplier hop); a qualifying device whose
+supplier has no Prime→Program connection yields NO incident (the derived object
+is refused without its traverses path)."""
 
 from actions.correlate import correlate_exposures
 from actions.flag_active import flag_active_compromises
@@ -12,7 +14,7 @@ from adapter.mock import DEMO_NOW, DAY, MODULES, MockExposureSource
 from registry.loader import load_into_store
 from store.sqlite import SqliteOntologyStore
 
-_FULL_PATH = ["InfectedDevice", "Identity", "Domain", "Supplier", "Prime", "Program"]
+_ACTIVE_SUPPLIERS = {"sup-a", "sup-g", "sup-h"}
 
 
 def _full_pipe(store) -> None:
@@ -25,19 +27,29 @@ def _full_pipe(store) -> None:
     correlate_exposures(store, now=DEMO_NOW)
 
 
-# -- (d) exactly two active suppliers, each with a complete path ---------------
+def _assert_path_shape(path) -> None:
+    """A valid traverses path: Device → Identity → Domain, then ≥1 Supplier hop,
+    ending Prime → Program, every node populated."""
+    types = [n["type"] for n in path]
+    assert types[:3] == ["InfectedDevice", "Identity", "Domain"]
+    assert types[-2:] == ["Prime", "Program"]
+    supplier_hops = types[3:-2]
+    assert supplier_hops and set(supplier_hops) == {"Supplier"}
+    assert all(n["ref"] for n in path)
+
+
+# -- (d) exactly three active suppliers, each with a complete path ------------
 
 def test_flag_opens_incident_for_each_active_supplier():
     with SqliteOntologyStore(":memory:") as store:
         _full_pipe(store)
         res = flag_active_compromises(store, now=DEMO_NOW)
-        assert len(res.incidents) == 2
-        assert {i["supplier_ref"] for i in res.incidents} == {"sup-a", "sup-g"}
-        # persisted incidents each carry the full traverses path
+        assert len(res.incidents) == 3
+        assert {i["supplier_ref"] for i in res.incidents} == _ACTIVE_SUPPLIERS
+        # persisted incidents each carry a complete (variable-length) path
         for inc in store.incidents():
             assert inc["status"] == "open"
-            assert [n["type"] for n in inc["path"]] == _FULL_PATH
-            assert all(n["ref"] for n in inc["path"])
+            _assert_path_shape(inc["path"])
 
 
 def test_flag_skips_stale_and_non_privileged_devices():
@@ -46,7 +58,7 @@ def test_flag_skips_stale_and_non_privileged_devices():
         res = flag_active_compromises(store, now=DEMO_NOW)
         # the stale (40d, no cookie, user account) stealer hits are skipped
         assert res.skipped
-        assert all(inc["supplier_ref"] in {"sup-a", "sup-g"} for inc in res.incidents)
+        assert all(inc["supplier_ref"] in _ACTIVE_SUPPLIERS for inc in res.incidents)
 
 
 # -- (c) no Supplier→Prime→Program path ⇒ incident refused --------------------

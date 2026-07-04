@@ -10,6 +10,7 @@ Covers:
 import re
 
 from actions.notify_draft import generate_drafts
+from actions.propagate_risk import propagate_program_risk
 from adapter.mock import DEMO_NOW, MockExposureSource
 from scripts.p4_dashboard import build_dashboard_html, run
 from scripts.p5_drafts import build_pipeline
@@ -18,6 +19,7 @@ from scripts.p5_drafts import build_pipeline
 def _dashboard():
     store, assessments = build_pipeline(DEMO_NOW)
     generate_drafts(store, assessments, top=3, now=DEMO_NOW)   # P4↔P5 link
+    propagate_program_risk(store, now=DEMO_NOW)                # P4 program roll-up
     html = build_dashboard_html(store, assessments, DEMO_NOW)
     return store, assessments, html
 
@@ -62,6 +64,18 @@ def test_dashboard_has_graph_drilldown_and_filters():
     assert 'id="f-grade"' in html
     # self-contained: no external resource references
     assert not re.search(r'(src|href)\s*=\s*"https?://', html)
+    store.close()
+
+
+def test_dashboard_has_program_exposure_rollup():
+    """The program roll-up section renders, marks programs BURNING, and surfaces
+    a multi-tier active chain (2차 terminal → tier-1 → Prime → Program)."""
+    store, _a, html = _dashboard()
+    assert "프로그램 노출" in html                       # program roll-up section
+    assert "BURNING" in html                             # a burning program
+    assert "programs burning" in html                    # KPI
+    # the multi-tier money-shot chain surfaces on the page
+    assert "Hotel Microelectronics" in html and "Foxtrot Metals" in html
     store.close()
 
 

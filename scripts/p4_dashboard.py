@@ -34,6 +34,7 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from actions.notify_draft import generate_drafts                   # noqa: E402
+from actions.propagate_risk import propagate_program_risk          # noqa: E402
 from adapter.mock import DEMO_NOW                                   # noqa: E402
 from scripts.p5_drafts import build_pipeline                       # noqa: E402
 
@@ -240,6 +241,60 @@ def _path_chain(path: list) -> str:
 
 
 # --------------------------------------------------------------------------- #
+# program exposure roll-up (risk propagated UP onto defense Programs)
+# --------------------------------------------------------------------------- #
+
+def _program_section(store) -> str:
+    """ProgramExposure ranking: which defense Program is burning, and through
+    which supplier chain. Empty (returns '') if PropagateRisk was not run."""
+    pes = store.program_exposures()
+    if not pes:
+        return ""
+    prog_by_id = {p["id"]: p for p in store.programs()}
+    rows = []
+    for pe in pes:
+        comp = pe.get("components", {})
+        prog = prog_by_id.get(pe["program_ref"], {})
+        active = pe.get("active_flag")
+        gcls = _GRADE_CLASS.get(pe.get("grade"), "")
+        flag = ('<span class="flag active">● BURNING</span>' if active
+                else '<span class="flag">—</span>')
+        contrib = comp.get("contributing_suppliers", [])
+        contrib_txt = ", ".join(
+            f'{c["id"]}{"*" if c.get("active") else ""}' for c in contrib
+        )
+        # surface the multi-tier active chains (the money-shot)
+        chains = "".join(
+            f'<div class="chain">{_e(cp.get("chain"))}</div>'
+            for cp in pe.get("contributing_paths", [])
+            if cp.get("active") and cp.get("multi_tier")
+        )
+        chain_block = (f'<tr class="pe-detail"><td colspan="6">{chains}</td></tr>'
+                       if chains else "")
+        rows.append(
+            f'<tr class="rrow{" is-active" if active else ""}">'
+            f'<td class="name">{_e(prog.get("name", pe["program_ref"]))}'
+            f'<span class="sid">{_e(pe["program_ref"])}</span></td>'
+            f'<td>{_e(comp.get("sensitivity") or "—")}</td>'
+            f'<td class="score">{pe.get("score", 0):.2f}</td>'
+            f'<td><span class="grade {gcls}">{_e(pe.get("grade"))}</span></td>'
+            f'<td>{flag}</td>'
+            f'<td class="mono ref">{_e(contrib_txt)}</td>'
+            f'</tr>{chain_block}'
+        )
+    return (
+        '<h2>프로그램 노출 (전파 롤업 — 활성 프로그램 상단)</h2>'
+        '<p class="sub" style="margin:-4px 0 8px">협력사 위험이 subcontracts→supplies→runs를 타고 '
+        '방산 프로그램으로 전파된 결과. <code>*</code>=활성침해 기여 협력사. '
+        '아래 다중티어 경로는 2차 말단 감염이 프로그램을 태우는 경로입니다.</p>'
+        '<table class="rank"><thead><tr>'
+        '<th>program</th><th>sensitivity</th><th>score</th><th>grade</th>'
+        '<th>status</th><th>contributing suppliers</th>'
+        '</tr></thead><tbody>' + "".join(rows) + '</tbody></table>'
+    )
+
+
+# --------------------------------------------------------------------------- #
 # propagation graph (inline SVG)
 # --------------------------------------------------------------------------- #
 
@@ -429,7 +484,10 @@ def build_dashboard_html(store, assessments, now: int) -> str:
 
     rows = _ranking_rows(assessments, sup_by_id, store)
     panels = _drilldown_panels(assessments, sup_by_id, store)
+    program_section = _program_section(store)
     svg = _graph_svg(store, assessments)
+    program_exposures = store.program_exposures()
+    burning_programs = sum(1 for pe in program_exposures if pe.get("active_flag"))
 
     return f"""<!DOCTYPE html><html lang="ko"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -554,6 +612,7 @@ footer {{ margin-top: 30px; color: #6e7681; font-size: 11.5px; border-top: 1px s
   <div class="kpi"><div class="n">{len(assessments)}</div><div class="l">ranked suppliers</div></div>
   <div class="kpi alert"><div class="n">{active_n}</div><div class="l">active compromise</div></div>
   <div class="kpi"><div class="n">{len(incidents)}</div><div class="l">incidents opened</div></div>
+  <div class="kpi alert"><div class="n">{burning_programs}</div><div class="l">programs burning</div></div>
 </div>
 
 <h2>위험 순위 (활성 상단 고정)</h2>
@@ -569,6 +628,8 @@ footer {{ margin-top: 30px; color: #6e7681; font-size: 11.5px; border-top: 1px s
   <th>#</th><th>supplier</th><th>tier</th><th>crit</th><th>score</th><th>grade</th>
   <th>active</th><th>freshest</th><th>ev</th>
 </tr></thead><tbody id="rank-body">{rows}</tbody></table>
+
+{program_section}
 
 <h2>드릴다운 (행 클릭 — 노출·기여분·타임라인·초안)</h2>
 <div id="drill-host">
@@ -623,6 +684,7 @@ def run() -> int:
     now = DEMO_NOW
     store, assessments = build_pipeline(now)
     generate_drafts(store, assessments, top=3, now=now)   # P4↔P5 link
+    propagate_program_risk(store, now=now)                # P4 program roll-up
 
     os.makedirs(OUT_DIR, exist_ok=True)
     html_str = build_dashboard_html(store, assessments, now)

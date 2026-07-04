@@ -49,6 +49,13 @@ class OntologyStore(Protocol):
         """Prime runs Program (N:M) — top of the propagation path."""
         ...
 
+    def link_subcontract(
+        self, *, sub_supplier_id: str, parent_supplier_id: str
+    ) -> None:
+        """Supplier subcontracts_to Supplier (N:M): sub → parent (2차→1차) — the
+        multi-tier edge recursive propagation walks."""
+        ...
+
     def write_exposure(
         self, exp: Exposure, *, domain: str | None = None
     ) -> str:
@@ -96,7 +103,15 @@ class OntologyStore(Protocol):
         ...
 
     def propagation_for_supplier(self, supplier_id: str) -> list[dict]:
-        """Supplier → Prime → Program propagation rows."""
+        """Supplier → Prime → Program propagation rows (direct supplies only)."""
+        ...
+
+    def propagation_paths(
+        self, supplier_id: str, *, depth_cap: int = 6
+    ) -> list[list[dict]]:
+        """Variable-depth upward propagation: recursively walk subcontracts
+        (2차→1차→…) then supplies→runs, returning each full node path
+        Supplier(start)…→[intermediate Suppliers]…→Prime→Program. Cycle-safe."""
         ...
 
     def exposures_for_supplier(self, supplier_id: str) -> list[dict]:
@@ -146,6 +161,11 @@ class OntologyStore(Protocol):
         Program."""
         ...
 
+    def device_compromised_suppliers(self, device_id: str) -> list[str]:
+        """Distinct Supplier ids a Device compromises (compromises = leaked∘of),
+        for DEVICE-level blast-radius aggregation."""
+        ...
+
     # -- ComputeRisk output (P3) -------------------------------------------
 
     def record_risk_assessment(
@@ -167,16 +187,35 @@ class OntologyStore(Protocol):
 
     def record_incident(
         self, *, id: str, supplier_ref: str, opened_at: int, status: str,
-        path: list,
+        path: list, blast_radius: dict | None = None,
     ) -> None:
         """Persist a CompromiseIncident with its traverses `path` (Device→…→
-        Program). No incident without a complete path (enforced upstream)."""
+        Program) and `blast_radius` (every reachable Prime/Program). No incident
+        without a complete path (enforced upstream)."""
         ...
 
     def incidents(self) -> list[dict]:
         ...
 
     def incidents_for_supplier(self, supplier_id: str) -> list[dict]:
+        ...
+
+    # -- PropagateRisk / ProgramExposure output ----------------------------
+
+    def record_program_exposure(
+        self, *, id: str, program_ref: str, score: float, grade: str,
+        active_flag: bool, computed_at: int, components: dict,
+        contributing_paths: list, evidence: list,
+    ) -> None:
+        """Persist a ProgramExposure + evidenced_by links (non-empty evidence
+        enforced upstream by PropagateRisk)."""
+        ...
+
+    def program_exposures(self) -> list[dict]:
+        ...
+
+    def program_exposure_evidence(self, exposure_ref: str) -> list[dict]:
+        """evidenced_by links (evidence_ref, evidence_kind) of a ProgramExposure."""
         ...
 
     # -- GenerateNotificationDraft output (P5) -----------------------------

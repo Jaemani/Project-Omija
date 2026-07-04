@@ -39,7 +39,9 @@ def load_into_store(store: Any, registry: dict[str, Any] | None = None) -> dict[
     if registry is None:
         registry = load_registry()
 
-    counts = {k: 0 for k in ("suppliers", "domains", "primes", "programs", "supplies", "runs")}
+    counts = {k: 0 for k in (
+        "suppliers", "domains", "primes", "programs", "supplies", "runs", "subcontracts"
+    )}
 
     for prime in registry.get("primes", []):
         store.upsert_prime(id=prime["id"], name=prime.get("name", prime["id"]))
@@ -72,6 +74,13 @@ def load_into_store(store: Any, registry: dict[str, Any] | None = None) -> dict[
         for prime_id in ([] if supplies is None else _as_list(supplies)):
             store.link_supplies(supplier_id=sup["id"], prime_id=prime_id)
             counts["supplies"] += 1
+        # Supplier --subcontracts_to--> Supplier (single or list). Declared on
+        # the SUB (lower-tier) supplier: it delivers up to the parent(s). This is
+        # the multi-tier edge; a subcontract-only supplier has NO direct supplies.
+        subcontracts = sup.get("subcontracts")
+        for parent_id in ([] if subcontracts is None else _as_list(subcontracts)):
+            store.link_subcontract(sub_supplier_id=sup["id"], parent_supplier_id=parent_id)
+            counts["subcontracts"] += 1
 
     return counts
 

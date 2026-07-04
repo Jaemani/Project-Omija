@@ -95,6 +95,13 @@ class FoundryOntologyStore:
         # client.ontology.actions.link_runs(prime=prime_id, program=program_id)
         raise NotImplementedError(_TODO)
 
+    def link_subcontract(
+        self, *, sub_supplier_id: str, parent_supplier_id: str
+    ) -> None:
+        # client.ontology.actions.link_subcontract(sub=sub_supplier_id,
+        #     parent=parent_supplier_id)  → Supplier subcontracts_to Supplier (N:M)
+        raise NotImplementedError(_TODO)
+
     def write_exposure(self, exp: Exposure, *, domain: str | None = None) -> str:
         # Decompose Exposure → Identity / CredentialExposure / InfectedDevice /
         # ThreatSource objects + links via Action(s). Masking already enforced in
@@ -149,6 +156,15 @@ class FoundryOntologyStore:
         # for p in sup.supplies.iterate(): for prog in p.runs.iterate(): ...
         raise NotImplementedError(_TODO)
 
+    def propagation_paths(
+        self, supplier_id: str, *, depth_cap: int = 6
+    ) -> list[list[dict]]:
+        # Variable-depth traverse of subcontracts_to (2차→1차→…) then supplies/
+        # runs. On Foundry this is an OSDK graph traversal / an AIP Logic
+        # function walking Supplier.subcontracts_to recursively (depth_cap +
+        # visited-set), emitting Supplier…→Prime→Program node paths.
+        raise NotImplementedError(_TODO)
+
     def exposures_for_supplier(self, supplier_id: str) -> list[dict]:
         # Traverse Supplier ← owns ← Domain ← belongs_to ← Identity ← of ←
         # CredentialExposure (+ InfectedDevice active-signal fields).
@@ -196,6 +212,12 @@ class FoundryOntologyStore:
         # (left half; FlagActiveCompromise appends Supplier→Prime→Program).
         raise NotImplementedError(_TODO)
 
+    def device_compromised_suppliers(self, device_id: str) -> list[str]:
+        # compromises = leaked∘of: dev = InfectedDevice.get(device_id);
+        # {e.of.belongs_to.owned_by for e in dev.leaked.iterate()} — the distinct
+        # Suppliers this device reaches, for device-level blast aggregation.
+        raise NotImplementedError(_TODO)
+
     # -- ComputeRisk output (P3) -----------------------------------------------
 
     def record_risk_assessment(
@@ -221,10 +243,12 @@ class FoundryOntologyStore:
 
     def record_incident(
         self, *, id: str, supplier_ref: str, opened_at: int, status: str, path: list,
+        blast_radius: dict | None = None,
     ) -> None:
         # client.ontology.actions.flag_active_compromise(supplier=supplier_ref,
-        #     path=path, ...)  → CompromiseIncident with traverses path
-        #     (no incident without a complete path — enforced in flag_active.py).
+        #     path=path, blast_radius=blast_radius, ...)  → CompromiseIncident with
+        #     traverses path + blast radius (no incident without a complete path —
+        #     enforced in flag_active.py).
         raise NotImplementedError(_TODO)
 
     def incidents(self) -> list[dict]:
@@ -233,6 +257,28 @@ class FoundryOntologyStore:
 
     def incidents_for_supplier(self, supplier_id: str) -> list[dict]:
         # client.ontology.objects.CompromiseIncident.where(supplier_ref == supplier_id)
+        raise NotImplementedError(_TODO)
+
+    # -- PropagateRisk / ProgramExposure output --------------------------------
+
+    def record_program_exposure(
+        self, *, id: str, program_ref: str, score: float, grade: str,
+        active_flag: bool, computed_at: int, components: dict,
+        contributing_paths: list, evidence: list,
+    ) -> None:
+        # client.ontology.actions.propagate_risk(program=program_ref, score=score,
+        #     evidence=[ref for ref, _ in evidence], ...)  → ProgramExposure +
+        #     evidenced_by links. Non-empty evidence enforced by the Action Type
+        #     submission criteria AND actions/propagate_risk.py.
+        raise NotImplementedError(_TODO)
+
+    def program_exposures(self) -> list[dict]:
+        # client.ontology.objects.ProgramExposure.iterate()
+        raise NotImplementedError(_TODO)
+
+    def program_exposure_evidence(self, exposure_ref: str) -> list[dict]:
+        # pe = client.ontology.objects.ProgramExposure.get(exposure_ref)
+        # [ {evidence_ref, evidence_kind} for e in pe.evidenced_by.iterate() ]
         raise NotImplementedError(_TODO)
 
     # -- GenerateNotificationDraft output (P5) ---------------------------------

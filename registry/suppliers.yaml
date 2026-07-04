@@ -6,8 +6,16 @@
 #
 # Suppliers mirror adapter/mock.py SEED_SUPPLIERS 1:1 (same ids + domains) so
 # the mock corpus correlates cleanly:
-#   - active-compromise cases : sup-a (supplier-a.example), sup-g (avionics-g.example)
-#   - clean (no exposures)    : sup-e (logistics-e.example), sup-f (metals-f.example)
+#   - active-compromise cases : sup-a (supplier-a.example), sup-g (avionics-g.example),
+#                               sup-h (micro-h.example) — MULTI-TIER terminal (2차)
+#   - clean (no direct exposures) : sup-e (logistics-e.example), sup-f (metals-f.example)
+#
+# MULTI-TIER money-shot (ontology.md §2 propagation): sup-h is a tier-2 terminal
+# subcontractor that does NOT supply any Prime directly — it `subcontracts` up to
+# sup-f (a clean tier-1). An active-compromise infection on sup-h therefore burns
+# a Program TWO tiers up, sup-h → sup-f → prime-x → prog-sentinel/harbor, reachable
+# only by the variable-depth recursive traverse (store.propagation_paths). sup-f,
+# though clean itself, is a burning conduit — risk propagates past attribution.
 #
 # criticality is numeric 1..3 (3=high, 2=medium, 1=low) per the P1 decision.
 # (adapter/mock.py keeps its P0-A string labels for its own internal seed; both
@@ -62,6 +70,17 @@ suppliers:
     tier: 1
     criticality: 2        # medium
     supplies: prime-x
+
+  # MULTI-TIER terminal (2차 말단). NO direct `supplies` edge — reaches a Prime
+  # ONLY by subcontracting up to sup-f (tier-1). Carries an active-compromise
+  # infection in the mock, so its risk propagates sup-h → sup-f → prime-x →
+  # prog-sentinel/harbor via the recursive traverse (pin #1: subcontracts-only).
+  - id: sup-h
+    name: Hotel Microelectronics
+    domains: [micro-h.example]
+    tier: 2
+    criticality: 3        # high
+    subcontracts: sup-f   # delivers UP to the tier-1 parent (2차→1차)
 
 # Primes (원청/주계약) — synthetic. Supplier --supplies--> Prime (N:M) above.
 primes:

@@ -41,7 +41,7 @@ OUT_DIR = os.path.join(REPO_ROOT, "out")
 OUT_JSON = os.path.join(OUT_DIR, "eval.json")
 
 MOCK_LIMITATION = (
-    "Mock corpus is SYNTHETIC (*.example), SMALL (7 suppliers / 25 records) and "
+    "Mock corpus is SYNTHETIC (*.example), SMALL (8 suppliers / 30 records) and "
     "CLEAN (domains map 1:1, no adversarial records) — P/R here is a correctness "
     "ceiling proving the pipe is wired right, not a field-performance claim."
 )

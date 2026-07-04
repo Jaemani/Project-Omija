@@ -32,8 +32,9 @@ MODULES = ("cds", "ub", "cl", "cb")
 DEMO_NOW = int(datetime(2026, 7, 3, tzinfo=timezone.utc).timestamp())
 DAY = 86400
 
-# Synthetic supplier registry (5–7 domains, some clean). Full registry = P1.
-# supplies→prime kept minimal here; propagation graph is built in P2.
+# Synthetic supplier registry (mirrors registry/suppliers.yaml 1:1). `prime` is
+# decorative here (links are built by the registry loader). `subcontracts` marks
+# the multi-tier terminal (sup-h) that reaches a Prime only via sup-f (tier-1).
 SEED_SUPPLIERS: dict[str, dict] = {
     "supplier-a.example":  {"id": "sup-a", "name": "Alpha Precision",   "tier": 1, "criticality": "high",   "prime": "prime-x", "clean": False},
     "supplier-b.example":  {"id": "sup-b", "name": "Bravo Systems",     "tier": 1, "criticality": "high",   "prime": "prime-x", "clean": False},
@@ -42,11 +43,15 @@ SEED_SUPPLIERS: dict[str, dict] = {
     "avionics-g.example":  {"id": "sup-g", "name": "Golf Avionics",     "tier": 2, "criticality": "high",   "prime": "prime-x", "clean": False},
     "logistics-e.example": {"id": "sup-e", "name": "Echo Logistics",    "tier": 2, "criticality": "low",    "prime": "prime-y", "clean": True},
     "metals-f.example":    {"id": "sup-f", "name": "Foxtrot Metals",    "tier": 1, "criticality": "medium", "prime": "prime-x", "clean": True},
+    # MULTI-TIER terminal (2차 말단): subcontracts up to sup-f, no direct prime.
+    "micro-h.example":     {"id": "sup-h", "name": "Hotel Microelectronics", "tier": 2, "criticality": "high", "prime": None, "subcontracts": "sup-f", "clean": False},
 }
 
 # Domains that carry a deliberate active-compromise case (recent stealer +
-# session cookie on vpn/admin). Must be non-clean.
-ACTIVE_DOMAINS = {"supplier-a.example", "avionics-g.example"}
+# session cookie on vpn/admin). Must be non-clean. micro-h.example is the
+# MULTI-TIER money-shot: a 2차 terminal infection that burns a Program two tiers
+# up (sup-h → sup-f → prime-x → prog-sentinel/harbor).
+ACTIVE_DOMAINS = {"supplier-a.example", "avionics-g.example", "micro-h.example"}
 
 # Domain carrying an entity-resolution VARIANT pair: one analyst under two email
 # spellings, `j.kim@` (dotted) and `jkim@` (undotted). They land as two distinct

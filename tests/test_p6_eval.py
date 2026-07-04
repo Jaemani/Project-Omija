@@ -138,7 +138,10 @@ def test_full_eval_hits_expected_ceilings():
     assert res["correlation"]["recall"] == 1.0
     assert res["active_compromise"]["fp"] == 0
     assert res["active_compromise"]["fn"] == 0
-    assert res["ranking"]["top_k_ids"] == ["sup-a", "sup-g"]
+    # three active suppliers now (sup-h is the multi-tier terminal); order within
+    # the active band is not pinned, but the top-k must be EXACTLY the active set.
+    assert set(res["ranking"]["top_k_ids"]) == {"sup-a", "sup-g", "sup-h"}
+    assert res["ranking"]["top_k_is_exactly_active"] is True
     assert res["ranking"]["strictly_on_top"] is True
     # golden time is a real reduction, computed (not asserted-as-magic)
     assert res["golden_time"]["full_triage_time_reduction"] > 0

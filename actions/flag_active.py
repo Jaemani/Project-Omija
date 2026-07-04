@@ -10,10 +10,18 @@ as a heuristic. For each InfectedDevice the action requires ALL of:
   5. a Supplier → Prime → Program connection       (reaches a defense program).
 
 Only when all five hold is a **CompromiseIncident** opened, carrying the full
-traversed path (`Device → Identity → Domain → Supplier → Prime → Program`). If a
-complete `traverses` path cannot be assembled the incident is REFUSED
-(ontology.md §3: no derived object without its path). Nothing is guessed — active
-status is exactly conditions 1–5, evaluated on the defined fields.
+traversed path (`Device → Identity → Domain → Supplier …→ Prime → Program`). The
+Supplier→…→Prime→Program half is resolved by the VARIABLE-DEPTH recursive
+traverse `store.propagation_paths` (ontology.md §2), so a tier-2 terminal
+supplier that reaches a Prime only by subcontracting up through a tier-1 parent
+STILL qualifies — the incident path then carries the intermediate Supplier hop(s)
+and is longer than the classic 6-node shape. If a complete `traverses` path
+cannot be assembled the incident is REFUSED (ontology.md §3: no derived object
+without its path). Nothing is guessed — active status is exactly conditions 1–5.
+
+The incident also records a `blast_radius` = every Prime/Program the compromised
+supplier reaches (not only the one on the representative path), so the full
+downstream reach of a single terminal-tier infection is retained.
 """
 
 from __future__ import annotations
@@ -48,19 +56,24 @@ def _recent(infected_at: Any, now: int, window_days: int) -> bool:
     return 0 <= (now - int(infected_at)) <= window_days * _DAY
 
 
-def _build_path(dev: dict, prop_row: dict) -> list[dict]:
-    """Assemble the traverses path node list; raise if any hop is missing."""
-    nodes = [
-        ("InfectedDevice", dev.get("device_id"),
-         f"{dev.get('malware') or 'stealer'} · session-cookie · "
-         f"infected_at={dev.get('infected_at')}"),
-        ("Identity", dev.get("identity_ref"), dev.get("email") or dev.get("username")),
-        ("Domain", dev.get("domain_ref"), dev.get("domain_ref")),
-        ("Supplier", dev.get("supplier_id"), dev.get("supplier_name")),
-        ("Prime", prop_row.get("prime_id"), prop_row.get("prime_name")),
-        ("Program", prop_row.get("program_id"), prop_row.get("program_name")),
+def _build_path(dev: dict, prop_path: list[dict]) -> list[dict]:
+    """Assemble the full traverses path node list. `prop_path` is the variable-
+    length Supplier(start)…→Prime→Program node list from `propagation_paths`; the
+    Device → Identity → Domain head is prepended. Raises if any hop is missing."""
+    head = [
+        {"type": "InfectedDevice", "ref": dev.get("device_id"),
+         "detail": (f"{dev.get('malware') or 'stealer'} · session-cookie · "
+                    f"infected_at={dev.get('infected_at')}")},
+        {"type": "Identity", "ref": dev.get("identity_ref"),
+         "detail": dev.get("email") or dev.get("username")},
+        {"type": "Domain", "ref": dev.get("domain_ref"), "detail": dev.get("domain_ref")},
     ]
-    path = [{"type": t, "ref": ref, "detail": detail} for (t, ref, detail) in nodes]
+    tail = [
+        {"type": n["type"], "ref": n.get("ref"),
+         "detail": n.get("name") or n.get("ref")}
+        for n in prop_path
+    ]
+    path = head + tail
     missing = [n["type"] for n in path if not n["ref"]]
     if missing:
         raise PathIncomplete(
@@ -68,6 +81,23 @@ def _build_path(dev: dict, prop_row: dict) -> list[dict]:
             f"missing hop(s): {', '.join(missing)}"
         )
     return path
+
+
+def _blast_radius(paths: list[list[dict]]) -> dict:
+    """Every distinct Prime/Program reachable from a supplier (across ALL its
+    propagation paths) — the incident's downstream blast radius."""
+    primes: dict[str, str] = {}
+    programs: dict[str, str] = {}
+    for path in paths:
+        for n in path:
+            if n.get("type") == "Prime" and n.get("ref"):
+                primes[n["ref"]] = n.get("name")
+            elif n.get("type") == "Program" and n.get("ref"):
+                programs[n["ref"]] = n.get("name")
+    return {
+        "primes": [{"ref": k, "name": v} for k, v in sorted(primes.items())],
+        "programs": [{"ref": k, "name": v} for k, v in sorted(programs.items())],
+    }
 
 
 def flag_active_compromises(
@@ -96,25 +126,40 @@ def flag_active_compromises(
             result.skipped.append({"device_id": dev_id, "reasons": reasons})
             continue
 
-        # condition 5: Supplier → Prime → Program connection must exist
-        prop = [r for r in store.propagation_for_supplier(supplier_id)
-                if r.get("prime_id") and r.get("program_id")]
-        if not prop:
+        # condition 5: a Supplier …→ Prime → Program connection must exist —
+        # resolved by the VARIABLE-DEPTH recursive traverse (pin #2), so a
+        # subcontract-only tier-2 supplier reaching a Prime through a tier-1
+        # parent qualifies (its path carries the intermediate Supplier hop).
+        all_paths = store.propagation_paths(supplier_id)
+        complete = [p for p in all_paths
+                    if p[-1].get("type") == "Program" and p[-1].get("ref")]
+        if not complete:
             result.skipped.append({
                 "device_id": dev_id,
-                "reasons": ["no Supplier→Prime→Program connection"],
+                "reasons": ["no Supplier→…→Prime→Program connection"],
             })
             continue
 
-        path = _build_path(dev, prop[0])   # raises PathIncomplete if a hop is missing
+        # representative path (deterministic: shortest chain, then by refs).
+        rep = min(complete, key=lambda p: (len(p), [n.get("ref") for n in p]))
+        path = _build_path(dev, rep)       # raises PathIncomplete if a hop is missing
+
+        # blast radius is aggregated at the DEVICE level (pin: cross-supplier
+        # reach flows Device→compromises→Identity→Supplier, never through a
+        # single Identity). Union every Prime/Program reachable from EVERY
+        # supplier the device compromises (leaked∘of), not just this one.
+        blast_suppliers = set(store.device_compromised_suppliers(dev_id)) or {supplier_id}
+        blast_paths = [p for s in sorted(blast_suppliers)
+                       for p in store.propagation_paths(s)]
+        blast = _blast_radius(blast_paths)
         incident_id = f"incident:{supplier_id}"
         store.record_incident(
             id=incident_id, supplier_ref=supplier_id, opened_at=now,
-            status="open", path=path,
+            status="open", path=path, blast_radius=blast,
         )
         result.incidents.append({
             "id": incident_id, "supplier_ref": supplier_id, "device_id": dev_id,
-            "opened_at": now, "status": "open", "path": path,
+            "opened_at": now, "status": "open", "path": path, "blast_radius": blast,
         })
 
     return result

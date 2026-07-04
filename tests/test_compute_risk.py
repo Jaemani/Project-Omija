@@ -64,8 +64,9 @@ def test_active_suppliers_rank_strictly_on_top():
         nonactive = [a for a in assessments if not a.active_flag]
         assert active and nonactive
         assert min(a.score for a in active) > max(a.score for a in nonactive)
-        # active suppliers are exactly the two seeded active domains
-        assert {a.supplier_ref for a in active} == {"sup-a", "sup-g"}
+        # active suppliers are exactly the three seeded active domains
+        # (sup-h is the multi-tier terminal, active via its subcontract chain).
+        assert {a.supplier_ref for a in active} == {"sup-a", "sup-g", "sup-h"}
         # every assessment cites evidence (provenance) and is graded 즉시/주의/관찰
         assert all(a.evidenced_by for a in assessments)
         assert all(a.grade in {"즉시", "주의", "관찰"} for a in assessments)
