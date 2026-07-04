@@ -7,12 +7,13 @@ fake client.
 
 import jwt
 
-from adapter.stealthmole import BASE_URL, StealthMoleSource, sm_headers
+from adapter.stealthmole import BASE_URL, USER_AGENT, StealthMoleSource, sm_headers
 
 
 def test_jwt_header_shape():
     headers = sm_headers("AK_test", "SK_test")
-    assert set(headers) == {"Authorization"}
+    assert set(headers) == {"Authorization", "User-Agent"}
+    assert headers["User-Agent"] == USER_AGENT
     scheme, token = headers["Authorization"].split(" ", 1)
     assert scheme == "Bearer"
 

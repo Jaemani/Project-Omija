@@ -223,7 +223,7 @@ def run(
     except Exception as exc:  # auth/network — nothing else can work
         print(f"  FAILED: {type(exc).__name__}: {exc}", file=sys.stderr)
         print(
-            "  → check keys / clock (JWT iat is UTC-sensitive) / network.",
+            "  → check exact keys, account/API product activation, UTC clock skew, and network.",
             file=sys.stderr,
         )
         return 1

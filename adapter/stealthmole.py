@@ -21,6 +21,7 @@ import jwt
 from .base import ExposureSource
 
 BASE_URL = "https://api.stealthmole.com/v2"
+USER_AGENT = "netskope-ce-5.1.1-cre-stealthmole-v1.0.0"
 
 # Observable types accepted by /{module}/search [검증됨].
 OBS_TYPES = ("email", "domain", "ip", "url")
@@ -38,7 +39,7 @@ def sm_headers(access_key: str, secret_key: str) -> dict:
         "iat": int(datetime.datetime.now(timezone.utc).timestamp()),
     }
     token = jwt.encode(payload, secret_key)  # HS256 default
-    return {"Authorization": f"Bearer {token}"}
+    return {"Authorization": f"Bearer {token}", "User-Agent": USER_AGENT}
 
 
 class StealthMoleSource:

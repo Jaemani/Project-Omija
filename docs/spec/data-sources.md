@@ -102,3 +102,17 @@ Exposure {
 }
 ```
 활성침해 판별 필드(`device.infected_at` 최근성, `has_session_cookie`, `account_type∈{vpn,admin}`)를 **반드시 보존** — 스코어링 핵심. citation = `source`+`module`+`source_ref`+`fetched_at`.
+
+## 6. P0-B live auth status (2026-07-04)
+
+공개 Netskope CRE StealthMole 플러그인 기준으로 auth contract를 재확인했다.
+
+- JWT payload: `access_key`, `nonce`, `iat`
+- signing: `jwt.encode(payload, secret_key)` / HS256 default
+- auth header: `Authorization: Bearer <jwt>`
+- user agent: `netskope-ce-5.1.1-cre-stealthmole-v1.0.0`
+- validation endpoint: `GET https://api.stealthmole.com/v2/user/quotas`
+
+Live attempt result: API server까지 도달하지만 `/v2/user/quotas`가 `401 {"detail":"Invalid token or expired token."}`를 반환했다. no-auth, garbage bearer, valid-shaped JWT가 같은 401을 반환했고 request id 헤더는 없었다. 따라서 schema 실측(`/search`)은 아직 수행하지 못했다.
+
+현재 판단: 클라이언트 JWT shape보다 key pair 활성화/API product enablement/IP allowlist/발급값 종류 문제 가능성이 높다. 키 확인 전에는 `cds` schema를 `[검증됨]`으로 승격하지 않는다.
