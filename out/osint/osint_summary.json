@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T17:51:38.785939+00:00",
+  "generated_at": "2026-07-04T18:03:51.580785+00:00",
   "sources": {
     "cisa_kev": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
     "nvd": "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=vpn&cvssV3Severity=CRITICAL&resultsPerPage=20",

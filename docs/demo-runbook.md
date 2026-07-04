@@ -50,6 +50,11 @@ Use this message:
 
 Point to these values on the report:
 
+- `Operational Value`: why the system exists;
+- `Ontology Path — Credential To Program`: how the active path is proven;
+- `Public Source Corroboration`: why the target asset class matters now;
+- `Recommended Response — Analyst Review Required`: what the analyst should do;
+- `Unsent Advisory — Draft`: response output is generated but not sent;
 - public OSINT counts: NVD, CISA KEV, MITRE ATT&CK, URLhaus;
 - risk band and path confidence;
 - impacted programs;

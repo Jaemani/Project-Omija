@@ -24,7 +24,8 @@ The command:
 2. verifies the Foundry ontology through OSDK readback;
 3. runs the blast-radius check for `exp:micro-h:active`;
 4. records StealthMole auth status without exposing secrets;
-5. writes `out/intelligence_demo.json` and `out/intelligence_demo.html`.
+5. writes `out/intelligence_demo.json` and the dashboard-first
+   `out/intelligence_demo.html`.
 
 Foundry-only fallback:
 
@@ -41,6 +42,8 @@ open out/foundry_demo.html
 - Supplier and prime links propagate the blast radius to programs.
 - Public OSINT adds vulnerability and threat context to the target asset class.
 - Notification output remains a human-reviewed draft.
+- The main dashboard shows operational value first, then path, evidence,
+  ranked response, draft advisory, and collection status.
 
 ## Data Boundary
 
@@ -63,6 +66,8 @@ authorized registry and working StealthMole authentication.
   fallback flow.
 - [docs/decisions/0007-osint-data-fusion.md](docs/decisions/0007-osint-data-fusion.md):
   decision record for the OSINT overlay.
+- [docs/decisions/0008-dashboard-first-demo-surface.md](docs/decisions/0008-dashboard-first-demo-surface.md):
+  decision record for the dashboard-first demo surface.
 - [docs/changelog/intelligence-demo-2026-07-04.md](docs/changelog/intelligence-demo-2026-07-04.md):
   change inventory and latest verification.
 - [docs/reviewer-guide.md](docs/reviewer-guide.md): checklist for independent

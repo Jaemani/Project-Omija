@@ -50,9 +50,22 @@ verify what changed, why it changed, and what is still unresolved.
   boundaries.
 - Added `docs/decisions/0007-osint-data-fusion.md` for the OSINT overlay
   decision.
+- Added `docs/decisions/0008-dashboard-first-demo-surface.md` for the
+  dashboard-first presentation decision.
 - Added `docs/demo-runbook.md` for the exact demo sequence.
 - Added `docs/reviewer-guide.md` for independent verification.
 - Updated README and demo notes to point to the integrated demo.
+
+### Dashboard Surface
+
+- Reworked `out/intelligence_demo.html` from a verification-style report into a
+  dashboard-first surface.
+- The first viewport now shows operational value, active exposures, programs at
+  risk, affected supplier, and severity.
+- The main panel shows `Ontology Path — Credential To Program`.
+- Side panels show public OSINT corroboration, ranked analyst actions, an
+  unsent advisory draft, and collection status.
+- Design direction came from Claude Opus; implementation stayed in repo code.
 
 ## Why
 
@@ -85,6 +98,7 @@ Latest observed result:
 - OSINT: `kev=1200/1631 nvd=20 attack=234 urlhaus_sample=1000`
 - Foundry OSDK link smoke: all core links `OK`
 - Intelligence demo: `RESULT: READY`
+- Dashboard surface: `out/intelligence_demo.html`
 
 ## Known Open Issue
 

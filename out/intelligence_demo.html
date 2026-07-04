@@ -1,63 +1,411 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Omija Intelligence Demo</title>
-  <style>
-    body { margin: 0; font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #172033; background: #f7f8fb; }
-    header { background: #fff; border-bottom: 1px solid #d9dee8; padding: 18px 28px; }
-    main { max-width: 1280px; margin: 0 auto; padding: 18px 28px 30px; }
-    h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: 0; }
-    h2 { margin: 0 0 10px; font-size: 16px; }
-    .sub { color: #596276; }
-    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
-    section, .metric { background: #fff; border: 1px solid #d9dee8; border-radius: 8px; padding: 14px; }
-    .metric span { display: block; color: #596276; font-size: 12px; }
-    .metric strong { display: block; font-size: 22px; margin-top: 4px; }
-    .layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); gap: 14px; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
-    .hot { color: #b42318; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { text-align: left; border-bottom: 1px solid #d9dee8; padding: 7px; vertical-align: top; }
-    th { color: #596276; font-size: 12px; }
-    @media (max-width: 900px) { .grid, .layout { grid-template-columns: 1fr; } header, main { padding-left: 16px; padding-right: 16px; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Omija Dashboard</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f4f6f8;
+  --panel: #ffffff;
+  --ink: #172033;
+  --muted: #5b6472;
+  --line: #d8dde6;
+  --alert: #b42318;
+  --alert-soft: #fff3f0;
+  --amber: #946200;
+  --amber-soft: #fff7df;
+  --blue: #175cd3;
+  --blue-soft: #eff6ff;
+  --green: #067647;
+  --green-soft: #ecfdf3;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+header {
+  background: #111827;
+  color: #f9fafb;
+  padding: 14px 24px;
+  border-bottom: 4px solid var(--alert);
+}
+.topline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+.kicker {
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+h1 {
+  margin: 8px 0 4px;
+  font-size: 24px;
+  letter-spacing: 0;
+}
+.header-copy {
+  color: #dbe4ef;
+  margin: 0;
+  max-width: 980px;
+}
+main {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 18px 24px 28px;
+}
+.badge, .status {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.status {
+  background: var(--amber-soft);
+  border-color: #fedf89;
+  color: var(--amber);
+}
+.status.hot, .priority {
+  background: var(--alert-soft);
+  border-color: #fecdca;
+  color: var(--alert);
+}
+.badge.hold {
+  background: var(--amber-soft);
+  border-color: #fedf89;
+  color: var(--amber);
+}
+.badge.ok {
+  background: var(--green-soft);
+  border-color: #abefc6;
+  color: var(--green);
+}
+.summary {
+  display: grid;
+  grid-template-columns: 1.25fr repeat(4, minmax(145px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.threat-picture, .metric, .panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.threat-picture {
+  border-left: 4px solid var(--alert);
+  padding: 14px 16px;
+}
+.threat-picture h2, .panel h2 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.threat-picture p {
+  margin: 0;
+  color: var(--muted);
+  max-width: 760px;
+}
+.metric {
+  min-height: 88px;
+  padding: 13px;
+}
+.metric span {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+}
+.metric strong {
+  display: block;
+  font-size: 24px;
+  margin-top: 8px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(330px, .9fr);
+  gap: 14px;
+}
+.panel {
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.chain {
+  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+.node {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  min-height: 96px;
+  padding: 10px;
+  position: relative;
+}
+.node.alert {
+  background: var(--alert-soft);
+  border-color: #fecdca;
+}
+.node.program {
+  background: var(--blue-soft);
+  border-color: #b2ddff;
+}
+.node .type {
+  color: var(--muted);
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.node .name {
+  display: block;
+  font-weight: 800;
+  margin-top: 4px;
+}
+.node .detail {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.edge-labels {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.edge-labels span {
+  border-top: 1px solid var(--line);
+  padding-top: 6px;
+}
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+}
+.sub {
+  color: var(--muted);
+}
+.path-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th, td {
+  border-bottom: 1px solid var(--line);
+  padding: 8px 7px;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+td {
+  font-size: 13px;
+}
+.subhead td {
+  background: #f8fafc;
+  color: var(--muted);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.draft {
+  background: linear-gradient(135deg, #fff, #fff7df);
+  border-color: #fedf89;
+}
+.draft-watermark {
+  color: var(--amber);
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.feed-card {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+.feed-card strong {
+  display: block;
+  margin-bottom: 4px;
+}
+@media (max-width: 980px) {
+  main { padding: 14px; }
+  .summary, .layout, .chain, .edge-labels, .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Project Omija Intelligence Demo</h1>
-    <p class="sub">OSINT 실제 공개 피드 + Foundry 온톨로지 경로 + credential feed 상태를 한 화면에 연결.</p>
-  </header>
-  <main>
-    <div class="grid">
-      <div class="metric"><span>Supplier</span><strong>sup-h</strong></div>
-      <div class="metric"><span>Impacted programs</span><strong>2</strong></div>
-      <div class="metric"><span>Access-relevant KEV</span><strong>1200</strong></div>
-      <div class="metric"><span>Credential feed</span><strong class="hot">AUTH BLOCKED (401)</strong></div>
+<header>
+  <div class="topline">
+    <div class="kicker">EXPOSURE EARLY WARNING · UNCLASSIFIED // OSINT</div>
+    <div class="status">FEED: DEGRADED / 401</div>
+  </div>
+  <h1>Current Threat Picture</h1>
+  <p class="header-copy">Supplier credential exposure is connected to a target
+  asset, supply-chain path, impacted programs, public OSINT context, and an
+  approval-gated response draft.</p>
+</header>
+
+<main>
+  <section class="summary" aria-label="Operational summary">
+    <div class="threat-picture">
+      <h2>Operational Value</h2>
+      <p>Project Omija turns scattered exposure and OSINT signals into a
+      decision: which supplier creates a live path to a protected defense
+      program, why it matters now, and what should be reviewed first.</p>
     </div>
-    <div class="layout">
-      <section>
-        <h2>Ontology Path</h2>
-        <p>Exposure <span class="mono">exp:micro-h:active</span> targets <span class="mono">vpn.prime-x.example</span>.</p>
-        <ul><li>sup-h -&gt; sup-f -&gt; prime-x -&gt; prog-sentinel</li><li>sup-h -&gt; sup-f -&gt; prime-x -&gt; prog-harbor</li></ul>
-        <h2 style="margin-top:18px">Target Asset OSINT Overlay</h2>
-        <p>Asset <span class="mono">vpn.prime-x.example</span> type <span class="mono">vpn</span> has 12 CISA KEV matches by asset class.</p>
-        <table><thead><tr><th>CVE</th><th>vendor/severity</th><th>product/score</th><th>description</th></tr></thead><tbody><tr><td>CVE-2026-20230</td><td>Cisco</td><td>Unified Communications Manager</td><td>Cisco Unified Communications Manager Server-Side Request Forgery (SSRF) Vulnerability</td></tr><tr><td>CVE-2026-20262</td><td>Cisco</td><td>Catalyst SD-WAN Manager</td><td>Cisco Catalyst SD-WAN Manager Directory or Path Traversal Vulnerability</td></tr><tr><td>CVE-2026-10520</td><td>Ivanti</td><td>Sentry</td><td>Ivanti Sentry OS Command Injection Vulnerability</td></tr><tr><td>CVE-2026-20245</td><td>Cisco</td><td>Catalyst SD-WAN Manager</td><td>Cisco Catalyst SD-WAN Manager Improper Encoding or Escaping of Output Vulnerability</td></tr><tr><td>CVE-2026-50751</td><td>Check Point</td><td>Security Gateway</td><td>Check Point Security Gateway Improper Authentication Vulnerability</td></tr><tr><td>CVE-2026-0257</td><td>Palo Alto Networks</td><td>PAN-OS</td><td>Palo Alto Networks PAN-OS Authentication Bypass Vulnerability</td></tr><tr><td>CVE-2026-20182</td><td>Cisco</td><td>Catalyst SD-WAN</td><td>Cisco Catalyst SD-WAN Controller Authentication Bypass Vulnerability</td></tr><tr><td>CVE-2026-6973</td><td>Ivanti</td><td>Endpoint Manager Mobile (EPMM)</td><td>Ivanti Endpoint Manager Mobile (EPMM) Improper Input Validation Vulnerability</td></tr></tbody></table>
-      </section>
-      <section>
-        <h2>Data Fusion Contract</h2>
-        <ul><li>CredentialExposure.of -&gt; Identity</li><li>CredentialExposure.targets -&gt; Domain</li><li>Domain.owner -&gt; Supplier / Prime</li><li>Supplier.subcontractsTo -&gt; Supplier</li><li>Supplier.supplies -&gt; Prime</li><li>Prime.runs -&gt; Program</li><li>RiskAssessment.components &lt;- OSINT overlay + credential signal</li><li>NotificationDraft.cites -&gt; Incident / Evidence</li></ul>
-        <h2 style="margin-top:18px">Feed Status</h2>
-        <p class="mono">StealthMole: https://hackathon.stealthmole.com/user/quotas</p>
-        <p class="mono">status: 401, iat skew: 0s</p>
-        <p class="sub">endpoint and JWT iat look aligned; if status is 401, check issued key pair, account activation, API product enablement, or IP allowlist</p>
-        <h2 style="margin-top:18px">Public OSINT</h2>
-        <p>NVD critical VPN CVEs: 20</p>
-        <p>MITRE selected techniques: 234</p>
-        <p>URLhaus sampled rows: 1000</p>
-      </section>
-    </div>
-  </main>
+    <div class="metric"><span>Active Exposures</span><strong>1</strong></div>
+    <div class="metric"><span>Programs At Risk</span><strong>2</strong></div>
+    <div class="metric"><span>Supplier Affected</span><strong>sup-h</strong></div>
+    <div class="metric"><span>Highest Severity</span><strong>A</strong></div>
+  </section>
+
+  <div class="layout">
+    <section>
+      <div class="panel">
+        <h2>Ontology Path — Credential To Program</h2>
+        <p class="sub">The graph separates who owns the exposed account from
+        what asset it can access, then carries that path through supplier and
+        program relationships.</p>
+        <div class="chain">
+          <div class="node alert">
+            <span class="type">Supplier Account</span>
+            <span class="name">id:ops@micro-h.example</span>
+            <span class="detail">micro-h.example</span>
+          </div>
+          <div class="node alert">
+            <span class="type">Credential Artifact</span>
+            <span class="name">exp:micro-h:active</span>
+            <span class="detail">targets vpn.prime-x.example</span>
+          </div>
+          <div class="node alert">
+            <span class="type">Subcontractor</span>
+            <span class="name">sup-h</span>
+            <span class="detail">active compromise candidate</span>
+          </div>
+          <div class="node">
+            <span class="type">Prime</span>
+            <span class="name">prime-x</span>
+            <span class="detail">reachable via supplier chain</span>
+          </div>
+          <div class="node program">
+            <span class="type">Impacted Programs</span>
+            <span class="name">prog-harbor, prog-sentinel</span>
+            <span class="detail">blast radius confirmed</span>
+          </div>
+        </div>
+        <div class="edge-labels">
+          <span>of / targets · confidence 0.90</span>
+          <span>belongs_to / owns</span>
+          <span>subcontractsTo / supplies</span>
+          <span>runs / traverses_program</span>
+        </div>
+        <h2>Provenance Path</h2>
+        <ul class="path-list"><li><span class='mono'>sup-h -&gt; sup-f -&gt; prime-x -&gt; prog-sentinel</span></li><li><span class='mono'>sup-h -&gt; sup-f -&gt; prime-x -&gt; prog-harbor</span></li></ul>
+      </div>
+
+      <div class="panel">
+        <h2>Recommended Response — Analyst Review Required</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Action</th>
+              <th>Target Entity</th>
+              <th>Rationale</th>
+              <th>Owner</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody><tr><td><span class='priority'>P0</span></td><td>Disable exposed session and rotate credential</td><td>sup-h</td><td>Active supplier identity reaches target asset path</td><td>Supplier security owner</td><td><span class='badge hold'>Analyst review</span></td></tr><tr><td><span class='priority'>P1</span></td><td>Validate prime VPN / SSO access logs</td><td>prog-harbor, prog-sentinel</td><td>1200 access-relevant KEV items support urgency</td><td>Prime SOC</td><td><span class='badge hold'>Queued</span></td></tr><tr><td><span class='priority'>P2</span></td><td>Send advisory draft after human sign-off</td><td>sup-h</td><td>Evidence package cites incident and graph path</td><td>Program security lead</td><td><span class='badge hold'>Draft only</span></td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <aside>
+      <div class="panel">
+        <h2>Public Source Corroboration</h2>
+        <p class="sub">Target asset <span class="mono">vpn.prime-x.example</span>
+        is treated as <span class="mono">vpn</span>.
+        Public feeds add context; they do not replace the credential evidence.</p>
+        <table>
+          <thead>
+            <tr><th>Source</th><th>Signal</th><th>Summary</th><th>Status</th></tr>
+          </thead>
+          <tbody><tr><td>CISA KEV</td><td>Known exploited vulnerabilities</td><td>1200 access-relevant / 1631 total</td><td><span class='badge'>Corroborated</span></td></tr><tr><td>NVD CVE API</td><td>Critical VPN vulnerabilities</td><td>20 matching CVEs</td><td><span class='badge'>Corroborated</span></td></tr><tr><td>MITRE ATT&amp;CK</td><td>Credential and initial-access tactics</td><td>234 techniques selected</td><td><span class='badge'>Reference</span></td></tr><tr><td>abuse.ch URLhaus</td><td>Recent malicious URL telemetry</td><td>1000 recent rows sampled</td><td><span class='badge'>Reference</span></td></tr><tr class='subhead'><td colspan='4'>Target asset KEV examples</td></tr><tr><td>CVE-2026-20230</td><td>Cisco</td><td>Unified Communications Manager</td><td>Cisco Unified Communications Manager Server-Side Request Forgery (SSRF) Vulnerability</td></tr><tr><td>CVE-2026-20262</td><td>Cisco</td><td>Catalyst SD-WAN Manager</td><td>Cisco Catalyst SD-WAN Manager Directory or Path Traversal Vulnerability</td></tr><tr><td>CVE-2026-10520</td><td>Ivanti</td><td>Sentry</td><td>Ivanti Sentry OS Command Injection Vulnerability</td></tr><tr><td>CVE-2026-20245</td><td>Cisco</td><td>Catalyst SD-WAN Manager</td><td>Cisco Catalyst SD-WAN Manager Improper Encoding or Escaping of Output Vulnerability</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="panel draft">
+        <h2>Unsent Advisory — Draft</h2>
+        <div class="draft-watermark">DRAFT · NOT SENT · HUMAN SIGN-OFF REQUIRED</div>
+        <p><strong>Recipient:</strong> sup-h security owner</p>
+        <p><strong>Subject:</strong> Active credential exposure path to prog-harbor, prog-sentinel</p>
+        <p><strong>Body preview:</strong> We observed a supplier identity linked
+        to an exposure artifact targeting vpn.prime-x.example. The ontology path reaches
+        prog-harbor, prog-sentinel. Please review credential rotation, session revocation,
+        and access logs before export.</p>
+        <p><strong>Evidence attached:</strong> incident incident:micro-h:active,
+        12 target-asset KEV matches, Foundry path snapshot.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Collection Status</h2>
+        <div class="footer-grid">
+          <div class="feed-card">
+            <strong>Public OSINT</strong>
+            <span class="badge ok">Live public feeds</span>
+            <p class="sub">NVD, CISA KEV, MITRE ATT&CK, URLhaus.</p>
+          </div>
+          <div class="feed-card">
+            <strong>Foundry OSDK</strong>
+            <span class="badge ok">Readback OK</span>
+            <p class="sub">Core ontology links and blast radius verified.</p>
+          </div>
+          <div class="feed-card">
+            <strong>Credential Feed</strong>
+            <span class="badge hold">DEGRADED / 401</span>
+            <p class="sub">endpoint and JWT iat look aligned; if status is 401, check issued key pair, account activation, API product enablement, or IP allowlist</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="panel">
+    <h2>Ontology Contract</h2>
+    <ul><li>CredentialExposure.of -&gt; Identity</li><li>CredentialExposure.targets -&gt; Domain</li><li>Identity.belongs_to -&gt; Domain</li><li>Domain.owner -&gt; Supplier / Prime</li><li>Supplier.subcontractsTo -&gt; Supplier</li><li>Supplier.supplies -&gt; Prime</li><li>Prime.runs -&gt; Program</li><li>CompromiseIncident.traverses_* -&gt; provenance path</li><li>NotificationDraft.cites -&gt; incident / evidence</li></ul>
+    <p class="sub">Generated at <span class="mono">2026-07-04T18:04:21.365230+00:00</span>.
+    Public OSINT is real public data. The Foundry credential seed is synthetic
+    unless the authorized live credential pipeline succeeds.</p>
+  </section>
+</main>
 </body>
 </html>

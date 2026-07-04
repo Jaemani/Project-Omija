@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T17:52:07.914507+00:00",
+  "generated_at": "2026-07-04T18:04:21.365230+00:00",
   "foundry": {
     "supplier": "sup-h",
     "paths": [
@@ -160,17 +160,18 @@
   "stealthmole": {
     "status_code": 401,
     "endpoint": "https://hackathon.stealthmole.com/user/quotas",
-    "iat_minus_server_seconds": 0,
+    "iat_minus_server_seconds": 1,
     "diagnosis": "endpoint and JWT iat look aligned; if status is 401, check issued key pair, account activation, API product enablement, or IP allowlist"
   },
   "ontology_mapping": [
     "CredentialExposure.of -> Identity",
     "CredentialExposure.targets -> Domain",
+    "Identity.belongs_to -> Domain",
     "Domain.owner -> Supplier / Prime",
     "Supplier.subcontractsTo -> Supplier",
     "Supplier.supplies -> Prime",
     "Prime.runs -> Program",
-    "RiskAssessment.components <- OSINT overlay + credential signal",
-    "NotificationDraft.cites -> Incident / Evidence"
+    "CompromiseIncident.traverses_* -> provenance path",
+    "NotificationDraft.cites -> incident / evidence"
   ]
 }
