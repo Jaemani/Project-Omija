@@ -1,0 +1,164 @@
+{
+  "generated_at": "2026-07-04T19:36:25.010849Z",
+  "ontology_api_name": "ontology-cafadd0c-45e2-4808-98ab-787ee7f2903a",
+  "status": "OK",
+  "error": null,
+  "discovered_actions": {
+    "acknowledge-incident": {
+      "requested": "acknowledge-incident",
+      "apiName": "acknowledge-incident",
+      "rid": "ri.actions.main.action-type.e1afad7c-5cc0-4d58-bf9f-6d81112cf1d0",
+      "status": "ACTIVE",
+      "parameters": {
+        "tbwsjjaf.id-d535fe42-f998-e247-b615-cf519b3327f2": "object",
+        "status": "string"
+      }
+    },
+    "assign-incident": {
+      "requested": "assign-incident",
+      "apiName": "assign-incident",
+      "rid": "ri.actions.main.action-type.6e84d31c-0e35-4e63-8f6f-c4c7ef65e61f",
+      "status": "ACTIVE",
+      "parameters": {
+        "tbwsjjaf.id-d535fe42-f998-e247-b615-cf519b3327f2": "object",
+        "status": "string"
+      }
+    },
+    "review-notification-draft": {
+      "requested": "review-notification-draft",
+      "apiName": "review-notification-draft",
+      "rid": "ri.actions.main.action-type.8b23be10-cd8f-468a-975d-70cfd9cfa8a4",
+      "status": "ACTIVE",
+      "parameters": {
+        "reviewer": "string",
+        "tbwsjjaf.id-4cad98df-3935-4ae5-11a3-0dcb0c8b5007": "object",
+        "status": "string"
+      }
+    },
+    "approve-notification-draft": {
+      "requested": "approve-notification-draft",
+      "apiName": "approve-notification-draft",
+      "rid": "ri.actions.main.action-type.ab6475e5-dda4-4b5c-be5f-c27c19105aee",
+      "status": "ACTIVE",
+      "parameters": {
+        "reviewer": "string",
+        "tbwsjjaf.id-4cad98df-3935-4ae5-11a3-0dcb0c8b5007": "object",
+        "status": "string"
+      }
+    },
+    "export-notification-draft": {
+      "requested": "export-notification-draft",
+      "apiName": "export-notification-draft",
+      "rid": "ri.actions.main.action-type.ea719f92-e4de-4838-bdae-bc64a71a7b31",
+      "status": "ACTIVE",
+      "parameters": {
+        "tbwsjjaf.id-4cad98df-3935-4ae5-11a3-0dcb0c8b5007": "object",
+        "status": "string"
+      }
+    },
+    "close-incident": {
+      "requested": "close-incident",
+      "apiName": "close-incident",
+      "rid": "ri.actions.main.action-type.a5451828-b765-4961-a876-f48012d50ad9",
+      "status": "ACTIVE",
+      "parameters": {
+        "tbwsjjaf.id-d535fe42-f998-e247-b615-cf519b3327f2": "object",
+        "status": "string"
+      }
+    },
+    "confirm-entity-merge": {
+      "requested": "confirm-entity-merge",
+      "apiName": "confirm-entity-merge",
+      "rid": "ri.actions.main.action-type.81b9db53-f46a-45a2-bff6-f09caaa49a71",
+      "status": "ACTIVE",
+      "parameters": {
+        "tbwsjjaf.id-a3f3f388-4984-a5e9-94bb-09ab8656fe53": "object",
+        "reviewer": "string",
+        "status": "string"
+      }
+    },
+    "reject-entity-merge": {
+      "requested": "reject-entity-merge",
+      "apiName": "reject-entity-merge",
+      "rid": "ri.actions.main.action-type.798501ba-6cad-4d82-97b0-4e313418b090",
+      "status": "ACTIVE",
+      "parameters": {
+        "tbwsjjaf.id-a3f3f388-4984-a5e9-94bb-09ab8656fe53": "object",
+        "reviewer": "string",
+        "status": "string"
+      }
+    }
+  },
+  "steps": [
+    {
+      "action": "acknowledge-incident",
+      "action_requested": "acknowledge-incident",
+      "objectType": "CompromiseIncident",
+      "pk": "incident:micro-h:active",
+      "requested_status": "acknowledged",
+      "readback_status_before": "assigned",
+      "readback_status_after": "acknowledged",
+      "readback_before_http_status": 200,
+      "readback_after_http_status": 200,
+      "http_status": 200,
+      "timestamp": "2026-07-04T19:36:20.839565Z",
+      "verified": true
+    },
+    {
+      "action": "assign-incident",
+      "action_requested": "assign-incident",
+      "objectType": "CompromiseIncident",
+      "pk": "incident:micro-h:active",
+      "requested_status": "assigned",
+      "readback_status_before": "acknowledged",
+      "readback_status_after": "assigned",
+      "readback_before_http_status": 200,
+      "readback_after_http_status": 200,
+      "http_status": 200,
+      "timestamp": "2026-07-04T19:36:21.790449Z",
+      "verified": true
+    },
+    {
+      "action": "review-notification-draft",
+      "action_requested": "review-notification-draft",
+      "objectType": "NotificationDraft",
+      "pk": "draft:sup-h:2026-07-03",
+      "requested_status": "reviewed",
+      "readback_status_before": "exported",
+      "readback_status_after": "reviewed",
+      "readback_before_http_status": 200,
+      "readback_after_http_status": 200,
+      "http_status": 200,
+      "timestamp": "2026-07-04T19:36:22.896367Z",
+      "verified": true
+    },
+    {
+      "action": "approve-notification-draft",
+      "action_requested": "approve-notification-draft",
+      "objectType": "NotificationDraft",
+      "pk": "draft:sup-h:2026-07-03",
+      "requested_status": "approved",
+      "readback_status_before": "reviewed",
+      "readback_status_after": "approved",
+      "readback_before_http_status": 200,
+      "readback_after_http_status": 200,
+      "http_status": 200,
+      "timestamp": "2026-07-04T19:36:23.865480Z",
+      "verified": true
+    },
+    {
+      "action": "export-notification-draft",
+      "action_requested": "export-notification-draft",
+      "objectType": "NotificationDraft",
+      "pk": "draft:sup-h:2026-07-03",
+      "requested_status": "exported",
+      "readback_status_before": "approved",
+      "readback_status_after": "exported",
+      "readback_before_http_status": 200,
+      "readback_after_http_status": 200,
+      "http_status": 200,
+      "timestamp": "2026-07-04T19:36:25.010029Z",
+      "verified": true
+    }
+  ]
+}
