@@ -17,6 +17,7 @@ StealthMole 유출 자격증명과 인포스틸러 감염기기를 Palantir Foun
 - mock adapter 기반 상관, 엔티티 해소, 활성침해 탐지, 위험 점수, 대시보드, 통보 초안, 평가 파이프가 동작합니다.
 - `ontology.md`는 Foundry Ontology Manager에서 만들 객체, 링크, 파생 데이터셋, API 이름을 바로 입력할 수 있게 정리했습니다.
 - StealthMole live adapter는 JWT 계약까지 맞췄고, 현재 live auth는 `401 Invalid token or expired token`으로 막혀 있습니다. 키 활성화, API product provisioning, IP allowlist 이슈로 보고 지원 요청 근거를 남깁니다.
+- **Live 갱신**: 위 401은 운영 API URL을 사용한 결과였습니다. 해커톤 전용 API에서 JWT 인증과 quotas/CDS 검색을 200으로 검증했고, DT/UB는 제공 범위에서 제외합니다.
 - Foundry ontology/OSDK가 준비되면 `OntologyStore` 경계에서 SQLite 보험 스토어를 Foundry store로 교체합니다.
 
 실측(`scripts/p6_eval.py`): correlation precision/recall 100%/100%, active-compromise precision/recall 100%/100%, 활성 업체 3곳 top-3 고정, active set 도달 9분(-90%).

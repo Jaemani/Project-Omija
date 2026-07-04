@@ -14,6 +14,15 @@ import json
 import scripts.p0b_recon as recon
 
 
+def test_hackathon_quotas_exclude_unavailable_modules_and_use_remaining():
+    modules = dict(recon._open_modules({
+        "CDS": {"allowed": 10000, "used": 916},
+        "DT": {"allowed": 10000, "used": 24},
+        "UB": {"allowed": 10000, "used": 0},
+    }))
+    assert modules == {"cds": 9084}
+
+
 def test_missing_keys_exits_zero_with_zero_network(monkeypatch):
     # A local .env must not be able to inject keys during the test.
     monkeypatch.setattr(recon, "_load_dotenv", lambda *_a, **_k: None)

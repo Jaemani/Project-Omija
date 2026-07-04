@@ -59,11 +59,18 @@ class _FakeClient:
 
 
 def test_search_builds_verified_contract_no_network():
-    fake = _FakeClient({"data": [{"user": "a@x.example", "password": "***", "host": "h"}]})
+    fake = _FakeClient({
+        "totalCount": 1,
+        "cursor": None,
+        "limit": 50,
+        "queryCost": 50,
+        "data": [{"user": "a@x.example", "password": "***", "host": "h"}],
+    })
     src = StealthMoleSource(access_key="AK", secret_key="SK", client=fake)
 
     out = src.search("cds", "domain", "supplier-a.example")
     assert out and out[0]["host"] == "h"
+    assert src.last_response_meta["queryCost"] == 50
 
     call = fake.calls[-1]
     assert call["url"] == f"{BASE_URL}/cds/search"
@@ -75,10 +82,10 @@ def test_search_builds_verified_contract_no_network():
 def test_incremental_search_uses_export_with_start():
     fake = _FakeClient({"data": []})
     src = StealthMoleSource(access_key="AK", secret_key="SK", client=fake)
-    src.search("ub", "domain", "supplier-a.example", start=1783000000)
+    src.search("cds", "domain", "supplier-a.example", start=1783000000)
 
     call = fake.calls[-1]
-    assert call["url"] == f"{BASE_URL}/ub/export"
+    assert call["url"] == f"{BASE_URL}/cds/export"
     assert call["params"]["start"] == 1783000000
     assert call["params"]["exportType"] == "json"
 

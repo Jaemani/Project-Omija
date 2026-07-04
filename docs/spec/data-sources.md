@@ -11,7 +11,7 @@
 ## 1. StealthMole API v2 — 검증된 계약
 
 ### 베이스 · 인증 [검증됨]
-- Base URL: `https://api.stealthmole.com/v2/`
+- Base URL: `https://hackathon.stealthmole.com/` (hackathon-issued keys)
 - 자격: **access_key + secret_key** 페어(해커톤 이메일로 발급). 환경변수: `STEALTHMOLE_ACCESS_KEY`, `STEALTHMOLE_SECRET_KEY`.
 - 인증: **JWT (HS256)**. 요청마다 새 토큰 생성. payload = access_key + nonce(uuid4) + iat(현재 UTC epoch). secret_key로 서명. 헤더 `Authorization: Bearer <jwt>`.
 
@@ -33,9 +33,9 @@ def sm_headers(access_key: str, secret_key: str) -> dict:
 ### 엔드포인트 [검증됨]
 | 목적 | 메서드/경로 | 파라미터 | 응답 |
 |---|---|---|---|
-| 인증확인·쿼터 | `GET /v2/user/quotas` | — | `{"CDS":{"allowed":N}, ...}`, 401 시 `{"detail":...}` |
-| 모듈 검색 | `GET /v2/{module}/search` | `query="{type}:{value}"`, `order=asc` | `{"data":[...]}` |
-| 모듈 익스포트(대량+시간필터) | `GET /v2/{module}/export` | `query`, `limit=0`(=전체), `exportType=json`, `start=<unix>` | `{"data":[{...}, ...]}` |
+| 인증확인·쿼터 | `GET /user/quotas` | — | `{"CDS":{"allowed":N,"used":N}, ...}`, 401 시 `{"detail":...}` |
+| 모듈 검색 | `GET /{module}/search` | `query="{type}:{value}"`, `order=asc` | `{"totalCount":N,"cursor":...,"limit":N,"queryCost":N,"data":[...]}` |
+| 모듈 익스포트(대량+시간필터) | `GET /{module}/export` | `query`, `limit=0`(=전체), `exportType=json`, `start=<unix>` | `{"data":[{...}, ...]}` |
 
 - `{module}` 자리에 모듈 코드 소문자. observable `{type}` ∈ `email` `domain` `ip` `url`. 예: `query=domain:example-supplier.com`.
 - `start`(unix epoch) = 이 시각 이후 레코드만 → **증분 폴링**에 사용(조기경보 핵심).
@@ -44,12 +44,12 @@ def sm_headers(access_key: str, secret_key: str) -> dict:
 | 코드 | 이름 | 소스 | 신뢰도 | observable | 우리 용도 |
 |---|---|---|---|---|---|
 | **cds** | Compromised Dataset | Infostealer Malware | High | email,domain,ip,url | **스틸러 감염기기 = 활성침해 핵심** |
-| **ub** | ULP Binder | URL:LOGIN:PASS 로그 | High | url,domain,email | 어떤 서비스에 어느 계정 유출됐나 |
+| **ub** | ULP Binder | 해커톤 미제공 | - | - | live 연동 제외(mock 재현성 데이터는 유지) |
 | **cl** | Credential Lookout | Breached Servers | Medium | email,domain | 유출 자격증명 |
 | **cb** | Combo Binder | Combo Lists | Low | email,domain | 재유통 콤보(저신뢰) |
 
-### 모듈 코드 [확인필요 — 발급 계정에 있으면 활용]
-`dt`(Darkweb Tracker), `tt`(Telegram Tracker), `rm`(Ransomware Monitoring), `gm`(Government Monitoring), `lm`(Leaked Monitoring). day-1에 `/user/quotas`로 **어떤 모듈이 열렸는지 먼저 확인**하고 상관 대상 확정.
+### 기타 모듈
+`dt`와 `ub`는 해커톤 미제공이므로 조회하지 않는다. `cdf`, `tt`, `rm`, `gm`, `lm`은 쿼터에 보여도 자격증명 파이프의 기본 정찰 대상이 아니며, 각 검색 계약을 확인한 후 명시적으로만 사용한다.
 
 ### 레코드 스키마
 - `ub/export` 레코드 [검증됨]: `{"user": <이메일/로그인>, "password": <비번>, "host": <소스 호스트/URL>}`.
@@ -111,8 +111,6 @@ Exposure {
 - signing: `jwt.encode(payload, secret_key)` / HS256 default
 - auth header: `Authorization: Bearer <jwt>`
 - user agent: `netskope-ce-5.1.1-cre-stealthmole-v1.0.0`
-- validation endpoint: `GET https://api.stealthmole.com/v2/user/quotas`
+- validation endpoint: `GET https://hackathon.stealthmole.com/user/quotas`
 
-Live attempt result: API server까지 도달하지만 `/v2/user/quotas`가 `401 {"detail":"Invalid token or expired token."}`를 반환했다. no-auth, garbage bearer, valid-shaped JWT가 같은 401을 반환했고 request id 헤더는 없었다. 따라서 schema 실측(`/search`)은 아직 수행하지 못했다.
-
-현재 판단: 클라이언트 JWT shape보다 key pair 활성화/API product enablement/IP allowlist/발급값 종류 문제 가능성이 높다. 키 확인 전에는 `cds` schema를 `[검증됨]`으로 승격하지 않는다.
+Live result: 해커톤 Base URL에서 `/user/quotas` 200과 `/cds/search` 200을 확인했다. CDS 합성 도메인 응답은 `totalCount`, `cursor`, `limit`, `queryCost`, `data`를 포함했고 결과는 0건이었다. 요청당 새 JWT를 사용하며, 기본 정찰은 CDS 1회로 제한한다. 실제 CDS 필드 스키마는 권한 있는 자기 도메인에서 결과가 나오면 승격한다.

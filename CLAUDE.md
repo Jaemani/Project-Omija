@@ -25,6 +25,7 @@ Supply-chain Credential Exposure 프로젝트에서 콜드스타트하는 에이
 
 - 로컬 mock+SQLite 파이프는 P0-P6까지 동작하고 테스트는 106개 통과 기준이다.
 - StealthMole live auth는 `401 Invalid token or expired token` 상태다. 서명 계약은 공식 통합 코드 기준으로 맞췄으므로 키 활성화/API product/IP allowlist 문제 가능성이 높다.
+- **Live 갱신**: 위 401은 운영 API URL 시도 기록이다. 해커톤 전용 API에서 quotas/CDS 검색이 성공했다. DT/UB는 미제공이며 기본 정찰은 CDS 1회로 제한한다.
 - Foundry ontology는 루트 `ontology.md`를 따라 수동 생성 중이다. API 이름은 문서에 맞춰 만들고, Supplier self-link는 `subcontractsTo` / `subcontractors`로 둔다.
 
 ## 문서 운영

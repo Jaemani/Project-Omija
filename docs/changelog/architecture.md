@@ -4,6 +4,12 @@
 
 ---
 
+## 2026-07-04 — P0-B hackathon live API verified
+- 해커톤 전용 Base URL로 교정한 후 `/user/quotas` JWT 인증과 `/cds/search` 합성 도메인 조회가 200으로 성공했다. 운영 API URL에서의 기존 401은 키 결함이 아니라 endpoint 불일치였다.
+- 해커톤 미제공 DT/UB를 기본 정찰에서 제외하고 CDS 1회만 기본으로 제한했다. quotas는 `allowed-used`로 잔량을 계산하고 실응답 `totalCount/cursor/limit/queryCost`를 스키마 증거에 보존한다.
+- 실행 산출물: `out/p0b/quotas.json`, `out/p0b/schema_cds.json`. 합성 도메인은 0건이므로 CDS 레코드 필드 매핑은 자기 도메인 결과가 생기면 후속 검증한다. 비밀값·JWT·원문 자격증명 저장은 0건이다.
+- 검증: 관련 10 tests, 전체 107 tests 통과.
+
 ## 2026-07-03 — 온톨로지 v0.1 (baseline)
 `docs/spec/ontology.md` 기준으로 baseline 온톨로지 확정.
 - **객체 11종**: Supplier · Prime · Program · Domain · Identity · CredentialExposure · InfectedDevice · ThreatSource · RiskAssessment · CompromiseIncident · NotificationDraft.

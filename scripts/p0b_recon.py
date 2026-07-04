@@ -1,11 +1,11 @@
 """Live one-command recon: measure the LIVE StealthMole v2 contract.
 
 What it does (PROMPTS.md P0-live, data-sources.md [확인필요] items):
-  1. GET /v2/user/quotas  → which modules are open + remaining credits.
-  2. For each open module, exactly ONE /search on a synthetic/self-owned
-     domain (default `supplier-a.example`, override with --domain).
-     Credit-conscious by design: one query per module, no /export, no retries,
-     no mass queries (CLAUDE.md guardrail).
+  1. GET /user/quotas  → which modules are open + remaining credits.
+  2. For the explicitly selected credential modules, exactly ONE /search on a
+     synthetic/self-owned domain (default `supplier-a.example`, override with
+     --domain). Each live search can cost multiple quota units, so the safe
+     default is CDS only; no /export, retries, or mass queries.
   3. Record the response SCHEMA ONLY — field names, types, masked examples —
      to `out/p0b/schema_<module>.json` + console summary. Secrets never land
      in files or console: password/secret/cookie/token-family fields are
@@ -16,7 +16,7 @@ What it does (PROMPTS.md P0-live, data-sources.md [확인필요] items):
 
 Run (user, after keys are issued — this run only with valid issued keys):
     uv run python scripts/p0b_recon.py [--domain supplier-a.example]
-                                       [--modules cds,ub] [--quotas-only]
+                                       [--modules cds,cl,cb] [--quotas-only]
 
 Credentials: env `STEALTHMOLE_ACCESS_KEY` / `STEALTHMOLE_SECRET_KEY`
 (or a repo-root `.env`, see `.env.example`). Missing keys → guidance + exit 0
@@ -45,7 +45,10 @@ DEFAULT_DOMAIN = "supplier-a.example"   # synthetic — never a real supplier
 DEFAULT_OUT_DIR = os.path.join(REPO_ROOT, "out", "p0b")
 
 # Verified module codes first (data-sources.md §1), then possible extras.
-KNOWN_MODULE_ORDER = ("cds", "ub", "cl", "cb", "dt", "tt", "rm", "gm", "lm")
+# Hackathon reference: DT and UB are not provided. CDF/TT and monitoring
+# modules use different search families and are not credential-pipe defaults.
+KNOWN_MODULE_ORDER = ("cds", "cl", "cb", "cdf", "tt", "rm", "gm", "lm")
+DEFAULT_MODULES = {"cds"}
 
 # Field-name tokens that mark a value as a secret → mask, never truncate-only.
 SENSITIVE_TOKENS = (
@@ -168,13 +171,19 @@ def _collect_fields(records: list[dict], seen_raw: set[str]) -> dict:
 
 
 def _open_modules(quotas: dict) -> list[tuple[str, object]]:
-    """(module_code, allowed) for modules usable now, verified-first order.
-    allowed == 0 → listed but skipped (no credit)."""
+    """Return ``(module_code, remaining)`` for provided hackathon modules."""
     by_code: dict[str, object] = {}
     for key, val in quotas.items():
         code = str(key).lower()
-        allowed = val.get("allowed") if isinstance(val, dict) else val
-        by_code[code] = allowed
+        if code in {"dt", "ub"}:
+            continue
+        if isinstance(val, dict):
+            allowed = val.get("allowed")
+            used = val.get("used", 0)
+            remaining = allowed - used if isinstance(allowed, (int, float)) else allowed
+        else:
+            remaining = val
+        by_code[code] = remaining
     ordered = [c for c in KNOWN_MODULE_ORDER if c in by_code]
     ordered += sorted(c for c in by_code if c not in KNOWN_MODULE_ORDER)
     return [(c, by_code[c]) for c in ordered]
@@ -217,7 +226,7 @@ def run(
     print("=" * 68)
 
     # -- (1) quotas ----------------------------------------------------------
-    print("\n[1/3] GET /v2/user/quotas")
+    print("\n[1/3] GET /user/quotas")
     try:
         quotas = source.quotas()
     except Exception as exc:  # auth/network — nothing else can work
@@ -232,8 +241,8 @@ def run(
     if not modules:
         print(f"  no modules in quotas response: {json.dumps(quotas)[:200]}")
         return 1
-    for code, allowed in modules:
-        print(f"  {code:<6} allowed={allowed}")
+    for code, remaining in modules:
+        print(f"  {code:<6} remaining={remaining}")
 
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "quotas.json"), "w", encoding="utf-8") as fh:
@@ -251,12 +260,12 @@ def run(
     failures: list[str] = []
     probed = 0
 
-    for code, allowed in modules:
+    for code, remaining in modules:
         if modules_filter is not None and code not in modules_filter:
             print(f"  {code:<6} skipped (--modules filter)")
             continue
-        if isinstance(allowed, (int, float)) and allowed <= 0:
-            print(f"  {code:<6} skipped (allowed={allowed}, no credit)")
+        if isinstance(remaining, (int, float)) and remaining <= 0:
+            print(f"  {code:<6} skipped (remaining={remaining}, no credit)")
             continue
 
         try:
@@ -268,11 +277,13 @@ def run(
 
         probed += 1
         fields = _collect_fields(records, seen_raw)
+        response_meta = getattr(source, "last_response_meta", {})
         schema = {
             "module": code,
             "query": f"domain:{domain}",
             "fetched_at": int(time.time()),
             "record_count": len(records),
+            "response_meta": response_meta,
             "fields": fields,
             "samples_masked": [
                 _mask_value("", r, seen_raw) if isinstance(r, dict) else r
@@ -297,7 +308,8 @@ def run(
         with open(path, "w", encoding="utf-8") as fh:
             fh.write(blob)
         print(
-            f"  {code:<6} {len(records):>3} records, {len(fields):>2} fields "
+            f"  {code:<6} {len(records):>3} records, {len(fields):>2} fields, "
+            f"cost={response_meta.get('queryCost', 'unknown')} "
             f"→ {os.path.relpath(path, REPO_ROOT)}"
         )
         if fields:
@@ -350,9 +362,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--modules",
-        default=None,
-        help="comma-separated module codes to probe (default: all open), "
-        "e.g. --modules cds,ub — extra credit saving",
+        default=",".join(sorted(DEFAULT_MODULES)),
+        help="comma-separated module codes to probe (default: cds only), "
+        "e.g. --modules cds,cl,cb; DT/UB are unavailable",
     )
     parser.add_argument(
         "--quotas-only",

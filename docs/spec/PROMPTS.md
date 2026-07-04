@@ -29,7 +29,7 @@
 
 할 일:
 
-1. `scripts/p0b_recon.py --quotas-only`로 `/v2/user/quotas`를 먼저 확인합니다.
+1. `scripts/p0b_recon.py --quotas-only`로 `/user/quotas`를 먼저 확인합니다.
 2. 성공하면 열린 모듈별 `/search` 1회만 수행해 schema only 파일을 `out/p0b/`에 저장합니다.
 3. `cds`의 device, malware, infected_at, cookie 계열 필드를 확인해 normalize 매핑을 갱신합니다.
 4. 401이면 키 원문 없이 timestamp, endpoint, status, response body, 추정 원인(activation/product/IP allowlist)을 기록합니다.
