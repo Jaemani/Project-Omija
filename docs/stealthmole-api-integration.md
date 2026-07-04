@@ -17,6 +17,24 @@ What is documented here:
 - how response fields map into Omija ontology objects;
 - how an external/private connector can hand normalized candidate records to Omija.
 
+## Local Validation Status
+
+As of 2026-07-05 KST, the private connector has been validated locally without
+committing endpoint/auth details or provider records:
+
+| Capability | Status | Validation scope | Demo use |
+|---|---|---|---|
+| CL | Connected | synthetic supplier domain search returned cleanly with 0 records | `CredentialExposure` candidate input |
+| CDS | Connected | synthetic supplier domain search returned cleanly with 0 records | `InfectedDevice` / active-candidate input |
+| CB | Connected as auxiliary | synthetic supplier domain search returned cleanly with 0 records | optional exposure candidate input |
+| DT | Not yet connected | local call reached provider boundary but returned permission/scope error | keep as `ThreatSource` design slot |
+| TT | Not yet connected | local call did not match an enabled provider path/module name | keep as `ThreatSource` design slot |
+
+This status proves the auth/search boundary for CL/CDS, not real exposure
+coverage. Real supplier or keyword collection still requires an approved target
+scope and private handling policy. Synthetic zero-row checks are enough for API
+connectivity; they are not evidence about any real organization.
+
 ## Capability Mapping
 
 | Capability | Omija use | Primary landing object | Secondary landing object |
