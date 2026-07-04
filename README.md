@@ -60,6 +60,8 @@ authorized registry and working StealthMole authentication.
 
 ## Review Docs
 
+- [HANDOFF.md](HANDOFF.md): start here when resuming the project without prior
+  conversation context.
 - [docs/data-strategy.md](docs/data-strategy.md): data sources, ontology
   mapping, and claim boundaries.
 - [docs/demo-runbook.md](docs/demo-runbook.md): exact demo sequence and

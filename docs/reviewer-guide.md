@@ -5,12 +5,13 @@ the exact files and checks needed to verify the current state.
 
 ## Review Order
 
-1. Read [README.md](../README.md) for the project entrypoint.
-2. Read [docs/data-strategy.md](data-strategy.md) for data boundaries.
-3. Read [docs/decisions/0007-osint-data-fusion.md](decisions/0007-osint-data-fusion.md) for the main design decision.
-4. Read [docs/decisions/0008-dashboard-first-demo-surface.md](decisions/0008-dashboard-first-demo-surface.md) for the dashboard presentation decision.
-5. Read [docs/changelog/intelligence-demo-2026-07-04.md](changelog/intelligence-demo-2026-07-04.md) for the change inventory.
-6. Run the verification commands below.
+1. Read [HANDOFF.md](../HANDOFF.md) for full project context and remaining work.
+2. Read [README.md](../README.md) for the project entrypoint.
+3. Read [docs/data-strategy.md](data-strategy.md) for data boundaries.
+4. Read [docs/decisions/0007-osint-data-fusion.md](decisions/0007-osint-data-fusion.md) for the main design decision.
+5. Read [docs/decisions/0008-dashboard-first-demo-surface.md](decisions/0008-dashboard-first-demo-surface.md) for the dashboard presentation decision.
+6. Read [docs/changelog/intelligence-demo-2026-07-04.md](changelog/intelligence-demo-2026-07-04.md) for the change inventory.
+7. Run the verification commands below.
 
 ## Verification Commands
 
