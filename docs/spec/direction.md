@@ -1,46 +1,51 @@
-# direction.md — project backbone (superseded live-feed assumptions)
+# direction.md — no-live-data project backbone
 
-Current status as of 2026-07-05: historical direction below is superseded where
-it discusses live/public data handling. The active direction is no-live-data
-ontology reasoning: blank candidate slots, no external fetches, no sensitive
-records.
+Status: updated 2026-07-05.
 
-프로젝트 기준점. 데모·피칭·기능결정 전부 이 5개에 정렬.
+Project Omija is an ontology-centered early-warning system for supply-chain
+credential exposure. The current demo does not ingest live credential data or
+public feeds. It shows how approved candidate evidence would move through the
+ontology and become reviewable decisions.
 
----
+## Problem
 
-## 1. 문제 (Problem)
-한국은 방산수출 4위, 대규모 1·2차 협력사 네트워크 보유. **말단 협력사가 APT의 초기 침투 표적**.
-다크웹 등에 유출된 **자격증명(credential)**과 **인포스틸러 감염기기(stealer log)**는 본격 침해의 **치명적 조기 신호**.
-통증: 신호는 여러 출처에 파편화 → 어느 업체가 지금 위험한지 **우선순위**가 안 나옴. 특히 "이미 유출된 것"과 "지금 감염 중(활성)"을 구분 못 하면 대응 골든타임을 놓친다.
+Defense supply chains include primes, tier-1 suppliers, and deeper suppliers.
+Flat exposure lists cannot answer the operational question:
 
-## 2. 사용자 (User)
-1차: **방산 공급망 보안팀 / 원청 CISO** — 협력사 리스크를 모니터링·통보.
-2차: 정부 CERT / 방산 보안 담당.
-사용 맥락: "협력사 중 활성 침해 정황 있는 곳 순위로 줘. 상위 업체 통보 초안까지."
+```text
+Does a supplier identity create a path to a protected target asset and program?
+```
 
-## 3. 데이터 (Data — 합법)
-- **StealthMole API v2 (핵심, 해커톤 제공)**: cds(스틸러 감염), ub(URL:LOGIN:PASS), cl(유출 자격증명), cb(콤보). **계약은 검증됨**(base `api.stealthmole.com/v2`, JWT HS256). 접근은 **내일** 열림 → 오늘은 목 어댑터.
-- **협력사 도메인/자산 레지스트리**: 실명단 민감 → **공개/합성 도메인 시드**(데모).
-> 실계약·어댑터·목 → `data-sources.md`
+## Core Bet
 
-## 4. 산출 (Output)
-1. **업체별 위험 순위** (스코어·근거·활성침해 플래그).
-2. **드릴다운**: 업체별 유출 자격증명·감염기기 상세 + 출처.
-3. **즉시 조치 권고 + 통보 초안** (상위 업체 자동 생성, 사람 검토 전제).
-활성 침해 정황은 **가중치 상향** → 순위 상단. 모든 항목 출처(citation)·시각 표기.
+The ontology is the product core:
 
-## 5. 차별성 / 방어선 (Moat)
-- **공급망 그래프 온톨로지 (AIP-spine)**: 레코드 나열이 아니라 협력사→원청→프로그램으로 **위험 전파**되는 그래프. 활성침해를 **경로 존재**로 탐지. API-wrapper와의 근본 해자. → `ontology.md`
-- **활성침해 우선 트리아지**: "유출 목록 나열"이 아니라 지금 뚫리는 신호(최근 스틸러 감염·유효 세션·관리자/VPN 계정)를 앞세움.
-- **자동 상관 + 엔티티 해소**: 자격증명 ↔ 감염기기 ↔ 신원 ↔ 업체를 자동 연결·병합.
-- **조치까지**: 탐지에서 끝나지 않고 우선순위 + 통보 초안(사람 검토) = 현장 즉시 운용(군 적합성).
-- **출처 추적**: 모든 위험 판정이 StealthMole 원 레코드(온톨로지 evidence)로 역추적.
+- `of` identifies whose account is involved.
+- `targets` identifies what access surface is involved.
+- `subcontractsTo` preserves variable-depth supplier paths.
+- `traverses_*` preserves incident drill-down.
+- `cites` preserves draft-response provenance.
 
----
+## Current Demo Boundary
 
-### 안티 스코프 (하지 말 것)
-- 실제 협력사 겨냥·실제 통보 발송 (데모는 합성 도메인, 초안 "생성"까지만).
-- 무단 스캐닝·침투·크리덴셜 재사용·계정 로그인 시도 (불법, 절대 금지).
-- StealthMole 밖 유료/불법 유출 마켓 접근.
-- 크립토/온체인으로 좁히기 (참고 논문 3편 모두 온체인 0 — 이건 자격증명·스틸러 결).
+- Candidate data slots are empty.
+- No live credential-feed code is active.
+- No public feed is fetched.
+- Raw secrets are blocked.
+- Notification output is draft-only.
+
+## What To Show
+
+1. Candidate signal slot.
+2. Identity and target asset resolution.
+3. Supplier-to-prime-to-program traversal.
+4. Derived decision objects:
+   `RiskAssessment`, `CompromiseIncident`, `ProgramExposure`.
+5. Human-reviewed `NotificationDraft`.
+
+## What Not To Do
+
+- Do not resume historical live-feed implementation.
+- Do not add endpoint/auth/key details to active docs.
+- Do not claim real credential ingestion.
+- Do not show real leaked records.

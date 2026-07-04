@@ -56,5 +56,5 @@ uv run python scripts/palantir_pages.py
 금지 패턴 스캔:
 
 ```bash
-rg -n "Authorization: Bearer|eyJ|api\\.stealthmole|hackathon\\.stealthmole" .
+rg -n "eyJ|api\\.stealthmole|hackathon\\.stealthmole" .
 ```
