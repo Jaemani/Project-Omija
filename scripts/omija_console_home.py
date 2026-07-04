@@ -48,7 +48,7 @@ from actions.scoring import SCORING                              # noqa: E402
 from adapter.mock import DAY, DEMO_NOW                            # noqa: E402
 from registry.loader import load_registry                        # noqa: E402
 from scripts.omija_style import (                                 # noqa: E402
-    TOKENS_CSS, chip, chip_legend, synthetic_banner,
+    TOKENS_CSS, chip, chip_legend, nav_strip, synthetic_banner,
 )
 from scripts.p1_report import build_store                        # noqa: E402
 
@@ -181,6 +181,59 @@ PAGE_CSS = """
 .locked ul{margin:0;padding-left:18px;font-size:11.5px;color:var(--ink-2);line-height:1.8}
 .locked ul b{color:var(--ink)}
 .locked .owner{margin-top:11px;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+
+/* CORE-4 judging cheat-sheet — sits directly under the provenance legend.
+   Four compact cards, one per core concept a judge must grasp in seconds. */
+.core4{background:var(--surface);border-bottom:1px solid var(--hair)}
+.core4 .c4wrap{max-width:1180px;margin:0 auto;padding:15px 20px}
+.core4 .c4head{display:flex;align-items:baseline;gap:8px 12px;flex-wrap:wrap;margin-bottom:12px}
+.core4 .c4head .k{font-family:var(--mono);font-size:10px;letter-spacing:1.4px;color:var(--muted);
+  text-transform:uppercase}
+.core4 .c4head .h{font-size:14px;font-weight:600;color:var(--ink)}
+.core4 .c4head .s{font-size:11.5px;color:var(--ink-2)}
+.core4 .c4grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media(max-width:980px){.core4 .c4grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.core4 .c4grid{grid-template-columns:1fr}}
+.c4card{border:1px solid var(--hair-2);border-radius:9px;background:var(--surface-2);
+  padding:12px 13px;display:flex;flex-direction:column;gap:9px}
+.c4card .c4t{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
+.c4card .c4t .no{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--c-entity)}
+.c4card .c4t .nm{font-size:12.5px;font-weight:600;color:var(--ink)}
+.c4card .c4t .api{font-family:var(--mono);font-size:9.5px;color:var(--muted);font-weight:500;
+  width:100%;letter-spacing:.2px}
+.c4dia{background:var(--plane);border:1px solid var(--hair);border-radius:6px;padding:8px;
+  display:flex;align-items:center;justify-content:center;min-height:100px}
+.c4dia svg{width:100%;height:auto;display:block}
+.c4cap{font-size:11px;color:var(--ink-2);line-height:1.55;flex:1}
+.c4cap b{color:var(--ink)}
+.c4link{font-family:var(--mono);font-size:9.5px;letter-spacing:.3px;color:var(--c-entity);
+  text-decoration:none;border-top:1px solid var(--hair);padding-top:8px}
+.c4link::after{content:" →"}
+.c4link:hover{color:var(--ink)}
+/* mini HTML diagrams (cards ③ ④) */
+.c4q{width:100%;display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:8.5px}
+.c4q-row{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:4px;
+  background:var(--surface-2);border:1px solid var(--hair)}
+.c4q-row .d{width:6px;height:6px;border-radius:50%;flex:none;background:var(--band-c)}
+.c4q-row.hot{background:rgba(208,59,59,.10);border-color:rgba(208,59,59,.45)}
+.c4q-row.hot .d{background:var(--band-a);box-shadow:0 0 5px rgba(208,59,59,.6)}
+.c4q-row.hot .st{color:#f08a8a}
+.c4q-row.dim{opacity:.55}
+.c4q-row .nm{color:var(--ink)}
+.c4q-row .st{margin-left:auto;font-size:7.5px;letter-spacing:.5px}
+.c4q-row .sc{color:var(--ink-2);min-width:22px;text-align:right}
+.c4q-band{font-size:7px;letter-spacing:.4px;color:var(--muted);text-align:center;
+  text-transform:uppercase;border-top:1px dashed var(--hair-2);border-bottom:1px dashed var(--hair-2);
+  padding:3px 0;margin:1px 0}
+.c4flow{width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;justify-content:center;
+  font-family:var(--mono);font-size:8.5px}
+.c4step{padding:4px 7px;border-radius:4px;background:var(--surface-2);border:1px solid var(--c-output);
+  color:var(--ink)}
+.c4arr{color:var(--muted)}
+.c4sent{padding:4px 7px;border-radius:4px;border:1px dashed var(--hair-2);color:var(--muted);
+  text-decoration:line-through}
+.c4sent-l{width:100%;text-align:center;font-family:var(--mono);font-size:7px;color:var(--muted);
+  letter-spacing:.4px}
 """
 
 
@@ -441,6 +494,130 @@ def _p5_locked() -> str:
 
 
 # --------------------------------------------------------------------------- #
+# CORE-4 judging cheat-sheet (directly under the provenance legend)
+# --------------------------------------------------------------------------- #
+def _core4_strip() -> str:
+    """Four compact cards — the one screen a judge reads to grasp the four core
+    concepts in seconds: of/targets separation, subcontractsTo* variable depth,
+    active-on-top ranking, human-reviewed draft with no send. Each card carries a
+    3-second inline diagram, a 'why a flat table can't do this' line, and a link
+    to where the concept is proven in the incident report (omija_demo)."""
+    dm = "omija_demo.html"
+
+    # ① of ≠ targets — 협력사 identity(of) vs 원청 asset(targets), credential between
+    dia1 = """<svg viewBox="0 0 240 104" role="img" aria-label="of와 targets는 서로 다른 엣지">
+  <defs>
+    <marker id="c4of" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3987e5"/></marker>
+    <marker id="c4tg" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#ec835a"/></marker>
+  </defs>
+  <rect x="5" y="18" width="70" height="78" rx="6" fill="#1a1a19" stroke="#35342f"/>
+  <text x="40" y="32" text-anchor="middle" fill="#a9a89f" font-family="ui-monospace,monospace" font-size="8">협력사·하청</text>
+  <rect x="12" y="62" width="56" height="24" rx="4" fill="#201f1d" stroke="#3987e5"/>
+  <text x="40" y="77" text-anchor="middle" fill="#ececea" font-family="ui-monospace,monospace" font-size="7.5">identity@하청</text>
+  <rect x="165" y="18" width="70" height="78" rx="6" fill="#1a1a19" stroke="#35342f"/>
+  <text x="200" y="32" text-anchor="middle" fill="#a9a89f" font-family="ui-monospace,monospace" font-size="8">원청·Prime</text>
+  <rect x="172" y="62" width="56" height="24" rx="4" fill="#201f1d" stroke="#ec835a"/>
+  <text x="200" y="77" text-anchor="middle" fill="#ececea" font-family="ui-monospace,monospace" font-size="7.5">vpn.원청</text>
+  <rect x="93" y="30" width="54" height="20" rx="10" fill="rgba(201,133,0,.16)" stroke="#c98500"/>
+  <text x="120" y="43" text-anchor="middle" fill="#e0b45a" font-family="ui-monospace,monospace" font-size="7.5">credential</text>
+  <line x1="104" y1="50" x2="60" y2="60" stroke="#3987e5" stroke-width="1.5" marker-end="url(#c4of)"/>
+  <text x="70" y="52" fill="#3987e5" font-family="ui-monospace,monospace" font-size="8">of</text>
+  <line x1="136" y1="50" x2="180" y2="60" stroke="#ec835a" stroke-width="1.5" marker-end="url(#c4tg)"/>
+  <text x="150" y="52" fill="#ec835a" font-family="ui-monospace,monospace" font-size="8">targets</text>
+</svg>"""
+
+    # ② subcontractsTo* — T2→T1→Prime→Program with a variable-depth (×N) loop
+    dia2 = """<svg viewBox="0 0 240 104" role="img" aria-label="subcontractsTo 가변 깊이 체인">
+  <defs>
+    <marker id="c4ar" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6f6e68"/></marker>
+    <marker id="c4rr" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c98500"/></marker>
+  </defs>
+  <path d="M14,26 C34,8 66,8 84,26" fill="none" stroke="#c98500" stroke-width="1.3" stroke-dasharray="3 3" marker-end="url(#c4rr)"/>
+  <text x="30" y="12" fill="#c98500" font-family="ui-monospace,monospace" font-size="7.5">…* ×N (2차·3차·…)</text>
+  <rect x="6" y="46" width="46" height="26" rx="5" fill="#201f1d" stroke="#35342f"/>
+  <text x="29" y="62" text-anchor="middle" fill="#ececea" font-family="ui-monospace,monospace" font-size="8">T2</text>
+  <rect x="66" y="46" width="46" height="26" rx="5" fill="#201f1d" stroke="#35342f"/>
+  <text x="89" y="62" text-anchor="middle" fill="#ececea" font-family="ui-monospace,monospace" font-size="8">T1</text>
+  <rect x="126" y="46" width="52" height="26" rx="5" fill="#201f1d" stroke="#35342f"/>
+  <text x="152" y="62" text-anchor="middle" fill="#ececea" font-family="ui-monospace,monospace" font-size="8">Prime</text>
+  <rect x="192" y="46" width="46" height="26" rx="5" fill="#201f1d" stroke="#35342f"/>
+  <text x="215" y="62" text-anchor="middle" fill="#ececea" font-family="ui-monospace,monospace" font-size="7.5">Program</text>
+  <line x1="52" y1="59" x2="66" y2="59" stroke="#6f6e68" stroke-width="1.3" marker-end="url(#c4ar)"/>
+  <line x1="112" y1="59" x2="126" y2="59" stroke="#6f6e68" stroke-width="1.3" marker-end="url(#c4ar)"/>
+  <line x1="178" y1="59" x2="192" y2="59" stroke="#6f6e68" stroke-width="1.3" marker-end="url(#c4ar)"/>
+  <text x="59" y="88" text-anchor="middle" fill="#c98500" font-family="ui-monospace,monospace" font-size="7">subcontractsTo*</text>
+  <text x="152" y="88" text-anchor="middle" fill="#6f6e68" font-family="ui-monospace,monospace" font-size="7">supplies · runs</text>
+</svg>"""
+
+    # ③ active-on-top — one active row pinned above the divider, volume below
+    dia3 = """<div class="c4q">
+  <div class="c4q-row hot"><span class="d"></span><span class="nm">sup-h</span>
+    <span class="st">ACTIVE 즉시</span><span class="sc">88</span></div>
+  <div class="c4q-band">active-on-top · 활성이 큐 상단 고정</div>
+  <div class="c4q-row dim"><span class="d"></span><span class="nm">볼륨 노이즈</span><span class="sc">44건</span></div>
+  <div class="c4q-row dim"><span class="d"></span><span class="nm">…</span><span class="sc">≤40</span></div>
+</div>"""
+
+    # ④ draft workflow — draft→reviewed→approved→exported, no 'sent' state
+    dia4 = """<div class="c4flow">
+  <span class="c4step">draft</span><span class="c4arr">→</span>
+  <span class="c4step">reviewed</span><span class="c4arr">→</span>
+  <span class="c4step">approved</span><span class="c4arr">→</span>
+  <span class="c4step">exported</span><span class="c4arr">✕</span>
+  <span class="c4sent">sent</span>
+  <span class="c4sent-l">발송 상태 자체가 없음</span>
+</div>"""
+
+    cards = [
+        {
+            "no": "①", "nm": "of ≠ targets", "api": "CredentialExposure.of / .targets",
+            "dia": dia1,
+            "cap": "flat table 한 행은 계정 주인만 담는다 — 그 계정이 <b>겨눈 원청 자산(targets)</b>은 별개 엣지라 표현 불가.",
+            "href": f"{dm}#blast", "link": "사건 보고서 · 블라스트 반경에서 증명",
+        },
+        {
+            "no": "②", "nm": "subcontractsTo*", "api": "Supplier.subcontractsTo* (가변 깊이)",
+            "dia": dia2,
+            "cap": "flat join은 깊이를 지운다 — <b>2차·3차가 몇 홉 아래인지</b> 모른 채 한 판에 합쳐진다.",
+            "href": f"{dm}#compare", "link": "사건 보고서 · 차별점에서 증명",
+        },
+        {
+            "no": "③", "nm": "active-on-top", "api": "RiskAssessment · active_floor > base_cap",
+            "dia": dia3,
+            "cap": "볼륨으로 정렬하면 <b>활성 1건이 44건 노이즈에 묻힌다</b> — 활성 경로가 항상 위.",
+            "href": f"{dm}#triage", "link": "사건 보고서 · 트리아지 큐에서 증명",
+        },
+        {
+            "no": "④", "nm": "human-reviewed draft", "api": "NotificationDraft (no send state)",
+            "dia": dia4,
+            "cap": "flat table엔 <b>검토·승인 흔적이 없다</b> — 여기선 각 전이가 객체로 남고, 발송 상태는 아예 없다.",
+            "href": f"{dm}#response", "link": "사건 보고서 · 대응 워크플로에서 증명",
+        },
+    ]
+
+    card_html = "".join(
+        f"""<div class="c4card">
+      <div class="c4t"><span class="no">{c['no']}</span><span class="nm">{_e(c['nm'])}</span>
+        <span class="api">{_e(c['api'])}</span></div>
+      <div class="c4dia">{c['dia']}</div>
+      <div class="c4cap">{c['cap']}</div>
+      <a class="c4link" href="{_e(c['href'])}">{_e(c['link'])}</a>
+    </div>"""
+        for c in cards
+    )
+
+    return f"""
+<div class="core4"><div class="c4wrap">
+  <div class="c4head">
+    <span class="k">judging cheat-sheet · 4 core concepts</span>
+    <span class="h">flat table로는 안 되는 네 가지</span>
+    <span class="s">각 카드 = 개념 · 3초 다이어그램 · 왜 flat table로는 안 되나 한 줄 · 사건 보고서 증명 링크</span>
+  </div>
+  <div class="c4grid">{card_html}</div>
+</div></div>"""
+
+
+# --------------------------------------------------------------------------- #
 # assembly
 # --------------------------------------------------------------------------- #
 def build_html() -> tuple[str, dict]:
@@ -475,7 +652,9 @@ def build_html() -> tuple[str, dict]:
 <title>Omija — Steady-State Console (데모 시나리오)</title>
 <style>{TOKENS_CSS}{PAGE_CSS}</style></head><body data-palette="#3987e5,#199e70,#c98500,#9085e9">
 {synthetic_banner()}
+{nav_strip("omija_console_home.html")}
 {chip_legend()}
+{_core4_strip()}
 <div class="mast"><div class="wrap">
   <span class="ver">engine · sqlite mock pipeline · offline</span>
   <div class="brand">OMIJA · STEADY-STATE CONSOLE</div>

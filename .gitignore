@@ -58,3 +58,5 @@ out/p0b/
 !out/public_context/
 !out/public_context/summary.json
 !out/public_context/summary.md
+!out/captures/
+!out/captures/.gitkeep

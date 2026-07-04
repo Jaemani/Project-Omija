@@ -43,6 +43,25 @@ svg { display:block; min-width:1120px; width:100%; height:auto; }
 </style>
 </head>
 <body>
+<style>
+.omija-nav{background:#111110;border-bottom:1px solid #262624;
+  font-family:ui-monospace,SFMono-Regular,Menlo,"Cascadia Code",monospace}
+.omija-nav .onav-wrap{max-width:1180px;margin:0 auto;padding:0 20px;
+  display:flex;align-items:center;gap:14px;min-height:34px;flex-wrap:wrap}
+.omija-nav .onav-brand{font-size:10px;letter-spacing:2px;color:#6f6e68;font-weight:600;flex:none}
+.omija-nav .onav-items{display:flex;align-items:stretch;flex-wrap:wrap}
+.omija-nav a.onav-item{font-size:11px;letter-spacing:.4px;color:#a9a89f;text-decoration:none;
+  padding:8px 12px;border-bottom:2px solid transparent;white-space:nowrap}
+.omija-nav a.onav-item:hover{color:#ececea;background:rgba(255,255,255,.03)}
+.omija-nav a.onav-item.cur{color:#ececea;border-bottom-color:#3987e5}
+.omija-nav a.onav-item.cur::before{content:"● ";color:#3987e5;font-size:8px}
+</style>
+<nav class="omija-nav" aria-label="Omija surfaces">
+  <div class="onav-wrap">
+    <span class="onav-brand">OMIJA</span>
+    <div class="onav-items"><a class="onav-item" href="omija_console_home.html">평시 콘솔</a><a class="onav-item" href="omija_demo.html">사건 보고서</a><a class="onav-item cur" href="data_coverage_map.html" aria-current="page">커버리지 맵</a><a class="onav-item" href="program_threat_view.html">프로그램 뷰</a></div>
+  </div>
+</nav>
 <header>
   <div class="kicker">OMIJA DATA COVERAGE MAP</div>
   <h1>무엇을 어디서 관리하고, 무엇으로 감시하는가</h1>

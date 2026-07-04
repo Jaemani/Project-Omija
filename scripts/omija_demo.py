@@ -33,6 +33,7 @@ Run:  uv run python scripts/omija_demo.py   (writes out/omija_demo.html)
 
 from __future__ import annotations
 
+import base64
 import html
 import json
 import os
@@ -48,7 +49,7 @@ from actions.notify_draft import generate_drafts                 # noqa: E402
 from actions.propagate_risk import propagate_program_risk        # noqa: E402
 from adapter.mock import DAY, DEMO_NOW                            # noqa: E402
 from scripts.omija_style import (                                 # noqa: E402
-    TOKENS_CSS, chip, chip_legend, pnote, synthetic_banner,
+    TOKENS_CSS, chip, chip_legend, nav_strip, pnote, synthetic_banner,
 )
 from scripts.p5_drafts import TOP_N, build_pipeline              # noqa: E402
 
@@ -56,6 +57,8 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(REPO_ROOT, "out")
 OUT_HTML = os.path.join(OUT_DIR, "omija_demo.html")
 ACTION_CHAIN_JSON = os.path.join(OUT_DIR, "foundry_action_chain.json")
+CAPTURES_DIR = os.path.join(OUT_DIR, "captures")
+CAPTURE_WARN_BYTES = 600 * 1024  # warn in CLI output if an embedded PNG exceeds this
 
 # The one supplier we deep-dive: the 2차 (tier-2) MULTI-TIER terminal whose
 # infection burns a defense program two tiers up. It is also the record that
@@ -341,6 +344,28 @@ details.ev>summary .src{margin-left:auto;font-family:var(--mono);font-size:10.5p
 .onto .lk.cross{stroke:var(--cross);stroke-dasharray:3 3}
 .onto .lkl{fill:var(--muted);font:8px var(--mono)}
 .onto .lkl.cross{fill:var(--cross)}
+
+/* Foundry capture slots — 6-slot grid of real-platform screenshots (or, until
+   captured, instruction cards saying what to shoot and what it proves) */
+.captures{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+@media(max-width:820px){.captures{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.captures{grid-template-columns:1fr}}
+.capslot{border:1px solid var(--hair-2);border-radius:8px;background:var(--surface);overflow:hidden;
+  display:flex;flex-direction:column}
+.capslot .cap-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 11px;
+  border-bottom:1px solid var(--hair);background:var(--surface-2)}
+.capslot .cap-slug{font-family:var(--mono);font-size:9px;letter-spacing:.6px;color:var(--muted);
+  text-transform:uppercase}
+.capslot .cap-t{font-size:12.5px;font-weight:600;color:var(--ink)}
+.capslot img{display:block;width:100%;max-width:100%;height:auto;border-bottom:1px solid var(--hair)}
+.capslot .cap-body{padding:10px 12px;font-size:11.5px;color:var(--ink-2);line-height:1.6;flex:1}
+.capslot .cap-body b{color:var(--ink)}
+.capslot.empty{border-style:dashed;background:
+  repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(255,255,255,.012) 7px,rgba(255,255,255,.012) 14px),var(--surface)}
+.capslot .cap-shot{display:inline-block;margin-bottom:7px;font-family:var(--mono);font-size:9px;
+  letter-spacing:.6px;color:var(--band-b);border:1px solid rgba(250,178,25,.4);border-radius:3px;padding:1px 7px}
+.capslot .cap-where b{color:var(--ink)}
+.capslot .cap-proves{margin-top:7px;padding-top:7px;border-top:1px solid var(--hair);color:var(--c-evidence)}
 """
 
 
@@ -784,10 +809,106 @@ def _workflow(inc: dict, draft: dict, cites: list, merge: dict | None) -> str:
 </div></section>"""
 
 
-def _live_strip(chain: dict | None) -> str:
+# --------------------------------------------------------------------------- #
+# Foundry capture slots — real-platform screenshots that back the LIVE claim.
+# slug, title, where-to-shoot, what-it-proves. Korean prose, English API names.
+# --------------------------------------------------------------------------- #
+_CAPTURE_SLOTS: list[dict[str, str]] = [
+    {
+        "slug": "objects-list",
+        "title": "객체 13종 목록",
+        "where": "Foundry <b>Ontology Manager → Object Types</b> 목록 뷰 (13종이 한 화면에)",
+        "proves": f"{ONTOLOGY_OBJECT_TYPES}종 객체 타입이 실제 배포돼 있음 (registry 4 + evidence 4 + derived 5)",
+    },
+    {
+        "slug": "link-graph",
+        "title": "링크 그래프 · of/targets 보이게",
+        "where": "Ontology Manager <b>링크 그래프</b> — CredentialExposure 노드에서 <span class='mono'>of</span>·<span class='mono'>targets</span> 두 엣지가 함께 보이게",
+        "proves": "of ≠ targets 가 별도 링크 타입으로 존재 — 계정 소유(of)와 표적 자산(targets)이 분리됨",
+    },
+    {
+        "slug": "action-types",
+        "title": "워크플로 액션 8종",
+        "where": "Ontology Manager <b>→ Action Types</b> 목록 (8종 워크플로 액션)",
+        "proves": "상태 전이 액션 8종이 온톨로지에 배포돼 있음 — 데모의 상태 기계가 실재",
+    },
+    {
+        "slug": "merged-proposal",
+        "title": "승인·머지된 proposal",
+        "where": "Ontology <b>Proposals</b> 뷰 — approved/merged 상태의 온톨로지 변경 proposal",
+        "proves": "온톨로지 변경이 사람 검토·승인 후 main에 머지됨 (human-on-the-loop 거버넌스)",
+    },
+    {
+        "slug": "incident-history",
+        "title": "오늘 상태 전이 History 탭",
+        "where": "임의의 <b>CompromiseIncident</b> 객체 → <b>History</b> 탭 (오늘 실행된 status 전이)",
+        "proves": "가상 인시던트의 상태 전이가 오늘 실제 감사 History로 기록됨 (open→triaged→…)",
+    },
+    {
+        "slug": "osdk-020",
+        "title": f"Developer Console SDK {OSDK_VERSION}",
+        "where": f"<b>Developer Console → SDK</b> 페이지, 버전 <span class='mono'>{OSDK_VERSION}</span> 표기",
+        "proves": f"OSDK {OSDK_VERSION} 패키지가 published — program_threat_view 등 코드가 붙는 대상",
+    },
+]
+
+
+def _capture_data_uri(path: str) -> tuple[str, int]:
+    """Read a PNG and return (data-URI, byte_size). base64 inline so the page
+    stays fully self-contained and offline — no external <img src>."""
+    with open(path, "rb") as fh:
+        raw = fh.read()
+    b64 = base64.b64encode(raw).decode("ascii")
+    return f"data:image/png;base64,{b64}", len(raw)
+
+
+def _foundry_captures() -> tuple[str, list[str]]:
+    """Render the 6-slot Foundry capture grid. For each slug: embed
+    out/captures/<slug>.png inline if it exists, else an instruction card (what
+    to shoot + what it proves). Returns (html, warnings); warnings flag any
+    embed over 600KB for the CLI output."""
+    warnings: list[str] = []
+    slots = []
+    for s in _CAPTURE_SLOTS:
+        png = os.path.join(CAPTURES_DIR, f"{s['slug']}.png")
+        head = (f'<div class="cap-h"><span class="cap-slug">{_e(s["slug"])}</span>'
+                f'<span class="cap-t">{s["title"]}</span>{chip("live")}</div>')
+        if os.path.isfile(png):
+            uri, size = _capture_data_uri(png)
+            if size > CAPTURE_WARN_BYTES:
+                warnings.append(
+                    f"{s['slug']}.png is {size / 1024:.0f}KB (>600KB) — compress before demo")
+            slots.append(
+                f'<div class="capslot">{head}'
+                f'<img src="{uri}" alt="{_e(s["title"])} — Foundry capture">'
+                f'<div class="cap-body"><span class="cap-proves">증명: {s["proves"]}</span></div>'
+                f'</div>'
+            )
+        else:
+            slots.append(
+                f'<div class="capslot empty">{head}'
+                f'<div class="cap-body"><span class="cap-shot">촬영 대기</span>'
+                f'<div class="cap-where"><b>어디서:</b> {s["where"]}</div>'
+                f'<div class="cap-proves">증명: {s["proves"]}</div></div></div>'
+            )
+    grid = f'<div class="captures">{"".join(slots)}</div>'
+    return grid, warnings
+
+
+def _captures_block(captures_grid: str) -> str:
+    """The captures grid wrapped with its in-section header, injected into the
+    실제로 존재하는 것 (#live) section."""
+    return f"""
+  <div class="sec-k" style="margin-top:26px">실물 캡처 · Foundry 화면 증거 {chip('live')}</div>
+  <div class="sec-sub" style="margin-bottom:0">위 감사 기록이 실제 Foundry 위에서 벌어진다는 6종 화면 증거 —
+     캡처가 있으면 이미지로, 없으면 무엇을·어디서 찍고 무엇을 증명하는지가 표시된다.</div>
+  {captures_grid}"""
+
+
+def _live_strip(chain: dict | None, captures_grid: str) -> str:
     """실제로 존재하는 것 — the LIVE section. Renders the real Foundry audit
     trail (state transitions executed today, verified by readback) plus the
-    deployed-ontology facts. Everything here is LIVE·Foundry."""
+    deployed-ontology facts and the 6-slot capture grid. All LIVE·Foundry."""
     note = pnote("07 실제로 존재하는 것", [
         f"여기부터는 가상이 아닙니다. {chip('live')} 칩이 붙은 이 표는 오늘 실제 Foundry"
         " 온톨로지에서 실행되고 readback으로 검증된 상태 전이 감사 기록입니다.",
@@ -804,6 +925,7 @@ def _live_strip(chain: dict | None) -> str:
   <div class="sec-k">07 · 실제로 존재하는 것 / what actually exists {chip('live')}</div>
   <div class="sec-h">데이터는 가상이지만, 이 데모가 올라탄 플랫폼은 진짜다</div>
   {body}
+  {_captures_block(captures_grid)}
   {note}
 </div></section>"""
     steps = chain.get("steps", [])
@@ -839,6 +961,7 @@ def _live_strip(chain: dict | None) -> str:
       <span class="mono" style="font-size:10.5px;color:var(--muted)">{_e(chain.get('ontology_api_name'))}</span>
     </div>
   </div>
+  {_captures_block(captures_grid)}
   {note}
 </div></section>"""
 
@@ -966,6 +1089,7 @@ def build_html() -> tuple[str, dict]:
     burn_names = [prog_names.get(pe.program_ref, pe.program_ref) for pe in burn]
 
     action_chain = _load_action_chain()
+    captures_grid, cap_warnings = _foundry_captures()
 
     body = "".join([
         _hero(inc, active_exp, hero_programs),
@@ -974,7 +1098,7 @@ def build_html() -> tuple[str, dict]:
         _blast_svg(inc, active_exp, inc["blast_radius"]["programs"]),
         _evidence(active_exp, ra, cites),
         _workflow(inc, draft, cites, merge),
-        _live_strip(action_chain),
+        _live_strip(action_chain, captures_grid),
         _outcome(n_exp, len(incidents), len(burn), stale_real, pipe_ms, burn_names,
                  n_sup_hit=len(assessments)),
         _footer(),
@@ -986,6 +1110,7 @@ def build_html() -> tuple[str, dict]:
 <title>Omija — 공급망 자격증명 노출 조기경보 (데모 시나리오)</title>
 <style>{TOKENS_CSS}{PAGE_CSS}</style></head><body data-palette="#3987e5,#199e70,#c98500,#9085e9">
 {synthetic_banner()}
+{nav_strip("omija_demo.html")}
 {chip_legend()}
 <div class="mast"><div class="wrap">
   <span class="ver">engine · sqlite mock pipeline · offline</span>
@@ -1001,6 +1126,11 @@ def build_html() -> tuple[str, dict]:
         "n_burn": len(burn), "stale_real": stale_real, "pipe_ms": pipe_ms,
         "headline_score": ra.score, "cites": len(cites),
         "live_steps": len(action_chain["steps"]) if action_chain else 0,
+        "cap_embedded": sum(
+            1 for s in _CAPTURE_SLOTS
+            if os.path.isfile(os.path.join(CAPTURES_DIR, f"{s['slug']}.png"))),
+        "cap_total": len(_CAPTURE_SLOTS),
+        "cap_warnings": cap_warnings,
     }
     return page, meta
 
@@ -1035,6 +1165,10 @@ def run() -> int:
           f"stale(non-active) {meta['stale_real']} · pipe {meta['pipe_ms']:.1f} ms")
     print(f"LIVE strip: {meta['live_steps']} verified Foundry transitions "
           f"({'real audit trail' if meta['live_steps'] else '실행 대기 slot'})")
+    print(f"capture slots: {meta['cap_embedded']}/{meta['cap_total']} embedded "
+          f"(rest render as instruction cards)")
+    for w in meta["cap_warnings"]:
+        print(f"  WARN capture: {w}")
     print("safety: no 'stealthmole', no external http refs, no raw secret — OK")
     print(f"written: {OUT_HTML} ({os.path.getsize(OUT_HTML):,} bytes)")
     print("RESULT: OK")

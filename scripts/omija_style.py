@@ -74,6 +74,59 @@ def chip_legend() -> str:
 </div></div>"""
 
 
+# --------------------------------------------------------------------------- #
+# product nav — one thin strip shared by the four surfaces so they read as a
+# single product, not four loose files.
+# --------------------------------------------------------------------------- #
+NAV_ITEMS: list[tuple[str, str]] = [
+    ("omija_console_home.html", "평시 콘솔"),
+    ("omija_demo.html",         "사건 보고서"),
+    ("data_coverage_map.html",  "커버리지 맵"),
+    ("program_threat_view.html", "프로그램 뷰"),
+]
+
+# Self-contained: carries its own <style> with hardcoded dark tokens so it looks
+# identical whether or not the host page also loaded TOKENS_CSS (the coverage
+# map and program view pages do not). No animation / external refs — clears the
+# per-page safety checks. Duplicated inline per page is fine (separate files).
+NAV_CSS = """
+.omija-nav{background:#111110;border-bottom:1px solid #262624;
+  font-family:ui-monospace,SFMono-Regular,Menlo,"Cascadia Code",monospace}
+.omija-nav .onav-wrap{max-width:1180px;margin:0 auto;padding:0 20px;
+  display:flex;align-items:center;gap:14px;min-height:34px;flex-wrap:wrap}
+.omija-nav .onav-brand{font-size:10px;letter-spacing:2px;color:#6f6e68;font-weight:600;flex:none}
+.omija-nav .onav-items{display:flex;align-items:stretch;flex-wrap:wrap}
+.omija-nav a.onav-item{font-size:11px;letter-spacing:.4px;color:#a9a89f;text-decoration:none;
+  padding:8px 12px;border-bottom:2px solid transparent;white-space:nowrap}
+.omija-nav a.onav-item:hover{color:#ececea;background:rgba(255,255,255,.03)}
+.omija-nav a.onav-item.cur{color:#ececea;border-bottom-color:#3987e5}
+.omija-nav a.onav-item.cur::before{content:"● ";color:#3987e5;font-size:8px}
+"""
+
+
+def nav_strip(current_page: str) -> str:
+    """Thin product-wide nav shared across the four Omija surfaces.
+
+    `current_page` is the basename of the active .html file; that item is marked
+    (blue underline + dot + aria-current) and the others link to it with relative
+    hrefs (all pages ship to the same output dir). Sits directly under the
+    SYNTHETIC banner on the two console pages; at the very top on the standalone
+    coverage/program pages."""
+    links = []
+    for href, label in NAV_ITEMS:
+        cur = href == current_page
+        cls = "onav-item cur" if cur else "onav-item"
+        aria = ' aria-current="page"' if cur else ""
+        links.append(f'<a class="{cls}" href="{esc(href)}"{aria}>{esc(label)}</a>')
+    return f"""<style>{NAV_CSS}</style>
+<nav class="omija-nav" aria-label="Omija surfaces">
+  <div class="onav-wrap">
+    <span class="onav-brand">OMIJA</span>
+    <div class="onav-items">{''.join(links)}</div>
+  </div>
+</nav>"""
+
+
 def pnote(section_no: str, sentences: list[str]) -> str:
     """Collapsible presenter note (발표 노트) — what to SAY at this scroll
     position, including which chips to point at."""

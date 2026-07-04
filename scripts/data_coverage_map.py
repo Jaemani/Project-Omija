@@ -5,11 +5,15 @@ from __future__ import annotations
 import csv
 import html
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.omija_style import nav_strip  # noqa: E402
 OUT_DIR = REPO_ROOT / "out"
 SEED_DIR = OUT_DIR / "foundry_seed"
 PUBLIC_CONTEXT = OUT_DIR / "public_context" / "summary.json"
@@ -153,6 +157,7 @@ svg {{ display:block; min-width:1120px; width:100%; height:auto; }}
 </style>
 </head>
 <body>
+{nav_strip("data_coverage_map.html")}
 <header>
   <div class="kicker">OMIJA DATA COVERAGE MAP</div>
   <h1>무엇을 어디서 관리하고, 무엇으로 감시하는가</h1>

@@ -48,6 +48,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from actions.propagate_risk import propagate_program_risk  # noqa: E402
 from adapter.mock import DEMO_NOW  # noqa: E402
+from scripts.omija_style import nav_strip  # noqa: E402
 from scripts.p5_drafts import build_pipeline  # noqa: E402
 from store.osdk_compat import OsdkError  # noqa: E402
 
@@ -468,6 +469,7 @@ tr.cross-row{{background:rgba(236,131,90,.08)}}
   font-size:11px;font-family:var(--mono)}}
 </style></head>
 <body>
+{nav_strip("program_threat_view.html")}
 <div class="topbar">
   <span class="brand">OMIJA · SUPPLY-CHAIN CREDENTIAL EXPOSURE</span>
   <span class="ver">PROGRAM THREAT VIEW · backend={_e(backend)}</span>
