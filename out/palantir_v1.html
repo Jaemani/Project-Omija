@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omija · V1 Investigation</title>
+<style>
+:root{
+  --plane:#0d0d0d; --surface:#141413; --surface-2:#1a1a19; --raised:#201f1d;
+  --ink:#ececea; --ink-2:#a9a89f; --muted:#6f6e68;
+  --hair:#262624; --hair-2:#35342f;
+  /* validated dark-mode CATEGORICAL hues (dataviz reference palette, dark col) */
+  --c-entity:#3987e5;    /* blue   slot1 — entity/registry */
+  --c-evidence:#199e70;  /* aqua   slot2 — observed evidence */
+  --c-derived:#c98500;   /* yellow slot3 — derived judgment (NOT the status amber) */
+  --c-output:#9085e9;    /* violet slot5 — human/output */
+  --cross:#ec835a;       /* status 'serious' — the single targets cross-edge (labelled) */
+  /* triage bands = fixed status ramp (never a series colour) */
+  --band-a:#d03b3b;      /* critical — active compromise path */
+  --band-b:#fab219;      /* warning  — elevated exposure */
+  --band-c:#3987e5;      /* recessive— observed / passive */
+  --mono:ui-monospace,SFMono-Regular,Menlo,"Cascadia Code",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--plane);color:var(--ink);
+  font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+a{color:var(--c-entity)}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:.2px}
+code,kbd,.mono{font-family:var(--mono)}
+.scroll-x{overflow-x:auto;overflow-y:hidden}
+.topbar{display:flex;align-items:center;gap:14px;padding:10px 18px;
+  border-bottom:1px solid var(--hair);background:var(--surface);position:sticky;top:0;z-index:5}
+.topbar .brand{font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
+  color:var(--ink);text-transform:uppercase}
+.topbar .ver{font-family:var(--mono);font-size:11px;color:var(--muted);
+  border:1px solid var(--hair-2);border-radius:3px;padding:2px 7px}
+.topbar .empty-pill{margin-left:auto;font-family:var(--mono);font-size:11px;
+  color:var(--band-b);border:1px solid var(--hair-2);border-radius:3px;padding:2px 8px;
+  display:flex;gap:7px;align-items:center}
+.topbar .empty-pill::before{content:"";width:7px;height:7px;border-radius:50%;
+  background:var(--band-b);box-shadow:0 0 6px var(--band-b)}
+.qbar{padding:10px 18px;border-bottom:1px solid var(--hair);background:var(--surface-2);
+  font-size:12.5px;color:var(--ink-2)}
+.qbar b{color:var(--ink);font-weight:600}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:1px;color:var(--muted);
+  text-transform:uppercase}
+.count0{font-family:var(--mono);font-size:11px;color:var(--muted);
+  border:1px solid var(--hair-2);border-radius:10px;padding:0 7px;min-width:20px;
+  display:inline-flex;justify-content:center}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.empty-slot{border:1px dashed var(--hair-2);border-radius:5px;background:
+  repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(255,255,255,.012) 7px,rgba(255,255,255,.012) 14px);
+  color:var(--muted);font-family:var(--mono);font-size:11px;padding:10px 12px}
+.contract{border:1px solid var(--hair-2);border-radius:6px;background:var(--surface);
+  overflow:hidden}
+.contract .chead{display:flex;align-items:center;gap:8px;padding:7px 11px;
+  border-bottom:1px solid var(--hair);background:var(--surface-2)}
+.contract .chead .nm{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+.contract .chead .role{font-size:11px;color:var(--muted);margin-left:auto}
+.contract table{width:100%;border-collapse:collapse;font-size:12px}
+.contract td{padding:5px 11px;border-top:1px solid var(--hair);vertical-align:top}
+.contract td.k{font-family:var(--mono);color:var(--ink-2);white-space:nowrap;width:38%}
+.contract td.t{color:var(--muted);font-size:11px;width:34%}
+.contract td.v{font-family:var(--mono);color:var(--c-evidence);text-align:right;
+  opacity:.75}
+.prov{padding:7px 11px;border-top:1px solid var(--hair);font-size:11px;color:var(--ink-2);
+  background:rgba(250,178,25,.05)}
+.prov b{color:var(--c-derived)}
+.refuse{color:var(--band-a);font-family:var(--mono);font-size:10.5px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:6px}
+/* state machine pills */
+.sm{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.sm .st{font-family:var(--mono);font-size:11.5px;padding:5px 11px;border:1px solid var(--hair-2);
+  border-radius:4px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.sm .st.start{border-color:var(--c-entity);color:var(--ink)}
+.sm .arrow{color:var(--muted);padding:0 8px;font-family:var(--mono)}
+.sm .term{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:4px;
+  border:1px dashed var(--hair-2);color:var(--muted);margin-left:6px}
+.sm .term.ok{border-color:rgba(12,163,12,.5);color:#7bcf7b}
+.sm .term.bad{border-color:rgba(208,59,59,.5);color:#e88}
+.smnote{font-size:11px;color:var(--muted);margin-top:6px}
+.no-send{color:var(--band-a);font-family:var(--mono);font-size:11px;
+  border:1px solid rgba(208,59,59,.4);border-radius:4px;padding:3px 9px;display:inline-block}
+.footer{padding:14px 18px;border-top:1px solid var(--hair);color:var(--muted);
+  font-size:11px;font-family:var(--mono)}
+/* "why ontology" annotation - the project's load-bearing argument */
+.why{font-size:11px;color:var(--ink-2);border-left:2px solid var(--c-output);
+  padding:5px 10px;margin:6px 0;background:rgba(144,133,233,.06);border-radius:0 4px 4px 0}
+.why .whytag{font-family:var(--mono);font-size:9px;letter-spacing:1.2px;color:var(--c-output);
+  display:inline-block;margin-right:8px;vertical-align:1px}
+.why b{color:var(--ink)}
+.whybar{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.whybar .chip{font-family:var(--mono);font-size:10px;color:var(--c-output);
+  border:1px solid rgba(144,133,233,.35);border-radius:12px;padding:2px 9px}
+</style></head>
+<body>
+<div class="topbar">
+  <span class="brand">OMIJA · SUPPLY-CHAIN CREDENTIAL EXPOSURE</span>
+  <span class="ver">V1 · INVESTIGATION</span>
+  <span style="font-size:12px;color:var(--ink-2)">object browser · schema-as-graph · inspector</span>
+  <span class="empty-pill">EMPTY STATE · 데이터 슬롯 전부 비어있음</span>
+</div>
+<div class="qbar"><b>조직 질문 / organising question — </b>Which supplier appears to create an ACTIVE path into a protected defense program, why does it matter now, and what action should be prepared first?</div>
+
+<div class="v1wrap">
+  <aside class="v1rail scroll-x">
+    <div class="railhd"><span class="lbl">Object types</span><span class="count0">13</span></div>
+    <div class="railsub">all counts 0 · click a type or a graph node</div>
+    <div class="otgroup"><div class="lbl">Entity / registry</div><div class="ot" data-obj="Supplier"><span class="dot" style="background:var(--c-entity)"></span><span class="otn">Supplier</span><span class="count0">0</span></div><div class="ot" data-obj="Prime"><span class="dot" style="background:var(--c-entity)"></span><span class="otn">Prime</span><span class="count0">0</span></div><div class="ot" data-obj="Program"><span class="dot" style="background:var(--c-entity)"></span><span class="otn">Program</span><span class="count0">0</span></div><div class="ot" data-obj="Domain"><span class="dot" style="background:var(--c-entity)"></span><span class="otn">Domain</span><span class="count0">0</span></div><div class="ot" data-obj="Identity"><span class="dot" style="background:var(--c-entity)"></span><span class="otn">Identity</span><span class="count0">0</span></div></div><div class="otgroup"><div class="lbl">Evidence (observed)</div><div class="ot" data-obj="CredentialExposure"><span class="dot" style="background:var(--c-evidence)"></span><span class="otn">CredentialExposure</span><span class="count0">0</span></div><div class="ot" data-obj="InfectedDevice"><span class="dot" style="background:var(--c-evidence)"></span><span class="otn">InfectedDevice</span><span class="count0">0</span></div><div class="ot" data-obj="ThreatSource"><span class="dot" style="background:var(--c-evidence)"></span><span class="otn">ThreatSource</span><span class="count0">0</span></div></div><div class="otgroup"><div class="lbl">Derived judgment</div><div class="ot" data-obj="RiskAssessment"><span class="dot" style="background:var(--c-derived)"></span><span class="otn">RiskAssessment</span><span class="count0">0</span></div><div class="ot" data-obj="CompromiseIncident"><span class="dot" style="background:var(--c-derived)"></span><span class="otn">CompromiseIncident</span><span class="count0">0</span></div><div class="ot" data-obj="ProgramExposure"><span class="dot" style="background:var(--c-derived)"></span><span class="otn">ProgramExposure</span><span class="count0">0</span></div></div><div class="otgroup"><div class="lbl">Human-review / output</div><div class="ot" data-obj="MergeProposal"><span class="dot" style="background:var(--c-output)"></span><span class="otn">MergeProposal</span><span class="count0">0</span></div><div class="ot" data-obj="NotificationDraft"><span class="dot" style="background:var(--c-output)"></span><span class="otn">NotificationDraft</span><span class="count0">0</span></div></div>
+  </aside>
+  <main class="v1center">
+    <div class="centerhd">
+      <span class="lbl">Ontology schema — rendered as the graph</span>
+      <span class="centernote">데이터가 없으므로 <b>스키마 자체가 그래프</b>다. 강조된 경로 =
+      자격증명이 방산 프로그램으로 닿는 활성 경로 후보.</span>
+      <div class="whybar">
+        <span class="chip">of ≠ targets</span>
+        <span class="chip">subcontractsTo* 가변깊이</span>
+        <span class="chip">provenance 강제</span>
+        <span class="chip">액션 = 상태전이</span>
+      </div>
+    </div>
+    <div class="graphbox scroll-x"><svg viewBox="0 0 1330 620" width="100%" style="min-width:1000px;display:block" role="img" aria-label="Ontology schema rendered as a graph (empty data)"><defs><marker id="ah-path" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="var(--c-entity)"/></marker><marker id="ah-cross" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="var(--cross)"/></marker><marker id="ah-evidence" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="var(--c-evidence)"/></marker><marker id="ah-prov" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="var(--c-derived)"/></marker><marker id="ah-output" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="var(--c-output)"/></marker></defs><line x1="222" y1="300" x2="328" y2="300" stroke="var(--c-entity)" stroke-width="2" opacity="0.9" marker-end="url(#ah-path)"/><rect x="264" y="292" width="22" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="275" y="303" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-entity)">of</text><line x1="472" y1="300" x2="538" y2="300" stroke="var(--c-entity)" stroke-width="2" opacity="0.9" marker-end="url(#ah-path)"/><rect x="467" y="292" width="76" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="505" y="303" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-entity)">belongs_to</text><line x1="748" y1="300" x2="682" y2="300" stroke="var(--c-entity)" stroke-width="2" opacity="0.9" marker-end="url(#ah-path)"/><rect x="697" y="292" width="35" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="715" y="303" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-entity)">owns</text><line x1="892" y1="300" x2="938" y2="300" stroke="var(--c-entity)" stroke-width="2" opacity="0.9" marker-end="url(#ah-path)"/><rect x="884" y="292" width="62" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="915" y="303" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-entity)">supplies</text><line x1="1082" y1="300" x2="1108" y2="300" stroke="var(--c-entity)" stroke-width="2" opacity="0.9" marker-end="url(#ah-path)"/><rect x="1077" y="292" width="35" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="1095" y="303" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-entity)">runs</text><line x1="150" y1="142" x2="150" y2="276" stroke="var(--c-evidence)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ah-evidence)"/><rect x="126" y="201" width="49" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="150" y="212" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-evidence)">leaked</text><line x1="183" y1="142" x2="367" y2="276" stroke="var(--c-evidence)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ah-evidence)"/><rect x="234" y="201" width="83" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="275" y="212" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-evidence)">compromises</text><line x1="183" y1="276" x2="367" y2="142" stroke="var(--c-evidence)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ah-evidence)"/><rect x="230" y="201" width="90" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="275" y="212" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-evidence)">sourced_from</text><line x1="820" y1="476" x2="820" y2="324" stroke="var(--c-derived)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ah-prov)"/><rect x="792" y="392" width="56" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="820" y="403" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-derived)">risk_of</text><line x1="635" y1="476" x2="795" y2="324" stroke="var(--c-derived)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ah-prov)"/><rect x="680" y="392" width="69" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="715" y="403" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-derived)">traverses</text><line x1="1180" y1="476" x2="1180" y2="324" stroke="var(--c-derived)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ah-prov)"/><rect x="1139" y="392" width="83" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="1180" y="403" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-derived)">exposure_of</text><line x1="1108" y1="500" x2="682" y2="500" stroke="var(--c-derived)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ah-prov)"/><rect x="850" y="492" width="90" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="895" y="503" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-derived)">evidenced_by</text><line x1="938" y1="500" x2="892" y2="500" stroke="var(--c-output)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ah-output)"/><rect x="894" y="492" width="42" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="915" y="503" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-output)">cites</text><line x1="400" y1="476" x2="400" y2="324" stroke="var(--c-output)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55" marker-end="url(#ah-output)"/><rect x="342" y="392" width="117" height="15" rx="2" fill="#0d0d0d" opacity="0.85"/><text x="400" y="403" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-output)">merge_candidates</text><path d="M796,276.0 C774,230.0 866,230.0 844,276.0" fill="none" stroke="var(--c-entity)" stroke-width="2" opacity="0.9" marker-end="url(#ah-path)"/><text x="820" y="230.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--c-entity)">subcontractsTo* (N:M · variable depth)</text><path d="M150,324 Q380,428 538,315" fill="none" stroke="var(--cross)" stroke-width="2" stroke-dasharray="6 4" opacity="0.95" marker-end="url(#ah-cross)"/><rect x="262" y="420" width="236" height="16" rx="2" fill="#0d0d0d" opacity="0.9"/><text x="380" y="432" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="var(--cross)">targets → asset Domain (may be a DIFFERENT org)</text><g class="gnode" data-obj="InfectedDevice" style="cursor:pointer"><rect x="81" y="97" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-evidence)" stroke-width="1.4"/><rect x="81" y="97" width="4" height="42" rx="2" fill="var(--c-evidence)"/><text x="150" y="116" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">InfectedDevice</text><text x="150" y="130" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">evidence · count 0</text></g><g class="gnode" data-obj="ThreatSource" style="cursor:pointer"><rect x="331" y="97" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-evidence)" stroke-width="1.4"/><rect x="331" y="97" width="4" height="42" rx="2" fill="var(--c-evidence)"/><text x="400" y="116" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">ThreatSource</text><text x="400" y="130" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">evidence · count 0</text></g><g class="gnode" data-obj="CredentialExposure" style="cursor:pointer"><rect x="81" y="279" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-evidence)" stroke-width="1.4"/><rect x="81" y="279" width="4" height="42" rx="2" fill="var(--c-evidence)"/><text x="150" y="298" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">CredentialExposure</text><text x="150" y="312" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">evidence · count 0</text></g><g class="gnode" data-obj="Identity" style="cursor:pointer"><rect x="331" y="279" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-entity)" stroke-width="1.4"/><rect x="331" y="279" width="4" height="42" rx="2" fill="var(--c-entity)"/><text x="400" y="298" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">Identity</text><text x="400" y="312" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">entity · count 0</text></g><g class="gnode" data-obj="Domain" style="cursor:pointer"><rect x="541" y="279" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-entity)" stroke-width="1.4"/><rect x="541" y="279" width="4" height="42" rx="2" fill="var(--c-entity)"/><text x="610" y="298" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">Domain</text><text x="610" y="312" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">entity · count 0</text></g><g class="gnode" data-obj="Supplier" style="cursor:pointer"><rect x="751" y="279" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-entity)" stroke-width="1.4"/><rect x="751" y="279" width="4" height="42" rx="2" fill="var(--c-entity)"/><text x="820" y="298" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">Supplier</text><text x="820" y="312" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">entity · count 0</text></g><g class="gnode" data-obj="Prime" style="cursor:pointer"><rect x="941" y="279" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-entity)" stroke-width="1.4"/><rect x="941" y="279" width="4" height="42" rx="2" fill="var(--c-entity)"/><text x="1010" y="298" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">Prime</text><text x="1010" y="312" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">entity · count 0</text></g><g class="gnode" data-obj="Program" style="cursor:pointer"><rect x="1111" y="279" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-entity)" stroke-width="1.4"/><rect x="1111" y="279" width="4" height="42" rx="2" fill="var(--c-entity)"/><text x="1180" y="298" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">Program</text><text x="1180" y="312" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">entity · count 0</text></g><g class="gnode" data-obj="MergeProposal" style="cursor:pointer"><rect x="331" y="479" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-output)" stroke-width="1.4"/><rect x="331" y="479" width="4" height="42" rx="2" fill="var(--c-output)"/><text x="400" y="498" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">MergeProposal</text><text x="400" y="512" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">human-review · count 0</text></g><g class="gnode" data-obj="CompromiseIncident" style="cursor:pointer"><rect x="541" y="479" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-derived)" stroke-width="1.4"/><rect x="541" y="479" width="4" height="42" rx="2" fill="var(--c-derived)"/><text x="610" y="498" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">CompromiseIncident</text><text x="610" y="512" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">derived · count 0</text></g><g class="gnode" data-obj="RiskAssessment" style="cursor:pointer"><rect x="751" y="479" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-derived)" stroke-width="1.4"/><rect x="751" y="479" width="4" height="42" rx="2" fill="var(--c-derived)"/><text x="820" y="498" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">RiskAssessment</text><text x="820" y="512" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">derived · count 0</text></g><g class="gnode" data-obj="NotificationDraft" style="cursor:pointer"><rect x="941" y="479" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-output)" stroke-width="1.4"/><rect x="941" y="479" width="4" height="42" rx="2" fill="var(--c-output)"/><text x="1010" y="498" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">NotificationDraft</text><text x="1010" y="512" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">human-review · count 0</text></g><g class="gnode" data-obj="ProgramExposure" style="cursor:pointer"><rect x="1111" y="479" width="138" height="42" rx="6" fill="var(--surface-2)" stroke="var(--c-derived)" stroke-width="1.4"/><rect x="1111" y="479" width="4" height="42" rx="2" fill="var(--c-derived)"/><text x="1180" y="498" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="var(--ink)">ProgramExposure</text><text x="1180" y="512" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="var(--muted)">derived · count 0</text></g></svg></div>
+    <div class="legend"><span><span class="dot" style="background:var(--c-entity)"></span>Entity / registry</span><span><span class="dot" style="background:var(--c-evidence)"></span>Evidence (observed)</span><span><span class="dot" style="background:var(--c-derived)"></span>Derived judgment</span><span><span class="dot" style="background:var(--c-output)"></span>Human-review / output</span><span><span class="dot" style="background:var(--cross)"></span>targets cross-edge (of ≠ targets)</span><span><span class="dot" style="background:var(--c-entity)"></span>highlighted credential→program path</span></div>
+    <div class="why"><span class="whytag">WHY ONTOLOGY</span>subcontractsTo* 가변깊이 — 하도급 체인 깊이는 미리 정해지지 않는다. Program 도달 여부는 재귀 그래프 질의(WITH RECURSIVE)이지 고정 JOIN이 아니다.</div>
+    <div class="pathstrip">
+      <div class="lbl">Highlighted credential → program path — WHY each hop exists</div>
+      <div class="hoplist"><div class="hop"><span class="hopn mono"><span class="dot" style="background:var(--c-evidence)"></span>CredentialExposure</span><span class="hopedge mono">—of→</span><span class="hopwhy">어느 신원의 자격증명인가 — 소유 조직으로 귀속 (targets 와 분리)</span></div><div class="hop"><span class="hopn mono"><span class="dot" style="background:var(--c-entity)"></span>Identity</span><span class="hopedge mono">—belongs_to→</span><span class="hopwhy">신원 → 홈 Domain (한 Identity = 정확히 한 협력사)</span></div><div class="hop"><span class="hopn mono"><span class="dot" style="background:var(--c-entity)"></span>Domain</span><span class="hopedge mono">—owned_by⁻¹ (owns)→</span><span class="hopwhy">홈 도메인을 소유한 Supplier 로 귀속</span></div><div class="hop"><span class="hopn mono"><span class="dot" style="background:var(--c-entity)"></span>Supplier</span><span class="hopedge mono">—subcontractsTo* · supplies→</span><span class="hopwhy">가변깊이 하도급 → 원청 (재귀 traverse — JOIN 불가)</span></div><div class="hop"><span class="hopn mono"><span class="dot" style="background:var(--c-entity)"></span>Prime</span><span class="hopedge mono">—runs→</span><span class="hopwhy">원청이 운영/계약한 프로그램</span></div><div class="hop"><span class="hopn mono"><span class="dot" style="background:var(--c-entity)"></span>Program</span><span class="hopedge mono">◉ 최상단</span><span class="hopwhy">전파 최상단 — 보호 대상 (여기 닿으면 경보)</span></div></div>
+      <div class="pathnote"><span class="dot" style="background:var(--c-entity)"></span>
+      <b>of</b> = 누구의 자격증명인가 (Identity의 홈 조직).
+      <span class="dot" style="background:var(--cross)"></span>
+      <b>targets</b> = 무슨 자산에 접근하는가 (다른 조직의 Domain일 수 있음 — 크로스-조직 엣지가 핵심).</div>
+      <div class="why"><span class="whytag">WHY ONTOLOGY</span>of ≠ targets — 자격증명의 소유 조직(of→Identity 홈)과 접근 대상 자산(targets→Domain, 다른 조직일 수 있음)을 분리해야 &#x27;프로그램으로 가는 활성 경로&#x27;가 표현된다. flat table은 한 행에 두 조직을 담지 못한다.</div>
+    </div>
+  </main>
+  <aside class="v1insp" id="insp">
+    <div class="insphd"><span class="lbl">Inspector</span></div>
+    <div id="inspbody" class="inspbody">
+      <div class="empty-slot">Select an object type — 속성·링크·lifecycle·provenance 계약이
+      여기에 (전부 빈 상태로) 표시됩니다.</div>
+    </div>
+  </aside>
+</div>
+<style>
+.v1wrap{display:grid;grid-template-columns:236px minmax(0,1fr) 340px;
+  height:calc(100vh - 118px);min-height:560px}
+.v1rail{border-right:1px solid var(--hair);background:var(--surface);padding:10px 0;overflow-y:auto}
+.railhd{display:flex;justify-content:space-between;align-items:center;padding:2px 14px 6px}
+.railsub{padding:0 14px 8px;font-size:11px;color:var(--muted)}
+.otgroup{padding:6px 0 4px}
+.otgroup .lbl{padding:2px 14px 4px}
+.ot{display:flex;align-items:center;gap:9px;padding:5px 14px;cursor:pointer;
+  border-left:2px solid transparent}
+.ot:hover{background:var(--surface-2)}
+.ot.sel{background:var(--raised);border-left-color:var(--c-entity)}
+.ot .otn{font-family:var(--mono);font-size:12px;color:var(--ink-2);flex:1}
+.ot.sel .otn{color:var(--ink)}
+.v1center{padding:12px 16px;overflow:auto}
+.centerhd{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
+.centernote{font-size:11.5px;color:var(--muted)}
+.centernote b{color:var(--ink-2)}
+.graphbox{border:1px solid var(--hair);border-radius:8px;background:
+  radial-gradient(circle at 30% 20%,#151514,#0f0f0e);padding:8px}
+.legend{margin:10px 2px}
+.pathstrip{margin-top:12px;border:1px solid var(--hair);border-radius:8px;
+  background:var(--surface);padding:10px 12px}
+.pathchain{font-size:12.5px;color:var(--ink);margin:6px 0;word-break:break-word}
+.pathnote{font-size:11px;color:var(--ink-2);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.pathnote b{color:var(--ink)}
+.v1insp{border-left:1px solid var(--hair);background:var(--surface);overflow-y:auto}
+.insphd{padding:10px 14px;border-bottom:1px solid var(--hair);position:sticky;top:0;
+  background:var(--surface)}
+.inspbody{padding:12px 14px;display:flex;flex-direction:column;gap:12px}
+.isec .lbl{margin-bottom:5px;display:block}
+.ilink{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);padding:4px 0;
+  border-top:1px solid var(--hair)}
+.ilink .lk{color:var(--c-entity)} .ilink .tg{color:var(--ink)}
+.ilink .nt{color:var(--muted);display:block;font-size:10.5px}
+.hoplist{margin:6px 0}
+.hop{display:flex;align-items:baseline;gap:10px;padding:5px 0;border-top:1px solid var(--hair);
+  flex-wrap:wrap}
+.hopn{font-size:12px;color:var(--ink);display:flex;align-items:center;gap:7px;width:180px;flex:none}
+.hopedge{font-size:10.5px;color:var(--c-entity);width:210px;flex:none}
+.hopwhy{font-size:11px;color:var(--ink-2);flex:1;min-width:180px}
+</style>
+<script>
+const SCHEMA = {"Supplier": {"kind": "entity", "role": "협력사 (엔티티)", "props": [["id", "PK · string", "‹id›"], ["name", "string", "‹string›"], ["domains", "string[]", "[ ‹fqdn›, … ]"], ["tier", "enum 1 | 2", "•"], ["criticality", "enum high | medium | low", "•••"]], "out": [["owns", "Domain", "home Domain owned_by Supplier (traverse uses reverse)"], ["subcontractsTo", "Supplier", "variable-depth tier chain (2차 → 1차 → …)"], ["supplies", "Prime", "supplier delivers to prime"]], "in": [["subcontractsTo", "Supplier", "variable-depth tier chain (2차 → 1차 → …)"], ["traverses", "CompromiseIncident", "the active-compromise path object (variable length)"]], "lifecycle": null, "prov": null}, "Prime": {"kind": "entity", "role": "원청 / 주계약", "props": [["id", "PK · string", "‹id›"], ["name", "string", "‹string›"], ["program_refs", "ref[] → Program", "[ ‹program:id›, … ]"]], "out": [["runs", "Program", "prime runs the defense program (top of propagation)"]], "in": [["supplies", "Supplier", "supplier delivers to prime"]], "lifecycle": null, "prov": null}, "Program": {"kind": "entity", "role": "방산 프로그램 (전파 최상단)", "props": [["id", "PK · string", "‹id›"], ["name", "string", "‹string›"], ["sensitivity", "enum high | med | low", "•••"]], "out": [], "in": [["runs", "Prime", "prime runs the defense program (top of propagation)"]], "lifecycle": null, "prov": null}, "Domain": {"kind": "entity", "role": "업체 자산 (상관 키)", "props": [["fqdn", "PK · string", "‹asset›.example"], ["supplier_ref", "ref → Supplier", "‹supplier:id›"], ["asset_type", "enum domain|vpn|sso|mail|dev|web", "•••"], ["access_surface", "enum admin|remote_access|portal|…", "•••"]], "out": [], "in": [["belongs_to", "Identity", "Identity → its home Domain (one Supplier)"], ["owns", "Supplier", "home Domain owned_by Supplier (traverse uses reverse)"], ["targets", "CredentialExposure", "what asset it accesses — may be a DIFFERENT org's Domain (the point)"]], "lifecycle": null, "prov": null}, "Identity": {"kind": "entity", "role": "계정 신원 (엔티티 해소 대상)", "props": [["id", "PK · string", "‹id›"], ["email", "string?", "‹local›@‹org›.example"], ["username", "string?", "‹string›"], ["domain_ref", "ref → Domain", "‹fqdn›"]], "out": [["belongs_to", "Domain", "Identity → its home Domain (one Supplier)"]], "in": [["of", "CredentialExposure", "whose credential — the Identity's HOME org"], ["compromises", "InfectedDevice", "= leaked ∘ of; cross-org blast is device-level"], ["merge_candidates", "MergeProposal", "identity-resolution candidate pair"]], "lifecycle": null, "prov": null}, "CredentialExposure": {"kind": "evidence", "role": "유출 레코드 = 증거", "props": [["id", "PK · string", "‹id›"], ["module", "enum feed-module", "‹stealer|url-pass|breach|combo›"], ["secret_type", "enum plaintext|hash|cookie|token", "•••"], ["masked_value", "string (masked at boundary)", "••••••"], ["host", "string?", "‹asset›.example"], ["source_ref", "provenance handle", "‹src:id›"], ["observed_at", "epoch-secs", "‹epoch-secs›"], ["confidence", "float 0–1", "0.•"]], "out": [["of", "Identity", "whose credential — the Identity's HOME org"], ["targets", "Domain", "what asset it accesses — may be a DIFFERENT org's Domain (the point)"], ["sourced_from", "ThreatSource", "where it was observed (provenance)"]], "in": [["leaked", "InfectedDevice", "one infected device leaks many credentials"], ["evidenced_by", "RiskAssessment", "provenance / citation (min 1, else refuse)"]], "lifecycle": null, "prov": null}, "InfectedDevice": {"kind": "evidence", "role": "스틸러 감염기기 = 활성 신호", "props": [["device_id", "PK · string", "‹id›"], ["malware", "string?", "‹string›"], ["infected_at", "epoch-secs", "‹epoch-secs›"], ["has_session_cookie", "bool", "◦ true | false"], ["account_type", "enum vpn | admin | user", "•••"], ["os", "string?", "‹string›"]], "out": [["leaked", "CredentialExposure", "one infected device leaks many credentials"], ["compromises", "Identity", "= leaked ∘ of; cross-org blast is device-level"]], "in": [], "lifecycle": null, "prov": null}, "ThreatSource": {"kind": "evidence", "role": "관측 출처 (provenance)", "props": [["id", "PK · string", "‹id›"], ["kind", "enum darkweb|telegram|combo|breach", "•••"], ["name", "string", "‹string›"]], "out": [], "in": [["sourced_from", "CredentialExposure", "where it was observed (provenance)"]], "lifecycle": null, "prov": null}, "RiskAssessment": {"kind": "derived", "role": "파생 · 협력사 위험판정", "props": [["id", "PK · string", "risk:‹supplier›"], ["supplier_ref", "ref → Supplier", "‹supplier:id›"], ["score", "float 0–100", "‹0–100›"], ["grade", "enum 즉시 | 주의 | 관찰", "•••"], ["active_flag", "bool (from path existence)", "◦ true | false"], ["computed_at", "epoch-secs", "‹epoch-secs›"], ["components", "json (explainable breakdown)", "{ … }"]], "out": [["evidenced_by", "CredentialExposure", "provenance / citation (min 1, else refuse)"]], "in": [["cites", "NotificationDraft", "draft evidence (min 1, else refuse)"]], "lifecycle": null, "prov": {"link": "evidenced_by", "targets": "CredentialExposure / InfectedDevice", "min": 1, "refuse": "EvidenceRequired"}}, "CompromiseIncident": {"kind": "derived", "role": "파생 · 활성침해 경보", "props": [["id", "PK · string", "incident:‹supplier›"], ["supplier_ref", "ref → Supplier", "‹supplier:id›"], ["opened_at", "epoch-secs", "‹epoch-secs›"], ["status", "enum (lifecycle ↓)", "•••"], ["path", "node[] (traverses, variable-length)", "[ … ]"], ["blast_radius", "json { primes[], programs[] }", "{ … }"]], "out": [["traverses", "Supplier", "the active-compromise path object (variable length)"]], "in": [["evidenced_by", "ProgramExposure", "rollup provenance (min 1, else refuse)"]], "lifecycle": {"states": ["flagged", "acknowledged", "assigned", "closed"], "terminal": ["remediated", "false_positive"], "note": "human-on-the-loop · engine emits 'flagged' (open); ack/assign/close = analyst actions"}, "prov": {"link": "traverses", "targets": "Device → Identity → Supplier… → Prime → Program", "min": "complete path", "refuse": "PathIncomplete"}}, "ProgramExposure": {"kind": "derived", "role": "파생 · 프로그램 단위 롤업", "props": [["id", "PK · string", "progexp:‹program›"], ["program_ref", "ref → Program", "‹program:id›"], ["score", "float 0–100", "‹0–100›"], ["grade", "enum 즉시 | 주의 | 관찰", "•••"], ["active_flag", "bool (any contributing incident)", "◦ true | false"], ["contributing_paths", "json[] (per distinct supplier)", "[ … ]"]], "out": [["evidenced_by", "CompromiseIncident", "rollup provenance (min 1, else refuse)"]], "in": [], "lifecycle": {"states": ["open", "acknowledged", "closed"], "terminal": ["stale"], "note": "PropagateRisk rollup · acknowledge / mark_stale / close = analyst actions"}, "prov": {"link": "evidenced_by", "targets": "CompromiseIncident / RiskAssessment", "min": 1, "refuse": "ProgramEvidenceRequired"}}, "MergeProposal": {"kind": "output", "role": "엔티티 해소 후보 (사람 승인)", "props": [["id", "PK · string", "merge:‹a›|‹b›"], ["identity_a", "ref → Identity (keep)", "‹identity:id›"], ["identity_b", "ref → Identity (drop-on-confirm)", "‹identity:id›"], ["basis", "string (rule provenance)", "‹string›"], ["status", "enum (lifecycle ↓)", "•••"]], "out": [["merge_candidates", "Identity", "identity-resolution candidate pair"]], "in": [], "lifecycle": {"states": ["pending", "confirmed"], "terminal": ["rejected"], "note": "confirm/reject only by a human — nothing merges automatically"}, "prov": null}, "NotificationDraft": {"kind": "output", "role": "산출 · 통보 초안", "props": [["id", "PK · string", "draft:‹supplier›"], ["supplier_ref", "ref → Supplier", "‹supplier:id›"], ["body", "string (masked, template)", "‹markdown, secrets masked›"], ["evidence_refs", "ref[] (cites)", "[ … ]"], ["created_at", "epoch-secs", "‹epoch-secs›"], ["status", "enum (lifecycle ↓)", "•••"]], "out": [["cites", "RiskAssessment", "draft evidence (min 1, else refuse)"]], "in": [], "lifecycle": {"states": ["draft", "reviewed", "approved", "exported"], "terminal": [], "note": "NO 'sent' state — the system never sends. Human review before every transition."}, "prov": {"link": "cites", "targets": "Exposure / Device / Incident / RiskAssessment", "min": 1, "refuse": "CitationRequired"}}};
+const WHYJS = {"of_targets": "of ≠ targets — 자격증명의 소유 조직(of→Identity 홈)과 접근 대상 자산(targets→Domain, 다른 조직일 수 있음)을 분리해야 '프로그램으로 가는 활성 경로'가 표현된다. flat table은 한 행에 두 조직을 담지 못한다.", "variable_depth": "subcontractsTo* 가변깊이 — 하도급 체인 깊이는 미리 정해지지 않는다. Program 도달 여부는 재귀 그래프 질의(WITH RECURSIVE)이지 고정 JOIN이 아니다.", "provenance": "provenance 강제 — RiskAssessment/Incident/ProgramExposure/NotificationDraft 는 evidenced_by/cites 링크 없이는 생성이 거부된다. 감사가능성이 앱 코드가 아니라 온톨로지 레벨에서 강제된다.", "state_machine": "액션 = 객체 상태 전이 — flagged→acknowledged→assigned→closed, draft→reviewed→approved→exported. human-on-the-loop 이 앱 로직이 아니라 객체 모델의 속성이다.", "band": "트리아지 밴드 = 그래프 결과 — 밴드는 경로 존재(active_flag)에서 파생된다. active_floor(70) > base_cap(60) 이므로 활성 경로 1건이 비활성 누적 유출 전체를 항상 상회한다. 스코어 튜닝이 아니라 그래프 불변식.", "entity_res": "엔티티 해소 — 한 사람이 여러 이메일 스펠링·여러 피드에 흩어진다. Identity 병합은 MergeProposal 상태 전이(사람 승인)로, 링크 재지향이지 문자열 정렬이 아니다.", "rollup": "다중홉 집계 — 한 Program에 닿는 모든 협력사 경로를 롤업. distinct Supplier 기준 dedup(다이아몬드 공급망 이중계산 금지)은 경로 그래프에서만 정확히 나온다."};
+const KINDCOL = {entity:"var(--c-entity)",evidence:"var(--c-evidence)",
+  derived:"var(--c-derived)",output:"var(--c-output)"};
+function esc(s){return String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function whyBox(t){return '<div class="why"><span class="whytag">WHY ONTOLOGY</span>'+esc(t)+'</div>';}
+function renderInspector(name){
+  const o = SCHEMA[name]; if(!o) return;
+  const col = KINDCOL[o.kind];
+  let h = '<div class="contract"><div class="chead">'+
+    '<span class="dot" style="background:'+col+'"></span>'+
+    '<span class="nm">'+esc(name)+'</span>'+
+    '<span class="role">'+esc(o.role)+'</span></div><table>';
+  o.props.forEach(p=>{ h += '<tr><td class="k">'+esc(p[0])+'</td>'+
+    '<td class="t">'+esc(p[1])+'</td><td class="v">'+esc(p[2])+'</td></tr>'; });
+  h += '</table></div>';
+
+  // lifecycle
+  if(o.lifecycle){
+    let sm='<div class="sm">';
+    o.lifecycle.states.forEach((s,i)=>{ sm+='<span class="st'+(i===0?' start':'')+'">'+esc(s)+'</span>';
+      if(i<o.lifecycle.states.length-1) sm+='<span class="arrow">→</span>'; });
+    (o.lifecycle.terminal||[]).forEach(t=>{
+      const good=["remediated","confirmed","approved","exported"].includes(t);
+      const bad=["false_positive","rejected","stale"].includes(t);
+      sm+='<span class="term '+(good?'ok':(bad?'bad':''))+'">'+esc(t)+'</span>'; });
+    sm+='</div><div class="smnote">'+esc(o.lifecycle.note)+'</div>';
+    h += '<div class="isec"><span class="lbl">Lifecycle (state machine)</span>'+sm+
+      whyBox(WHYJS.state_machine)+'</div>';
+  }
+  // provenance drill-down (empty but present)
+  if(o.prov){
+    h += '<div class="isec"><span class="lbl">Provenance — evidence drill-down</span>'+
+      '<div class="prov">link <b>'+esc(o.prov.link)+'</b> → '+esc(o.prov.targets)+
+      ' · min '+esc(o.prov.min)+' · empty ⇒ <span class="refuse">'+esc(o.prov.refuse)+
+      '</span> (거부)</div>'+
+      '<div class="empty-slot" style="margin-top:6px">0 evidence rows — drill-down empty</div>'+
+      whyBox(WHYJS.provenance)+'</div>';
+  }
+  if(name==="Identity"||name==="MergeProposal") h += whyBox(WHYJS.entity_res);
+  if(name==="CredentialExposure") h += whyBox(WHYJS.of_targets);
+  if(name==="Supplier"||name==="Program") h += whyBox(WHYJS.variable_depth);
+  // links
+  let lo = o.out.map(l=>'<div class="ilink"><span class="lk">'+esc(l[0])+'</span> → '+
+     '<span class="tg">'+esc(l[1])+'</span><span class="nt">'+esc(l[2])+'</span></div>').join('');
+  let li = o.in.map(l=>'<div class="ilink"><span class="tg">'+esc(l[1])+'</span> —'+
+     '<span class="lk">'+esc(l[0])+'</span>→ <span class="tg">'+esc(name)+'</span>'+
+     '<span class="nt">'+esc(l[2])+'</span></div>').join('');
+  if(lo) h += '<div class="isec"><span class="lbl">Links out</span>'+lo+'</div>';
+  if(li) h += '<div class="isec"><span class="lbl">Links in</span>'+li+'</div>';
+
+  h += '<div class="isec"><span class="lbl">Property values</span>'+
+    '<div class="empty-slot">0 instances — every property slot empty (see contract above)</div></div>';
+  document.getElementById('inspbody').innerHTML = h;
+  document.querySelectorAll('.ot').forEach(e=>e.classList.toggle('sel', e.dataset.obj===name));
+  document.querySelectorAll('.gnode rect').forEach(r=>r.setAttribute('stroke-width','1.4'));
+}
+document.addEventListener('click',e=>{
+  const t = e.target.closest('[data-obj]');
+  if(t) renderInspector(t.dataset.obj);
+});
+renderInspector('CredentialExposure');
+</script>
+
+<div class="footer">structure-only preview · no network · no data · masked placeholders only ·
+object/link/state names are API identifiers (English) · generated by scripts/palantir_pages.py</div>
+</body></html>

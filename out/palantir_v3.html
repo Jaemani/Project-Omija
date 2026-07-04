@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omija · V3 Data Contracts</title>
+<style>
+:root{
+  --plane:#0d0d0d; --surface:#141413; --surface-2:#1a1a19; --raised:#201f1d;
+  --ink:#ececea; --ink-2:#a9a89f; --muted:#6f6e68;
+  --hair:#262624; --hair-2:#35342f;
+  /* validated dark-mode CATEGORICAL hues (dataviz reference palette, dark col) */
+  --c-entity:#3987e5;    /* blue   slot1 — entity/registry */
+  --c-evidence:#199e70;  /* aqua   slot2 — observed evidence */
+  --c-derived:#c98500;   /* yellow slot3 — derived judgment (NOT the status amber) */
+  --c-output:#9085e9;    /* violet slot5 — human/output */
+  --cross:#ec835a;       /* status 'serious' — the single targets cross-edge (labelled) */
+  /* triage bands = fixed status ramp (never a series colour) */
+  --band-a:#d03b3b;      /* critical — active compromise path */
+  --band-b:#fab219;      /* warning  — elevated exposure */
+  --band-c:#3987e5;      /* recessive— observed / passive */
+  --mono:ui-monospace,SFMono-Regular,Menlo,"Cascadia Code",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--plane);color:var(--ink);
+  font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+a{color:var(--c-entity)}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:.2px}
+code,kbd,.mono{font-family:var(--mono)}
+.scroll-x{overflow-x:auto;overflow-y:hidden}
+.topbar{display:flex;align-items:center;gap:14px;padding:10px 18px;
+  border-bottom:1px solid var(--hair);background:var(--surface);position:sticky;top:0;z-index:5}
+.topbar .brand{font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
+  color:var(--ink);text-transform:uppercase}
+.topbar .ver{font-family:var(--mono);font-size:11px;color:var(--muted);
+  border:1px solid var(--hair-2);border-radius:3px;padding:2px 7px}
+.topbar .empty-pill{margin-left:auto;font-family:var(--mono);font-size:11px;
+  color:var(--band-b);border:1px solid var(--hair-2);border-radius:3px;padding:2px 8px;
+  display:flex;gap:7px;align-items:center}
+.topbar .empty-pill::before{content:"";width:7px;height:7px;border-radius:50%;
+  background:var(--band-b);box-shadow:0 0 6px var(--band-b)}
+.qbar{padding:10px 18px;border-bottom:1px solid var(--hair);background:var(--surface-2);
+  font-size:12.5px;color:var(--ink-2)}
+.qbar b{color:var(--ink);font-weight:600}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:1px;color:var(--muted);
+  text-transform:uppercase}
+.count0{font-family:var(--mono);font-size:11px;color:var(--muted);
+  border:1px solid var(--hair-2);border-radius:10px;padding:0 7px;min-width:20px;
+  display:inline-flex;justify-content:center}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.empty-slot{border:1px dashed var(--hair-2);border-radius:5px;background:
+  repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(255,255,255,.012) 7px,rgba(255,255,255,.012) 14px);
+  color:var(--muted);font-family:var(--mono);font-size:11px;padding:10px 12px}
+.contract{border:1px solid var(--hair-2);border-radius:6px;background:var(--surface);
+  overflow:hidden}
+.contract .chead{display:flex;align-items:center;gap:8px;padding:7px 11px;
+  border-bottom:1px solid var(--hair);background:var(--surface-2)}
+.contract .chead .nm{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+.contract .chead .role{font-size:11px;color:var(--muted);margin-left:auto}
+.contract table{width:100%;border-collapse:collapse;font-size:12px}
+.contract td{padding:5px 11px;border-top:1px solid var(--hair);vertical-align:top}
+.contract td.k{font-family:var(--mono);color:var(--ink-2);white-space:nowrap;width:38%}
+.contract td.t{color:var(--muted);font-size:11px;width:34%}
+.contract td.v{font-family:var(--mono);color:var(--c-evidence);text-align:right;
+  opacity:.75}
+.prov{padding:7px 11px;border-top:1px solid var(--hair);font-size:11px;color:var(--ink-2);
+  background:rgba(250,178,25,.05)}
+.prov b{color:var(--c-derived)}
+.refuse{color:var(--band-a);font-family:var(--mono);font-size:10.5px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:6px}
+/* state machine pills */
+.sm{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.sm .st{font-family:var(--mono);font-size:11.5px;padding:5px 11px;border:1px solid var(--hair-2);
+  border-radius:4px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.sm .st.start{border-color:var(--c-entity);color:var(--ink)}
+.sm .arrow{color:var(--muted);padding:0 8px;font-family:var(--mono)}
+.sm .term{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:4px;
+  border:1px dashed var(--hair-2);color:var(--muted);margin-left:6px}
+.sm .term.ok{border-color:rgba(12,163,12,.5);color:#7bcf7b}
+.sm .term.bad{border-color:rgba(208,59,59,.5);color:#e88}
+.smnote{font-size:11px;color:var(--muted);margin-top:6px}
+.no-send{color:var(--band-a);font-family:var(--mono);font-size:11px;
+  border:1px solid rgba(208,59,59,.4);border-radius:4px;padding:3px 9px;display:inline-block}
+.footer{padding:14px 18px;border-top:1px solid var(--hair);color:var(--muted);
+  font-size:11px;font-family:var(--mono)}
+/* "why ontology" annotation - the project's load-bearing argument */
+.why{font-size:11px;color:var(--ink-2);border-left:2px solid var(--c-output);
+  padding:5px 10px;margin:6px 0;background:rgba(144,133,233,.06);border-radius:0 4px 4px 0}
+.why .whytag{font-family:var(--mono);font-size:9px;letter-spacing:1.2px;color:var(--c-output);
+  display:inline-block;margin-right:8px;vertical-align:1px}
+.why b{color:var(--ink)}
+.whybar{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.whybar .chip{font-family:var(--mono);font-size:10px;color:var(--c-output);
+  border:1px solid rgba(144,133,233,.35);border-radius:12px;padding:2px 9px}
+</style></head>
+<body>
+<div class="topbar">
+  <span class="brand">OMIJA · SUPPLY-CHAIN CREDENTIAL EXPOSURE</span>
+  <span class="ver">V3 · DATA CONTRACTS</span>
+  <span style="font-size:12px;color:var(--ink-2)">per-type contracts · pipeline flow · feed candidates</span>
+  <span class="empty-pill">EMPTY STATE · 데이터 슬롯 전부 비어있음</span>
+</div>
+<div class="qbar"><b>조직 질문 / organising question — </b>Which supplier appears to create an ACTIVE path into a protected defense program, why does it matter now, and what action should be prepared first?</div>
+
+<div class="v3wrap">
+  <section class="v3sec">
+    <div class="secthd"><span class="lbl">Object-type contracts — 13 types, every slot empty</span>
+      <span class="count0">13</span></div>
+    <div class="v3note">각 카드 = 후보 입력 형태 (속성·타입·마스킹 placeholder) + lifecycle +
+      필수 provenance 링크. 값은 전부 비어있음.</div>
+    <div class="why"><span class="whytag">WHY ONTOLOGY</span>provenance 강제 — RiskAssessment/Incident/ProgramExposure/NotificationDraft 는 evidenced_by/cites 링크 없이는 생성이 거부된다. 감사가능성이 앱 코드가 아니라 온톨로지 레벨에서 강제된다.</div>
+    <div class="cgrid"><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-entity)"></span><span class="nm">Supplier</span><span class="role">협력사 (엔티티)</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">‹id›</td></tr><tr><td class="k">name</td><td class="t">string</td><td class="v">‹string›</td></tr><tr><td class="k">domains</td><td class="t">string[]</td><td class="v">[ ‹fqdn›, … ]</td></tr><tr><td class="k">tier</td><td class="t">enum 1 | 2</td><td class="v">•</td></tr><tr><td class="k">criticality</td><td class="t">enum high | medium | low</td><td class="v">•••</td></tr></table></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-entity)"></span><span class="nm">Prime</span><span class="role">원청 / 주계약</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">‹id›</td></tr><tr><td class="k">name</td><td class="t">string</td><td class="v">‹string›</td></tr><tr><td class="k">program_refs</td><td class="t">ref[] → Program</td><td class="v">[ ‹program:id›, … ]</td></tr></table></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-entity)"></span><span class="nm">Program</span><span class="role">방산 프로그램 (전파 최상단)</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">‹id›</td></tr><tr><td class="k">name</td><td class="t">string</td><td class="v">‹string›</td></tr><tr><td class="k">sensitivity</td><td class="t">enum high | med | low</td><td class="v">•••</td></tr></table></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-entity)"></span><span class="nm">Domain</span><span class="role">업체 자산 (상관 키)</span></div><table><tr><td class="k">fqdn</td><td class="t">PK · string</td><td class="v">‹asset›.example</td></tr><tr><td class="k">supplier_ref</td><td class="t">ref → Supplier</td><td class="v">‹supplier:id›</td></tr><tr><td class="k">asset_type</td><td class="t">enum domain|vpn|sso|mail|dev|web</td><td class="v">•••</td></tr><tr><td class="k">access_surface</td><td class="t">enum admin|remote_access|portal|…</td><td class="v">•••</td></tr></table></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-entity)"></span><span class="nm">Identity</span><span class="role">계정 신원 (엔티티 해소 대상)</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">‹id›</td></tr><tr><td class="k">email</td><td class="t">string?</td><td class="v">‹local›@‹org›.example</td></tr><tr><td class="k">username</td><td class="t">string?</td><td class="v">‹string›</td></tr><tr><td class="k">domain_ref</td><td class="t">ref → Domain</td><td class="v">‹fqdn›</td></tr></table></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-evidence)"></span><span class="nm">CredentialExposure</span><span class="role">유출 레코드 = 증거</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">‹id›</td></tr><tr><td class="k">module</td><td class="t">enum feed-module</td><td class="v">‹stealer|url-pass|breach|combo›</td></tr><tr><td class="k">secret_type</td><td class="t">enum plaintext|hash|cookie|token</td><td class="v">•••</td></tr><tr><td class="k">masked_value</td><td class="t">string (masked at boundary)</td><td class="v">••••••</td></tr><tr><td class="k">host</td><td class="t">string?</td><td class="v">‹asset›.example</td></tr><tr><td class="k">source_ref</td><td class="t">provenance handle</td><td class="v">‹src:id›</td></tr><tr><td class="k">observed_at</td><td class="t">epoch-secs</td><td class="v">‹epoch-secs›</td></tr><tr><td class="k">confidence</td><td class="t">float 0–1</td><td class="v">0.•</td></tr></table></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-evidence)"></span><span class="nm">InfectedDevice</span><span class="role">스틸러 감염기기 = 활성 신호</span></div><table><tr><td class="k">device_id</td><td class="t">PK · string</td><td class="v">‹id›</td></tr><tr><td class="k">malware</td><td class="t">string?</td><td class="v">‹string›</td></tr><tr><td class="k">infected_at</td><td class="t">epoch-secs</td><td class="v">‹epoch-secs›</td></tr><tr><td class="k">has_session_cookie</td><td class="t">bool</td><td class="v">◦ true | false</td></tr><tr><td class="k">account_type</td><td class="t">enum vpn | admin | user</td><td class="v">•••</td></tr><tr><td class="k">os</td><td class="t">string?</td><td class="v">‹string›</td></tr></table></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-evidence)"></span><span class="nm">ThreatSource</span><span class="role">관측 출처 (provenance)</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">‹id›</td></tr><tr><td class="k">kind</td><td class="t">enum darkweb|telegram|combo|breach</td><td class="v">•••</td></tr><tr><td class="k">name</td><td class="t">string</td><td class="v">‹string›</td></tr></table></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-derived)"></span><span class="nm">RiskAssessment</span><span class="role">파생 · 협력사 위험판정</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">risk:‹supplier›</td></tr><tr><td class="k">supplier_ref</td><td class="t">ref → Supplier</td><td class="v">‹supplier:id›</td></tr><tr><td class="k">score</td><td class="t">float 0–100</td><td class="v">‹0–100›</td></tr><tr><td class="k">grade</td><td class="t">enum 즉시 | 주의 | 관찰</td><td class="v">•••</td></tr><tr><td class="k">active_flag</td><td class="t">bool (from path existence)</td><td class="v">◦ true | false</td></tr><tr><td class="k">computed_at</td><td class="t">epoch-secs</td><td class="v">‹epoch-secs›</td></tr><tr><td class="k">components</td><td class="t">json (explainable breakdown)</td><td class="v">{ … }</td></tr></table><div class="prov">provenance <b>evidenced_by</b> → CredentialExposure / InfectedDevice · min 1 · empty ⇒ <span class="refuse">EvidenceRequired</span> (거부)</div></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-derived)"></span><span class="nm">CompromiseIncident</span><span class="role">파생 · 활성침해 경보</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">incident:‹supplier›</td></tr><tr><td class="k">supplier_ref</td><td class="t">ref → Supplier</td><td class="v">‹supplier:id›</td></tr><tr><td class="k">opened_at</td><td class="t">epoch-secs</td><td class="v">‹epoch-secs›</td></tr><tr><td class="k">status</td><td class="t">enum (lifecycle ↓)</td><td class="v">•••</td></tr><tr><td class="k">path</td><td class="t">node[] (traverses, variable-length)</td><td class="v">[ … ]</td></tr><tr><td class="k">blast_radius</td><td class="t">json { primes[], programs[] }</td><td class="v">{ … }</td></tr></table><div class="prov" style="background:rgba(57,135,229,.05)"><div class="sm"><span class="st start">flagged</span><span class="arrow">→</span><span class="st">acknowledged</span><span class="arrow">→</span><span class="st">assigned</span><span class="arrow">→</span><span class="st">closed</span><span class="term ok">remediated</span><span class="term bad">false_positive</span></div><span class="smnote" style="margin-left:8px">human-on-the-loop · engine emits &#x27;flagged&#x27; (open); ack/assign/close = analyst actions</span></div><div class="prov">provenance <b>traverses</b> → Device → Identity → Supplier… → Prime → Program · min complete path · empty ⇒ <span class="refuse">PathIncomplete</span> (거부)</div></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-derived)"></span><span class="nm">ProgramExposure</span><span class="role">파생 · 프로그램 단위 롤업</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">progexp:‹program›</td></tr><tr><td class="k">program_ref</td><td class="t">ref → Program</td><td class="v">‹program:id›</td></tr><tr><td class="k">score</td><td class="t">float 0–100</td><td class="v">‹0–100›</td></tr><tr><td class="k">grade</td><td class="t">enum 즉시 | 주의 | 관찰</td><td class="v">•••</td></tr><tr><td class="k">active_flag</td><td class="t">bool (any contributing incident)</td><td class="v">◦ true | false</td></tr><tr><td class="k">contributing_paths</td><td class="t">json[] (per distinct supplier)</td><td class="v">[ … ]</td></tr></table><div class="prov" style="background:rgba(57,135,229,.05)"><div class="sm"><span class="st start">open</span><span class="arrow">→</span><span class="st">acknowledged</span><span class="arrow">→</span><span class="st">closed</span><span class="term bad">stale</span></div><span class="smnote" style="margin-left:8px">PropagateRisk rollup · acknowledge / mark_stale / close = analyst actions</span></div><div class="prov">provenance <b>evidenced_by</b> → CompromiseIncident / RiskAssessment · min 1 · empty ⇒ <span class="refuse">ProgramEvidenceRequired</span> (거부)</div></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-output)"></span><span class="nm">MergeProposal</span><span class="role">엔티티 해소 후보 (사람 승인)</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">merge:‹a›|‹b›</td></tr><tr><td class="k">identity_a</td><td class="t">ref → Identity (keep)</td><td class="v">‹identity:id›</td></tr><tr><td class="k">identity_b</td><td class="t">ref → Identity (drop-on-confirm)</td><td class="v">‹identity:id›</td></tr><tr><td class="k">basis</td><td class="t">string (rule provenance)</td><td class="v">‹string›</td></tr><tr><td class="k">status</td><td class="t">enum (lifecycle ↓)</td><td class="v">•••</td></tr></table><div class="prov" style="background:rgba(57,135,229,.05)"><div class="sm"><span class="st start">pending</span><span class="arrow">→</span><span class="st">confirmed</span><span class="term bad">rejected</span></div><span class="smnote" style="margin-left:8px">confirm/reject only by a human — nothing merges automatically</span></div></div></div><div class="ccell"><div class="contract"><div class="chead"><span class="dot" style="background:var(--c-output)"></span><span class="nm">NotificationDraft</span><span class="role">산출 · 통보 초안</span></div><table><tr><td class="k">id</td><td class="t">PK · string</td><td class="v">draft:‹supplier›</td></tr><tr><td class="k">supplier_ref</td><td class="t">ref → Supplier</td><td class="v">‹supplier:id›</td></tr><tr><td class="k">body</td><td class="t">string (masked, template)</td><td class="v">‹markdown, secrets masked›</td></tr><tr><td class="k">evidence_refs</td><td class="t">ref[] (cites)</td><td class="v">[ … ]</td></tr><tr><td class="k">created_at</td><td class="t">epoch-secs</td><td class="v">‹epoch-secs›</td></tr><tr><td class="k">status</td><td class="t">enum (lifecycle ↓)</td><td class="v">•••</td></tr></table><div class="prov" style="background:rgba(57,135,229,.05)"><div class="sm"><span class="st start">draft</span><span class="arrow">→</span><span class="st">reviewed</span><span class="arrow">→</span><span class="st">approved</span><span class="arrow">→</span><span class="st">exported</span></div><span class="smnote" style="margin-left:8px">NO &#x27;sent&#x27; state — the system never sends. Human review before every transition.</span></div><div class="prov">provenance <b>cites</b> → Exposure / Device / Incident / RiskAssessment · min 1 · empty ⇒ <span class="refuse">CitationRequired</span> (거부)</div></div></div></div>
+  </section>
+
+  <section class="v3sec">
+    <div class="secthd"><span class="lbl">Pipeline — correlate → flag_active → compute_risk → propagate → notify_draft</span></div>
+    <div class="v3note">각 단계의 입력/출력 계약과 <b>거부 조건</b>(provenance 없으면 파생객체 생성 거부).
+      카운터는 전부 0.</div>
+    <div class="pipe scroll-x"><div class="pstage"><div class="psh"><span class="mono pact">CorrelateExposure</span><span class="count0">0</span></div><div class="psfn mono">correlate_exposures()</div><div class="psio"><span class="lbl">in</span>CredentialExposure + registered Domains</div><div class="psio"><span class="lbl">out</span>Identity belongs_to Domain · match_basis (provenance)</div><div class="psrefuse">⊘ no email / no registered-domain match → left unmatched (counted)</div></div><div class="parrow">→</div><div class="pstage"><div class="psh"><span class="mono pact">FlagActiveCompromise</span><span class="count0">0</span></div><div class="psfn mono">flag_active_compromises()</div><div class="psio"><span class="lbl">in</span>InfectedDevice (≤14d · cookie · vpn/admin)</div><div class="psio"><span class="lbl">out</span>CompromiseIncident(status=flagged) · traverses path · blast_radius</div><div class="psrefuse">⊘ incomplete Device→…→Program path → PathIncomplete (skip)</div></div><div class="parrow">→</div><div class="pstage"><div class="psh"><span class="mono pact">ComputeRisk</span><span class="count0">0</span></div><div class="psfn mono">compute_risk()</div><div class="psio"><span class="lbl">in</span>Supplier + correlated CredentialExposure[]</div><div class="psio"><span class="lbl">out</span>RiskAssessment(score, grade, active_flag) · evidenced_by</div><div class="psrefuse">⊘ evidenced_by empty → EvidenceRequired (거부)</div></div><div class="parrow">→</div><div class="pstage"><div class="psh"><span class="mono pact">PropagateRisk</span><span class="count0">0</span></div><div class="psfn mono">propagate_program_risk()</div><div class="psio"><span class="lbl">in</span>Program + reaching Supplier paths (recursive traverse)</div><div class="psio"><span class="lbl">out</span>ProgramExposure(score, grade) · evidenced_by · contributing_paths</div><div class="psrefuse">⊘ no contributing incident/assessment → ProgramEvidenceRequired (거부)</div></div><div class="parrow">→</div><div class="pstage"><div class="psh"><span class="mono pact">GenerateNotificationDraft</span><span class="count0">0</span></div><div class="psfn mono">generate_notification_draft()</div><div class="psio"><span class="lbl">in</span>Supplier + exposures (+ incident/assessment)</div><div class="psio"><span class="lbl">out</span>NotificationDraft(status=draft) · cites · NO send</div><div class="psrefuse">⊘ cites empty → CitationRequired (거부)</div></div></div>
+    <div class="why"><span class="whytag">WHY ONTOLOGY</span>다중홉 집계 — 한 Program에 닿는 모든 협력사 경로를 롤업. distinct Supplier 기준 dedup(다이아몬드 공급망 이중계산 금지)은 경로 그래프에서만 정확히 나온다.</div>
+  </section>
+
+  <section class="v3sec">
+    <div class="secthd"><span class="lbl">Candidate feed shapes — vendor-neutral, masked</span></div>
+    <div class="v3note">2–3개 후보 피드 형태. 어느 object-type 슬롯을 채우는지 표기.
+      모든 값 마스킹. 피드 모듈 신뢰도 tier(엔진 값):&nbsp; <span class="tier"><b>0.9</b> stealer-log (infostealer device)</span><span class="tier"><b>0.9</b> url · login · pass binder</span><span class="tier"><b>0.6</b> breach dump (leaked server)</span><span class="tier"><b>0.3</b> combo list (recirculated)</span></div>
+    <div class="why"><span class="whytag">WHY ONTOLOGY</span>of ≠ targets — 자격증명의 소유 조직(of→Identity 홈)과 접근 대상 자산(targets→Domain, 다른 조직일 수 있음)을 분리해야 &#x27;프로그램으로 가는 활성 경로&#x27;가 표현된다. flat table은 한 행에 두 조직을 담지 못한다.</div>
+    <div class="feedgrid"><div class="feedcard"><div class="feedh"><span class="mono feedn">credential-exposure record</span><span class="feedf">→ fills CredentialExposure</span></div><div class="jbody"><div class="jline"><span class="jc">{</span></div><div class="jline"><span class="jk">&quot;identity&quot;</span><span class="jc">:</span> <span class="jv">&quot;‹local›@‹org›.example&quot;</span></div><div class="jline"><span class="jk">&quot;secret_type&quot;</span><span class="jc">:</span> <span class="jv">&quot;cookie | token | plaintext | hash&quot;</span></div><div class="jline"><span class="jk">&quot;secret&quot;</span><span class="jc">:</span> <span class="jv">&quot;••••••&quot;   // masked at boundary</span></div><div class="jline"><span class="jk">&quot;host&quot;</span><span class="jc">:</span> <span class="jv">&quot;‹asset›.example&quot;</span></div><div class="jline"><span class="jk">&quot;observed_at&quot;</span><span class="jc">:</span> <span class="jv">&quot;‹ISO-8601›&quot;</span></div><div class="jline"><span class="jk">&quot;source_ref&quot;</span><span class="jc">:</span> <span class="jv">&quot;‹opaque-handle›&quot;</span></div><div class="jline"><span class="jc">}</span></div></div></div><div class="feedcard"><div class="feedh"><span class="mono feedn">infostealer device observation</span><span class="feedf">→ fills InfectedDevice</span></div><div class="jbody"><div class="jline"><span class="jc">{</span></div><div class="jline"><span class="jk">&quot;device_id&quot;</span><span class="jc">:</span> <span class="jv">&quot;‹id›&quot;</span></div><div class="jline"><span class="jk">&quot;malware&quot;</span><span class="jc">:</span> <span class="jv">&quot;‹family›&quot;</span></div><div class="jline"><span class="jk">&quot;infected_at&quot;</span><span class="jc">:</span> <span class="jv">&quot;‹ISO-8601›&quot;</span></div><div class="jline"><span class="jk">&quot;has_session_cookie&quot;</span><span class="jc">:</span> <span class="jv">true | false</span></div><div class="jline"><span class="jk">&quot;account_type&quot;</span><span class="jc">:</span> <span class="jv">&quot;vpn | admin | user&quot;</span></div><div class="jline"><span class="jk">&quot;os&quot;</span><span class="jc">:</span> <span class="jv">&quot;‹os›&quot;</span></div><div class="jline"><span class="jc">}</span></div></div></div><div class="feedcard"><div class="feedh"><span class="mono feedn">supplier registry row</span><span class="feedf">→ fills Supplier + Domain</span></div><div class="jbody"><div class="jline"><span class="jc">{</span></div><div class="jline"><span class="jk">&quot;supplier_id&quot;</span><span class="jc">:</span> <span class="jv">&quot;‹id›&quot;</span></div><div class="jline"><span class="jk">&quot;name&quot;</span><span class="jc">:</span> <span class="jv">&quot;‹supplier-name›&quot;</span></div><div class="jline"><span class="jk">&quot;domains&quot;</span><span class="jc">:</span> <span class="jv">[&quot;‹asset›.example&quot;, …]</span></div><div class="jline"><span class="jk">&quot;tier&quot;</span><span class="jc">:</span> <span class="jv">1 | 2</span></div><div class="jline"><span class="jk">&quot;criticality&quot;</span><span class="jc">:</span> <span class="jv">&quot;high | medium | low&quot;</span></div><div class="jline"><span class="jk">&quot;subcontracts_to&quot;</span><span class="jc">:</span> <span class="jv">[&quot;‹supplier:id›&quot;, …]</span></div><div class="jline"><span class="jc">}</span></div></div></div></div>
+  </section>
+</div>
+<style>
+.v3wrap{padding:14px 16px;display:flex;flex-direction:column;gap:20px}
+.v3sec{}
+.secthd{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.v3note{font-size:11.5px;color:var(--muted);margin-bottom:12px}
+.v3note b{color:var(--ink-2)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.ccell{min-width:0}
+.pipe{display:flex;align-items:stretch;gap:0;padding:6px 2px 12px}
+.pstage{flex:0 0 250px;border:1px solid var(--hair);border-radius:8px;background:var(--surface);
+  padding:10px 12px;display:flex;flex-direction:column;gap:5px}
+.psh{display:flex;justify-content:space-between;align-items:center}
+.pact{font-size:12.5px;color:var(--ink)}
+.psfn{font-size:10.5px;color:var(--c-evidence);opacity:.8}
+.psio{font-size:11px;color:var(--ink-2)}
+.psio .lbl{display:inline-block;width:26px}
+.psrefuse{margin-top:auto;font-size:10.5px;color:var(--band-a);font-family:var(--mono);
+  border-top:1px dashed var(--hair-2);padding-top:6px}
+.parrow{display:flex;align-items:center;color:var(--muted);font-family:var(--mono);
+  padding:0 6px;font-size:18px}
+.feedgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.feedcard{border:1px solid var(--hair);border-radius:8px;background:var(--surface);overflow:hidden}
+.feedh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+  padding:8px 11px;border-bottom:1px solid var(--hair);background:var(--surface-2)}
+.feedn{font-size:12.5px;color:var(--ink)}
+.feedf{font-size:10.5px;color:var(--c-output)}
+.jbody{padding:9px 12px;font-family:var(--mono);font-size:11.5px;line-height:1.7}
+.jline{white-space:nowrap}
+.jk{color:var(--c-entity)} .jc{color:var(--muted)} .jv{color:var(--c-evidence);opacity:.85}
+.tier{display:inline-block;margin-right:10px;font-family:var(--mono);color:var(--ink-2)}
+.tier b{color:var(--c-derived)}
+</style>
+
+<div class="footer">structure-only preview · no network · no data · masked placeholders only ·
+object/link/state names are API identifiers (English) · generated by scripts/palantir_pages.py</div>
+</body></html>

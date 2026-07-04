@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omija · V2 Ops Triage</title>
+<style>
+:root{
+  --plane:#0d0d0d; --surface:#141413; --surface-2:#1a1a19; --raised:#201f1d;
+  --ink:#ececea; --ink-2:#a9a89f; --muted:#6f6e68;
+  --hair:#262624; --hair-2:#35342f;
+  /* validated dark-mode CATEGORICAL hues (dataviz reference palette, dark col) */
+  --c-entity:#3987e5;    /* blue   slot1 — entity/registry */
+  --c-evidence:#199e70;  /* aqua   slot2 — observed evidence */
+  --c-derived:#c98500;   /* yellow slot3 — derived judgment (NOT the status amber) */
+  --c-output:#9085e9;    /* violet slot5 — human/output */
+  --cross:#ec835a;       /* status 'serious' — the single targets cross-edge (labelled) */
+  /* triage bands = fixed status ramp (never a series colour) */
+  --band-a:#d03b3b;      /* critical — active compromise path */
+  --band-b:#fab219;      /* warning  — elevated exposure */
+  --band-c:#3987e5;      /* recessive— observed / passive */
+  --mono:ui-monospace,SFMono-Regular,Menlo,"Cascadia Code",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--plane);color:var(--ink);
+  font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+a{color:var(--c-entity)}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:.2px}
+code,kbd,.mono{font-family:var(--mono)}
+.scroll-x{overflow-x:auto;overflow-y:hidden}
+.topbar{display:flex;align-items:center;gap:14px;padding:10px 18px;
+  border-bottom:1px solid var(--hair);background:var(--surface);position:sticky;top:0;z-index:5}
+.topbar .brand{font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
+  color:var(--ink);text-transform:uppercase}
+.topbar .ver{font-family:var(--mono);font-size:11px;color:var(--muted);
+  border:1px solid var(--hair-2);border-radius:3px;padding:2px 7px}
+.topbar .empty-pill{margin-left:auto;font-family:var(--mono);font-size:11px;
+  color:var(--band-b);border:1px solid var(--hair-2);border-radius:3px;padding:2px 8px;
+  display:flex;gap:7px;align-items:center}
+.topbar .empty-pill::before{content:"";width:7px;height:7px;border-radius:50%;
+  background:var(--band-b);box-shadow:0 0 6px var(--band-b)}
+.qbar{padding:10px 18px;border-bottom:1px solid var(--hair);background:var(--surface-2);
+  font-size:12.5px;color:var(--ink-2)}
+.qbar b{color:var(--ink);font-weight:600}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:1px;color:var(--muted);
+  text-transform:uppercase}
+.count0{font-family:var(--mono);font-size:11px;color:var(--muted);
+  border:1px solid var(--hair-2);border-radius:10px;padding:0 7px;min-width:20px;
+  display:inline-flex;justify-content:center}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.empty-slot{border:1px dashed var(--hair-2);border-radius:5px;background:
+  repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(255,255,255,.012) 7px,rgba(255,255,255,.012) 14px);
+  color:var(--muted);font-family:var(--mono);font-size:11px;padding:10px 12px}
+.contract{border:1px solid var(--hair-2);border-radius:6px;background:var(--surface);
+  overflow:hidden}
+.contract .chead{display:flex;align-items:center;gap:8px;padding:7px 11px;
+  border-bottom:1px solid var(--hair);background:var(--surface-2)}
+.contract .chead .nm{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+.contract .chead .role{font-size:11px;color:var(--muted);margin-left:auto}
+.contract table{width:100%;border-collapse:collapse;font-size:12px}
+.contract td{padding:5px 11px;border-top:1px solid var(--hair);vertical-align:top}
+.contract td.k{font-family:var(--mono);color:var(--ink-2);white-space:nowrap;width:38%}
+.contract td.t{color:var(--muted);font-size:11px;width:34%}
+.contract td.v{font-family:var(--mono);color:var(--c-evidence);text-align:right;
+  opacity:.75}
+.prov{padding:7px 11px;border-top:1px solid var(--hair);font-size:11px;color:var(--ink-2);
+  background:rgba(250,178,25,.05)}
+.prov b{color:var(--c-derived)}
+.refuse{color:var(--band-a);font-family:var(--mono);font-size:10.5px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:6px}
+/* state machine pills */
+.sm{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.sm .st{font-family:var(--mono);font-size:11.5px;padding:5px 11px;border:1px solid var(--hair-2);
+  border-radius:4px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.sm .st.start{border-color:var(--c-entity);color:var(--ink)}
+.sm .arrow{color:var(--muted);padding:0 8px;font-family:var(--mono)}
+.sm .term{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:4px;
+  border:1px dashed var(--hair-2);color:var(--muted);margin-left:6px}
+.sm .term.ok{border-color:rgba(12,163,12,.5);color:#7bcf7b}
+.sm .term.bad{border-color:rgba(208,59,59,.5);color:#e88}
+.smnote{font-size:11px;color:var(--muted);margin-top:6px}
+.no-send{color:var(--band-a);font-family:var(--mono);font-size:11px;
+  border:1px solid rgba(208,59,59,.4);border-radius:4px;padding:3px 9px;display:inline-block}
+.footer{padding:14px 18px;border-top:1px solid var(--hair);color:var(--muted);
+  font-size:11px;font-family:var(--mono)}
+/* "why ontology" annotation - the project's load-bearing argument */
+.why{font-size:11px;color:var(--ink-2);border-left:2px solid var(--c-output);
+  padding:5px 10px;margin:6px 0;background:rgba(144,133,233,.06);border-radius:0 4px 4px 0}
+.why .whytag{font-family:var(--mono);font-size:9px;letter-spacing:1.2px;color:var(--c-output);
+  display:inline-block;margin-right:8px;vertical-align:1px}
+.why b{color:var(--ink)}
+.whybar{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.whybar .chip{font-family:var(--mono);font-size:10px;color:var(--c-output);
+  border:1px solid rgba(144,133,233,.35);border-radius:12px;padding:2px 9px}
+</style></head>
+<body>
+<div class="topbar">
+  <span class="brand">OMIJA · SUPPLY-CHAIN CREDENTIAL EXPOSURE</span>
+  <span class="ver">V2 · OPS TRIAGE</span>
+  <span style="font-size:12px;color:var(--ink-2)">band queue · entity-360 · state machines</span>
+  <span class="empty-pill">EMPTY STATE · 데이터 슬롯 전부 비어있음</span>
+</div>
+<div class="qbar"><b>조직 질문 / organising question — </b>Which supplier appears to create an ACTIVE path into a protected defense program, why does it matter now, and what action should be prepared first?</div>
+
+<div class="v2wrap">
+  <section class="v2queue">
+    <div class="secthd"><span class="lbl">Triage queue — lexicographic order (band, score)</span>
+      <span class="count0">0</span></div>
+    <div class="ordernote">
+      정렬은 <b>사전식 (band, score)</b>. 밴드가 1순위 — active_floor
+      <b class="mono">70</b> &gt; base_cap <b class="mono">60</b>
+      이므로 <b>활성 경로 1건이 비활성 누적 유출 전체를 항상 상회</b>한다.
+      밴드 안에서만 score로 정렬.
+    </div>
+    <div class="why"><span class="whytag">WHY ONTOLOGY</span>트리아지 밴드 = 그래프 결과 — 밴드는 경로 존재(active_flag)에서 파생된다. active_floor(70) &gt; base_cap(60) 이므로 활성 경로 1건이 비활성 누적 유출 전체를 항상 상회한다. 스코어 튜닝이 아니라 그래프 불변식.</div>
+    <div class="lane"><div class="laneh"><span class="badge" style="background:var(--band-a)">A</span><span class="lanet">Band A · ACTIVE compromise path established</span><span class="laner mono">score [70 … 100] · grade 즉시</span><span class="count0">0</span></div><div class="empty-slot">비어있음 — 이 밴드를 채울 항목 없음</div><div class="lanefill"><span class="lbl">채울 데이터 형태</span>한 항목을 채우려면: RiskAssessment(active_flag=true) + 그 근거인 CompromiseIncident 의 traverses 경로가 Program까지 완성 — 감염 ≤ 14d · has_session_cookie=true · account_type ∈ {admin, vpn}.</div><div class="laneshape mono">InfectedDevice → Identity → Domain → Supplier → …subcontractsTo… → Prime → Program</div></div><div class="lane"><div class="laneh"><span class="badge" style="background:var(--band-b)">B</span><span class="lanet">Band B · elevated exposure, no active path</span><span class="laner mono">score [40 … 60] · grade 주의</span><span class="count0">0</span></div><div class="empty-slot">비어있음 — 이 밴드를 채울 항목 없음</div><div class="lanefill"><span class="lbl">채울 데이터 형태</span>한 항목을 채우려면: RiskAssessment (활성 incident 없음) — 신선한 secret_type(cookie/token/plaintext) · dedup된 다수 노출 · high-confidence 피드 모듈 · tier-1/criticality 배수. 완성된 활성 경로는 없음.</div><div class="laneshape mono">CredentialExposure[] → Identity → Domain → Supplier  (no complete Device→Program path)</div></div><div class="lane"><div class="laneh"><span class="badge" style="background:var(--band-c)">C</span><span class="lanet">Band C · observed / passive leaks</span><span class="laner mono">score [0 … 40) · grade 관찰</span><span class="count0">0</span></div><div class="empty-slot">비어있음 — 이 밴드를 채울 항목 없음</div><div class="lanefill"><span class="lbl">채울 데이터 형태</span>한 항목을 채우려면: 오래된/재유통 노출만 (hash·combo, 세션 없음). 기록용으로 보존 — 아무리 쌓여도 Band A 한 건을 넘어서지 못함.</div><div class="laneshape mono">CredentialExposure[] (stale / recirculated) → Identity → Supplier</div></div>
+  </section>
+
+  <aside class="v2side">
+    <div class="card">
+      <div class="secthd"><span class="lbl">Entity-360 · Supplier</span></div>
+      <div class="e360head"><span class="mono">Supplier</span>
+        <span class="e360sub">id ‹id› · tier • · criticality •••</span></div>
+      <div class="empty-slot" style="margin:8px 0">선택된 협력사 없음 — 아래는 채울 슬롯 형태</div>
+      <div class="e360row"><span class="e360k mono">Identity</span><span class="e360d">belongs_to Domain — 신원(엔티티 해소 후)</span><span class="count0">0</span></div><div class="e360row"><span class="e360k mono">CredentialExposure</span><span class="e360d">of Identity — 노출 레코드 (masked)</span><span class="count0">0</span></div><div class="e360row"><span class="e360k mono">InfectedDevice</span><span class="e360d">compromises Identity — 활성 신호</span><span class="count0">0</span></div><div class="e360row"><span class="e360k mono">CompromiseIncident</span><span class="e360d">traverses — 활성 경로 (있으면)</span><span class="count0">0</span></div><div class="e360row"><span class="e360k mono">RiskAssessment</span><span class="e360d">evidenced_by — 점수·grade·컴포넌트</span><span class="count0">0</span></div><div class="e360row"><span class="e360k mono">ProgramExposure</span><span class="e360d">닿는 프로그램 롤업 (blast)</span><span class="count0">0</span></div><div class="e360row"><span class="e360k mono">NotificationDraft</span><span class="e360d">cites — 통보 초안 (있으면)</span><span class="count0">0</span></div>
+      <div class="why"><span class="whytag">WHY ONTOLOGY</span>of ≠ targets — 자격증명의 소유 조직(of→Identity 홈)과 접근 대상 자산(targets→Domain, 다른 조직일 수 있음)을 분리해야 &#x27;프로그램으로 가는 활성 경로&#x27;가 표현된다. flat table은 한 행에 두 조직을 담지 못한다.</div>
+    </div>
+
+    <div class="card">
+      <div class="secthd"><span class="lbl">CompromiseIncident · state machine</span></div>
+      <div class="empty-slot" style="margin-bottom:8px">0 incidents</div>
+      <div class="sm"><span class="st start">flagged</span><span class="arrow">→</span><span class="st">acknowledged</span><span class="arrow">→</span><span class="st">assigned</span><span class="arrow">→</span><span class="st">closed</span><span class="term ok">remediated</span><span class="term bad">false_positive</span></div><div class="smnote">human-on-the-loop · engine emits &#x27;flagged&#x27; (open); ack/assign/close = analyst actions</div>
+      <div class="smnote">human-on-the-loop — 자동 전이 없음. flagged 는 엔진의 초기 상태(open).</div>
+      <div class="why"><span class="whytag">WHY ONTOLOGY</span>액션 = 객체 상태 전이 — flagged→acknowledged→assigned→closed, draft→reviewed→approved→exported. human-on-the-loop 이 앱 로직이 아니라 객체 모델의 속성이다.</div>
+    </div>
+
+    <div class="card">
+      <div class="secthd"><span class="lbl">NotificationDraft · workspace</span></div>
+      <div class="draftmeta">
+        <span class="no-send">NO SEND — 시스템은 절대 발송하지 않음</span>
+      </div>
+      <div class="editor empty-slot">초안 에디터 (비어있음) · 본문은 결정론적 템플릿, 모든 secret 마스킹</div>
+      <div class="citesnote">cites <b>필수</b> — <span class="mono">cites</span> →
+        Exposure / Device / Incident / RiskAssessment (min 1). 비면
+        <span class="refuse">CitationRequired</span> 로 <b>거부</b>.</div>
+      <div style="margin-top:8px"><div class="sm"><span class="st start">draft</span><span class="arrow">→</span><span class="st">reviewed</span><span class="arrow">→</span><span class="st">approved</span><span class="arrow">→</span><span class="st">exported</span></div><div class="smnote">NO &#x27;sent&#x27; state — the system never sends. Human review before every transition.</div></div>
+      <div class="why"><span class="whytag">WHY ONTOLOGY</span>provenance 강제 — RiskAssessment/Incident/ProgramExposure/NotificationDraft 는 evidenced_by/cites 링크 없이는 생성이 거부된다. 감사가능성이 앱 코드가 아니라 온톨로지 레벨에서 강제된다.</div>
+    </div>
+  </aside>
+</div>
+<style>
+.v2wrap{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:0;
+  min-height:calc(100vh - 118px)}
+.v2queue{padding:14px 16px;border-right:1px solid var(--hair)}
+.secthd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ordernote{font-size:12px;color:var(--ink-2);border:1px solid var(--hair);border-left:3px solid var(--band-a);
+  border-radius:6px;padding:9px 12px;margin-bottom:14px;background:var(--surface)}
+.ordernote b{color:var(--ink)}
+.lane{border:1px solid var(--hair);border-radius:8px;background:var(--surface);
+  padding:10px 12px;margin-bottom:12px}
+.laneh{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.badge{width:24px;height:24px;border-radius:5px;color:#0d0d0d;font-family:var(--mono);
+  font-weight:700;display:flex;align-items:center;justify-content:center;font-size:13px}
+.lanet{font-size:13px;color:var(--ink);font-weight:600}
+.laner{font-size:11px;color:var(--muted);margin-left:auto}
+.lanefill{margin-top:8px;font-size:11.5px;color:var(--ink-2)}
+.lanefill .lbl{display:block;margin-bottom:3px}
+.laneshape{margin-top:6px;font-size:11px;color:var(--c-entity);
+  border-top:1px dashed var(--hair-2);padding-top:6px;word-break:break-word}
+.v2side{padding:14px 16px;display:flex;flex-direction:column;gap:14px;background:var(--surface-2)}
+.card{border:1px solid var(--hair);border-radius:8px;background:var(--surface);padding:12px}
+.e360head{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid var(--hair);padding-bottom:6px}
+.e360sub{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.e360row{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--hair)}
+.e360k{font-size:12px;color:var(--ink-2);width:150px;flex:none}
+.e360d{font-size:11px;color:var(--muted);flex:1}
+.draftmeta{margin-bottom:8px}
+.editor{min-height:64px;margin-bottom:8px}
+.citesnote{font-size:11px;color:var(--ink-2)} .citesnote b{color:var(--c-derived)}
+</style>
+
+<div class="footer">structure-only preview · no network · no data · masked placeholders only ·
+object/link/state names are API identifiers (English) · generated by scripts/palantir_pages.py</div>
+</body></html>
