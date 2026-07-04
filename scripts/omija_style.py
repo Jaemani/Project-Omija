@@ -1,0 +1,173 @@
+"""Shared visual system for the Omija demo surfaces (omija_demo, omija_console_home).
+
+Single source of truth for:
+  * the dark Palantir-esque design tokens (lifted from scripts/palantir_pages.py,
+    dataviz categorical palette validated on #1a1a19),
+  * the PROVENANCE CHIP system — the four-level real/synthetic separation that
+    enforces the claim architecture "데이터는 가상, 시스템은 진짜":
+        LIVE·Foundry  — read back from the actual Foundry ontology/actions
+        ENGINE·실측    — computed by the real local engine at generation time
+        SEED·가상      — synthetic entity data (fictional orgs/credentials)
+        FRAME·연출     — scenario-framing numbers (labeled, never implied real)
+  * the SYNTHETIC banner + the chip legend pinned under it,
+  * the collapsible 발표 노트 (presenter note) block.
+
+No network, no CDN — everything inlined by the page generators.
+"""
+
+from __future__ import annotations
+
+import html
+
+
+def esc(v) -> str:
+    return html.escape("" if v is None else str(v))
+
+
+# --------------------------------------------------------------------------- #
+# provenance chips
+# --------------------------------------------------------------------------- #
+CHIP_LEVELS: dict[str, tuple[str, str]] = {
+    "live":  ("live",  "LIVE·Foundry"),
+    "eng":   ("eng",   "ENGINE·실측"),
+    "seed":  ("seed",  "SEED·가상"),
+    "frame": ("frame", "FRAME·연출"),
+}
+
+
+def chip(level: str) -> str:
+    cls, label = CHIP_LEVELS[level]
+    return f'<span class="pchip {cls}">{esc(label)}</span>'
+
+
+CHIP_LEGEND_SENTENCES: dict[str, str] = {
+    "live":  "오늘 실제 Foundry 온톨로지·액션에서 읽어온 플랫폼 상태.",
+    "eng":   "페이지 생성 시점에 로컬 엔진이 실제로 계산한 값 — 입력만 합성이다.",
+    "seed":  "합성 시드의 가상 개체 — 조직·계정·도메인 전부 *.example.",
+    "frame": "운영 규모·맥락을 위한 연출 수치 — 이 칩이 붙은 것만 연출이다.",
+}
+
+CLAIM_LINE = (
+    "이 도메인은 실제 유출 자격증명으로 시연할 수 없다 — 그래서 "
+    "<b>개체는 가상이고, 개체를 다루는 시스템 전부가 진짜다.</b>"
+)
+
+
+def synthetic_banner() -> str:
+    return """
+<div class="synbar">
+  <span class="dot"></span>
+  <b>SYNTHETIC DEMO SCENARIO</b>
+  <span class="kr">가상 시나리오 — 실제 조직·자격증명 아님 · 모든 도메인은 합성 *.example · 비밀값 전량 마스킹(•••)</span>
+</div>"""
+
+
+def chip_legend() -> str:
+    rows = "".join(
+        f'<div class="pl-item">{chip(level)}<span>{esc(sentence)}</span></div>'
+        for level, sentence in CHIP_LEGEND_SENTENCES.items()
+    )
+    return f"""
+<div class="provlegend"><div class="wrap">
+  <div class="pl-row">{rows}</div>
+  <div class="pl-claim">{CLAIM_LINE}</div>
+</div></div>"""
+
+
+def pnote(section_no: str, sentences: list[str]) -> str:
+    """Collapsible presenter note (발표 노트) — what to SAY at this scroll
+    position, including which chips to point at."""
+    body = " ".join(sentences)
+    return f"""
+<details class="pnote"><summary>발표 노트 · {esc(section_no)}</summary>
+  <div class="pb">{body}</div>
+</details>"""
+
+
+# --------------------------------------------------------------------------- #
+# shared CSS
+# --------------------------------------------------------------------------- #
+TOKENS_CSS = """
+:root{
+  --plane:#0d0d0d; --surface:#141413; --surface-2:#1a1a19; --raised:#201f1d;
+  --ink:#ececea; --ink-2:#a9a89f; --muted:#6f6e68;
+  --hair:#262624; --hair-2:#35342f;
+  /* validated dark-mode CATEGORICAL hues (dataviz reference, dark column) */
+  --c-entity:#3987e5;    /* blue   — entity / registry structure */
+  --c-evidence:#199e70;  /* aqua   — observed evidence */
+  --c-derived:#c98500;   /* yellow — derived judgment */
+  --c-output:#9085e9;    /* violet — human / output */
+  --cross:#ec835a;       /* reserved status 'serious' — the single targets cross-edge */
+  /* triage bands = fixed status ramp (never a series colour) */
+  --band-a:#d03b3b;      /* critical — active compromise path */
+  --band-b:#fab219;      /* warning  — elevated exposure */
+  --band-c:#3987e5;      /* recessive— observed / passive */
+  --good:#2fa46a;
+  --mono:ui-monospace,SFMono-Regular,Menlo,"Cascadia Code",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--plane);color:var(--ink);
+  font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+a{color:var(--c-entity)}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:.2px}
+code,kbd,.mono{font-family:var(--mono)}
+.scroll-x{overflow-x:auto;overflow-y:hidden}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* SYNTHETIC banner — unmissable, not ugly */
+.synbar{display:flex;align-items:center;gap:12px;padding:9px 20px;
+  background:linear-gradient(90deg,rgba(250,178,25,.14),rgba(250,178,25,.04));
+  border-bottom:1px solid rgba(250,178,25,.4);position:sticky;top:0;z-index:20;
+  font-size:12.5px;color:#f4d58a}
+.synbar .dot{width:8px;height:8px;border-radius:50%;background:var(--band-b);
+  box-shadow:0 0 8px var(--band-b);flex:none}
+.synbar b{color:#ffe6a6;font-family:var(--mono);letter-spacing:.5px}
+.synbar .kr{color:#d9c184}
+
+/* provenance chips — the real/synthetic separation, fixed colors */
+.pchip{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);
+  font-size:9px;letter-spacing:.6px;padding:1px 7px;border-radius:3px;
+  border:1px solid;vertical-align:middle;white-space:nowrap;font-weight:500}
+.pchip::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
+.pchip.live {color:#4fc596;border-color:rgba(25,158,112,.5); background:rgba(25,158,112,.08)}
+.pchip.eng  {color:#6ea6ec;border-color:rgba(57,135,229,.5); background:rgba(57,135,229,.08)}
+.pchip.seed {color:#9d9c93;border-color:rgba(111,110,104,.6);background:rgba(111,110,104,.10)}
+.pchip.frame{color:#f0b73f;border-color:rgba(250,178,25,.5); background:rgba(250,178,25,.08)}
+
+/* chip legend — pinned directly under the banner */
+.provlegend{border-bottom:1px solid var(--hair);background:var(--surface-2);padding:9px 0}
+.pl-row{display:flex;flex-wrap:wrap;gap:7px 22px}
+.pl-item{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-2)}
+.pl-claim{margin-top:7px;font-size:12px;color:var(--ink-2)}
+.pl-claim b{color:var(--ink)}
+
+/* masthead */
+.mast{border-bottom:1px solid var(--hair);background:var(--surface);padding:14px 0}
+.mast .brand{font-family:var(--mono);font-size:12px;letter-spacing:1.6px;
+  text-transform:uppercase;color:var(--ink)}
+.mast .tag{font-size:12.5px;color:var(--ink-2);margin-top:3px}
+.mast .ver{float:right;font-family:var(--mono);font-size:10.5px;color:var(--muted);
+  border:1px solid var(--hair-2);border-radius:3px;padding:2px 7px}
+
+section{padding:30px 0;border-bottom:1px solid var(--hair)}
+.sec-k{font-family:var(--mono);font-size:10px;letter-spacing:1.6px;color:var(--muted);
+  text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sec-h{font-size:19px;margin-bottom:5px}
+.sec-sub{font-size:13px;color:var(--ink-2);margin-bottom:18px;max-width:860px}
+
+/* presenter note (발표 노트) — unobtrusive collapsible */
+details.pnote{margin-top:16px;border:1px dashed var(--hair-2);border-radius:6px;
+  background:rgba(144,133,233,.04)}
+details.pnote>summary{cursor:pointer;padding:7px 12px;font-family:var(--mono);
+  font-size:10px;letter-spacing:1.2px;color:var(--c-output);text-transform:uppercase;
+  list-style:none}
+details.pnote>summary::-webkit-details-marker{display:none}
+details.pnote>summary::before{content:"▸ "}
+details.pnote[open]>summary::before{content:"▾ "}
+details.pnote .pb{padding:2px 14px 12px;font-size:12.5px;color:var(--ink-2);line-height:1.75}
+details.pnote .pb b{color:var(--ink)}
+
+.footer{padding:18px 0 40px;color:var(--muted);font-size:11px;font-family:var(--mono)}
+"""

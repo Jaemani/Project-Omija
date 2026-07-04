@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omija — Steady-State Console (데모 시나리오)</title>
+<style>
+:root{
+  --plane:#0d0d0d; --surface:#141413; --surface-2:#1a1a19; --raised:#201f1d;
+  --ink:#ececea; --ink-2:#a9a89f; --muted:#6f6e68;
+  --hair:#262624; --hair-2:#35342f;
+  /* validated dark-mode CATEGORICAL hues (dataviz reference, dark column) */
+  --c-entity:#3987e5;    /* blue   — entity / registry structure */
+  --c-evidence:#199e70;  /* aqua   — observed evidence */
+  --c-derived:#c98500;   /* yellow — derived judgment */
+  --c-output:#9085e9;    /* violet — human / output */
+  --cross:#ec835a;       /* reserved status 'serious' — the single targets cross-edge */
+  /* triage bands = fixed status ramp (never a series colour) */
+  --band-a:#d03b3b;      /* critical — active compromise path */
+  --band-b:#fab219;      /* warning  — elevated exposure */
+  --band-c:#3987e5;      /* recessive— observed / passive */
+  --good:#2fa46a;
+  --mono:ui-monospace,SFMono-Regular,Menlo,"Cascadia Code",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--plane);color:var(--ink);
+  font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+a{color:var(--c-entity)}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:.2px}
+code,kbd,.mono{font-family:var(--mono)}
+.scroll-x{overflow-x:auto;overflow-y:hidden}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* SYNTHETIC banner — unmissable, not ugly */
+.synbar{display:flex;align-items:center;gap:12px;padding:9px 20px;
+  background:linear-gradient(90deg,rgba(250,178,25,.14),rgba(250,178,25,.04));
+  border-bottom:1px solid rgba(250,178,25,.4);position:sticky;top:0;z-index:20;
+  font-size:12.5px;color:#f4d58a}
+.synbar .dot{width:8px;height:8px;border-radius:50%;background:var(--band-b);
+  box-shadow:0 0 8px var(--band-b);flex:none}
+.synbar b{color:#ffe6a6;font-family:var(--mono);letter-spacing:.5px}
+.synbar .kr{color:#d9c184}
+
+/* provenance chips — the real/synthetic separation, fixed colors */
+.pchip{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);
+  font-size:9px;letter-spacing:.6px;padding:1px 7px;border-radius:3px;
+  border:1px solid;vertical-align:middle;white-space:nowrap;font-weight:500}
+.pchip::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
+.pchip.live {color:#4fc596;border-color:rgba(25,158,112,.5); background:rgba(25,158,112,.08)}
+.pchip.eng  {color:#6ea6ec;border-color:rgba(57,135,229,.5); background:rgba(57,135,229,.08)}
+.pchip.seed {color:#9d9c93;border-color:rgba(111,110,104,.6);background:rgba(111,110,104,.10)}
+.pchip.frame{color:#f0b73f;border-color:rgba(250,178,25,.5); background:rgba(250,178,25,.08)}
+
+/* chip legend — pinned directly under the banner */
+.provlegend{border-bottom:1px solid var(--hair);background:var(--surface-2);padding:9px 0}
+.pl-row{display:flex;flex-wrap:wrap;gap:7px 22px}
+.pl-item{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-2)}
+.pl-claim{margin-top:7px;font-size:12px;color:var(--ink-2)}
+.pl-claim b{color:var(--ink)}
+
+/* masthead */
+.mast{border-bottom:1px solid var(--hair);background:var(--surface);padding:14px 0}
+.mast .brand{font-family:var(--mono);font-size:12px;letter-spacing:1.6px;
+  text-transform:uppercase;color:var(--ink)}
+.mast .tag{font-size:12.5px;color:var(--ink-2);margin-top:3px}
+.mast .ver{float:right;font-family:var(--mono);font-size:10.5px;color:var(--muted);
+  border:1px solid var(--hair-2);border-radius:3px;padding:2px 7px}
+
+section{padding:30px 0;border-bottom:1px solid var(--hair)}
+.sec-k{font-family:var(--mono);font-size:10px;letter-spacing:1.6px;color:var(--muted);
+  text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sec-h{font-size:19px;margin-bottom:5px}
+.sec-sub{font-size:13px;color:var(--ink-2);margin-bottom:18px;max-width:860px}
+
+/* presenter note (발표 노트) — unobtrusive collapsible */
+details.pnote{margin-top:16px;border:1px dashed var(--hair-2);border-radius:6px;
+  background:rgba(144,133,233,.04)}
+details.pnote>summary{cursor:pointer;padding:7px 12px;font-family:var(--mono);
+  font-size:10px;letter-spacing:1.2px;color:var(--c-output);text-transform:uppercase;
+  list-style:none}
+details.pnote>summary::-webkit-details-marker{display:none}
+details.pnote>summary::before{content:"▸ "}
+details.pnote[open]>summary::before{content:"▾ "}
+details.pnote .pb{padding:2px 14px 12px;font-size:12.5px;color:var(--ink-2);line-height:1.75}
+details.pnote .pb b{color:var(--ink)}
+
+.footer{padding:18px 0 40px;color:var(--muted);font-size:11px;font-family:var(--mono)}
+
+.grid2{display:grid;grid-template-columns:1.25fr 1fr;gap:14px;align-items:stretch}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+.panel{border:1px solid var(--hair-2);border-radius:9px;background:var(--surface);
+  overflow:hidden;display:flex;flex-direction:column}
+.panel .ph{display:flex;align-items:center;gap:9px;padding:10px 14px;flex-wrap:wrap;
+  border-bottom:1px solid var(--hair);background:var(--surface-2)}
+.panel .ph .pk{font-family:var(--mono);font-size:10px;letter-spacing:1.2px;color:var(--muted);
+  text-transform:uppercase}
+.panel .ph .pt{font-size:13.5px;font-weight:600;color:var(--ink)}
+.panel .pb{padding:13px 14px;flex:1}
+
+/* P1 coverage */
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:13px}
+.kpi{border:1px solid var(--hair-2);border-radius:7px;background:var(--surface-2);
+  padding:9px 13px;min-width:104px}
+.kpi .n{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--ink);line-height:1.1}
+.kpi .l{font-size:10.5px;color:var(--muted);margin-top:3px}
+.tree{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);line-height:1.85}
+.tree .pr{color:var(--ink);font-weight:600}
+.tree .tw{color:var(--muted)}
+.tree .bdg{display:inline-block;font-size:9px;letter-spacing:.4px;padding:0 6px;
+  border-radius:3px;border:1px solid var(--hair-2);color:var(--c-evidence);margin-left:6px}
+.tree .bdg.gap{color:var(--band-b);border-color:rgba(250,178,25,.4)}
+.tree .bdg.clean{color:var(--muted)}
+.gaps{margin-top:12px;border-left:2px solid var(--band-b);background:rgba(250,178,25,.05);
+  border-radius:0 5px 5px 0;padding:7px 11px;font-size:12px;color:var(--ink-2)}
+.gaps b{color:var(--ink)}
+
+/* P2 all-clear */
+.clear0{display:flex;align-items:baseline;gap:12px;margin-bottom:11px;flex-wrap:wrap}
+.clear0 .z{font-family:var(--mono);font-size:44px;font-weight:600;color:var(--good);line-height:1}
+.clear0 .zl{font-size:13px;color:var(--ink)}
+.meta-line{font-size:11.5px;color:var(--ink-2);padding:4px 0;border-bottom:1px solid var(--hair);
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.meta-line b{color:var(--ink);font-family:var(--mono);font-weight:500}
+.rej{margin-top:11px}
+.rej .rrow{display:flex;align-items:center;gap:9px;font-size:11.5px;color:var(--ink-2);padding:3px 0}
+.rej .rrow .rn{font-family:var(--mono);color:var(--ink);width:26px;text-align:right;flex:none}
+.rej .rrow .rb{height:6px;border-radius:3px;background:var(--hair-2);flex:none}
+.inv{margin-top:13px;border-top:1px solid var(--hair);padding-top:10px}
+.inv .irow{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:11px;
+  color:var(--ink-2);padding:2.5px 0;flex-wrap:wrap}
+.inv .ok{color:var(--good);font-weight:600}
+
+/* P3 feeds */
+.feeds{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:900px){.feeds{grid-template-columns:1fr}}
+.feed{border:1px solid var(--hair-2);border-radius:9px;background:var(--surface);padding:13px 15px}
+.feed .fh{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.feed .fh .nm{font-size:12.5px;font-weight:600;color:var(--ink)}
+.feed .st{font-family:var(--mono);font-size:10px;letter-spacing:.5px;padding:1px 8px;
+  border-radius:3px;border:1px solid}
+.feed .st.off{color:var(--band-b);border-color:rgba(250,178,25,.45);background:rgba(250,178,25,.06)}
+.feed .st.on{color:#4fc596;border-color:rgba(25,158,112,.45);background:rgba(25,158,112,.06)}
+.feed .fd{font-size:11.5px;color:var(--ink-2);line-height:1.65}
+.feed .fd b{color:var(--ink);font-family:var(--mono);font-weight:500}
+.feed.slot{border-style:dashed;background:
+  repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(255,255,255,.012) 7px,rgba(255,255,255,.012) 14px),var(--surface)}
+
+/* P4 audit stream */
+.livetbl{width:100%;border-collapse:collapse;font-size:12px;min-width:740px}
+.livetbl th{text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.8px;
+  color:var(--muted);text-transform:uppercase;padding:8px 14px;border-bottom:1px solid var(--hair)}
+.livetbl td{padding:8px 14px;border-top:1px solid var(--hair);color:var(--ink-2);vertical-align:top}
+.livetbl .mono2{font-family:var(--mono);font-size:11.5px}
+.livetbl .act{color:var(--ink);font-family:var(--mono);font-size:11.5px}
+.livetbl .tr{color:var(--c-evidence);font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+.livetbl .ok{color:#4fc596;font-family:var(--mono);font-size:11px;white-space:nowrap}
+.p4cap{padding:9px 14px;border-top:1px solid var(--hair);font-size:11.5px;color:var(--muted)}
+.p4cap b{color:var(--ink)}
+.livewait{padding:22px;font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center}
+
+/* P5 locked slot */
+.locked{border:1px dashed var(--hair-2);border-radius:9px;background:
+  repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(255,255,255,.012) 8px,rgba(255,255,255,.012) 16px),var(--surface);
+  padding:16px 18px}
+.locked .lh2{display:flex;align-items:center;gap:10px;margin-bottom:9px;flex-wrap:wrap}
+.locked .badge{font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--band-b);
+  border:1px solid rgba(250,178,25,.5);border-radius:3px;padding:2px 9px}
+.locked .t{font-size:13.5px;font-weight:600;color:var(--ink)}
+.locked .slottxt{font-size:12.5px;color:var(--ink-2);margin-bottom:11px}
+.locked ul{margin:0;padding-left:18px;font-size:11.5px;color:var(--ink-2);line-height:1.8}
+.locked ul b{color:var(--ink)}
+.locked .owner{margin-top:11px;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+</style></head><body data-palette="#3987e5,#199e70,#c98500,#9085e9">
+
+<div class="synbar">
+  <span class="dot"></span>
+  <b>SYNTHETIC DEMO SCENARIO</b>
+  <span class="kr">가상 시나리오 — 실제 조직·자격증명 아님 · 모든 도메인은 합성 *.example · 비밀값 전량 마스킹(•••)</span>
+</div>
+
+<div class="provlegend"><div class="wrap">
+  <div class="pl-row"><div class="pl-item"><span class="pchip live">LIVE·Foundry</span><span>오늘 실제 Foundry 온톨로지·액션에서 읽어온 플랫폼 상태.</span></div><div class="pl-item"><span class="pchip eng">ENGINE·실측</span><span>페이지 생성 시점에 로컬 엔진이 실제로 계산한 값 — 입력만 합성이다.</span></div><div class="pl-item"><span class="pchip seed">SEED·가상</span><span>합성 시드의 가상 개체 — 조직·계정·도메인 전부 *.example.</span></div><div class="pl-item"><span class="pchip frame">FRAME·연출</span><span>운영 규모·맥락을 위한 연출 수치 — 이 칩이 붙은 것만 연출이다.</span></div></div>
+  <div class="pl-claim">이 도메인은 실제 유출 자격증명으로 시연할 수 없다 — 그래서 <b>개체는 가상이고, 개체를 다루는 시스템 전부가 진짜다.</b></div>
+</div></div>
+<div class="mast"><div class="wrap">
+  <span class="ver">engine · sqlite mock pipeline · offline</span>
+  <div class="brand">OMIJA · STEADY-STATE CONSOLE</div>
+  <div class="tag">사건이 없을 때 분석가가 켜놓는 기본 화면 · 감시 태세 · negative evidence · human-on-the-loop</div>
+</div></div>
+
+<section><div class="wrap">
+  <div class="sec-k">감시 태세 + 시스템 신뢰 / steady state</div>
+  <div class="sec-h">사건이 없을 때의 화면 — 조용함은 "안 본 것"이 아니라 "봤는데 없는 것"</div>
+  <div class="sec-sub">사건 보고서(omija_demo)가 "왜 지금 움직여야 하나"라면, 이 콘솔은 "평소에 뭘 하고
+     있나"다. 커버리지의 구멍까지 그대로 보여주는 것이 신뢰 장치다.</div>
+  <div class="grid2">
+    
+  <div class="panel">
+    <div class="ph"><span class="pk">P1</span><span class="pt">감시 범위 · coverage map</span>
+      <span class="pchip eng">ENGINE·실측</span> <span class="pchip seed">SEED·가상</span></div>
+    <div class="pb">
+      <div class="kpis">
+        <div class="kpi"><div class="n">9</div><div class="l">등록 협력사 <span class="pchip eng">ENGINE·실측</span></div></div>
+        <div class="kpi"><div class="n">9</div><div class="l">감시 도메인 <span class="pchip eng">ENGINE·실측</span></div></div>
+        <div class="kpi"><div class="n">2</div><div class="l">원청 <span class="pchip eng">ENGINE·실측</span></div></div>
+        <div class="kpi"><div class="n">2</div><div class="l">연결 프로그램 <span class="pchip eng">ENGINE·실측</span></div></div>
+      </div>
+      <div class="tree"><div><span class="pr">Xenon Aerospace</span><span class="tw"> (prime-x) · runs: Sentinel ISR Program · Harbor Sustainment Program</span><span class="bdg gap">자산 도메인 미등록</span></div><div><span class="tw">  ├ T1</span> Alpha Precision<span class="bdg">감시중</span></div><div><span class="tw">  ├ T1</span> Bravo Systems<span class="bdg">감시중</span></div><div><span class="tw">  ├ T1</span> Foxtrot Metals<span class="bdg">감시중</span></div><div><span class="tw">  │   └ T2</span> Hotel Microelectronics<span class="tw"> — subcontractsTo</span><span class="bdg">감시중</span></div><div><span class="tw">  └ T2</span> Golf Avionics<span class="bdg">감시중</span></div><div><span class="pr">Yotta Defense Systems</span><span class="tw"> (prime-y) · runs: Harbor Sustainment Program</span><span class="bdg gap">자산 도메인 미등록</span></div><div><span class="tw">  ├ T1</span> India Fabrication<span class="bdg">감시중</span></div><div><span class="tw">  ├ T2</span> Charlie Components<span class="bdg">감시중</span></div><div><span class="tw">  ├ T2</span> Delta Parts<span class="bdg">감시중</span></div><div><span class="tw">  └ T2</span> Echo Logistics<span class="bdg">감시중</span></div></div>
+      <div class="gaps"><b>커버리지 공백 (숨기지 않음)</b><br>등록됐지만 도메인 미확인 협력사 <b>0개</b><br>원청 자산 도메인 미등록 <b>2/2</b> — 원청측 자산은 노출 레코드의 <span class='mono'>targets</span> 엣지로만 관측됨</div>
+    </div>
+  </div>
+    
+  <div class="panel">
+    <div class="ph"><span class="pk">P2</span><span class="pt">조용함의 증명 · all-clear evidence</span>
+      <span class="pchip eng">ENGINE·실측</span></div>
+    <div class="pb">
+      <div class="clear0"><span class="z">0</span>
+        <span class="zl">활성 침해 경로 <span class="pchip eng">ENGINE·실측</span><br>
+        <span style="font-size:11px;color:var(--muted)">"0건 탐지"가 아니라 — 10건 검토, 0건 활성</span></span></div>
+      <div class="meta-line">마지막 전수 평가 <b>2026-08-14 00:00 UTC</b> <span>시나리오 클럭</span><span class="pchip frame">FRAME·연출</span></div>
+      <div class="meta-line">평가 대상 전파 경로 <b>14개</b> · 감염 기기 후보 <b>10건</b> 검토 <span class="pchip eng">ENGINE·실측</span></div>
+      <div class="meta-line">위험 평가 <b>7건</b> 산출 — 즉시 0 · 주의 7 · 관찰 0 <span class="pchip eng">ENGINE·실측</span></div>
+      <div class="meta-line">병합 제안 대기 <b>1건</b> (human-on-the-loop) <span class="pchip eng">ENGINE·실측</span></div>
+      <div class="meta-line" style="border:none">다음 평가 주기 <b>+24h</b> <span class="pchip frame">FRAME·연출</span></div>
+      <div class="rej">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">활성 조건 미충족 사유 (실측 히스토그램)</div>
+        <div class="rrow"><span class="rn">10</span><span class="rb" style="width:120px"></span><span>stealer infection not within 14d</span></div><div class="rrow"><span class="rn">7</span><span class="rb" style="width:84px"></span><span>no live session cookie</span></div><div class="rrow"><span class="rn">7</span><span class="rb" style="width:84px"></span><span>account_type=&#x27;user&#x27; not vpn/admin</span></div>
+      </div>
+      <div class="inv">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">엔진 자기 검증 — 스코어링 불변식</div>
+        <div class="irow"><span class="ok">OK</span><span>supplier scoring</span><span style="color:var(--muted)">active_floor &gt; base_cap</span><b>70 &gt; 60</b><span class="pchip eng">ENGINE·실측</span></div><div class="irow"><span class="ok">OK</span><span>program rollup</span><span style="color:var(--muted)">active_floor &gt; base_cap</span><b>70 &gt; 60</b><span class="pchip eng">ENGINE·실측</span></div><div class="irow"><span class="ok">OK</span><span>grade thresholds</span><span style="color:var(--muted)">즉시 70 / 주의 40</span><b>70 / 40</b><span class="pchip eng">ENGINE·실측</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div></section>
+<section><div class="wrap">
+  <div class="sec-k">P3 · 피드 상태 / collection posture — 정직한 상태 표시, "연결된 척" 금지</div>
+  
+  <div class="feeds">
+    <div class="feed slot">
+      <div class="fh"><span class="nm">credential exposure feed</span>
+        <span class="st off">비활성 · 승인 대기</span><span class="pchip eng">ENGINE·실측</span></div>
+      <div class="fd">벤더 중립 빈 슬롯 — 연결된 척 하지 않는다.<br>
+        계약: 승인·법무 검토 완료 시 <b>adapter 경계(normalize)</b>에서 교체 ·
+        마스킹 강제 · 원문 미저장 · incremental poll.</div>
+    </div>
+    <div class="feed">
+      <div class="fh"><span class="nm">OSINT feed</span>
+        <span class="st off">수동 수집 전용</span><span class="pchip eng">ENGINE·실측</span></div>
+      <div class="fd">main demo에서 public feed fetch 없음 (하드 룰).<br>
+        수집 도구는 별도 승인 하에 오프라인 실행.</div>
+    </div>
+    <div class="feed">
+      <div class="fh"><span class="nm">Foundry sync</span><span class="st on">CONNECTED</span><span class="pchip live">LIVE·Foundry</span></div>
+      <div class="fd">마지막 readback <b>2026-07-04 19:36:25Z</b><br>ontology <b>ontology-cafadd0c-45e2-4808-98ab-787ee7f2903a</b><br>OSDK <b>0.2.0</b> published · workflow actions <b>8종</b></div>
+    </div>
+  </div>
+</div></section>
+<section><div class="wrap">
+  
+  <div class="panel">
+    <div class="ph"><span class="pk">P4</span><span class="pt">결정 감사 스트림 · decision audit</span>
+      <span class="pchip live">LIVE·Foundry</span></div>
+    <div class="scroll-x"><table class="livetbl">
+      <thead><tr><th>timestamp (UTC)</th><th>action apiName</th><th>object · pk</th>
+        <th>status before → after</th><th>readback</th></tr></thead>
+      <tbody><tr><td class='mono2'>2026-07-04 19:36:20Z</td><td class='act'>acknowledge-incident</td><td class='mono2'>CompromiseIncident · incident:micro-h:active</td><td class='tr'>assigned → acknowledged</td><td class='ok'>✓ verified · HTTP 200</td></tr><tr><td class='mono2'>2026-07-04 19:36:21Z</td><td class='act'>assign-incident</td><td class='mono2'>CompromiseIncident · incident:micro-h:active</td><td class='tr'>acknowledged → assigned</td><td class='ok'>✓ verified · HTTP 200</td></tr><tr><td class='mono2'>2026-07-04 19:36:22Z</td><td class='act'>review-notification-draft</td><td class='mono2'>NotificationDraft · draft:sup-h:2026-07-03</td><td class='tr'>exported → reviewed</td><td class='ok'>✓ verified · HTTP 200</td></tr><tr><td class='mono2'>2026-07-04 19:36:23Z</td><td class='act'>approve-notification-draft</td><td class='mono2'>NotificationDraft · draft:sup-h:2026-07-03</td><td class='tr'>reviewed → approved</td><td class='ok'>✓ verified · HTTP 200</td></tr><tr><td class='mono2'>2026-07-04 19:36:25Z</td><td class='act'>export-notification-draft</td><td class='mono2'>NotificationDraft · draft:sup-h:2026-07-03</td><td class='tr'>approved → exported</td><td class='ok'>✓ verified · HTTP 200</td></tr></tbody></table></div>
+    <div class='p4cap'><b>human-on-the-loop이 실제로 작동 중이라는 증거.</b> 실행 주체: 인증된 토큰 세션 · 각 전이는 실행 후 readback으로 검증 · 원본 증적 <span class='mono'>out/foundry_action_chain.json</span></div>
+  </div>
+</div></section>
+<section style="border-bottom:none"><div class="wrap">
+  
+  <div class="locked">
+    <div class="lh2"><span class="pk" style="font-family:var(--mono);font-size:10px;
+      letter-spacing:1.2px;color:var(--muted)">P5</span>
+      <span class="t">민감정보 열람 구역 · sensitive record access</span>
+      <span class="badge">LOCKED · EMPTY SLOT</span></div>
+    <div class="slottxt">이 구역은 승인된 피드 연결 및 열람 권한 정책 확정 후 활성화됩니다.</div>
+    <ul>
+      <li><b>접근 게이트</b> — 열람 사유 입력 필수 → 사유가 감사로그에 기록된 후 개방</li>
+      <li><b>마스킹 기본값</b> — 비밀값은 항상 <span class="mono">•••</span> + fingerprint;
+          원문 열람은 별도 권한 + 별도 감사 이벤트</li>
+      <li><b>세션 표시</b> — 열람자 ID·시각 워터마크</li>
+      <li><b>열람 범위</b> — 레코드 단위 (전체 덤프 열람 없음)</li>
+      <li><b>금지</b> — 원문 저장·복사 UI, 일괄 export</li>
+    </ul>
+    <div class="owner">requirement contract only — 구현 주체: Codex (이 화면은 잠긴 자리만 예약)</div>
+  </div>
+  <div class="footer">SYNTHETIC DEMO · no network · no real data · no fake tickers ·
+    generated by scripts/omija_console_home.py · direction: docs/review/steady-state-console-direction.md</div>
+</div></section>
+</body></html>
