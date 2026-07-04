@@ -80,14 +80,13 @@ Implemented and verified the read side needed for the hackathon demo:
 - `scripts/foundry_osdk_smoke.py --diagnose`: live ontology link diagnostic.
 - `scripts/demo_e2e.py --compare --supplier sup-h`: SQLite vs Foundry decision-path comparison.
 - `scripts/foundry_demo_report.py`: Foundry-backed static HTML report at `out/foundry_demo.html`.
+- `scripts/final_demo_check.py`: one-command pre-demo verification.
 
 Verified:
 
 ```bash
 uv run pytest -q
-uv run python scripts/foundry_osdk_smoke.py --diagnose
-uv run python scripts/demo_e2e.py --compare --supplier sup-h
-uv run python scripts/foundry_demo_report.py
+uv run python scripts/final_demo_check.py
 ```
 
-Latest result: `112 passed`; smoke links all `OK`; E2E compare `RESULT: OK`.
+Latest result: `115 passed`; smoke links all `OK`; E2E compare `RESULT: OK`.

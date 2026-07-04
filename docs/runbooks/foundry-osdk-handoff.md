@@ -152,9 +152,7 @@ Action Type 쓰기(`ComputeSupplierRisk`, `FlagActiveCompromise`,
 
 ```bash
 uv run python scripts/foundry_osdk_bootstrap.py --force-reinstall
-uv run python scripts/foundry_osdk_smoke.py --diagnose
-uv run python scripts/demo_e2e.py --compare --supplier sup-h
-uv run python scripts/foundry_demo_report.py
+uv run python scripts/final_demo_check.py
 open out/foundry_demo.html
 ```
 

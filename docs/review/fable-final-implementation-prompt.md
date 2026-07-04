@@ -25,6 +25,7 @@ Context:
   - generated OSDK bootstrap/smoke
   - SQLite vs Foundry demo_e2e comparison
   - Foundry-backed static demo report
+  - final_demo_check.py one-command pre-demo verification
 - Under two-day hackathon constraints.
 - Do not depend on or discuss any external threat-intelligence provider. Treat seed evidence as already present in Foundry.
 
