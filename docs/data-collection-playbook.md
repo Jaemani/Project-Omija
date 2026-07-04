@@ -230,6 +230,21 @@ out/early_warning_readiness.md
 
 This verifies collection coverage and the current synthetic active-on-top ranking invariant.
 
+When an approved private connector exists, it should emit local JSONL candidate records and hand them to Omija through:
+
+```bash
+uv run python scripts/import_candidate_signals.py --input data/private_candidates/candidates.jsonl
+```
+
+The command does not call a provider API. It validates and normalizes local candidate records, then writes ignored local outputs:
+
+```text
+out/private_candidate_import.json
+out/private_candidate_import.md
+```
+
+See `docs/stealthmole-api-integration.md` for the candidate signal envelope and field mapping.
+
 ### Daily Scheduled Queries
 
 For each supplier:

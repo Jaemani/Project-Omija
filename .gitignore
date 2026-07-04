@@ -16,6 +16,8 @@ venv/
 secrets/
 credentials.json
 registry/suppliers.live.yaml
+data/private_candidates/
+out/private_candidate_import.*
 
 # OS
 .DS_Store

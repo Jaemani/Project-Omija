@@ -393,6 +393,7 @@ docs/stealthmole-role-map.md
 docs/practical-early-warning-plan.md
 docs/data-collection-playbook.md
 docs/claims-and-limitations.md
+docs/stealthmole-api-integration.md
 docs/open-data-catalog.md
 docs/data-insertion-guide.md
 docs/presentation-flow.md

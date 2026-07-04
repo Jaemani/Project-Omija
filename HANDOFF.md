@@ -208,8 +208,10 @@ docs/data-collection-playbook.md
 docs/claims-and-limitations.md
 docs/presentation-flow.md
 docs/stealthmole-role-map.md
+docs/stealthmole-api-integration.md
 scripts/collection_plan.py
 scripts/early_warning_readiness.py
+scripts/import_candidate_signals.py
 scripts/public_context_snapshot.py
 scripts/public_context_matrix.py
 scripts/stealthmole_role_map.py
