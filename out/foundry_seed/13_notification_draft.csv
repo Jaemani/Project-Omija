@@ -1,0 +1,2 @@
+id,recipient_ref,body,created_at,created_by,reviewer,status
+draft:sup-h:2026-07-03,sup-h,"Synthetic demo draft: rotate exposed account, revoke sessions, enforce MFA, and review VPN access evidence.",2026-07-03T00:00:00Z,Project Omija,demo-reviewer,draft

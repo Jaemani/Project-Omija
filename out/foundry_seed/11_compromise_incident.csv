@@ -1,0 +1,2 @@
+id,supplier_ref,risk_band,opened_at,path_snapshot,path_hash,blast_radius,path_confidence,status
+incident:micro-h:active,sup-h,A,2026-07-03T00:00:00Z,"[""dev:micro-h:laptop1"",""exp:micro-h:active"",""id:ops@micro-h.example"",""sup-h"",""sup-f"",""prime-x"",""prog-sentinel""]",pathhash:micro-h-active,"{""suppliers"":[""sup-h"",""sup-f""],""primes"":[""prime-x""],""programs"":[""prog-sentinel"",""prog-harbor""]}",0.9,open

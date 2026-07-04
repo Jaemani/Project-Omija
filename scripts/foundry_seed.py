@@ -158,6 +158,72 @@ def main() -> int:
                 "status": "active",
             },
         ],
+        "09_merge_proposal.csv": [
+            {
+                "id": "merge:micro-h:ops",
+                "identity_a": "id:ops@micro-h.example",
+                "identity_b": "id:ops@micro-h.example",
+                "basis": "self-link smoke test; replace with real candidate pair later",
+                "confidence": 1.0,
+                "created_at": now,
+                "reviewer": "demo-reviewer",
+                "status": "proposed",
+            },
+        ],
+        "10_risk_assessment.csv": [
+            {
+                "id": "risk:sup-h:2026-07-03",
+                "supplier_ref": "sup-h",
+                "risk_band": "A",
+                "score": 95.76,
+                "grade": "critical",
+                "active_flag": "true",
+                "computed_at": now,
+                "components": '{"active_path":true,"session_cookie":true,"tier":2}',
+                "scoring_version": "v0.2",
+                "schema_version": "ontology-v0.2",
+                "status": "active",
+            },
+        ],
+        "11_compromise_incident.csv": [
+            {
+                "id": "incident:micro-h:active",
+                "supplier_ref": "sup-h",
+                "risk_band": "A",
+                "opened_at": now,
+                "path_snapshot": '["dev:micro-h:laptop1","exp:micro-h:active","id:ops@micro-h.example","sup-h","sup-f","prime-x","prog-sentinel"]',
+                "path_hash": "pathhash:micro-h-active",
+                "blast_radius": '{"suppliers":["sup-h","sup-f"],"primes":["prime-x"],"programs":["prog-sentinel","prog-harbor"]}',
+                "path_confidence": 0.9,
+                "status": "open",
+            },
+        ],
+        "12_program_exposure.csv": [
+            {
+                "id": "progexp:prog-sentinel:2026-07-03",
+                "program_ref": "prog-sentinel",
+                "risk_band": "A",
+                "score": 90.0,
+                "grade": "critical",
+                "active_flag": "true",
+                "computed_at": now,
+                "components": '{"active_incidents":1,"supplier_risk":"risk:sup-h:2026-07-03"}',
+                "contributing_paths": '["pathhash:micro-h-active"]',
+                "scoring_version": "v0.2",
+                "status": "active",
+            },
+        ],
+        "13_notification_draft.csv": [
+            {
+                "id": "draft:sup-h:2026-07-03",
+                "recipient_ref": "sup-h",
+                "body": "Synthetic demo draft: rotate exposed account, revoke sessions, enforce MFA, and review VPN access evidence.",
+                "created_at": now,
+                "created_by": "Project Omija",
+                "reviewer": "demo-reviewer",
+                "status": "draft",
+            },
+        ],
     }
 
     link_rows: dict[str, list[dict[str, object]]] = {
@@ -235,6 +301,108 @@ def main() -> int:
                 "right-Identity-primary-key": "id:ops@micro-h.example",
             },
         ],
+        "31_link_merge_candidates_identity.csv": [
+            {
+                "left-MergeProposal-primary-key": "merge:micro-h:ops",
+                "right-Identity-primary-key": "id:ops@micro-h.example",
+            },
+        ],
+        "32_link_risk_evidenced_by_exposure.csv": [
+            {
+                "left-RiskAssessment-primary-key": "risk:sup-h:2026-07-03",
+                "right-CredentialExposure-primary-key": "exp:micro-h:active",
+            },
+        ],
+        "33_link_risk_evidenced_by_device.csv": [
+            {
+                "left-RiskAssessment-primary-key": "risk:sup-h:2026-07-03",
+                "right-InfectedDevice-primary-key": "dev:micro-h:laptop1",
+            },
+        ],
+        "34_link_risk_evidenced_by_incident.csv": [
+            {
+                "left-RiskAssessment-primary-key": "risk:sup-h:2026-07-03",
+                "right-CompromiseIncident-primary-key": "incident:micro-h:active",
+            },
+        ],
+        "35_link_traverses_identity.csv": [
+            {
+                "left-CompromiseIncident-primary-key": "incident:micro-h:active",
+                "right-Identity-primary-key": "id:ops@micro-h.example",
+            },
+        ],
+        "36_link_traverses_asset.csv": [
+            {
+                "left-CompromiseIncident-primary-key": "incident:micro-h:active",
+                "right-Domain-primary-key": "micro-h.example",
+            },
+            {
+                "left-CompromiseIncident-primary-key": "incident:micro-h:active",
+                "right-Domain-primary-key": "vpn.prime-x.example",
+            },
+        ],
+        "37_link_traverses_supplier.csv": [
+            {
+                "left-CompromiseIncident-primary-key": "incident:micro-h:active",
+                "right-Supplier-primary-key": "sup-h",
+            },
+            {
+                "left-CompromiseIncident-primary-key": "incident:micro-h:active",
+                "right-Supplier-primary-key": "sup-f",
+            },
+        ],
+        "38_link_traverses_prime.csv": [
+            {
+                "left-CompromiseIncident-primary-key": "incident:micro-h:active",
+                "right-Prime-primary-key": "prime-x",
+            },
+        ],
+        "39_link_traverses_program.csv": [
+            {
+                "left-CompromiseIncident-primary-key": "incident:micro-h:active",
+                "right-Program-primary-key": "prog-sentinel",
+            },
+            {
+                "left-CompromiseIncident-primary-key": "incident:micro-h:active",
+                "right-Program-primary-key": "prog-harbor",
+            },
+        ],
+        "40_link_program_evidenced_by_risk.csv": [
+            {
+                "left-ProgramExposure-primary-key": "progexp:prog-sentinel:2026-07-03",
+                "right-RiskAssessment-primary-key": "risk:sup-h:2026-07-03",
+            },
+        ],
+        "41_link_program_evidenced_by_incident.csv": [
+            {
+                "left-ProgramExposure-primary-key": "progexp:prog-sentinel:2026-07-03",
+                "right-CompromiseIncident-primary-key": "incident:micro-h:active",
+            },
+        ],
+        "42_link_cites_exposure.csv": [
+            {
+                "left-NotificationDraft-primary-key": "draft:sup-h:2026-07-03",
+                "right-CredentialExposure-primary-key": "exp:micro-h:active",
+            },
+        ],
+        "43_link_cites_device.csv": [
+            {
+                "left-NotificationDraft-primary-key": "draft:sup-h:2026-07-03",
+                "right-InfectedDevice-primary-key": "dev:micro-h:laptop1",
+            },
+        ],
+        "44_link_cites_incident.csv": [
+            {
+                "left-NotificationDraft-primary-key": "draft:sup-h:2026-07-03",
+                "right-CompromiseIncident-primary-key": "incident:micro-h:active",
+            },
+        ],
+        "45_link_cites_risk.csv": [
+            {
+                "left-NotificationDraft-primary-key": "draft:sup-h:2026-07-03",
+                "right-RiskAssessment-primary-key": "risk:sup-h:2026-07-03",
+            },
+        ],
     }
 
     for filename, rows in object_rows.items():
@@ -249,17 +417,20 @@ def main() -> int:
                 "",
                 "This seed follows `ontology.md`: object properties stay on object CSVs, links use separate join-table CSVs.",
                 "",
-                "Import/replace object CSVs `01_*.csv` through `08_*.csv` first.",
-                "Then use link CSVs `20_*.csv` through `30_*.csv` as join-table datasources for the matching Link Types.",
+                "Import/replace object CSVs `01_*.csv` through `13_*.csv` first.",
+                "Then use link CSVs `20_*.csv` through `45_*.csv` as join-table datasources for the matching Link Types.",
                 "",
                 "Important:",
                 "- If a Link Type was recreated as foreign-key based, it will not use these link CSVs. Recreate it as join-table based or add the FK property to the Object Type.",
                 "- If Foundry generated different join-table column names, keep the row values but rename the two CSV headers to exactly match the Link Type's expected columns.",
+                "- Foundry Link Types are concrete pairs. Conceptual union links like `evidenced_by` and `cites` are split by target type in this seed.",
                 "",
                 "Primary Object Explorer paths to verify:",
                 "1. `sup-h -> subcontractsTo -> sup-f -> supplies -> prime-x -> runs -> prog-sentinel`",
                 "2. `exp:micro-h:active -> of -> id:ops@micro-h.example -> belongsTo -> micro-h.example -> owns(reverse) -> sup-h`",
                 "3. `exp:micro-h:active -> targets -> vpn.prime-x.example -> primeOwns(reverse) -> prime-x -> runs -> prog-sentinel`",
+                "4. `incident:micro-h:active -> traverses_* -> Identity/Domain/Supplier/Prime/Program`",
+                "5. `draft:sup-h:2026-07-03 -> cites_* -> Exposure/Device/Incident/Risk`",
                 "",
                 "This seed is synthetic. It contains no real secrets; `masked_value` is already redacted.",
                 "",

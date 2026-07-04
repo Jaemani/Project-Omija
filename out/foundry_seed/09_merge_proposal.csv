@@ -1,0 +1,2 @@
+id,identity_a,identity_b,basis,confidence,created_at,reviewer,status
+merge:micro-h:ops,id:ops@micro-h.example,id:ops@micro-h.example,self-link smoke test; replace with real candidate pair later,1.0,2026-07-03T00:00:00Z,demo-reviewer,proposed

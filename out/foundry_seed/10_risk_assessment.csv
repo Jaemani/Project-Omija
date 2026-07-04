@@ -1,0 +1,2 @@
+id,supplier_ref,risk_band,score,grade,active_flag,computed_at,components,scoring_version,schema_version,status
+risk:sup-h:2026-07-03,sup-h,A,95.76,critical,true,2026-07-03T00:00:00Z,"{""active_path"":true,""session_cookie"":true,""tier"":2}",v0.2,ontology-v0.2,active

@@ -1,0 +1,2 @@
+id,program_ref,risk_band,score,grade,active_flag,computed_at,components,contributing_paths,scoring_version,status
+progexp:prog-sentinel:2026-07-03,prog-sentinel,A,90.0,critical,true,2026-07-03T00:00:00Z,"{""active_incidents"":1,""supplier_risk"":""risk:sup-h:2026-07-03""}","[""pathhash:micro-h-active""]",v0.2,active
