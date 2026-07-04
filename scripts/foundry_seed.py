@@ -2,12 +2,15 @@
 
 The output is deliberately small: one multi-tier supplier path, one active
 credential exposure, one infected device, and one cross-target VPN asset.
+It is optimized for Foundry foreign-key link types: import object CSVs only,
+then configure each 1:N/N:1 link from the FK column on the "many" side.
 
 Run:
     uv run python scripts/foundry_seed.py
 
-Then import CSVs in the order listed in out/foundry_seed/README.md, or use the
-rows as values for Foundry's auto-generated Create/Edit actions.
+Then replace/import object backing datasources in the order listed in
+out/foundry_seed/README.md, or use the rows as values for Foundry's
+auto-generated Create/Edit actions.
 """
 
 from __future__ import annotations
@@ -28,7 +31,11 @@ def write_csv(name: str, rows: list[dict[str, object]]) -> None:
         raise ValueError(f"{name} has no rows")
 
     with path.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(
+            fh,
+            fieldnames=list(rows[0].keys()),
+            lineterminator="\n",
+        )
         writer.writeheader()
         for row in rows:
             writer.writerow(row)
@@ -36,6 +43,8 @@ def write_csv(name: str, rows: list[dict[str, object]]) -> None:
 
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    for old in OUT_DIR.glob("*.csv"):
+        old.unlink()
 
     now = "2026-07-03T00:00:00Z"
     infected_at = "2026-07-01T00:00:00Z"
@@ -49,6 +58,8 @@ def main() -> int:
                 "criticality": "high",
                 "status": "active",
                 "is_prime_candidate": "false",
+                "parent_supplier_id": "sup-f",
+                "prime_id": "",
             },
             {
                 "id": "sup-f",
@@ -57,6 +68,8 @@ def main() -> int:
                 "criticality": "medium",
                 "status": "active",
                 "is_prime_candidate": "false",
+                "parent_supplier_id": "",
+                "prime_id": "prime-x",
             },
         ],
         "02_prime.csv": [
@@ -68,12 +81,14 @@ def main() -> int:
                 "name": "Sentinel ISR Program",
                 "sensitivity": "high",
                 "status": "active",
+                "prime_id": "prime-x",
             },
             {
                 "id": "prog-harbor",
                 "name": "Harbor Sustainment Program",
                 "sensitivity": "medium",
                 "status": "active",
+                "prime_id": "prime-x",
             },
         ],
         "04_domain.csv": [
@@ -85,6 +100,8 @@ def main() -> int:
                 "criticality": "high",
                 "access_surface": "employee_portal",
                 "verified_at": now,
+                "supplier_id": "sup-h",
+                "prime_id": "",
             },
             {
                 "fqdn": "metals-f.example",
@@ -94,6 +111,8 @@ def main() -> int:
                 "criticality": "medium",
                 "access_surface": "employee_portal",
                 "verified_at": now,
+                "supplier_id": "sup-f",
+                "prime_id": "",
             },
             {
                 "fqdn": "vpn.prime-x.example",
@@ -103,6 +122,8 @@ def main() -> int:
                 "criticality": "high",
                 "access_surface": "remote_access",
                 "verified_at": now,
+                "supplier_id": "",
+                "prime_id": "prime-x",
             },
         ],
         "05_identity.csv": [
@@ -114,6 +135,7 @@ def main() -> int:
                 "account_type": "admin",
                 "status": "active",
                 "merged_into": "",
+                "domain_fqdn": "micro-h.example",
             },
         ],
         "06_credential_exposure.csv": [
@@ -129,6 +151,10 @@ def main() -> int:
                 "source_ref": "src:stealthmole:mock",
                 "confidence": 0.9,
                 "status": "active",
+                "identity_id": "id:ops@micro-h.example",
+                "target_domain_fqdn": "vpn.prime-x.example",
+                "threat_source_id": "src:stealthmole:mock",
+                "infected_device_id": "dev:micro-h:laptop1",
             },
         ],
         "07_infected_device.csv": [
@@ -140,6 +166,7 @@ def main() -> int:
                 "has_session_cookie": "true",
                 "os": "Windows 10",
                 "status": "active",
+                "identity_id": "id:ops@micro-h.example",
             },
         ],
         "08_threat_source.csv": [
@@ -154,47 +181,7 @@ def main() -> int:
         ],
     }
 
-    links: dict[str, list[dict[str, object]]] = {
-        "20_link_subcontracts_to.csv": [
-            {"from_supplier_id": "sup-h", "to_supplier_id": "sup-f"},
-        ],
-        "21_link_supplies.csv": [
-            {"supplier_id": "sup-f", "prime_id": "prime-x"},
-        ],
-        "22_link_runs.csv": [
-            {"prime_id": "prime-x", "program_id": "prog-sentinel"},
-            {"prime_id": "prime-x", "program_id": "prog-harbor"},
-        ],
-        "23_link_owns.csv": [
-            {"supplier_id": "sup-h", "domain_fqdn": "micro-h.example"},
-            {"supplier_id": "sup-f", "domain_fqdn": "metals-f.example"},
-        ],
-        "24_link_prime_owns.csv": [
-            {"prime_id": "prime-x", "domain_fqdn": "vpn.prime-x.example"},
-        ],
-        "25_link_belongs_to.csv": [
-            {"identity_id": "id:ops@micro-h.example", "domain_fqdn": "micro-h.example"},
-        ],
-        "26_link_of.csv": [
-            {"credential_exposure_id": "exp:micro-h:active", "identity_id": "id:ops@micro-h.example"},
-        ],
-        "27_link_targets.csv": [
-            {"credential_exposure_id": "exp:micro-h:active", "domain_fqdn": "vpn.prime-x.example"},
-        ],
-        "28_link_sourced_from.csv": [
-            {"credential_exposure_id": "exp:micro-h:active", "threat_source_id": "src:stealthmole:mock"},
-        ],
-        "29_link_leaked.csv": [
-            {"infected_device_id": "dev:micro-h:laptop1", "credential_exposure_id": "exp:micro-h:active"},
-        ],
-        "30_link_compromises.csv": [
-            {"infected_device_id": "dev:micro-h:laptop1", "identity_id": "id:ops@micro-h.example"},
-        ],
-    }
-
     for filename, rows in objects.items():
-        write_csv(filename, rows)
-    for filename, rows in links.items():
         write_csv(filename, rows)
 
     readme = OUT_DIR / "README.md"
@@ -203,10 +190,24 @@ def main() -> int:
             [
                 "# Foundry seed data",
                 "",
-                "Import object CSVs `01_*.csv` through `08_*.csv` first, then link CSVs `20_*.csv` through `30_*.csv`.",
+                "Import/replace object CSVs `01_*.csv` through `08_*.csv`. This folder is FK-link mode: there are no separate link CSVs.",
                 "",
-                "This assumes `Domain` primary key is `fqdn`. If your Link Type UI names the endpoint differently, map `domain_fqdn` to the Domain primary key.",
+                "This assumes `Domain` primary key is `fqdn`.",
                 "If other Foundry API names differ, map columns during import. Keep the values unchanged.",
+                "",
+                "Configure links as foreign-key links using these columns:",
+                "",
+                "- `subcontracts_to`: Supplier.parent_supplier_id -> Supplier.id",
+                "- `supplies`: Supplier.prime_id -> Prime.id",
+                "- `runs`: Program.prime_id -> Prime.id",
+                "- `owns`: Domain.supplier_id -> Supplier.id",
+                "- `prime_owns`: Domain.prime_id -> Prime.id",
+                "- `belongs_to`: Identity.domain_fqdn -> Domain.fqdn",
+                "- `of`: CredentialExposure.identity_id -> Identity.id",
+                "- `targets`: CredentialExposure.target_domain_fqdn -> Domain.fqdn",
+                "- `sourced_from`: CredentialExposure.threat_source_id -> ThreatSource.id",
+                "- `leaked`: CredentialExposure.infected_device_id -> InfectedDevice.id",
+                "- `compromises`: InfectedDevice.identity_id -> Identity.id",
                 "",
                 "Primary Object Explorer paths to verify:",
                 "",
