@@ -1,6 +1,6 @@
 # Public Context Snapshot
 
-Generated: `2026-07-04T20:40:42.317702+00:00`
+Generated: `2026-07-04T21:01:23.888042+00:00`
 
 This file summarizes non-sensitive public context only. It is not wired into
 the main demo automatically.
@@ -8,11 +8,15 @@ the main demo automatically.
 ## Counts
 
 - CISA KEV total: `1631`
-- CISA KEV access-relevant: `863`
-- MITRE ATT&CK selected techniques: `234`
+- CISA KEV access-relevant: `957`
+- MITRE ATT&CK selected techniques: `89`
 - URLhaus sampled rows: `1000`
-- URLhaus stealer/loader-tagged sample count: `42`
+- URLhaus stealer/loader-tagged sample count: `44`
 - HIBP public breach metadata count: `1015`
+- FIRST EPSS probability > 0.95 total: `513`
+- CISA advisory RSS sampled: `30`
+- CISA advisory RSS access-relevant: `25`
+- CISA ICS advisory RSS sampled: `30`
 
 ## NVD Queries
 
@@ -22,9 +26,10 @@ the main demo automatically.
 - `fortinet`: 672 total, 8 sampled
 - `ivanti`: 379 total, 8 sampled
 
-## Where This Fits
+## Where Fits
 
-- KEV/NVD -> `Domain.asset_type`, `RiskAssessment.components.public_context`
+- KEV/NVD/EPSS -> `Domain.asset_type`, `RiskAssessment.components.public_context`
+- CISA advisories -> `ThreatSource.kind`, `ProgramExposure.components.public_advisory_context`
 - MITRE ATT&CK -> `ThreatSource.kind`, `RiskAssessment.components.techniques`
 - URLhaus aggregate tags -> `ProgramExposure.components.threat_context`
-- HIBP breach metadata -> presentation-only explanation of breach classes
+- HIBP breach metadata -> presentation-only explanation of breach data classes

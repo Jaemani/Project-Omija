@@ -176,11 +176,15 @@ TT signal -> ThreatSource
 
 ```text
 CISA KEV total: 1631
-CISA KEV access-relevant: 863
-MITRE ATT&CK selected techniques: 234
+CISA KEV access-relevant: 957
+MITRE ATT&CK selected techniques: 89
 URLhaus sampled rows: 1000
-URLhaus stealer/loader-tagged sample count: 42
+URLhaus stealer/loader-tagged sample count: 44
 HIBP public breach metadata count: 1015
+FIRST EPSS probability > 0.95 total: 513
+CISA advisory RSS sampled: 30
+CISA advisory RSS access-relevant: 25
+CISA ICS advisory RSS sampled: 30
 NVD vpn/sso/citrix/fortinet/ivanti query totals: 73 / 25 / 309 / 672 / 379
 ```
 
@@ -226,7 +230,21 @@ out/data_coverage_map.html
 
 > 이 화면은 지금 시스템이 무엇을 보고 있고 무엇을 일부러 잠가두었는지 보여줍니다. 가상 데이터, 공개 데이터, 엔진 산출, 민감 입력 슬롯이 섞이지 않게 분리되어 있습니다.
 
-### 5.4 평시 콘솔
+### 5.4 공개 context matrix
+
+파일:
+
+```text
+out/public_context_matrix.html
+```
+
+목적: 공개 데이터가 단순 장식이 아니라 어떤 온톨로지 판단 배경으로 쓰이는지 source-by-source로 보여준다.
+
+설명:
+
+> CISA KEV, NVD, FIRST EPSS, CISA advisory RSS, MITRE ATT&CK, URLhaus, HIBP는 자격증명 증거가 아닙니다. 대신 VPN/SSO/mail/dev 같은 자산을 왜 감시해야 하는지, 어떤 CVE와 technique context가 붙는지 설명합니다.
+
+### 5.5 평시 콘솔
 
 파일:
 
@@ -240,7 +258,7 @@ out/omija_console_home.html
 
 > 이 화면은 사건 보고서 생성기가 아니라 운영 시스템이라는 점을 보여줍니다. 조용하다는 것은 아무것도 보지 않았다는 뜻이 아니라, 정해진 범위를 보고 있고 활성 경로가 없다는 뜻입니다.
 
-### 5.5 사건 보고서
+### 5.6 사건 보고서
 
 파일:
 
@@ -254,7 +272,7 @@ out/omija_demo.html
 
 > 핵심은 데이터 양이 아니라 경로입니다. 협력사 계정이 원청 자산을 향하고, 공급망 체인을 통해 프로그램까지 닿는지를 보여줍니다.
 
-### 5.6 프로그램 역방향 뷰
+### 5.7 프로그램 역방향 뷰
 
 파일:
 
@@ -277,9 +295,10 @@ out/program_threat_view.html
 2. Foundry Ontology Manager 캡처
 3. out/stealthmole_role_map.html
 4. out/data_coverage_map.html
-5. out/omija_console_home.html
-6. out/omija_demo.html
-7. out/program_threat_view.html (질문이 있을 때 선택)
+5. out/public_context_matrix.html
+6. out/omija_console_home.html
+7. out/omija_demo.html
+8. out/program_threat_view.html (질문이 있을 때 선택)
 ```
 
 ## 7. 3분 발표 스크립트
@@ -366,6 +385,7 @@ CISA KEV/NVD/MITRE/URLhaus/HIBP는 자격증명 증거가 아니라 배경 conte
 ontology.md
 out/stealthmole_role_map.html
 out/data_coverage_map.html
+out/public_context_matrix.html
 out/omija_console_home.html
 out/omija_demo.html
 out/program_threat_view.html
@@ -381,6 +401,7 @@ GitHub raw.githack 링크:
 ```text
 https://raw.githack.com/Jaemani/Project-Omija/main/out/stealthmole_role_map.html
 https://raw.githack.com/Jaemani/Project-Omija/main/out/data_coverage_map.html
+https://raw.githack.com/Jaemani/Project-Omija/main/out/public_context_matrix.html
 https://raw.githack.com/Jaemani/Project-Omija/main/out/omija_console_home.html
 https://raw.githack.com/Jaemani/Project-Omija/main/out/omija_demo.html
 https://raw.githack.com/Jaemani/Project-Omija/main/out/program_threat_view.html

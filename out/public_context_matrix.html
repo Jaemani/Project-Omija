@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Omija Public Context Matrix</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg:#0c0d0e;
+      --panel:#15181b;
+      --panel2:#1d2227;
+      --line:#333a42;
+      --ink:#f3f4f6;
+      --muted:#aeb7c2;
+      --public:#d6a21d;
+      --aggregate:#2ea043;
+      --locked:#f85149;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    header { padding:18px 22px; border-bottom:1px solid var(--line); background:#121518; }
+    .kicker { color:var(--muted); font:11px ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:1px; text-transform:uppercase; }
+    h1 { margin:5px 0 4px; font-size:23px; letter-spacing:0; }
+    h2 { margin:0 0 10px; font-size:15px; letter-spacing:0; }
+    p { margin:0; color:var(--muted); }
+    main { padding:18px 22px 42px; display:grid; gap:18px; }
+    .panel { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px; }
+    .stats { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:8px; }
+    .stat { min-height:64px; padding:9px; border:1px solid var(--line); border-left:3px solid currentColor; border-radius:6px; background:var(--panel2); }
+    .stat span { display:block; color:var(--muted); font-size:11px; }
+    .stat strong { display:block; margin-top:4px; color:var(--ink); font:18px ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .public { color:var(--public); }
+    .aggregate { color:var(--aggregate); }
+    .table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:8px; background:var(--panel); }
+    table { width:100%; min-width:980px; border-collapse:collapse; }
+    th, td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.6px; background:#101316; }
+    td { color:var(--muted); }
+    code { color:var(--ink); font:12px ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .source { display:inline-block; border:1px solid currentColor; border-radius:4px; padding:3px 6px; font:12px ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .metric { color:var(--ink); font:14px ui-monospace,SFMono-Regular,Menlo,monospace; white-space:nowrap; }
+    .note { border:1px solid color-mix(in srgb, var(--locked) 45%, var(--line)); border-left:4px solid var(--locked); border-radius:7px; padding:12px; background:#170f10; color:#ffd8d8; }
+    .flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; }
+    .step { padding:11px; min-height:88px; border:1px solid var(--line); border-radius:7px; background:var(--panel2); }
+    .step strong { display:block; color:var(--ink); margin-bottom:4px; }
+    .step span { color:var(--muted); font-size:12px; }
+    @media (max-width:980px) { .stats, .flow { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="kicker">OMIJA PUBLIC CONTEXT MATRIX</div>
+    <h1>공개 데이터는 증거가 아니라 판단 배경이다</h1>
+    <p>Generated from <code>out/public_context/summary.json</code> at <code>2026-07-04T21:01:23.888042+00:00</code>. 민감 자격증명·세션·계정 식별자는 수집하지 않는다.</p>
+  </header>
+  <main>
+    <section class="panel">
+      <h2>Public context counts</h2>
+      <div class="stats"><div class='stat public'><span>KEV access-relevant</span><strong>957</strong></div><div class='stat public'><span>NVD asset hits</span><strong>1458</strong></div><div class='stat public'><span>EPSS &gt; 0.95</span><strong>513</strong></div><div class='stat public'><span>CISA RSS access-relevant</span><strong>25</strong></div><div class='stat public'><span>ATT&amp;CK selected</span><strong>89</strong></div><div class='stat public'><span>HIBP breach metadata</span><strong>1015</strong></div></div>
+    </section>
+
+    <section class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Source</th>
+            <th>Count</th>
+            <th>Why it helps</th>
+            <th>Ontology fit</th>
+            <th>Boundary</th>
+          </tr>
+        </thead>
+        <tbody>
+    <tr>
+      <td><span class="source public">CISA KEV</span></td>
+      <td class="metric">957 / 1631</td>
+      <td>Known exploited vulnerability urgency for VPN, SSO, mail, firewall, remote access surfaces.</td>
+      <td><code>RiskAssessment.components.public_context.kev</code></td>
+      <td>CVE metadata only; no credential evidence.</td>
+    </tr>
+    
+    <tr>
+      <td><span class="source public">NVD CVE</span></td>
+      <td class="metric">1458</td>
+      <td>Broader asset-class vulnerability background for watched domain types.</td>
+      <td><code>Domain.asset_type -&gt; RiskAssessment.components.cve_context</code></td>
+      <td>Summary counts and sampled CVE metadata.</td>
+    </tr>
+    
+    <tr>
+      <td><span class="source public">FIRST EPSS</span></td>
+      <td class="metric">513</td>
+      <td>Exploit-likelihood prioritization for CVEs likely to matter operationally.</td>
+      <td><code>RiskAssessment.components.epss_context</code></td>
+      <td>CVE probability metadata only.</td>
+    </tr>
+    
+    <tr>
+      <td><span class="source public">CISA Advisories</span></td>
+      <td class="metric">25 / 30</td>
+      <td>Recent public advisory context around access, identity, remote services, and campaigns.</td>
+      <td><code>ThreatSource.kind -&gt; ProgramExposure.components.public_advisory_context</code></td>
+      <td>RSS title/link/date; no raw victim data.</td>
+    </tr>
+    
+    <tr>
+      <td><span class="source public">CISA ICS Advisories</span></td>
+      <td class="metric">30</td>
+      <td>Industrial/production-system context useful for defense manufacturing supply chains.</td>
+      <td><code>ProgramExposure.components.ics_context</code></td>
+      <td>RSS title/link/date only.</td>
+    </tr>
+    
+    <tr>
+      <td><span class="source public">MITRE ATT&amp;CK</span></td>
+      <td class="metric">89</td>
+      <td>Credential-access and initial-access technique vocabulary.</td>
+      <td><code>ThreatSource.kind, RiskAssessment.components.techniques</code></td>
+      <td>Technique metadata only.</td>
+    </tr>
+    
+    <tr>
+      <td><span class="source aggregate">URLhaus</span></td>
+      <td class="metric">44 / 1000</td>
+      <td>Aggregate malware distribution context, especially stealer/loader prevalence.</td>
+      <td><code>ProgramExposure.components.threat_context</code></td>
+      <td>Aggregate tags only; raw URLs not displayed.</td>
+    </tr>
+    
+    <tr>
+      <td><span class="source public">HIBP metadata</span></td>
+      <td class="metric">1015</td>
+      <td>Public breach class scale: which data classes appear in breach corpuses.</td>
+      <td><code>Presentation context, not core evidence object</code></td>
+      <td>Breach metadata only; no account query.</td>
+    </tr>
+    </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>How this supports the demo</h2>
+      <div class="flow">
+        <div class="step"><strong>1. Asset surface</strong><span>VPN, SSO, mail, firewall, remote access domains become watched asset types.</span></div>
+        <div class="step"><strong>2. Public context</strong><span>KEV, NVD, EPSS, advisories, and ATT&CK explain why those surfaces matter.</span></div>
+        <div class="step"><strong>3. Private signal slot</strong><span>Approved credential or infostealer signals would enter behind masking and review boundaries.</span></div>
+        <div class="step"><strong>4. Ontology path</strong><span>`of`, `targets`, `subcontractsTo`, and `traverses_*` determine blast radius.</span></div>
+        <div class="step"><strong>5. Decision object</strong><span>Risk, incident, program exposure, and notification draft are produced for human review.</span></div>
+      </div>
+    </section>
+
+    <div class="note">This page must not be presented as credential evidence. It is public, non-sensitive context that makes the monitoring scope credible while synthetic seed data proves the reasoning engine safely.</div>
+  </main>
+</body>
+</html>

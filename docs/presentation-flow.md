@@ -78,7 +78,16 @@ Key sentence:
 
 ### 5. Steady-State Console
 
-Open:
+Open first if the judge asks what the open data adds:
+
+```text
+out/public_context_matrix.html
+```
+
+This page shows that public data is available and useful without touching credential records. It should be a short bridge, not the main product.
+
+Then open:
+
 
 ```text
 out/omija_console_home.html
@@ -136,13 +145,14 @@ If asked "why not use real leaked data?":
 
 If asked "what public data is real?":
 
-> CISA KEV, NVD, MITRE ATT&CK, URLhaus aggregate counts, and HIBP breach metadata can be used as public context. They explain why VPN/SSO/mail/dev assets matter; they do not replace credential exposure evidence.
+> CISA KEV, NVD, FIRST EPSS, CISA advisory RSS, MITRE ATT&CK, URLhaus aggregate counts, and HIBP breach metadata can be used as public context. They explain why VPN/SSO/mail/dev assets matter; they do not replace credential exposure evidence.
 
 ## File Order For Demo
 
 1. Foundry screenshots, manual.
 2. `out/stealthmole_role_map.html`
 3. `out/data_coverage_map.html`
-4. `out/omija_console_home.html`
-5. `out/omija_demo.html`
-6. `out/program_threat_view.html` only if needed.
+4. `out/public_context_matrix.html`
+5. `out/omija_console_home.html`
+6. `out/omija_demo.html`
+7. `out/program_threat_view.html` only if needed.
