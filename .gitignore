@@ -35,6 +35,7 @@ out/*
 !out/intelligence_demo.json
 !out/omija_console_*.html
 !out/palantir_v*.html
+!out/omija_demo.html
 out/p0b/
 
 # Local tool state

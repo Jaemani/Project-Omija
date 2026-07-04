@@ -148,6 +148,18 @@ class MockExposureSource:
         if domain in ACTIVE_DOMAINS:
             # ACTIVE: recent infection, live session cookie, vpn/admin account.
             acct = "vpn" if domain == "supplier-a.example" else "admin"
+            # of/targets separation (ontology.md §0): the infostealer log's
+            # SAVED credential targets a login `host` that need NOT belong to the
+            # infected employee's own org. For the multi-tier terminal (micro-h),
+            # the captured session is for the PRIME's VPN portal — so
+            # exposure.of → Identity(ops@micro-h.example, a supplier employee)
+            # while exposure.targets → Domain(vpn.prime-x.example, the prime's
+            # asset). That single CROSS-ORG edge is the credential-level early
+            # warning. Same-org active cases (sup-a/sup-g) keep their own vpn host.
+            host = (
+                "vpn.prime-x.example" if domain == "micro-h.example"
+                else f"vpn.{domain}"
+            )
             recs.append({
                 "id": f"cds-{domain}-active",
                 "user": f"ops@{domain}",
@@ -157,7 +169,7 @@ class MockExposureSource:
                 "malware": "RedLine",
                 "infected_at": DEMO_NOW - 2 * DAY,   # recent
                 "account_type": acct,
-                "host": f"vpn.{domain}",
+                "host": host,
                 "os": "Windows 10",
                 "_mock": True,
             })
