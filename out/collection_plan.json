@@ -1,0 +1,4047 @@
+{
+  "generated_at": "2026-07-04T21:18:17.030394+00:00",
+  "mode": "non_executing_collection_plan",
+  "registry": "registry/suppliers.yaml",
+  "policy": {
+    "private_feed_calls": "not executed",
+    "raw_secret_storage": "forbidden",
+    "credential_display": "forbidden",
+    "notification_sending": "forbidden"
+  },
+  "summary": {
+    "suppliers": 9,
+    "primes": 2,
+    "programs": 2,
+    "query_items": 118,
+    "public_jobs": 2,
+    "by_track": {
+      "alias_and_keyword_discovery": 9,
+      "asset_surface_discovery": 81,
+      "private_exposure_candidate": 18,
+      "program_keyword_context": 3,
+      "regional_context": 7
+    }
+  },
+  "items": [
+    {
+      "id": "domain:sup-a:supplier-a.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "domain_exact",
+      "query_value": "supplier-a.example",
+      "provider_capabilities": [
+        "CL",
+        "CDS"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "InfectedDevice",
+        "Identity",
+        "Domain"
+      ],
+      "purpose": "Find exposure and infostealer candidates tied to the supplier domain.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "email-domain:sup-a:supplier-a.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "email_domain",
+      "query_value": "*@supplier-a.example",
+      "provider_capabilities": [
+        "CL"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "Identity"
+      ],
+      "purpose": "Find leaked-account candidates for supplier-owned identities.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-a:vpn.supplier-a.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "vpn.supplier-a.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-a:sso.supplier-a.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "sso.supplier-a.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-a:mail.supplier-a.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "mail.supplier-a.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-a:owa.supplier-a.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "owa.supplier-a.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-a:groupware.supplier-a.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "groupware.supplier-a.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-a:citrix.supplier-a.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "citrix.supplier-a.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-a:dev.supplier-a.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "dev.supplier-a.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-a:admin.supplier-a.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "admin.supplier-a.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-a:portal.supplier-a.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "portal.supplier-a.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "alias:sup-a",
+      "execute": false,
+      "track": "alias_and_keyword_discovery",
+      "cadence": "weekly",
+      "query_type": "company_alias",
+      "query_value": "Alpha Precision",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "MergeProposal"
+      ],
+      "purpose": "Discover unregistered aliases, domains, or repeated mentions for reviewer triage.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-a",
+        "name": "Alpha Precision",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "domain:sup-b:supplier-b.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "domain_exact",
+      "query_value": "supplier-b.example",
+      "provider_capabilities": [
+        "CL",
+        "CDS"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "InfectedDevice",
+        "Identity",
+        "Domain"
+      ],
+      "purpose": "Find exposure and infostealer candidates tied to the supplier domain.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "email-domain:sup-b:supplier-b.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "email_domain",
+      "query_value": "*@supplier-b.example",
+      "provider_capabilities": [
+        "CL"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "Identity"
+      ],
+      "purpose": "Find leaked-account candidates for supplier-owned identities.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-b:vpn.supplier-b.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "vpn.supplier-b.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-b:sso.supplier-b.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "sso.supplier-b.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-b:mail.supplier-b.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "mail.supplier-b.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-b:owa.supplier-b.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "owa.supplier-b.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-b:groupware.supplier-b.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "groupware.supplier-b.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-b:citrix.supplier-b.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "citrix.supplier-b.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-b:dev.supplier-b.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "dev.supplier-b.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-b:admin.supplier-b.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "admin.supplier-b.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-b:portal.supplier-b.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "portal.supplier-b.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "alias:sup-b",
+      "execute": false,
+      "track": "alias_and_keyword_discovery",
+      "cadence": "weekly",
+      "query_type": "company_alias",
+      "query_value": "Bravo Systems",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "MergeProposal"
+      ],
+      "purpose": "Discover unregistered aliases, domains, or repeated mentions for reviewer triage.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-b",
+        "name": "Bravo Systems",
+        "tier": 1,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "domain:sup-c:supplier-c.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "domain_exact",
+      "query_value": "supplier-c.example",
+      "provider_capabilities": [
+        "CL",
+        "CDS"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "InfectedDevice",
+        "Identity",
+        "Domain"
+      ],
+      "purpose": "Find exposure and infostealer candidates tied to the supplier domain.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "email-domain:sup-c:supplier-c.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "email_domain",
+      "query_value": "*@supplier-c.example",
+      "provider_capabilities": [
+        "CL"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "Identity"
+      ],
+      "purpose": "Find leaked-account candidates for supplier-owned identities.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-c:vpn.supplier-c.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "vpn.supplier-c.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-c:sso.supplier-c.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "sso.supplier-c.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-c:mail.supplier-c.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "mail.supplier-c.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-c:owa.supplier-c.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "owa.supplier-c.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-c:groupware.supplier-c.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "groupware.supplier-c.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-c:citrix.supplier-c.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "citrix.supplier-c.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-c:dev.supplier-c.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "dev.supplier-c.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-c:admin.supplier-c.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "admin.supplier-c.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-c:portal.supplier-c.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "portal.supplier-c.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "alias:sup-c",
+      "execute": false,
+      "track": "alias_and_keyword_discovery",
+      "cadence": "weekly",
+      "query_type": "company_alias",
+      "query_value": "Charlie Components",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "MergeProposal"
+      ],
+      "purpose": "Discover unregistered aliases, domains, or repeated mentions for reviewer triage.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-c",
+        "name": "Charlie Components",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "domain:sup-d:parts-d.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "domain_exact",
+      "query_value": "parts-d.example",
+      "provider_capabilities": [
+        "CL",
+        "CDS"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "InfectedDevice",
+        "Identity",
+        "Domain"
+      ],
+      "purpose": "Find exposure and infostealer candidates tied to the supplier domain.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "email-domain:sup-d:parts-d.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "email_domain",
+      "query_value": "*@parts-d.example",
+      "provider_capabilities": [
+        "CL"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "Identity"
+      ],
+      "purpose": "Find leaked-account candidates for supplier-owned identities.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-d:vpn.parts-d.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "vpn.parts-d.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-d:sso.parts-d.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "sso.parts-d.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-d:mail.parts-d.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "mail.parts-d.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-d:owa.parts-d.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "owa.parts-d.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-d:groupware.parts-d.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "groupware.parts-d.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-d:citrix.parts-d.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "citrix.parts-d.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-d:dev.parts-d.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "dev.parts-d.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-d:admin.parts-d.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "admin.parts-d.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-d:portal.parts-d.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "portal.parts-d.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "alias:sup-d",
+      "execute": false,
+      "track": "alias_and_keyword_discovery",
+      "cadence": "weekly",
+      "query_type": "company_alias",
+      "query_value": "Delta Parts",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "MergeProposal"
+      ],
+      "purpose": "Discover unregistered aliases, domains, or repeated mentions for reviewer triage.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-d",
+        "name": "Delta Parts",
+        "tier": 2,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "domain:sup-g:avionics-g.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "domain_exact",
+      "query_value": "avionics-g.example",
+      "provider_capabilities": [
+        "CL",
+        "CDS"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "InfectedDevice",
+        "Identity",
+        "Domain"
+      ],
+      "purpose": "Find exposure and infostealer candidates tied to the supplier domain.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "email-domain:sup-g:avionics-g.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "email_domain",
+      "query_value": "*@avionics-g.example",
+      "provider_capabilities": [
+        "CL"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "Identity"
+      ],
+      "purpose": "Find leaked-account candidates for supplier-owned identities.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-g:vpn.avionics-g.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "vpn.avionics-g.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-g:sso.avionics-g.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "sso.avionics-g.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-g:mail.avionics-g.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "mail.avionics-g.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-g:owa.avionics-g.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "owa.avionics-g.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-g:groupware.avionics-g.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "groupware.avionics-g.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-g:citrix.avionics-g.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "citrix.avionics-g.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-g:dev.avionics-g.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "dev.avionics-g.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-g:admin.avionics-g.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "admin.avionics-g.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-g:portal.avionics-g.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "portal.avionics-g.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "alias:sup-g",
+      "execute": false,
+      "track": "alias_and_keyword_discovery",
+      "cadence": "weekly",
+      "query_type": "company_alias",
+      "query_value": "Golf Avionics",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "MergeProposal"
+      ],
+      "purpose": "Discover unregistered aliases, domains, or repeated mentions for reviewer triage.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-g",
+        "name": "Golf Avionics",
+        "tier": 2,
+        "criticality": 3
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "domain:sup-e:logistics-e.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "domain_exact",
+      "query_value": "logistics-e.example",
+      "provider_capabilities": [
+        "CL",
+        "CDS"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "InfectedDevice",
+        "Identity",
+        "Domain"
+      ],
+      "purpose": "Find exposure and infostealer candidates tied to the supplier domain.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "email-domain:sup-e:logistics-e.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "email_domain",
+      "query_value": "*@logistics-e.example",
+      "provider_capabilities": [
+        "CL"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "Identity"
+      ],
+      "purpose": "Find leaked-account candidates for supplier-owned identities.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-e:vpn.logistics-e.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "vpn.logistics-e.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-e:sso.logistics-e.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "sso.logistics-e.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-e:mail.logistics-e.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "mail.logistics-e.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-e:owa.logistics-e.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "owa.logistics-e.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-e:groupware.logistics-e.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "groupware.logistics-e.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-e:citrix.logistics-e.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "citrix.logistics-e.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-e:dev.logistics-e.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "dev.logistics-e.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-e:admin.logistics-e.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "admin.logistics-e.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-e:portal.logistics-e.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "portal.logistics-e.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "alias:sup-e",
+      "execute": false,
+      "track": "alias_and_keyword_discovery",
+      "cadence": "weekly",
+      "query_type": "company_alias",
+      "query_value": "Echo Logistics",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "MergeProposal"
+      ],
+      "purpose": "Discover unregistered aliases, domains, or repeated mentions for reviewer triage.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-e",
+        "name": "Echo Logistics",
+        "tier": 2,
+        "criticality": 1
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "domain:sup-f:metals-f.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "domain_exact",
+      "query_value": "metals-f.example",
+      "provider_capabilities": [
+        "CL",
+        "CDS"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "InfectedDevice",
+        "Identity",
+        "Domain"
+      ],
+      "purpose": "Find exposure and infostealer candidates tied to the supplier domain.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "email-domain:sup-f:metals-f.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "email_domain",
+      "query_value": "*@metals-f.example",
+      "provider_capabilities": [
+        "CL"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "Identity"
+      ],
+      "purpose": "Find leaked-account candidates for supplier-owned identities.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-f:vpn.metals-f.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "vpn.metals-f.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-f:sso.metals-f.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "sso.metals-f.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-f:mail.metals-f.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "mail.metals-f.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-f:owa.metals-f.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "owa.metals-f.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-f:groupware.metals-f.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "groupware.metals-f.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-f:citrix.metals-f.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "citrix.metals-f.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-f:dev.metals-f.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "dev.metals-f.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-f:admin.metals-f.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "admin.metals-f.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "asset-host:sup-f:portal.metals-f.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "portal.metals-f.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "alias:sup-f",
+      "execute": false,
+      "track": "alias_and_keyword_discovery",
+      "cadence": "weekly",
+      "query_type": "company_alias",
+      "query_value": "Foxtrot Metals",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "MergeProposal"
+      ],
+      "purpose": "Discover unregistered aliases, domains, or repeated mentions for reviewer triage.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-f",
+        "name": "Foxtrot Metals",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor",
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "domain:sup-h:micro-h.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "domain_exact",
+      "query_value": "micro-h.example",
+      "provider_capabilities": [
+        "CL",
+        "CDS"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "InfectedDevice",
+        "Identity",
+        "Domain"
+      ],
+      "purpose": "Find exposure and infostealer candidates tied to the supplier domain.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "email-domain:sup-h:micro-h.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "email_domain",
+      "query_value": "*@micro-h.example",
+      "provider_capabilities": [
+        "CL"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "Identity"
+      ],
+      "purpose": "Find leaked-account candidates for supplier-owned identities.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "asset-host:sup-h:vpn.micro-h.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "vpn.micro-h.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "asset-host:sup-h:sso.micro-h.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "sso.micro-h.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "asset-host:sup-h:mail.micro-h.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "mail.micro-h.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "asset-host:sup-h:owa.micro-h.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "owa.micro-h.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "asset-host:sup-h:groupware.micro-h.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "groupware.micro-h.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "asset-host:sup-h:citrix.micro-h.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "citrix.micro-h.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "asset-host:sup-h:dev.micro-h.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "dev.micro-h.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "asset-host:sup-h:admin.micro-h.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "admin.micro-h.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "asset-host:sup-h:portal.micro-h.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "portal.micro-h.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "alias:sup-h",
+      "execute": false,
+      "track": "alias_and_keyword_discovery",
+      "cadence": "weekly",
+      "query_type": "company_alias",
+      "query_value": "Hotel Microelectronics",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "MergeProposal"
+      ],
+      "purpose": "Discover unregistered aliases, domains, or repeated mentions for reviewer triage.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-h",
+        "name": "Hotel Microelectronics",
+        "tier": 2,
+        "criticality": 3
+      }
+    },
+    {
+      "id": "domain:sup-i:supplier-i.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "domain_exact",
+      "query_value": "supplier-i.example",
+      "provider_capabilities": [
+        "CL",
+        "CDS"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "InfectedDevice",
+        "Identity",
+        "Domain"
+      ],
+      "purpose": "Find exposure and infostealer candidates tied to the supplier domain.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "email-domain:sup-i:supplier-i.example",
+      "execute": false,
+      "track": "private_exposure_candidate",
+      "cadence": "daily",
+      "query_type": "email_domain",
+      "query_value": "*@supplier-i.example",
+      "provider_capabilities": [
+        "CL"
+      ],
+      "ontology_targets": [
+        "CredentialExposure",
+        "Identity"
+      ],
+      "purpose": "Find leaked-account candidates for supplier-owned identities.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-i:vpn.supplier-i.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "vpn.supplier-i.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-i:sso.supplier-i.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "sso.supplier-i.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-i:mail.supplier-i.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "mail.supplier-i.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-i:owa.supplier-i.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "owa.supplier-i.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-i:groupware.supplier-i.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "groupware.supplier-i.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-i:citrix.supplier-i.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "citrix.supplier-i.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-i:dev.supplier-i.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "dev.supplier-i.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-i:admin.supplier-i.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "admin.supplier-i.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "asset-host:sup-i:portal.supplier-i.example",
+      "execute": false,
+      "track": "asset_surface_discovery",
+      "cadence": "weekly",
+      "query_type": "target_host_pattern",
+      "query_value": "portal.supplier-i.example",
+      "provider_capabilities": [
+        "CDS",
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "Domain",
+        "ThreatSource",
+        "InfectedDevice"
+      ],
+      "purpose": "Detect access-surface mentions or infostealer records targeting high-risk hosts.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "alias:sup-i",
+      "execute": false,
+      "track": "alias_and_keyword_discovery",
+      "cadence": "weekly",
+      "query_type": "company_alias",
+      "query_value": "India Fabrication",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "MergeProposal"
+      ],
+      "purpose": "Discover unregistered aliases, domains, or repeated mentions for reviewer triage.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "supplier": {
+        "id": "sup-i",
+        "name": "India Fabrication",
+        "tier": 1,
+        "criticality": 2
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "program:prog-sentinel",
+      "execute": false,
+      "track": "program_keyword_context",
+      "cadence": "weekly",
+      "query_type": "program_keyword",
+      "query_value": "Xenon Aerospace Sentinel ISR Program",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "ProgramExposure"
+      ],
+      "purpose": "Collect program-level mention context for reviewer triage and program rollup.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "program_refs": [
+        "prog-sentinel"
+      ]
+    },
+    {
+      "id": "program:prog-harbor",
+      "execute": false,
+      "track": "program_keyword_context",
+      "cadence": "weekly",
+      "query_type": "program_keyword",
+      "query_value": "Xenon Aerospace Harbor Sustainment Program",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "ProgramExposure"
+      ],
+      "purpose": "Collect program-level mention context for reviewer triage and program rollup.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "program:prog-harbor",
+      "execute": false,
+      "track": "program_keyword_context",
+      "cadence": "weekly",
+      "query_type": "program_keyword",
+      "query_value": "Yotta Defense Systems Harbor Sustainment Program",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource",
+        "ProgramExposure"
+      ],
+      "purpose": "Collect program-level mention context for reviewer triage and program rollup.",
+      "sensitivity": "private_candidate",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      },
+      "program_refs": [
+        "prog-harbor"
+      ]
+    },
+    {
+      "id": "regional:kr:defense",
+      "execute": false,
+      "track": "regional_context",
+      "cadence": "weekly",
+      "query_type": "country_keyword",
+      "query_value": "Korea defense",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource"
+      ],
+      "purpose": "Watch aggregate regional context and discover review candidates; not direct credential evidence.",
+      "sensitivity": "context_only",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      }
+    },
+    {
+      "id": "regional:kr:aerospace",
+      "execute": false,
+      "track": "regional_context",
+      "cadence": "weekly",
+      "query_type": "country_keyword",
+      "query_value": "Korea aerospace",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource"
+      ],
+      "purpose": "Watch aggregate regional context and discover review candidates; not direct credential evidence.",
+      "sensitivity": "context_only",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      }
+    },
+    {
+      "id": "regional:kr:shipbuilding",
+      "execute": false,
+      "track": "regional_context",
+      "cadence": "weekly",
+      "query_type": "country_keyword",
+      "query_value": "Korea shipbuilding",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource"
+      ],
+      "purpose": "Watch aggregate regional context and discover review candidates; not direct credential evidence.",
+      "sensitivity": "context_only",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      }
+    },
+    {
+      "id": "regional:kr:electronics",
+      "execute": false,
+      "track": "regional_context",
+      "cadence": "weekly",
+      "query_type": "country_keyword",
+      "query_value": "Korea electronics",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource"
+      ],
+      "purpose": "Watch aggregate regional context and discover review candidates; not direct credential evidence.",
+      "sensitivity": "context_only",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      }
+    },
+    {
+      "id": "regional:kr:radar",
+      "execute": false,
+      "track": "regional_context",
+      "cadence": "weekly",
+      "query_type": "country_keyword",
+      "query_value": "Korea radar",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource"
+      ],
+      "purpose": "Watch aggregate regional context and discover review candidates; not direct credential evidence.",
+      "sensitivity": "context_only",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      }
+    },
+    {
+      "id": "regional:kr:avionics",
+      "execute": false,
+      "track": "regional_context",
+      "cadence": "weekly",
+      "query_type": "country_keyword",
+      "query_value": "Korea avionics",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource"
+      ],
+      "purpose": "Watch aggregate regional context and discover review candidates; not direct credential evidence.",
+      "sensitivity": "context_only",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      }
+    },
+    {
+      "id": "regional:kr:mro",
+      "execute": false,
+      "track": "regional_context",
+      "cadence": "weekly",
+      "query_type": "country_keyword",
+      "query_value": "Korea mro",
+      "provider_capabilities": [
+        "DT",
+        "TT"
+      ],
+      "ontology_targets": [
+        "ThreatSource"
+      ],
+      "purpose": "Watch aggregate regional context and discover review candidates; not direct credential evidence.",
+      "sensitivity": "context_only",
+      "handling": {
+        "raw_secret_storage": "forbidden",
+        "raw_cookie_storage": "forbidden",
+        "raw_token_storage": "forbidden",
+        "landing_mode": "normalize_then_review"
+      }
+    }
+  ],
+  "public_jobs": [
+    {
+      "id": "public-context-snapshot",
+      "execute": false,
+      "track": "public_context",
+      "command": "uv run python scripts/public_context_snapshot.py",
+      "outputs": [
+        "out/public_context/summary.json",
+        "out/public_context/summary.md"
+      ],
+      "ontology_targets": [
+        "RiskAssessment.components",
+        "ProgramExposure.components",
+        "ThreatSource.kind"
+      ],
+      "sensitivity": "public_metadata"
+    },
+    {
+      "id": "public-context-matrix",
+      "execute": false,
+      "track": "public_context",
+      "command": "uv run python scripts/public_context_matrix.py",
+      "outputs": [
+        "out/public_context_matrix.html"
+      ],
+      "ontology_targets": [
+        "presentation_context"
+      ],
+      "sensitivity": "public_metadata"
+    }
+  ]
+}

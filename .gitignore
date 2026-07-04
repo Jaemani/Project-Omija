@@ -47,6 +47,8 @@ out/p0b/
 !out/data_coverage_map.html
 !out/stealthmole_role_map.html
 !out/public_context_matrix.html
+!out/collection_plan.json
+!out/collection_plan.md
 !out/public_context/
 !out/public_context/summary.json
 !out/public_context/summary.md
