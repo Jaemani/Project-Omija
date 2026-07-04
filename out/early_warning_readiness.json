@@ -1,0 +1,75 @@
+{
+  "generated_at": "2026-07-04T21:20:51.742843+00:00",
+  "mode": "early_warning_readiness_check",
+  "ready": true,
+  "summary": {
+    "checks_passed": 10,
+    "checks_total": 10,
+    "suppliers": 9,
+    "query_items": 118,
+    "asset_surface_seeds": 81,
+    "eval_records": 74,
+    "active_suppliers": [
+      "sup-a",
+      "sup-g",
+      "sup-h"
+    ]
+  },
+  "checks": [
+    {
+      "name": "collection_plan_non_executing",
+      "pass": true,
+      "detail": "Every private/context query seed and public job has execute=false."
+    },
+    {
+      "name": "domain_exact_coverage",
+      "pass": true,
+      "detail": "9 supplier-domain exact query seeds expected."
+    },
+    {
+      "name": "email_domain_coverage",
+      "pass": true,
+      "detail": "9 email-domain query seeds expected."
+    },
+    {
+      "name": "asset_surface_coverage",
+      "pass": true,
+      "detail": "81 access-host query seeds expected."
+    },
+    {
+      "name": "ontology_targets_present",
+      "pass": true,
+      "detail": "Every query seed names at least one ontology landing target."
+    },
+    {
+      "name": "secret_storage_forbidden",
+      "pass": true,
+      "detail": "Raw password/cookie/token storage is forbidden for every private/context seed."
+    },
+    {
+      "name": "regional_context_not_evidence",
+      "pass": true,
+      "detail": "Country/keyword monitoring lands only as ThreatSource context."
+    },
+    {
+      "name": "engine_eval_pass",
+      "pass": true,
+      "detail": "Current synthetic engine evaluation reports pass=true."
+    },
+    {
+      "name": "active_on_top_invariant",
+      "pass": true,
+      "detail": "Active compromise candidates rank strictly above non-active suppliers."
+    },
+    {
+      "name": "active_detection_clean",
+      "pass": true,
+      "detail": "Synthetic active-compromise evaluation has no false positives or false negatives."
+    }
+  ],
+  "limitations": [
+    "Evaluation uses a synthetic clean mock corpus; it proves wiring, not field precision.",
+    "Private feed query seeds are not executed by this check.",
+    "Live compromise confirmation still requires VPN/SSO/IAM/EDR or supplier response evidence."
+  ]
+}

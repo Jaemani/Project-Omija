@@ -215,6 +215,21 @@ out/collection_plan.md
 
 This generator reads `registry/suppliers.yaml`, expands supplier domains, email-domain seeds, access-host patterns, company aliases, program keywords, and regional keywords, then maps each item to ontology landing targets. Every private/context query seed is emitted with `execute=false`.
 
+After generating the plan, run the readiness check:
+
+```bash
+uv run python scripts/early_warning_readiness.py
+```
+
+Outputs:
+
+```text
+out/early_warning_readiness.json
+out/early_warning_readiness.md
+```
+
+This verifies collection coverage and the current synthetic active-on-top ranking invariant.
+
 ### Daily Scheduled Queries
 
 For each supplier:

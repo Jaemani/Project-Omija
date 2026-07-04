@@ -208,6 +208,7 @@ docs/data-collection-playbook.md
 docs/presentation-flow.md
 docs/stealthmole-role-map.md
 scripts/collection_plan.py
+scripts/early_warning_readiness.py
 scripts/public_context_snapshot.py
 scripts/public_context_matrix.py
 scripts/stealthmole_role_map.py
@@ -224,6 +225,7 @@ Run:
 ```bash
 uv run pytest -q
 uv run python scripts/collection_plan.py
+uv run python scripts/early_warning_readiness.py
 uv run python scripts/public_context_snapshot.py
 uv run python scripts/public_context_matrix.py
 uv run python scripts/stealthmole_role_map.py

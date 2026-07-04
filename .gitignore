@@ -49,6 +49,8 @@ out/p0b/
 !out/public_context_matrix.html
 !out/collection_plan.json
 !out/collection_plan.md
+!out/early_warning_readiness.json
+!out/early_warning_readiness.md
 !out/public_context/
 !out/public_context/summary.json
 !out/public_context/summary.md
