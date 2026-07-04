@@ -1,0 +1,3 @@
+id,name,tier,criticality,status,is_prime_candidate
+sup-h,Hotel Microelectronics,2,high,active,false
+sup-f,Foxtrot Metals,1,medium,active,false

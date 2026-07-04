@@ -1,0 +1,4 @@
+fqdn,host,url,asset_type,criticality,access_surface,verified_at
+micro-h.example,micro-h.example,https://micro-h.example,domain,high,employee_portal,2026-07-03T00:00:00Z
+metals-f.example,metals-f.example,https://metals-f.example,domain,medium,employee_portal,2026-07-03T00:00:00Z
+vpn.prime-x.example,vpn.prime-x.example,https://vpn.prime-x.example,vpn,high,remote_access,2026-07-03T00:00:00Z

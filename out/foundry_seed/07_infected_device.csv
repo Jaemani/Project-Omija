@@ -1,0 +1,2 @@
+id,device_fingerprint,malware,infected_at,has_session_cookie,os,status
+dev:micro-h:laptop1,dfp:micro-h:laptop1,RedLine,2026-07-01T00:00:00Z,true,Windows 10,active
