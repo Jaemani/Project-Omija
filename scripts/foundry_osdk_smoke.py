@@ -52,7 +52,7 @@ READ_SPECS = {
     "identity": ReadSpec("Identity", "id:ops@micro-h.example"),
     "exposure": ReadSpec("CredentialExposure", "exp:micro-h:active"),
     "device": ReadSpec("InfectedDevice", "dev:micro-h:laptop1"),
-    "source": ReadSpec("ThreatSource", "src:stealthmole:mock"),
+    "source": ReadSpec("ThreatSource", "src:candidate:empty"),
     "incident": ReadSpec("CompromiseIncident", "incident:micro-h:active"),
     "draft": ReadSpec("NotificationDraft", "draft:sup-h:2026-07-03"),
 }
@@ -477,7 +477,7 @@ def run_diagnostics(client: Any) -> list[str]:
         check_related(
             objects["exposure"],
             "sourced_from",
-            "src:stealthmole:mock",
+            "src:candidate:empty",
             "exp:micro-h:active -> sourced_from",
         ),
         check_related(

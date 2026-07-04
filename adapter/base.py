@@ -78,7 +78,7 @@ class Device:
 @dataclass
 class Exposure:
     id: str
-    source: str          # "stealthmole"
+    source: str          # neutral candidate-source id
     module: str          # cds | ub | cl | cb
     source_ref: str      # provenance handle → original record
     fetched_at: int
@@ -243,7 +243,7 @@ def normalize(module: str, raw: dict, *, fetched_at: int | None = None) -> Expos
     ref = _source_ref(module, raw)
     return Exposure(
         id=f"exp:{ref}",
-        source="stealthmole",
+        source="candidate",
         module=module,
         source_ref=ref,
         fetched_at=fetched_at,

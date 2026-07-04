@@ -82,9 +82,9 @@ def _fake_client():
         domain=Relation(domain_micro),
     )
     source = SimpleNamespace(
-        id="src:stealthmole:mock",
+        id="src:candidate:empty",
         kind="osint_api",
-        name="StealthMole mock",
+        name="Candidate placeholder",
     )
     exposure = SimpleNamespace(
         id="exp:micro-h:active",
@@ -93,7 +93,7 @@ def _fake_client():
         secret_present=True,
         masked_value="SI***",
         secret_fingerprint="fp:micro-h:active",
-        source_ref="src:stealthmole:mock",
+        source_ref="src:candidate:empty",
         confidence=0.9,
         first_seen="2026-07-01T00:00:00Z",
         last_seen="2026-07-03T00:00:00Z",
@@ -170,7 +170,7 @@ def _fake_client():
         Identity=ObjectApi({"id:ops@micro-h.example": identity}),
         CredentialExposure=ObjectApi({"exp:micro-h:active": exposure}),
         InfectedDevice=ObjectApi({"dev:micro-h:laptop1": device}),
-        ThreatSource=ObjectApi({"src:stealthmole:mock": source}),
+        ThreatSource=ObjectApi({"src:candidate:empty": source}),
         MergeProposal=ObjectApi({"merge:micro-h:ops": merge}),
         RiskAssessment=ObjectApi({"risk:sup-h:2026-07-03": risk}),
         CompromiseIncident=ObjectApi({"incident:micro-h:active": incident}),

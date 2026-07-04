@@ -18,7 +18,7 @@
       "identity": "id:ops@micro-h.example",
       "domain": "micro-h.example",
       "target": "vpn.prime-x.example",
-      "source": "src:stealthmole:mock"
+      "source": "src:candidate:empty"
     }
   ],
   "incidents": [

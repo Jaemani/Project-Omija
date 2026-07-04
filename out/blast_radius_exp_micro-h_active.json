@@ -4,7 +4,7 @@
     "identity_ref": "id:ops@micro-h.example",
     "owner_domain": "micro-h.example",
     "target_domain": "vpn.prime-x.example",
-    "source_ref": "src:stealthmole:mock",
+    "source_ref": "src:candidate:empty",
     "has_session_cookie": null
   },
   "supplier": "sup-h",

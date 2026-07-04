@@ -1,36 +1,60 @@
 # CLAUDE.md 에이전트 운영 규칙
 
-Supply-chain Credential Exposure 프로젝트에서 콜드스타트하는 에이전트의 상시 규칙입니다.
+Project Omija의 현재 기준 문서입니다. 이전 live-feed/API 디버깅 방향은
+2026-07-05에 중단됐고, 현재 데모는 no-live-data 온톨로지 엔진입니다.
 
 ## 콜드스타트 순서
 
-1. `CLAUDE.md` 규칙과 합법 가드레일을 먼저 읽습니다.
-2. `docs/spec/direction.md` 백본 5요소를 읽습니다.
-3. `docs/spec/ontology.md`와 루트 `ontology.md`를 읽습니다.
-4. `docs/spec/data-sources.md`를 읽고 StealthMole live 계약과 현재 401 상태를 확인합니다.
-5. `docs/spec/aip-integration.md`를 읽고 Foundry/OSDK 전환 경계를 확인합니다.
-6. `docs/spec/architecture.md`를 읽습니다.
-7. `docs/spec/PROMPTS.md`를 읽고 현재 단계에 맞게 실행합니다.
+1. `HANDOFF.md`를 먼저 읽고 현재 방향을 확인합니다.
+2. `README.md`와 `docs/data-strategy.md`를 읽어 데이터 경계를 확인합니다.
+3. 루트 `ontology.md`를 읽고 Foundry 온톨로지 구조를 확인합니다.
+4. `docs/demo-runbook.md`와 `docs/demo.md`를 읽고 현재 데모 흐름을 확인합니다.
+5. `docs/decisions/0007-osint-data-fusion.md`와
+   `docs/decisions/0008-dashboard-first-demo-surface.md`를 읽습니다.
+6. `docs/spec/` 문서는 historical context로만 읽습니다. live-feed 구현 지침으로
+   사용하지 않습니다.
 
-## 운영 원칙
+## 현재 하드 룰
 
-- **Fable 우선**: 계획, 구조 판단, 온톨로지 검수는 `claude -p --model fable`을 우선 사용한다. 응답 모델이 Opus fallback이면 초안으로만 보고 Codex가 다시 검토한다.
-- **Codex 실행**: 코드, 문서, 테스트, 커밋은 Codex가 수행한다.
-- **AIP spine**: Foundry Ontology, AIP Logic/Agent, Action이 중심이다. SQLite와 정적 HTML은 검증 및 데모 보험이다.
-- **contract-first**: live API가 막혀도 mock adapter로 전체 파이프를 유지하고, 키/OSDK가 열리면 경계에서 즉시 교체한다.
-- **human-on-the-loop**: 엔티티 병합, 통보, 조치 확정은 사람이 검토한다. 자동 발송 금지.
-- **provenance mandatory**: risk, incident, program exposure, draft는 근거 링크나 path 없이는 만들지 않는다.
+- StealthMole/live credential-feed 코드는 되살리지 않습니다.
+- 외부 credential feed 키, JWT, bearer token, cookie, raw secret을 저장하거나
+  출력하지 않습니다.
+- main demo에서 public feed를 fetch하지 않습니다.
+- 데모 데이터는 empty candidate slots와 ontology reasoning만 보여줍니다.
+- `NotificationDraft`는 draft-only입니다. send/webhook/SMS/email 발송 기능을
+  만들지 않습니다.
+- 실제 데이터가 필요해 보여도 후보 슬롯의 shape만 남기고 값은 비워둡니다.
 
-## 현재 상태 메모
+## 역할 분담
 
-- 로컬 mock+SQLite P0-P6와 StealthMole live entrypoint가 동작하고 테스트는 110개 통과 기준이다.
-- StealthMole live auth는 `401 Invalid token or expired token` 상태다. 서명 계약은 공식 통합 코드 기준으로 맞췄으므로 키 활성화/API product/IP allowlist 문제 가능성이 높다.
-- **Live 갱신**: 위 401은 운영 API URL 시도 기록이다. 해커톤 전용 API에서 quotas/CDS 검색이 성공했다. DT/UB는 미제공이며 기본 정찰은 CDS 1회로 제한한다.
-- Foundry ontology는 루트 `ontology.md`를 따라 수동 생성 중이다. API 이름은 문서에 맞춰 만들고, Supplier self-link는 `subcontractsTo` / `subcontractors`로 둔다.
+- Fable: 계획, 구조 판단, 온톨로지 검수에 우선 사용합니다.
+- Codex: 코드 작성, 테스트, 문서 정합성, 산출물 생성과 검증을 담당합니다.
+- Opus: 디자인/페이지 방향 판단에 사용합니다.
+- Fable 응답이 Opus fallback으로 보이면 초안으로만 보고 Codex가 다시 검토합니다.
 
-## 문서 운영
+## 데모 핵심
 
-- 스펙은 `docs/spec/` 6문서가 기준이다.
-- 구조적 결정은 `docs/decisions/`에 ADR로 기록한다.
-- 온톨로지, 링크, 액션, 스코어링 변경은 `docs/changelog/architecture.md`에 남긴다.
-- 비밀값, access key, 이메일 원문, 쿠키, 세션 토큰은 출력하거나 커밋하지 않는다.
+가치는 데이터 수집이 아니라 온톨로지 기반 의사결정입니다.
+
+- `CredentialExposure.of -> Identity`
+- `CredentialExposure.targets -> Domain`
+- `Supplier.subcontractsTo -> Supplier`
+- `CompromiseIncident.traverses_*`
+- `NotificationDraft.cites`
+
+이 링크들이 flat table로는 어려운 교차 조직 접근, 가변 깊이 공급망 전파,
+프로그램 blast radius, 감사 가능한 의사결정 객체를 설명합니다.
+
+## 검증 명령
+
+```bash
+uv run pytest -q
+uv run python scripts/intelligence_demo.py
+uv run python scripts/palantir_pages.py
+```
+
+금지 패턴 스캔:
+
+```bash
+rg -n "Authorization: Bearer|eyJ|api\\.stealthmole|hackathon\\.stealthmole" .
+```

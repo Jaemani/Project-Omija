@@ -81,7 +81,7 @@ def test_email_vs_username_identity():
 def test_is_mock_flag_propagates():
     exp = normalize("cb", {"user": "a@x.example", "password": "Synthetic-9!", "_mock": True})
     assert exp.is_mock is True
-    assert exp.source == "stealthmole"
+    assert exp.source == "candidate"
 
 
 def test_live_aliases_and_timestamp_are_normalized_without_guessing_privilege():

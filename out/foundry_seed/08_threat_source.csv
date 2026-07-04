@@ -1,2 +1,2 @@
 id,kind,name,collected_at,reliability,status
-src:stealthmole:mock,osint_api,StealthMole mock,2026-07-03T00:00:00Z,0.9,active
+src:candidate:empty,placeholder,Candidate placeholder,2026-07-03T00:00:00Z,0.9,active

@@ -132,7 +132,7 @@ def main() -> int:
                 "secret_fingerprint": "fp:micro-h:active",
                 "first_seen": infected_at,
                 "last_seen": now,
-                "source_ref": "src:stealthmole:mock",
+                "source_ref": "src:candidate:empty",
                 "confidence": 0.9,
                 "status": "active",
             },
@@ -150,9 +150,9 @@ def main() -> int:
         ],
         "08_threat_source.csv": [
             {
-                "id": "src:stealthmole:mock",
-                "kind": "osint_api",
-                "name": "StealthMole mock",
+                "id": "src:candidate:empty",
+                "kind": "placeholder",
+                "name": "Candidate placeholder",
                 "collected_at": now,
                 "reliability": 0.9,
                 "status": "active",
@@ -286,7 +286,7 @@ def main() -> int:
         "28_link_sourced_from.csv": [
             {
                 "left-CredentialExposure-primary-key": "exp:micro-h:active",
-                "right-ThreatSource-primary-key": "src:stealthmole:mock",
+                "right-ThreatSource-primary-key": "src:candidate:empty",
             },
         ],
         "29_link_leaked.csv": [
