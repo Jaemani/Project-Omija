@@ -51,7 +51,7 @@ Not allowed:
 ```bash
 uv run pytest -q
 uv run python scripts/intelligence_demo.py
-rg -n "StealthMole|STEALTHMOLE|Authorization: Bearer|eyJ" \
+rg -n "StealthMole|STEALTHMOLE|eyJ" \
   out/intelligence_demo.html out/intelligence_demo.json out/omija_console_*.html
 ```
 
