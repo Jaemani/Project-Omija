@@ -18,6 +18,8 @@ credentials.json
 registry/suppliers.live.yaml
 data/private_candidates/
 out/private_candidate_import.*
+docs/private/
+scripts/private/
 
 # OS
 .DS_Store

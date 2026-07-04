@@ -140,3 +140,21 @@ The following must live in a private operational runbook, not in tracked project
 - any organization-specific target list not approved for public demo.
 
 This split is intentional: the public repo documents the integration contract and ingestion boundary; the private runbook carries vendor and account-specific execution details.
+
+Local private files, if present, live under ignored paths:
+
+```text
+docs/private/
+scripts/private/
+data/private_candidates/
+```
+
+The expected local flow is:
+
+```text
+private connector -> data/private_candidates/candidates.jsonl
+  -> scripts/import_candidate_signals.py
+  -> out/private_candidate_import.*
+```
+
+`data/private_candidates/` and `out/private_candidate_import.*` are ignored by Git.
