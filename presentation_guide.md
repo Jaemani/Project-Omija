@@ -390,6 +390,7 @@ out/omija_console_home.html
 out/omija_demo.html
 out/program_threat_view.html
 docs/stealthmole-role-map.md
+docs/practical-early-warning-plan.md
 docs/open-data-catalog.md
 docs/data-insertion-guide.md
 docs/presentation-flow.md
