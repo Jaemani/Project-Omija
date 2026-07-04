@@ -1,6 +1,6 @@
-"""P0-B one-command recon: measure the LIVE StealthMole v2 contract (day-1).
+"""Live one-command recon: measure the LIVE StealthMole v2 contract.
 
-What it does (PROMPTS.md P0-B, data-sources.md [확인필요] items):
+What it does (PROMPTS.md P0-live, data-sources.md [확인필요] items):
   1. GET /v2/user/quotas  → which modules are open + remaining credits.
   2. For each open module, exactly ONE /search on a synthetic/self-owned
      domain (default `supplier-a.example`, override with --domain).
@@ -12,9 +12,9 @@ What it does (PROMPTS.md P0-B, data-sources.md [확인필요] items):
      masked (first 2 chars + `***`, adapter.base.mask_secret), every other
      string is truncated to 20 chars.
   4. If `cds` is open: highlight whether device/malware/infected_at/cookie
-     fields exist — the P0-B key measurement for active-compromise triage.
+     fields exist — the live key measurement for active-compromise triage.
 
-Run (user, after keys are issued — this script is NOT run before day-1):
+Run (user, after keys are issued — this run only with valid issued keys):
     uv run python scripts/p0b_recon.py [--domain supplier-a.example]
                                        [--modules cds,ub] [--quotas-only]
 
@@ -53,7 +53,7 @@ SENSITIVE_TOKENS = (
     "token", "session", "credential", "auth", "hash", "otp", "key",
 )
 
-# P0-B key measurement: active-compromise field families expected in cds.
+# live key measurement: active-compromise field families expected in cds.
 CDS_FIELD_FAMILIES: dict[str, tuple[str, ...]] = {
     "device": ("device", "machine", "computer", "hwid", "os", "hostname_pc"),
     "malware": ("malware", "stealer", "family"),
@@ -93,7 +93,7 @@ def _require_keys() -> bool:
         "NOTE: StealthMole credentials not set — nothing to probe yet "
         "(this is NOT an error; exiting 0).\n"
         "\n"
-        "  This is the day-1 (P0-B) live recon script. It needs the keys\n"
+        "  This is the live recon script. It needs the keys\n"
         "  issued to the hackathon account:\n"
         "\n"
         "    export STEALTHMOLE_ACCESS_KEY=...\n"
@@ -102,7 +102,7 @@ def _require_keys() -> bool:
         "  or copy `.env.example` to `.env` (gitignored) at the repo root\n"
         "  and fill both values. NEVER commit real keys.\n"
         "\n"
-        "  Until access opens, the pipe runs on the mock adapter\n"
+        "  If live access is blocked, the pipe runs on the mock adapter\n"
         "  (`uv run python scripts/p0_pipe.py`).",
         file=sys.stderr,
     )
@@ -212,7 +212,7 @@ def run(
     quotas_only: bool = False,
 ) -> int:
     print("=" * 68)
-    print("P0-B recon: StealthMole v2 live contract measurement")
+    print("Live recon: StealthMole v2 live contract measurement")
     print(f"query domain: {domain}  (synthetic/self-owned only — 1 call/module)")
     print("=" * 68)
 
@@ -311,7 +311,7 @@ def run(
             cds_fields = list(fields)
 
     # -- (4) cds active-compromise field highlight ---------------------------
-    print("\n[3/3] cds active-compromise fields (P0-B key measurement)")
+    print("\n[3/3] cds active-compromise fields (live key measurement)")
     if cds_fields:
         report = _cds_field_report(cds_fields)
         for family, matched in report.items():
@@ -340,7 +340,7 @@ def run(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="P0-B one-command StealthMole v2 recon (quotas → 1 search "
+        description="Live one-command StealthMole v2 recon (quotas → 1 search "
         "per open module → masked schema files)."
     )
     parser.add_argument(

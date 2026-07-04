@@ -1,108 +1,111 @@
-# PROMPTS.md — 콜드스타트 실행 프롬프트 (Supply-chain Cred)
+# PROMPTS.md — 콜드스타트 실행 프롬프트
 
-**contract-first**: StealthMole 접근은 내일 → 오늘은 목 어댑터로 전체 파이프 완성, 접근 열리면 P0-B로 hot-swap. 순서대로 던지고 실패/발견 로그로 다음을 조정.
+목표는 이틀짜리 해커톤에서 바로 결과를 내는 것입니다. 날짜를 나눠 기다리지 않습니다. live API/OSDK가 막히면 mock+SQLite 보험 파이프로 데모를 유지하고, 열리는 즉시 같은 adapter/store 경계에서 교체합니다.
 
-공통 제약(매 프롬프트): `direction.md`·`ontology.md`·`data-sources.md`·`aip-integration.md`·`architecture.md` 준수. **AIP-spine**(온톨로지 중심). **StealthMole 제공 데이터 + 공개정보만. 무단 스캐닝·침투·크리덴셜 재사용 절대 금지. 데모=합성 도메인. 방어 목적·초안 생성까지. 비밀 마스킹.** provenance(evidence 링크) 강제. 온톨로지 스멜테스트 통과. 깊이 타협 금지.
+공통 제약:
 
----
+- `direction.md`, `ontology.md`, `data-sources.md`, `aip-integration.md`, `architecture.md`, 루트 `ontology.md`를 준수합니다.
+- AIP/Foundry Ontology가 spine입니다.
+- StealthMole 제공 데이터와 공개정보만 사용합니다. 무단 스캐닝, 침투, 자격증명 재사용 금지.
+- 데모는 합성 도메인과 마스킹된 값만 사용합니다.
+- provenance, evidence link, path snapshot 없는 점수와 초안은 만들지 않습니다.
 
-## P0-A — AIP 파이프 + 어댑터 계약 뚫기 (오늘, 접근 없이)
-```
-목표: (A) Foundry/OSDK 파이프 검증, (B) StealthMole 어댑터 인터페이스+목 구현. StealthMole 실접근 불필요.
+## P0 — adapter/store 계약과 Foundry 전환점
+
+목표: mock+SQLite 파이프를 즉시 재현하고, live StealthMole/Foundry OSDK 전환점을 명확히 둡니다.
+
 할 일:
-A. Foundry Dev Tier에 Object Type 1개(Supplier) + Link 1개(owns Domain) + Action 1개(ComputeRisk) 생성. Developer Console에서 OSDK 발행 → pip 설치 → Python으로 Supplier write/read 왕복.
-B. data-sources.md §2 인터페이스대로 adapter/base.py(Protocol) + adapter/mock.py(§3 목, 활성침해 케이스 포함) 구현. adapter/stealthmole.py는 §1 검증된 계약으로 스텁만(내일 연결).
-성공기준: A) OSDK 객체 왕복 성공. B) 목 어댑터가 Exposure/InfectedDevice 레코드 산출.
-제약: 키 환경변수. AIP 막히면 원인 기록 + Morph 질문 목록(폴백은 보험). 실 API 호출 금지(아직 접근 없음).
-산출: aip-integration.md에 "확인된 OSDK 스니펫" 추가, 어댑터 3파일.
-```
 
-## P0-B — StealthMole 실접근 정찰 (내일, 접근 열리면 즉시)
-```
-목표: 실 StealthMole에 붙어 계약 확인 + 어댑터 hot-swap. data-sources.md의 [확인필요] 항목 채움.
+1. `adapter/base.py`, `adapter/mock.py`, `adapter/stealthmole.py`가 같은 `ExposureSource` 계약을 지키는지 확인합니다.
+2. `store/base.py`, `store/sqlite.py`, `store/foundry.py`가 같은 `OntologyStore` 경계를 유지하는지 확인합니다.
+3. `scripts/p0_pipe.py`로 mock records -> normalize -> store -> read-back -> masking check를 실행합니다.
+4. Foundry ontology는 루트 `ontology.md` 기준으로 생성합니다.
+
+성공 기준: 네트워크 없이 전체 파이프가 통과하고, live store/source 전환 지점이 코드에서 분명합니다.
+
+## P0-live — StealthMole live recon
+
+목표: 제공된 키로 live 계약을 확인하고 막히면 지원 요청 가능한 근거를 남깁니다.
+
 할 일:
-1. sm_headers()로 GET /v2/user/quotas → 인증 성공 + 열린 모듈 목록(cds/ub/cl/cb 및 dt/tt/rm/gm/lm 여부) 확인.
-2. 본인/합성 도메인으로 각 열린 모듈 /search 1회 → 레코드 스키마 기록. 특히 cds의 device/malware/infected_at/cookie 필드 실측.
-3. adapter/stealthmole.py 완성, 목과 동일 인터페이스로 swap. normalize()가 실 레코드도 Exposure로 변환.
-성공기준: 실 데이터가 온톨로지 Exposure로 들어오고, 목→실 swap이 코드 한 줄.
-제약: 제공 계정 정상 사용. 크레딧 절약(/quotas 확인 후 배치, start 증분). 타 실기업 대량 조회 금지.
-산출: data-sources.md [확인필요] → [검증됨] 갱신, cds device 필드 확정.
-```
 
-## P1 — 수직관통: 업체 1개 → 조회 → 상관 → 온톨로지
-```
-목표: 레지스트리 1업체에 대해 어댑터 조회→정규화→상관→온톨로지 write→화면까지 한 줄.
+1. `scripts/p0b_recon.py --quotas-only`로 `/v2/user/quotas`를 먼저 확인합니다.
+2. 성공하면 열린 모듈별 `/search` 1회만 수행해 schema only 파일을 `out/p0b/`에 저장합니다.
+3. `cds`의 device, malware, infected_at, cookie 계열 필드를 확인해 normalize 매핑을 갱신합니다.
+4. 401이면 키 원문 없이 timestamp, endpoint, status, response body, 추정 원인(activation/product/IP allowlist)을 기록합니다.
+
+성공 기준: quotas와 schema가 저장되거나, 지원 요청 가능한 401 evidence package가 남습니다.
+
+## P1 — 수직관통
+
+목표: 업체 1개 이상의 domain -> exposure -> identity -> supplier 귀속을 화면까지 연결합니다.
+
 할 일:
-1. registry: 5~10 샘플 업체 {company, domain, tier, criticality, supplies→prime}. 합성/공개 도메인.
-2. 어댑터(목)로 업체 도메인 조회 → Exposure/InfectedDevice 정규화(활성 필드 보존) → 온톨로지 write.
-3. CorrelateExposure Action: Exposure→Identity→Supplier 링크(도메인 매칭). 최소 화면에 업체 노출 리스트+출처.
-성공기준: 업체 1개의 노출이 상관되어 온톨로지 경유로 화면에(비밀 마스킹).
-제약: 매칭 근거 기록. 무단 스캐닝 금지.
-산출: registry, 상관 결과 샘플, 실행법.
-```
 
-## P2 — 엔티티 해소 + 위험 전파 그래프
-```
-목표: 신원 병합 + 공급망 상향 전파 경로 구성.
+1. `registry/suppliers.yaml`의 합성 협력사와 도메인을 seed합니다.
+2. adapter에서 받은 레코드를 `normalize()`로 마스킹하고 store에 기록합니다.
+3. `CorrelateExposure`가 Identity -> Domain -> Supplier를 연결합니다.
+4. `scripts/p1_report.py`로 보고서를 만듭니다.
+
+성공 기준: 업체별 exposure가 근거와 함께 표시됩니다.
+
+## P2 — 엔티티 해소와 공급망 전파
+
+목표: 같은 사람/계정 후보를 병합 제안하고 Supplier -> Prime -> Program 전파 경로를 만듭니다.
+
 할 일:
-1. EntityResolver(보조 LLM): 같은 email/username 변형을 하나의 Identity로 병합 제안(사람 확인).
-2. Supplier supplies Prime runs Program 링크로 전파 경로 구성.
-3. 중복 제거(같은 Identity 다수 Exposure 병합, 최신 우선, 소스 다양성=신뢰도).
-성공기준: company_id → [Exposure...] + Identity 병합 + Supplier→Prime→Program 경로가 그래프에 존재.
-제약: 병합 근거 기록, 자동 확정 말고 제안.
-산출: correlation/resolution 모듈, 전파 경로 샘플.
-```
 
-## P3 — 활성침해 가중 스코어링 (AIP Logic, 핵심)
-```
-목표: ComputeRisk를 AIP Logic으로 구현, 활성침해를 가중 상향해 순위 상단으로.
+1. email/username 변형은 `MergeProposal`로만 제안합니다.
+2. Supplier self-link는 `subcontractsTo` / `subcontractors` 방향을 유지합니다.
+3. 전파는 depth cap과 visited set으로 cycle-safe 하게 계산합니다.
+
+성공 기준: 2차 협력사에서 원청/프로그램까지 이어지는 path가 화면과 incident 근거로 재사용됩니다.
+
+## P3 — 활성침해 구조 트리아지
+
+목표: 단순 가중치가 아니라 `risk_band + score` 구조로 활성 경로를 상단에 고정합니다.
+
 할 일:
-1. base(노출 규모·최근성·비밀유형·모듈 신뢰도) 점수.
-2. FlagActiveCompromise: InfectedDevice(최근)+has_session_cookie+account_type∈{vpn,admin} 경로 성립 시 CompromiseIncident(traverses 경로) 생성.
-3. 활성 가중 상향 + criticality 곱 + 0~100 정규화 + grade. 각 점수 evidenced_by(원 레코드).
-성공기준: 목의 활성 케이스가 순위 상단, 점수 기여분 설명, Incident 경로 표시.
-제약: 근거 없는 점수 금지. 활성 판정은 정의된 필드/경로로만.
-산출: RiskScorer(AIP Logic), scoring 결과, 순위 샘플.
-```
 
-## P4 — 순위 대시보드 + 전파 그래프 뷰
-```
-목표: 업체 위험 순위 + 드릴다운 + 전파 그래프.
+1. `InfectedDevice`가 최근 감염, session cookie, vpn/admin 계정을 만족하는지 확인합니다.
+2. `CredentialExposure.of`와 `CredentialExposure.targets`를 분리해 교차 접근 경로를 잡습니다.
+3. Band A(active path)는 Band C 대량 유출보다 항상 위에 오게 합니다.
+4. incident는 완전한 path 없이 만들지 않습니다.
+
+성공 기준: mock의 활성 케이스가 top rank를 차지하고 path가 설명됩니다.
+
+## P4 — 대시보드
+
+목표: 심사자가 90초 안에 문제, 경로, 조치 초안을 볼 수 있게 합니다.
+
 할 일:
-1. 순위 테이블: Supplier·score·grade·활성 플래그·최근 신호 시각(OSDK read).
-2. 드릴다운: 업체 → Exposure/Device 상세(마스킹) + 출처 + 타임라인.
-3. 전파 그래프 뷰: Device→Identity→Supplier→Prime→Program 경로 하이라이트.
-4. 필터: tier / 활성침해만 / 기간.
-성공기준: 브라우저에서 순위→드릴다운→출처, 활성 경로 그래프가 도는다.
-제약: 모든 항목 출처. 비밀 마스킹. 동작 우선.
-산출: 대시보드, 스크린샷.
-```
 
-## P5 — 조치 에이전트 (권고 + 통보 초안)
-```
-목표: 상위 업체 방어 조치 권고 + 통보 초안 자동 생성(사람 검토 전제).
+1. supplier rank table, active filter, drilldown, path graph를 확인합니다.
+2. 모든 secret/cookie/token은 마스킹 상태로만 표시합니다.
+3. `scripts/p4_dashboard.py`로 정적 HTML을 생성합니다.
+
+성공 기준: `out/dashboard.html` 하나로 오프라인 발표가 됩니다.
+
+## P5 — 통보 초안
+
+목표: 상위 위험 업체에 대한 방어 조치 초안을 생성합니다.
+
 할 일:
-1. GenerateNotificationDraft(AIP agent): 조치 권고(비번 리셋·세션 폐기·MFA·계정 격리) + 초안 텍스트(근거 요약·출처).
-2. 상위 1~3업체 초안 생성, cites 링크 필수.
-성공기준: 상위 업체 초안이 근거와 함께 생성(발송 없음).
-제약: 실제 발송 금지. 과장·근거 없는 단정 금지. 방어 목적. 마스킹.
-산출: NotificationDrafter, 초안 예시.
-```
 
-## P6 — 평가 + 데모·피칭 패키징
-```
-목표: 성능 숫자 증명 + 3분 발표 데모.
+1. `GenerateNotificationDraft`는 password reset, session revocation, MFA, account isolation을 근거와 함께 제안합니다.
+2. 상태는 `draft`입니다. 실제 발송 기능은 만들지 않습니다.
+3. cites/evidence 없는 초안은 금지합니다.
+
+성공 기준: `out/drafts/*.md`가 생성되고 raw secret이 없습니다.
+
+## P6 — 평가와 발표 패키징
+
+목표: 심사 기준에 맞는 숫자와 대본을 고정합니다.
+
 할 일:
-1. 목/실 세트로 상관 precision/recall, 활성침해 우선순위 유효성.
-2. 맨몸(레코드 나열) vs 우리(그래프 트리아지) 대응속도(골든타임) 비교.
-3. 데모 대본 + 목 백업(접근 실패 대비) + 심사 매핑 슬라이드.
-성공기준: 네트워크/접근 없어도 재현 + 심사 4항목 각 한 문장 + "AIP 얕지 않음"(전파 경로+Action 전이) 시연.
-산출: 평가표, demo.md, 목 백업.
-```
 
----
+1. `scripts/p6_eval.py`로 correlation P/R, active-compromise P/R, rank validity, golden-time 개선을 산출합니다.
+2. `docs/demo.md`의 숫자가 `out/eval.json`과 일치하는지 확인합니다.
+3. live 실패, Foundry publish 지연, 네트워크 실패별 백업 메시지를 준비합니다.
 
-### 반복 규칙
-- **P0-A(오늘) 먼저, P0-B(내일 접근)로 hot-swap.** 실 API 없이도 파이프 완성이 원칙.
-- 매 단계 `direction.md` 5요소 + `ontology.md` 스멜테스트 + 합법 가드레일과 어긋남 자문.
-- 막히면 넓히지 말고 수직관통(P1) 사수 후 재확장. **온톨로지 깊이 타협 금지.**
+성공 기준: 3분 발표와 90초 라이브가 재현됩니다.

@@ -11,7 +11,7 @@ swapping the backend is a one-line change at the call site — the pipe code
 (correlate / resolve / flag / score / draft) is untouched.
 
 STATUS: skeleton. Every method raises `NotImplementedError` and carries a
-comment sketching the intended OSDK call. day-1 (post-publish) fills these in.
+comment sketching the intended OSDK call. post-publish fills these in.
 
 Design constraints:
   * NO OSDK import at module top level — the published package name is not known
@@ -31,14 +31,14 @@ from typing import Any
 
 from adapter.base import Exposure
 
-_TODO = "FoundryOntologyStore is a day-1 skeleton — wire the OSDK call, then remove this raise."
+_TODO = "FoundryOntologyStore is an OSDK wiring placeholder — wire the OSDK call, then remove this raise."
 
 
 class FoundryOntologyStore:
     """OSDK-backed `OntologyStore` (skeleton). Same interface as SQLite → hot-swap.
 
     Construct with a published OSDK `FoundryClient` (or let it read env at
-    day-1). No network/import happens at module load.
+    post-publish). No network/import happens at module load.
 
         # from <published_osdk> import FoundryClient  # name TBD (foundry-day1.md §4)
         # client = FoundryClient(auth=UserTokenAuth(token=...), hostname=...)
@@ -51,11 +51,11 @@ class FoundryOntologyStore:
         self._client = client
 
     def _c(self) -> Any:
-        """Return the OSDK client or fail loudly. day-1 may instead lazily build
+        """Return the OSDK client or fail loudly. post-publish may instead lazily build
         it from env (FOUNDRY_HOSTNAME / FOUNDRY_TOKEN, foundry-day1.md §5)."""
         if self._client is None:
             raise NotImplementedError(
-                "No OSDK client bound. day-1: inject a published FoundryClient "
+                "No OSDK client bound. Inject a published FoundryClient "
                 "or lazily construct it here from env. " + _TODO
             )
         return self._client
@@ -64,7 +64,7 @@ class FoundryOntologyStore:
 
     def init_schema(self) -> None:
         # No-op on Foundry: the ontology schema is defined in Ontology Manager
-        # (Object/Link/Action Types), not created at runtime. day-1: assert the
+        # (Object/Link/Action Types), not created at runtime. post-publish: assert the
         # expected object types exist via the OSDK metadata, else raise.
         raise NotImplementedError(_TODO)
 

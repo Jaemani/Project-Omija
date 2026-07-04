@@ -1,12 +1,10 @@
 """Real StealthMole API v2 adapter (data-sources.md §1 — verified contract).
 
-⚠️ Access opens day-1 (P0-B). This module implements the verified contract but
-performs NO network call in P0-A. Wiring/live recon happens in P0-B; until then
-the mock (`mock.py`) drives the pipe. Same `ExposureSource` interface → hot-swap
+⚠️ Live recon can run whenever valid credentials are present. This module implements the verified contract; the mock (`mock.py`) drives the pipe. Same `ExposureSource` interface → hot-swap
 is a one-line source change.
 
 [검증됨] = confirmed from StealthMole official integration code (Cisco XDR /
-Netskope CRE v2 plugins). [확인필요] = to be measured on day-1.
+Netskope CRE v2 plugins). [확인필요] = to be measured during live recon.
 """
 
 from __future__ import annotations
@@ -69,13 +67,13 @@ class StealthMoleSource:
         if not self.access_key or not self.secret_key:
             raise RuntimeError(
                 "StealthMole credentials missing. Set STEALTHMOLE_ACCESS_KEY / "
-                "STEALTHMOLE_SECRET_KEY (day-1). P0-A uses the mock adapter."
+                "STEALTHMOLE_SECRET_KEY. Use the mock adapter for offline validation."
             )
         return sm_headers(self.access_key, self.secret_key)
 
     def _get_client(self):
         if self._client is None:
-            import httpx  # local import: P0-A never reaches here
+            import httpx  # local import: mock/offline path never reaches here
 
             self._client = httpx.Client(timeout=self.timeout)
         return self._client
@@ -91,7 +89,7 @@ class StealthMoleSource:
 
     def quotas(self) -> dict:
         """GET /v2/user/quotas → {"CDS":{"allowed":N}, ...}. Auth check + open
-        modules. day-1: call this first, batch under available credits."""
+        modules. live recon: call this first, batch under available credits."""
         return self._get("/user/quotas", params={})
 
     def search(
@@ -134,9 +132,9 @@ class StealthMoleSource:
         return self._get(f"/{module.lower()}/export", params=params).get("data", [])
 
 
-# [확인필요] day-1: cds record shape (device / malware / infected_at / cookie /
+# [확인필요] live recon: cds record shape (device / malware / infected_at / cookie /
 #   account_type). Mock assumes these fields; confirm and adjust normalize().
-# [확인필요] day-1: which modules are enabled on the issued account beyond
+# [확인필요] live recon: which modules are enabled on the issued account beyond
 #   cds/ub/cl/cb (dt/tt/rm/gm/lm) — check via quotas() before correlating.
 
 # StealthMoleSource structurally implements ExposureSource (quotas/search).
