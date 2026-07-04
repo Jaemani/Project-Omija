@@ -1,26 +1,15 @@
 # Foundry seed data
 
-Import/replace object CSVs `01_*.csv` through `08_*.csv`. This folder is FK-link mode: there are no separate link CSVs.
+This seed follows `ontology.md`: object properties stay on object CSVs, links use separate join-table CSVs.
 
-This assumes `Domain` primary key is `fqdn`.
-If other Foundry API names differ, map columns during import. Keep the values unchanged.
+Import/replace object CSVs `01_*.csv` through `08_*.csv` first.
+Then use link CSVs `20_*.csv` through `30_*.csv` as join-table datasources for the matching Link Types.
 
-Configure links as foreign-key links using these columns:
-
-- `subcontracts_to`: Supplier.parent_supplier_id -> Supplier.id
-- `supplies`: Supplier.prime_id -> Prime.id
-- `runs`: Program.prime_id -> Prime.id
-- `owns`: Domain.supplier_id -> Supplier.id
-- `prime_owns`: Domain.prime_id -> Prime.id
-- `belongs_to`: Identity.domain_fqdn -> Domain.fqdn
-- `of`: CredentialExposure.identity_id -> Identity.id
-- `targets`: CredentialExposure.target_domain_fqdn -> Domain.fqdn
-- `sourced_from`: CredentialExposure.threat_source_id -> ThreatSource.id
-- `leaked`: CredentialExposure.infected_device_id -> InfectedDevice.id
-- `compromises`: InfectedDevice.identity_id -> Identity.id
+Important:
+- If a Link Type was recreated as foreign-key based, it will not use these link CSVs. Recreate it as join-table based or add the FK property to the Object Type.
+- If Foundry generated different join-table column names, keep the row values but rename the two CSV headers to exactly match the Link Type's expected columns.
 
 Primary Object Explorer paths to verify:
-
 1. `sup-h -> subcontractsTo -> sup-f -> supplies -> prime-x -> runs -> prog-sentinel`
 2. `exp:micro-h:active -> of -> id:ops@micro-h.example -> belongsTo -> micro-h.example -> owns(reverse) -> sup-h`
 3. `exp:micro-h:active -> targets -> vpn.prime-x.example -> primeOwns(reverse) -> prime-x -> runs -> prog-sentinel`

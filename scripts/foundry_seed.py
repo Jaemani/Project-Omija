@@ -1,16 +1,14 @@
 """Generate minimal Foundry seed CSVs for Object Explorer path validation.
 
-The output is deliberately small: one multi-tier supplier path, one active
-credential exposure, one infected device, and one cross-target VPN asset.
-It is optimized for Foundry foreign-key link types: import object CSVs only,
-then configure each 1:N/N:1 link from the FK column on the "many" side.
+This generator follows ontology.md as written:
+
+* Object CSVs contain only object properties from the ontology.
+* Relationship data lives in separate join-table CSVs.
+* Join-table column names mirror Foundry's generated default pattern, e.g.
+  `left-Supplier-primary-key` / `right-Supplier-primary-key`.
 
 Run:
     uv run python scripts/foundry_seed.py
-
-Then replace/import object backing datasources in the order listed in
-out/foundry_seed/README.md, or use the rows as values for Foundry's
-auto-generated Create/Edit actions.
 """
 
 from __future__ import annotations
@@ -37,8 +35,7 @@ def write_csv(name: str, rows: list[dict[str, object]]) -> None:
             lineterminator="\n",
         )
         writer.writeheader()
-        for row in rows:
-            writer.writerow(row)
+        writer.writerows(rows)
 
 
 def main() -> int:
@@ -49,7 +46,7 @@ def main() -> int:
     now = "2026-07-03T00:00:00Z"
     infected_at = "2026-07-01T00:00:00Z"
 
-    objects: dict[str, list[dict[str, object]]] = {
+    object_rows: dict[str, list[dict[str, object]]] = {
         "01_supplier.csv": [
             {
                 "id": "sup-h",
@@ -58,8 +55,6 @@ def main() -> int:
                 "criticality": "high",
                 "status": "active",
                 "is_prime_candidate": "false",
-                "parent_supplier_id": "sup-f",
-                "prime_id": "",
             },
             {
                 "id": "sup-f",
@@ -68,8 +63,6 @@ def main() -> int:
                 "criticality": "medium",
                 "status": "active",
                 "is_prime_candidate": "false",
-                "parent_supplier_id": "",
-                "prime_id": "prime-x",
             },
         ],
         "02_prime.csv": [
@@ -81,14 +74,12 @@ def main() -> int:
                 "name": "Sentinel ISR Program",
                 "sensitivity": "high",
                 "status": "active",
-                "prime_id": "prime-x",
             },
             {
                 "id": "prog-harbor",
                 "name": "Harbor Sustainment Program",
                 "sensitivity": "medium",
                 "status": "active",
-                "prime_id": "prime-x",
             },
         ],
         "04_domain.csv": [
@@ -100,8 +91,6 @@ def main() -> int:
                 "criticality": "high",
                 "access_surface": "employee_portal",
                 "verified_at": now,
-                "supplier_id": "sup-h",
-                "prime_id": "",
             },
             {
                 "fqdn": "metals-f.example",
@@ -111,8 +100,6 @@ def main() -> int:
                 "criticality": "medium",
                 "access_surface": "employee_portal",
                 "verified_at": now,
-                "supplier_id": "sup-f",
-                "prime_id": "",
             },
             {
                 "fqdn": "vpn.prime-x.example",
@@ -122,8 +109,6 @@ def main() -> int:
                 "criticality": "high",
                 "access_surface": "remote_access",
                 "verified_at": now,
-                "supplier_id": "",
-                "prime_id": "prime-x",
             },
         ],
         "05_identity.csv": [
@@ -135,7 +120,6 @@ def main() -> int:
                 "account_type": "admin",
                 "status": "active",
                 "merged_into": "",
-                "domain_fqdn": "micro-h.example",
             },
         ],
         "06_credential_exposure.csv": [
@@ -151,10 +135,6 @@ def main() -> int:
                 "source_ref": "src:stealthmole:mock",
                 "confidence": 0.9,
                 "status": "active",
-                "identity_id": "id:ops@micro-h.example",
-                "target_domain_fqdn": "vpn.prime-x.example",
-                "threat_source_id": "src:stealthmole:mock",
-                "infected_device_id": "dev:micro-h:laptop1",
             },
         ],
         "07_infected_device.csv": [
@@ -166,7 +146,6 @@ def main() -> int:
                 "has_session_cookie": "true",
                 "os": "Windows 10",
                 "status": "active",
-                "identity_id": "id:ops@micro-h.example",
             },
         ],
         "08_threat_source.csv": [
@@ -181,36 +160,103 @@ def main() -> int:
         ],
     }
 
-    for filename, rows in objects.items():
+    link_rows: dict[str, list[dict[str, object]]] = {
+        "20_link_subcontracts_to.csv": [
+            {
+                "left-Supplier-primary-key": "sup-h",
+                "right-Supplier-primary-key": "sup-f",
+            },
+        ],
+        "21_link_supplies.csv": [
+            {
+                "left-Supplier-primary-key": "sup-f",
+                "right-Prime-primary-key": "prime-x",
+            },
+        ],
+        "22_link_runs.csv": [
+            {
+                "left-Prime-primary-key": "prime-x",
+                "right-Program-primary-key": "prog-sentinel",
+            },
+            {
+                "left-Prime-primary-key": "prime-x",
+                "right-Program-primary-key": "prog-harbor",
+            },
+        ],
+        "23_link_owns.csv": [
+            {
+                "left-Supplier-primary-key": "sup-h",
+                "right-Domain-primary-key": "micro-h.example",
+            },
+            {
+                "left-Supplier-primary-key": "sup-f",
+                "right-Domain-primary-key": "metals-f.example",
+            },
+        ],
+        "24_link_prime_owns.csv": [
+            {
+                "left-Prime-primary-key": "prime-x",
+                "right-Domain-primary-key": "vpn.prime-x.example",
+            },
+        ],
+        "25_link_belongs_to.csv": [
+            {
+                "left-Identity-primary-key": "id:ops@micro-h.example",
+                "right-Domain-primary-key": "micro-h.example",
+            },
+        ],
+        "26_link_of.csv": [
+            {
+                "left-CredentialExposure-primary-key": "exp:micro-h:active",
+                "right-Identity-primary-key": "id:ops@micro-h.example",
+            },
+        ],
+        "27_link_targets.csv": [
+            {
+                "left-CredentialExposure-primary-key": "exp:micro-h:active",
+                "right-Domain-primary-key": "vpn.prime-x.example",
+            },
+        ],
+        "28_link_sourced_from.csv": [
+            {
+                "left-CredentialExposure-primary-key": "exp:micro-h:active",
+                "right-ThreatSource-primary-key": "src:stealthmole:mock",
+            },
+        ],
+        "29_link_leaked.csv": [
+            {
+                "left-InfectedDevice-primary-key": "dev:micro-h:laptop1",
+                "right-CredentialExposure-primary-key": "exp:micro-h:active",
+            },
+        ],
+        "30_link_compromises.csv": [
+            {
+                "left-InfectedDevice-primary-key": "dev:micro-h:laptop1",
+                "right-Identity-primary-key": "id:ops@micro-h.example",
+            },
+        ],
+    }
+
+    for filename, rows in object_rows.items():
+        write_csv(filename, rows)
+    for filename, rows in link_rows.items():
         write_csv(filename, rows)
 
-    readme = OUT_DIR / "README.md"
-    readme.write_text(
+    (OUT_DIR / "README.md").write_text(
         "\n".join(
             [
                 "# Foundry seed data",
                 "",
-                "Import/replace object CSVs `01_*.csv` through `08_*.csv`. This folder is FK-link mode: there are no separate link CSVs.",
+                "This seed follows `ontology.md`: object properties stay on object CSVs, links use separate join-table CSVs.",
                 "",
-                "This assumes `Domain` primary key is `fqdn`.",
-                "If other Foundry API names differ, map columns during import. Keep the values unchanged.",
+                "Import/replace object CSVs `01_*.csv` through `08_*.csv` first.",
+                "Then use link CSVs `20_*.csv` through `30_*.csv` as join-table datasources for the matching Link Types.",
                 "",
-                "Configure links as foreign-key links using these columns:",
-                "",
-                "- `subcontracts_to`: Supplier.parent_supplier_id -> Supplier.id",
-                "- `supplies`: Supplier.prime_id -> Prime.id",
-                "- `runs`: Program.prime_id -> Prime.id",
-                "- `owns`: Domain.supplier_id -> Supplier.id",
-                "- `prime_owns`: Domain.prime_id -> Prime.id",
-                "- `belongs_to`: Identity.domain_fqdn -> Domain.fqdn",
-                "- `of`: CredentialExposure.identity_id -> Identity.id",
-                "- `targets`: CredentialExposure.target_domain_fqdn -> Domain.fqdn",
-                "- `sourced_from`: CredentialExposure.threat_source_id -> ThreatSource.id",
-                "- `leaked`: CredentialExposure.infected_device_id -> InfectedDevice.id",
-                "- `compromises`: InfectedDevice.identity_id -> Identity.id",
+                "Important:",
+                "- If a Link Type was recreated as foreign-key based, it will not use these link CSVs. Recreate it as join-table based or add the FK property to the Object Type.",
+                "- If Foundry generated different join-table column names, keep the row values but rename the two CSV headers to exactly match the Link Type's expected columns.",
                 "",
                 "Primary Object Explorer paths to verify:",
-                "",
                 "1. `sup-h -> subcontractsTo -> sup-f -> supplies -> prime-x -> runs -> prog-sentinel`",
                 "2. `exp:micro-h:active -> of -> id:ops@micro-h.example -> belongsTo -> micro-h.example -> owns(reverse) -> sup-h`",
                 "3. `exp:micro-h:active -> targets -> vpn.prime-x.example -> primeOwns(reverse) -> prime-x -> runs -> prog-sentinel`",

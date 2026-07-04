@@ -1,2 +1,2 @@
-id,email,username,canonical_handle,account_type,status,merged_into,domain_fqdn
-id:ops@micro-h.example,ops@micro-h.example,ops,ops@micro-h.example,admin,active,,micro-h.example
+id,email,username,canonical_handle,account_type,status,merged_into
+id:ops@micro-h.example,ops@micro-h.example,ops,ops@micro-h.example,admin,active,
