@@ -1,0 +1,53 @@
+{
+  "supplier": "sup-h",
+  "paths": [
+    "sup-h -> sup-f -> prime-x -> prog-harbor",
+    "sup-h -> sup-f -> prime-x -> prog-sentinel"
+  ],
+  "programs": [
+    "prog-harbor",
+    "prog-sentinel"
+  ],
+  "active_programs": [],
+  "exposures": [
+    {
+      "id": "exp:cb-micro-h.example-0",
+      "identity": "id:admin@micro-h.example",
+      "domain": "micro-h.example",
+      "target": "micro-h.example",
+      "source": "cb-micro-h.example-0"
+    },
+    {
+      "id": "exp:cds-micro-h.example-active",
+      "identity": "id:ops@micro-h.example",
+      "domain": "micro-h.example",
+      "target": "vpn.micro-h.example",
+      "source": "cds-micro-h.example-active"
+    },
+    {
+      "id": "exp:cds-micro-h.example-stale",
+      "identity": "id:user1@micro-h.example",
+      "domain": "micro-h.example",
+      "target": "portal.micro-h.example",
+      "source": "cds-micro-h.example-stale"
+    },
+    {
+      "id": "exp:cl-micro-h.example-0",
+      "identity": "id:admin@micro-h.example",
+      "domain": "micro-h.example",
+      "target": "hr.micro-h.example",
+      "source": "cl-micro-h.example-0"
+    },
+    {
+      "id": "exp:ub-micro-h.example-0",
+      "identity": "id:ops@micro-h.example",
+      "domain": "micro-h.example",
+      "target": "https://mail.micro-h.example/login",
+      "source": "ub-micro-h.example-0"
+    }
+  ],
+  "incidents": [
+    "incident:sup-h"
+  ],
+  "draft": "draft:sup-h"
+}

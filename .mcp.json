@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "palantir-mcp": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "python",
+        "scripts/palantir_mcp.py"
+      ],
+      "env": {}
+    }
+  }
+}

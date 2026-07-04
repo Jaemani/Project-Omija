@@ -40,7 +40,7 @@ uv run python scripts/p6_eval.py
 
 ## 리허설 체크리스트
 
-- [ ] `uv run pytest -q` -> 110 passed.
+- [ ] `uv run pytest -q` -> 112 passed.
 - [ ] `uv run python scripts/p6_eval.py` -> `RESULT: OK`, top active suppliers 확인.
 - [ ] `uv run python scripts/p4_dashboard.py` -> `out/dashboard.html` 생성.
 - [ ] 화면에서 active 상단, drilldown, path graph, draft preview 확인.
@@ -51,3 +51,16 @@ uv run python scripts/p6_eval.py
 - live API 실패: mock adapter로 발표한다.
 - 네트워크 실패: `out/dashboard.html`은 정적 HTML이다.
 - Foundry publish 지연: SQLite validation store로 동일 파이프를 시연하고 `ontology.md`로 Foundry 매핑을 설명한다.
+
+## Foundry OSDK 추가 시연
+
+Foundry 온톨로지까지 보여줄 때는 아래를 실행한다.
+
+```bash
+uv run python scripts/foundry_osdk_smoke.py --diagnose
+uv run python scripts/demo_e2e.py --compare --supplier sup-h
+uv run python scripts/foundry_demo_report.py
+open out/foundry_demo.html
+```
+
+`out/foundry_demo.html`은 Foundry Python OSDK로 읽은 seed 객체와 링크만 사용한다.

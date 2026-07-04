@@ -25,7 +25,11 @@ node_modules/
 dist/
 
 # Generated reports
-out/
+out/*
+!out/foundry_seed/
+!out/foundry_seed/**
+!out/foundry_demo.html
+!out/demo_e2e_*.json
 
 # Local tool state
 .tokensave/

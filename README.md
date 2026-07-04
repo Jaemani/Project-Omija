@@ -12,7 +12,7 @@ StealthMole 유출 자격증명과 인포스틸러 감염기기를 Palantir Foun
 
 ## 현재 상태
 
-**P0-P6 로컬 파이프 + StealthMole live entrypoint 완료 · 110 tests green.**
+**P0-P6 로컬 파이프 + StealthMole live entrypoint + Foundry OSDK read-only demo 완료 · 112 tests green.**
 
 - mock adapter 기반 상관, 엔티티 해소, 활성침해 탐지, 위험 점수, 대시보드, 통보 초안, 평가 파이프가 동작합니다.
 - `ontology.md`는 Foundry Ontology Manager에서 만들 객체, 링크, 파생 데이터셋, API 이름을 바로 입력할 수 있게 정리했습니다.
@@ -72,3 +72,14 @@ StealthMole 키는 `.env`에만 둡니다. `.env.example`에는 변수 이름만
 ## 가드레일
 
 StealthMole 제공 데이터와 공개정보만 사용합니다. 무단 스캐닝, 침투, 자격증명 재사용은 금지입니다. 데모는 합성 도메인과 마스킹된 값만 사용하고, 통보는 `draft` 생성까지입니다.
+
+## Foundry OSDK 데모
+
+```bash
+uv run python scripts/foundry_osdk_smoke.py --diagnose
+uv run python scripts/demo_e2e.py --compare --supplier sup-h
+uv run python scripts/foundry_demo_report.py
+open out/foundry_demo.html
+```
+
+`out/foundry_demo.html`은 Foundry Python OSDK로 읽은 seed 객체와 링크만 사용합니다.

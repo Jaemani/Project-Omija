@@ -1,0 +1,28 @@
+{
+  "supplier": "sup-h",
+  "paths": [
+    "sup-h -> sup-f -> prime-x -> prog-sentinel",
+    "sup-h -> sup-f -> prime-x -> prog-harbor"
+  ],
+  "programs": [
+    "prog-harbor",
+    "prog-sentinel"
+  ],
+  "active_programs": [
+    "prog-harbor",
+    "prog-sentinel"
+  ],
+  "exposures": [
+    {
+      "id": "exp:micro-h:active",
+      "identity": "id:ops@micro-h.example",
+      "domain": "micro-h.example",
+      "target": "vpn.prime-x.example",
+      "source": "src:stealthmole:mock"
+    }
+  ],
+  "incidents": [
+    "incident:micro-h:active"
+  ],
+  "draft": "draft:sup-h:2026-07-03"
+}
