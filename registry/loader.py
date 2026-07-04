@@ -25,7 +25,7 @@ def load_registry(path: str = DEFAULT_REGISTRY_PATH) -> dict[str, Any]:
             data = yaml.safe_load(fh)
     if not isinstance(data, dict):
         raise ValueError(f"registry {path!r} did not parse to a mapping")
-    for key in ("suppliers", "primes", "programs"):
+    for key in ("suppliers", "primes", "programs", "prime_domains"):
         data.setdefault(key, [])
     return data
 
@@ -40,7 +40,8 @@ def load_into_store(store: Any, registry: dict[str, Any] | None = None) -> dict[
         registry = load_registry()
 
     counts = {k: 0 for k in (
-        "suppliers", "domains", "primes", "programs", "supplies", "runs", "subcontracts"
+        "suppliers", "domains", "primes", "programs", "supplies", "runs",
+        "subcontracts", "prime_domains",
     )}
 
     for prime in registry.get("primes", []):
@@ -53,6 +54,14 @@ def load_into_store(store: Any, registry: dict[str, Any] | None = None) -> dict[
             sensitivity=prog.get("sensitivity"),
         )
         counts["programs"] += 1
+
+    # Prime --prime_owns--> Domain: cross-org TARGET assets (ontology.md §0).
+    # These are separate from Supplier-owned domains below — a supplier's
+    # exposure can `targets` one of these even though it `belongs_to` its own
+    # supplier's domain (the of≠targets separation).
+    for pd in registry.get("prime_domains", []) or []:
+        store.upsert_prime_domain(fqdn=pd["fqdn"], prime_id=pd["prime"])
+        counts["prime_domains"] += 1
 
     # Prime --runs--> Program (declared on the prime).
     for prime in registry.get("primes", []):

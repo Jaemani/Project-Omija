@@ -41,3 +41,6 @@ out/p0b/
 # Local tool state
 .tokensave/
 .claude/settings.local.json
+!out/program_threat_view.html
+!out/program_threat_view.json
+!out/foundry_action_chain.json

@@ -1,0 +1,664 @@
+{
+  "caption": "같은 온톨로지, 반대 방향 질의 — 협력사 관점과 프로그램 관점이 동일 그래프에서 나온다.",
+  "program": {
+    "id": "prog-sentinel",
+    "name": "Sentinel ISR Program",
+    "sensitivity": "high"
+  },
+  "chain": [
+    {
+      "supplier_id": "sup-a",
+      "supplier_name": "Alpha Precision",
+      "depth": 0,
+      "prime_ref": "prime-x",
+      "prime_name": "Xenon Aerospace",
+      "chain": "Supplier(Alpha Precision) -> Prime(Xenon Aerospace) -> Program(Sentinel ISR Program)",
+      "exposure_count": 5,
+      "has_active_incident": true
+    },
+    {
+      "supplier_id": "sup-b",
+      "supplier_name": "Bravo Systems",
+      "depth": 0,
+      "prime_ref": "prime-x",
+      "prime_name": "Xenon Aerospace",
+      "chain": "Supplier(Bravo Systems) -> Prime(Xenon Aerospace) -> Program(Sentinel ISR Program)",
+      "exposure_count": 4,
+      "has_active_incident": false
+    },
+    {
+      "supplier_id": "sup-f",
+      "supplier_name": "Foxtrot Metals",
+      "depth": 0,
+      "prime_ref": "prime-x",
+      "prime_name": "Xenon Aerospace",
+      "chain": "Supplier(Foxtrot Metals) -> Prime(Xenon Aerospace) -> Program(Sentinel ISR Program)",
+      "exposure_count": 0,
+      "has_active_incident": false
+    },
+    {
+      "supplier_id": "sup-g",
+      "supplier_name": "Golf Avionics",
+      "depth": 0,
+      "prime_ref": "prime-x",
+      "prime_name": "Xenon Aerospace",
+      "chain": "Supplier(Golf Avionics) -> Prime(Xenon Aerospace) -> Program(Sentinel ISR Program)",
+      "exposure_count": 5,
+      "has_active_incident": true
+    },
+    {
+      "supplier_id": "sup-h",
+      "supplier_name": "Hotel Microelectronics",
+      "depth": 1,
+      "prime_ref": "prime-x",
+      "prime_name": "Xenon Aerospace",
+      "chain": "Supplier(Hotel Microelectronics) -> Supplier(Foxtrot Metals) -> Prime(Xenon Aerospace) -> Program(Sentinel ISR Program)",
+      "exposure_count": 5,
+      "has_active_incident": true
+    }
+  ],
+  "primes": [
+    "prime-x"
+  ],
+  "incidents": [
+    {
+      "id": "incident:sup-a",
+      "supplier_ref": "sup-a",
+      "opened_at": 1783036800,
+      "status": "open",
+      "path": [
+        {
+          "type": "InfectedDevice",
+          "ref": "dev:cds-supplier-a.example-active",
+          "detail": "RedLine · session-cookie · infected_at=1782864000"
+        },
+        {
+          "type": "Identity",
+          "ref": "id:ops@supplier-a.example",
+          "detail": "ops@supplier-a.example"
+        },
+        {
+          "type": "Domain",
+          "ref": "supplier-a.example",
+          "detail": "supplier-a.example"
+        },
+        {
+          "type": "Supplier",
+          "ref": "sup-a",
+          "detail": "Alpha Precision"
+        },
+        {
+          "type": "Prime",
+          "ref": "prime-x",
+          "detail": "Xenon Aerospace"
+        },
+        {
+          "type": "Program",
+          "ref": "prog-harbor",
+          "detail": "Harbor Sustainment Program"
+        }
+      ],
+      "blast_primes": "[{\"ref\": \"prime-x\", \"name\": \"Xenon Aerospace\"}]",
+      "blast_programs": "[{\"ref\": \"prog-harbor\", \"name\": \"Harbor Sustainment Program\"}, {\"ref\": \"prog-sentinel\", \"name\": \"Sentinel ISR Program\"}]",
+      "blast_radius": {
+        "primes": [
+          {
+            "ref": "prime-x",
+            "name": "Xenon Aerospace"
+          }
+        ],
+        "programs": [
+          {
+            "ref": "prog-harbor",
+            "name": "Harbor Sustainment Program"
+          },
+          {
+            "ref": "prog-sentinel",
+            "name": "Sentinel ISR Program"
+          }
+        ]
+      }
+    },
+    {
+      "id": "incident:sup-g",
+      "supplier_ref": "sup-g",
+      "opened_at": 1783036800,
+      "status": "open",
+      "path": [
+        {
+          "type": "InfectedDevice",
+          "ref": "dev:cds-avionics-g.example-active",
+          "detail": "RedLine · session-cookie · infected_at=1782864000"
+        },
+        {
+          "type": "Identity",
+          "ref": "id:ops@avionics-g.example",
+          "detail": "ops@avionics-g.example"
+        },
+        {
+          "type": "Domain",
+          "ref": "avionics-g.example",
+          "detail": "avionics-g.example"
+        },
+        {
+          "type": "Supplier",
+          "ref": "sup-g",
+          "detail": "Golf Avionics"
+        },
+        {
+          "type": "Prime",
+          "ref": "prime-x",
+          "detail": "Xenon Aerospace"
+        },
+        {
+          "type": "Program",
+          "ref": "prog-harbor",
+          "detail": "Harbor Sustainment Program"
+        }
+      ],
+      "blast_primes": "[{\"ref\": \"prime-x\", \"name\": \"Xenon Aerospace\"}]",
+      "blast_programs": "[{\"ref\": \"prog-harbor\", \"name\": \"Harbor Sustainment Program\"}, {\"ref\": \"prog-sentinel\", \"name\": \"Sentinel ISR Program\"}]",
+      "blast_radius": {
+        "primes": [
+          {
+            "ref": "prime-x",
+            "name": "Xenon Aerospace"
+          }
+        ],
+        "programs": [
+          {
+            "ref": "prog-harbor",
+            "name": "Harbor Sustainment Program"
+          },
+          {
+            "ref": "prog-sentinel",
+            "name": "Sentinel ISR Program"
+          }
+        ]
+      }
+    },
+    {
+      "id": "incident:sup-h",
+      "supplier_ref": "sup-h",
+      "opened_at": 1783036800,
+      "status": "open",
+      "path": [
+        {
+          "type": "InfectedDevice",
+          "ref": "dev:cds-micro-h.example-active",
+          "detail": "RedLine · session-cookie · infected_at=1782864000"
+        },
+        {
+          "type": "Identity",
+          "ref": "id:ops@micro-h.example",
+          "detail": "ops@micro-h.example"
+        },
+        {
+          "type": "Domain",
+          "ref": "micro-h.example",
+          "detail": "micro-h.example"
+        },
+        {
+          "type": "Supplier",
+          "ref": "sup-h",
+          "detail": "Hotel Microelectronics"
+        },
+        {
+          "type": "Supplier",
+          "ref": "sup-f",
+          "detail": "Foxtrot Metals"
+        },
+        {
+          "type": "Prime",
+          "ref": "prime-x",
+          "detail": "Xenon Aerospace"
+        },
+        {
+          "type": "Program",
+          "ref": "prog-harbor",
+          "detail": "Harbor Sustainment Program"
+        }
+      ],
+      "blast_primes": "[{\"ref\": \"prime-x\", \"name\": \"Xenon Aerospace\"}]",
+      "blast_programs": "[{\"ref\": \"prog-harbor\", \"name\": \"Harbor Sustainment Program\"}, {\"ref\": \"prog-sentinel\", \"name\": \"Sentinel ISR Program\"}]",
+      "blast_radius": {
+        "primes": [
+          {
+            "ref": "prime-x",
+            "name": "Xenon Aerospace"
+          }
+        ],
+        "programs": [
+          {
+            "ref": "prog-harbor",
+            "name": "Harbor Sustainment Program"
+          },
+          {
+            "ref": "prog-sentinel",
+            "name": "Sentinel ISR Program"
+          }
+        ]
+      }
+    }
+  ],
+  "risk_assessments": [
+    {
+      "id": "risk:sup-a",
+      "supplier_ref": "sup-a",
+      "score": 96.67,
+      "grade": "즉시",
+      "active_flag": true,
+      "computed_at": 1783036800,
+      "components": {
+        "exposure_scale": {
+          "dedup_count": 5,
+          "raw_count": 5,
+          "points": 15.0
+        },
+        "recency": {
+          "age_days": 2.0,
+          "points": 14.32
+        },
+        "secret_type": {
+          "strongest": "cookie",
+          "weight": 1.0,
+          "points": 12.0
+        },
+        "module_confidence": {
+          "modules": [
+            "cb",
+            "cds",
+            "cl",
+            "ub"
+          ],
+          "max_conf": 0.9,
+          "diversity": 4,
+          "points": 11.7
+        },
+        "base_subtotal": 53.02,
+        "criticality_multiplier": 1.15,
+        "tier_multiplier": 1.08,
+        "base_score": 60.0,
+        "active_flag": true,
+        "active_quality": 0.889,
+        "score": 96.67,
+        "grade": "즉시"
+      },
+      "evidence": [
+        {
+          "evidence_ref": "dev:cds-supplier-a.example-active",
+          "evidence_kind": "device"
+        },
+        {
+          "evidence_ref": "dev:cds-supplier-a.example-stale",
+          "evidence_kind": "device"
+        },
+        {
+          "evidence_ref": "exp:cb-supplier-a.example-0",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cds-supplier-a.example-active",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cds-supplier-a.example-stale",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cl-supplier-a.example-0",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:ub-supplier-a.example-0",
+          "evidence_kind": "exposure"
+        }
+      ]
+    },
+    {
+      "id": "risk:sup-g",
+      "supplier_ref": "sup-g",
+      "score": 95.76,
+      "grade": "즉시",
+      "active_flag": true,
+      "computed_at": 1783036800,
+      "components": {
+        "exposure_scale": {
+          "dedup_count": 5,
+          "raw_count": 5,
+          "points": 15.0
+        },
+        "recency": {
+          "age_days": 2.0,
+          "points": 14.32
+        },
+        "secret_type": {
+          "strongest": "cookie",
+          "weight": 1.0,
+          "points": 12.0
+        },
+        "module_confidence": {
+          "modules": [
+            "cb",
+            "cds",
+            "cl",
+            "ub"
+          ],
+          "max_conf": 0.9,
+          "diversity": 4,
+          "points": 11.7
+        },
+        "base_subtotal": 53.02,
+        "criticality_multiplier": 1.15,
+        "tier_multiplier": 1.0,
+        "base_score": 60.0,
+        "active_flag": true,
+        "active_quality": 0.859,
+        "score": 95.76,
+        "grade": "즉시"
+      },
+      "evidence": [
+        {
+          "evidence_ref": "dev:cds-avionics-g.example-active",
+          "evidence_kind": "device"
+        },
+        {
+          "evidence_ref": "dev:cds-avionics-g.example-stale",
+          "evidence_kind": "device"
+        },
+        {
+          "evidence_ref": "exp:cb-avionics-g.example-0",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cds-avionics-g.example-active",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cds-avionics-g.example-stale",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cl-avionics-g.example-0",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:ub-avionics-g.example-0",
+          "evidence_kind": "exposure"
+        }
+      ]
+    },
+    {
+      "id": "risk:sup-h",
+      "supplier_ref": "sup-h",
+      "score": 95.76,
+      "grade": "즉시",
+      "active_flag": true,
+      "computed_at": 1783036800,
+      "components": {
+        "exposure_scale": {
+          "dedup_count": 5,
+          "raw_count": 5,
+          "points": 15.0
+        },
+        "recency": {
+          "age_days": 2.0,
+          "points": 14.32
+        },
+        "secret_type": {
+          "strongest": "cookie",
+          "weight": 1.0,
+          "points": 12.0
+        },
+        "module_confidence": {
+          "modules": [
+            "cb",
+            "cds",
+            "cl",
+            "ub"
+          ],
+          "max_conf": 0.9,
+          "diversity": 4,
+          "points": 11.7
+        },
+        "base_subtotal": 53.02,
+        "criticality_multiplier": 1.15,
+        "tier_multiplier": 1.0,
+        "base_score": 60.0,
+        "active_flag": true,
+        "active_quality": 0.859,
+        "score": 95.76,
+        "grade": "즉시"
+      },
+      "evidence": [
+        {
+          "evidence_ref": "dev:cds-micro-h.example-active",
+          "evidence_kind": "device"
+        },
+        {
+          "evidence_ref": "dev:cds-micro-h.example-stale",
+          "evidence_kind": "device"
+        },
+        {
+          "evidence_ref": "exp:cb-micro-h.example-0",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cds-micro-h.example-active",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cds-micro-h.example-stale",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cl-micro-h.example-0",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:ub-micro-h.example-0",
+          "evidence_kind": "exposure"
+        }
+      ]
+    },
+    {
+      "id": "risk:sup-b",
+      "supplier_ref": "sup-b",
+      "score": 56.97,
+      "grade": "주의",
+      "active_flag": false,
+      "computed_at": 1783036800,
+      "components": {
+        "exposure_scale": {
+          "dedup_count": 4,
+          "raw_count": 4,
+          "points": 12.0
+        },
+        "recency": {
+          "age_days": 12.0,
+          "points": 11.37
+        },
+        "secret_type": {
+          "strongest": "plaintext",
+          "weight": 0.9,
+          "points": 10.8
+        },
+        "module_confidence": {
+          "modules": [
+            "cb",
+            "cds",
+            "cl",
+            "ub"
+          ],
+          "max_conf": 0.9,
+          "diversity": 4,
+          "points": 11.7
+        },
+        "base_subtotal": 45.87,
+        "criticality_multiplier": 1.15,
+        "tier_multiplier": 1.08,
+        "base_score": 56.97,
+        "active_flag": false,
+        "active_quality": null,
+        "score": 56.97,
+        "grade": "주의"
+      },
+      "evidence": [
+        {
+          "evidence_ref": "dev:cds-supplier-b.example-stale",
+          "evidence_kind": "device"
+        },
+        {
+          "evidence_ref": "exp:cb-supplier-b.example-0",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cds-supplier-b.example-stale",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:cl-supplier-b.example-0",
+          "evidence_kind": "exposure"
+        },
+        {
+          "evidence_ref": "exp:ub-supplier-b.example-0",
+          "evidence_kind": "exposure"
+        }
+      ]
+    }
+  ],
+  "cross_org_hits": [
+    {
+      "id": "exp:cds-micro-h.example-active",
+      "identity_ref": "id:ops@micro-h.example",
+      "owner_supplier": "sup-h",
+      "owner_domain": "micro-h.example",
+      "target_domain": "vpn.prime-x.example",
+      "target_prime": "prime-x",
+      "source_ref": "cds-micro-h.example-active",
+      "in_supply_chain": true,
+      "precision": "exact"
+    }
+  ],
+  "program_exposure": {
+    "id": "progexp:prog-sentinel",
+    "program_ref": "prog-sentinel",
+    "score": 100.0,
+    "grade": "즉시",
+    "active_flag": true,
+    "computed_at": 1783036800,
+    "components": {
+      "program_ref": "prog-sentinel",
+      "sensitivity": "high",
+      "sensitivity_multiplier": 1.2,
+      "dominant_supplier": {
+        "id": "sup-a",
+        "score": 96.67
+      },
+      "contributing_suppliers": [
+        {
+          "id": "sup-a",
+          "score": 96.67,
+          "grade": "즉시",
+          "active": true
+        },
+        {
+          "id": "sup-b",
+          "score": 56.97,
+          "grade": "주의",
+          "active": false
+        },
+        {
+          "id": "sup-g",
+          "score": 95.76,
+          "grade": "즉시",
+          "active": true
+        },
+        {
+          "id": "sup-h",
+          "score": 95.76,
+          "grade": "즉시",
+          "active": true
+        }
+      ],
+      "breadth_active": 3,
+      "breadth_points": 12.0,
+      "prime_subtotals": {
+        "prime-x": {
+          "reached_by": [
+            "sup-a",
+            "sup-b",
+            "sup-f",
+            "sup-g",
+            "sup-h"
+          ],
+          "max_score": 96.67,
+          "active": true
+        }
+      },
+      "active_flag": true,
+      "score": 100.0,
+      "grade": "즉시"
+    },
+    "contributing_paths": [
+      {
+        "start": "sup-a",
+        "active": true,
+        "multi_tier": false,
+        "prime": "prime-x",
+        "chain": "Supplier(Alpha Precision) → Prime(Xenon Aerospace) → Program(Sentinel ISR Program)"
+      },
+      {
+        "start": "sup-b",
+        "active": false,
+        "multi_tier": false,
+        "prime": "prime-x",
+        "chain": "Supplier(Bravo Systems) → Prime(Xenon Aerospace) → Program(Sentinel ISR Program)"
+      },
+      {
+        "start": "sup-g",
+        "active": true,
+        "multi_tier": false,
+        "prime": "prime-x",
+        "chain": "Supplier(Golf Avionics) → Prime(Xenon Aerospace) → Program(Sentinel ISR Program)"
+      },
+      {
+        "start": "sup-h",
+        "active": true,
+        "multi_tier": true,
+        "prime": "prime-x",
+        "chain": "Supplier(Hotel Microelectronics) → Supplier(Foxtrot Metals) → Prime(Xenon Aerospace) → Program(Sentinel ISR Program)"
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_ref": "risk:sup-a",
+        "evidence_kind": "assessment"
+      },
+      {
+        "evidence_ref": "risk:sup-b",
+        "evidence_kind": "assessment"
+      },
+      {
+        "evidence_ref": "risk:sup-g",
+        "evidence_kind": "assessment"
+      },
+      {
+        "evidence_ref": "risk:sup-h",
+        "evidence_kind": "assessment"
+      },
+      {
+        "evidence_ref": "incident:sup-a",
+        "evidence_kind": "incident"
+      },
+      {
+        "evidence_ref": "incident:sup-g",
+        "evidence_kind": "incident"
+      },
+      {
+        "evidence_ref": "incident:sup-h",
+        "evidence_kind": "incident"
+      }
+    ]
+  }
+}

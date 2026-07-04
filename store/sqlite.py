@@ -52,6 +52,15 @@ CREATE TABLE IF NOT EXISTS domain (
     fqdn        TEXT PRIMARY KEY,
     supplier_id TEXT REFERENCES supplier(id)        -- Supplier owns Domain
 );
+-- Prime prime_owns Domain: a CROSS-ORG target asset (e.g. a Prime's own VPN
+-- portal). Deliberately a separate table from `domain` (Supplier owns Domain)
+-- so a Prime-owned asset never becomes a CorrelateExposure key (it is not a
+-- supplier's own domain) yet can still be resolved as a CredentialExposure's
+-- `targets` host (ontology.md §0 of≠targets separation).
+CREATE TABLE IF NOT EXISTS prime_domain (
+    fqdn        TEXT PRIMARY KEY,
+    prime_id    TEXT REFERENCES prime(id)
+);
 CREATE TABLE IF NOT EXISTS identity (
     id          TEXT PRIMARY KEY,                    -- resolved (entity resolution)
     email       TEXT,
@@ -228,6 +237,16 @@ class SqliteOntologyStore:
         )
         self.conn.commit()
 
+    def upsert_prime_domain(self, *, fqdn: str, prime_id: str) -> None:
+        """Domain object + prime_owns-link to its Prime — a cross-org TARGET
+        asset (ontology.md §0), distinct from a Supplier-owned Domain."""
+        self.conn.execute(
+            "INSERT INTO prime_domain(fqdn,prime_id) VALUES(?,?) "
+            "ON CONFLICT(fqdn) DO UPDATE SET prime_id=excluded.prime_id",
+            (fqdn, prime_id),
+        )
+        self.conn.commit()
+
     def upsert_prime(self, *, id: str, name: str) -> None:
         self.conn.execute(
             "INSERT INTO prime(id,name) VALUES(?,?) "
@@ -335,6 +354,12 @@ class SqliteOntologyStore:
         """{fqdn: supplier_id} for every owned Domain (correlation key set)."""
         rows = self.conn.execute("SELECT fqdn, supplier_id FROM domain").fetchall()
         return {r["fqdn"]: r["supplier_id"] for r in rows}
+
+    def prime_owned_domains(self) -> dict[str, str]:
+        """{fqdn: prime_id} for every Prime-owned target Domain (prime_owns).
+        These are cross-org TARGET assets, never a CorrelateExposure key."""
+        rows = self.conn.execute("SELECT fqdn, prime_id FROM prime_domain").fetchall()
+        return {r["fqdn"]: r["prime_id"] for r in rows}
 
     def exposures_for_correlation(self) -> list[dict]:
         """(exposure_id, source_ref, identity_id, email) for every Exposure —
@@ -486,18 +511,22 @@ class SqliteOntologyStore:
 
     _EXP_SELECT = """
         SELECT e.id, e.module, e.secret_type, e.masked_value, e.secret_present,
-               e.host, e.observed_at, e.fetched_at, e.source, e.source_ref,
+               e.host, e.host AS target_domain_ref, e.observed_at, e.fetched_at,
+               e.source, e.source_ref,
                e.confidence, e.is_mock, i.id AS identity_ref, i.email, i.username,
                i.domain_ref,
                d.supplier_id, dev.malware, dev.infected_at, dev.has_session_cookie,
                dev.account_type, m.match_basis, ts.kind AS threat_kind,
-               ts.name AS threat_name
+               ts.name AS threat_name,
+               pd.prime_id AS target_prime_ref,
+               CASE WHEN pd.prime_id IS NOT NULL THEN 1 ELSE 0 END AS cross_org_target
         FROM credential_exposure e
         JOIN identity i           ON e.identity_ref = i.id
         LEFT JOIN domain d        ON i.domain_ref = d.fqdn
         LEFT JOIN infected_device dev ON dev.exposure_ref = e.id
         LEFT JOIN exposure_match m    ON m.exposure_ref = e.id
         LEFT JOIN threat_source ts    ON e.threat_ref = ts.id
+        LEFT JOIN prime_domain pd     ON pd.fqdn = e.host
     """
 
     def exposures_for_supplier(self, supplier_id: str) -> list[dict]:

@@ -45,6 +45,13 @@ SEED_SUPPLIERS: dict[str, dict] = {
     "metals-f.example":    {"id": "sup-f", "name": "Foxtrot Metals",    "tier": 1, "criticality": "medium", "prime": "prime-x", "clean": True},
     # MULTI-TIER terminal (2차 말단): subcontracts up to sup-f, no direct prime.
     "micro-h.example":     {"id": "sup-h", "name": "Hotel Microelectronics", "tier": 2, "criticality": "high", "prime": None, "subcontracts": "sup-f", "clean": False},
+    # NOISY / dominance-pair counterpart to sup-h (ontology.md §6 "band dominance
+    # example"): FLOOD_DOMAIN carries tens of stale, re-circulated Band-C hits and
+    # NO active-compromise path at all. It exists purely to prove that volume
+    # cannot outrank an active path — base_cap (actions/scoring.py) clamps any
+    # non-active supplier's score at 60, strictly below the active_floor of 70,
+    # no matter how many stale records pile up here.
+    "supplier-i.example":  {"id": "sup-i", "name": "India Fabrication",    "tier": 1, "criticality": "medium", "prime": "prime-y", "clean": False},
 }
 
 # Domains that carry a deliberate active-compromise case (recent stealer +
@@ -63,6 +70,13 @@ RESOLUTION_DOMAIN = "supplier-c.example"
 # same secret_type. Exposure-scale must count it once (dedup, P2 decision 3);
 # provenance keeps both records and module diversity is a confidence signal.
 RECIRC_DOMAIN = "parts-d.example"
+
+# Domain carrying the NOISY dominance-pair case: a flood of stale, re-circulated
+# Band-C combo-list hits (no cookie, no vpn/admin account, no active path). Used
+# to prove that raw volume alone cannot out-rank an active-compromise supplier
+# (ontology.md §3.1, §6 — band dominance).
+FLOOD_DOMAIN = "supplier-i.example"
+FLOOD_COUNT = 40
 
 
 class MockExposureSource:
@@ -131,6 +145,8 @@ class MockExposureSource:
                 self._gen_variant(domain)
             if domain == RECIRC_DOMAIN:
                 self._gen_recirc(domain)
+            if domain == FLOOD_DOMAIN:
+                self._gen_flood(domain)
 
     def _pw(self, tag: str) -> str:
         # Obviously-synthetic password; long enough that a 2-char mask != full.
@@ -260,6 +276,31 @@ class MockExposureSource:
             "leak_date": DEMO_NOW - 8 * DAY,
             "_mock": True,
         })
+
+    def _gen_flood(self, domain: str) -> None:
+        """NOISY dominance-pair case (ontology.md §3.1, §6): FLOOD_COUNT stale,
+        LOW-confidence combo-list hits re-circulating a small identity pool —
+        volume with NO active-compromise signal (no cookie, no vpn/admin
+        account, no infected_at). Deliberately kept "honest scale" (tens, not
+        hundreds). A handful of recirculating identities on the SAME host means
+        the dedup key (identity, host, secret_type) collapses most of this into
+        a few groups — exposure_scale caps at 15pts regardless — while every raw
+        record is still kept for provenance/volume honesty. Paired with the
+        quiet-but-active sup-h: base_cap (60) keeps this supplier's score
+        strictly below any active supplier's floor (70), however large
+        FLOOD_COUNT is."""
+        recs = self._corpus[domain]["cb"]
+        pool_size = 4
+        for i in range(FLOOD_COUNT):
+            user = f"user{(i % pool_size) + 1}@{domain}"
+            recs.append({
+                "id": f"cb-{domain}-flood-{i:03d}",
+                "user": user,
+                "password": self._pw(f"flood-{i:03d}"),
+                "host": domain,                         # same-org, recirculated
+                "leak_date": DEMO_NOW - (60 + i * 4) * DAY,   # all stale
+                "_mock": True,
+            })
 
 
 def _record_time(raw: dict) -> int:

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omija · Program Threat View</title>
+<style>
+:root{
+  --plane:#0d0d0d; --surface:#141413; --surface-2:#1a1a19; --raised:#201f1d;
+  --ink:#ececea; --ink-2:#a9a89f; --muted:#6f6e68;
+  --hair:#262624; --hair-2:#35342f;
+  --c-entity:#3987e5; --c-evidence:#199e70; --c-derived:#c98500; --c-output:#9085e9;
+  --cross:#ec835a;
+  --band-a:#d03b3b; --band-b:#fab219; --band-c:#3987e5;
+  --mono:ui-monospace,SFMono-Regular,Menlo,"Cascadia Code",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--sans);
+  font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{padding:0 0 28px}
+.mono{font-family:var(--mono)}
+.scroll-x{overflow-x:auto}
+.topbar{display:flex;align-items:center;gap:14px;padding:12px 20px;
+  border-bottom:1px solid var(--hair);background:var(--surface);position:sticky;top:0}
+.topbar .brand{font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase}
+.topbar .ver{font-family:var(--mono);font-size:11px;color:var(--muted);
+  border:1px solid var(--hair-2);border-radius:3px;padding:2px 7px}
+.hero{padding:16px 20px;border-bottom:1px solid var(--hair);background:var(--surface-2)}
+.hero h1{margin:0 0 4px;font-size:18px;font-weight:600}
+.hero .sub{color:var(--ink-2);font-size:12.5px}
+.caption{margin-top:10px;padding:9px 12px;border-left:2px solid var(--c-output);
+  background:rgba(144,133,233,.08);border-radius:0 5px 5px 0;font-size:13px;color:var(--ink)}
+main{padding:18px 20px;display:flex;flex-direction:column;gap:22px}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:1px;color:var(--muted);
+  text-transform:uppercase;margin-bottom:8px;display:block}
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface);
+  border:1px solid var(--hair-2);border-radius:6px;overflow:hidden}
+th{text-align:left;font-weight:600;color:var(--ink-2);background:var(--surface-2);
+  padding:7px 10px;border-bottom:1px solid var(--hair);font-size:11px;
+  text-transform:uppercase;letter-spacing:.4px}
+td{padding:7px 10px;border-top:1px solid var(--hair);vertical-align:top}
+tr.hot,tr.band-a-row{background:rgba(208,59,59,.08)}
+tr.band-b-row{background:rgba(250,178,25,.06)}
+tr.band-c-row{background:transparent}
+tr.cross-row{background:rgba(236,131,90,.08)}
+.ref{color:var(--muted);font-size:11px}
+.muted{color:var(--muted);text-align:center;padding:14px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.band-a{background:var(--band-a);box-shadow:0 0 6px var(--band-a)}
+.band-b{background:var(--band-b)}
+.band-c{background:var(--band-c)}
+.cross-arrow{color:var(--cross);font-family:var(--mono);font-size:11px}
+.pexp{padding:9px 12px;border-radius:6px;border:1px solid var(--hair-2);font-size:12.5px;
+  background:var(--surface)}
+.pexp.band-a{border-color:rgba(208,59,59,.5)}
+.pexp.band-b{border-color:rgba(250,178,25,.5)}
+.footer{padding:14px 20px;border-top:1px solid var(--hair);color:var(--muted);
+  font-size:11px;font-family:var(--mono)}
+</style></head>
+<body>
+<div class="topbar">
+  <span class="brand">OMIJA · SUPPLY-CHAIN CREDENTIAL EXPOSURE</span>
+  <span class="ver">PROGRAM THREAT VIEW · backend=local</span>
+</div>
+<div class="hero">
+  <h1>Sentinel ISR Program <span class="ref">prog-sentinel</span></h1>
+  <div class="sub">sensitivity=high &middot;
+    reverse query: Program &rarr; contributing Supplier/Prime chain &rarr; open incidents /
+    risk / cross-org exposure</div>
+  <div class="caption">같은 온톨로지, 반대 방향 질의 — 협력사 관점과 프로그램 관점이 동일 그래프에서 나온다.</div>
+</div>
+<main>
+  <section class="scroll-x">
+    <span class="lbl">Contributing supply chain (reverse-walked subcontractsTo* &rarr; supplies &rarr; runs)</span>
+    <table><thead><tr><th>depth</th><th>supplier</th><th>prime</th><th>exposures</th>
+      <th>active</th><th>path</th></tr></thead>
+      <tbody><tr class="hot"><td class="mono">0</td><td>Alpha Precision <span class="ref">sup-a</span></td><td>Xenon Aerospace</td><td class="mono">5</td><td><span class='dot band-a'></span> ACTIVE</td><td class="ref mono" title="Supplier(Alpha Precision) -&gt; Prime(Xenon Aerospace) -&gt; Program(Sentinel ISR Program)">Supplier(Alpha Precision) -&gt; Prime(Xenon Aerospace) -&gt; Program(S…</td></tr><tr class=""><td class="mono">0</td><td>Bravo Systems <span class="ref">sup-b</span></td><td>Xenon Aerospace</td><td class="mono">4</td><td>&mdash;</td><td class="ref mono" title="Supplier(Bravo Systems) -&gt; Prime(Xenon Aerospace) -&gt; Program(Sentinel ISR Program)">Supplier(Bravo Systems) -&gt; Prime(Xenon Aerospace) -&gt; Program(Sen…</td></tr><tr class=""><td class="mono">0</td><td>Foxtrot Metals <span class="ref">sup-f</span></td><td>Xenon Aerospace</td><td class="mono">0</td><td>&mdash;</td><td class="ref mono" title="Supplier(Foxtrot Metals) -&gt; Prime(Xenon Aerospace) -&gt; Program(Sentinel ISR Program)">Supplier(Foxtrot Metals) -&gt; Prime(Xenon Aerospace) -&gt; Program(Se…</td></tr><tr class="hot"><td class="mono">0</td><td>Golf Avionics <span class="ref">sup-g</span></td><td>Xenon Aerospace</td><td class="mono">5</td><td><span class='dot band-a'></span> ACTIVE</td><td class="ref mono" title="Supplier(Golf Avionics) -&gt; Prime(Xenon Aerospace) -&gt; Program(Sentinel ISR Program)">Supplier(Golf Avionics) -&gt; Prime(Xenon Aerospace) -&gt; Program(Sen…</td></tr><tr class="hot"><td class="mono">1</td><td>Hotel Microelectronics <span class="ref">sup-h</span></td><td>Xenon Aerospace</td><td class="mono">5</td><td><span class='dot band-a'></span> ACTIVE</td><td class="ref mono" title="Supplier(Hotel Microelectronics) -&gt; Supplier(Foxtrot Metals) -&gt; Prime(Xenon Aerospace) -&gt; Program(Sentinel ISR Program)">Supplier(Hotel Microelectronics) -&gt; Supplier(Foxtrot Metals) -&gt; …</td></tr></tbody></table>
+  </section>
+
+  <section class="scroll-x">
+    <span class="lbl">Active incidents reaching this program (band on top)</span>
+    <table><thead><tr><th>incident</th><th>supplier</th><th>status</th><th>opened</th>
+      <th>evidence ref</th></tr></thead>
+      <tbody><tr class="band-a-row"><td><span class="dot band-a"></span>incident:sup-a</td><td>sup-a</td><td>open</td><td class="mono">1783036800</td><td class="ref mono">incident:sup-a</td></tr><tr class="band-a-row"><td><span class="dot band-a"></span>incident:sup-g</td><td>sup-g</td><td>open</td><td class="mono">1783036800</td><td class="ref mono">incident:sup-g</td></tr><tr class="band-a-row"><td><span class="dot band-a"></span>incident:sup-h</td><td>sup-h</td><td>open</td><td class="mono">1783036800</td><td class="ref mono">incident:sup-h</td></tr></tbody></table>
+  </section>
+
+  <section class="scroll-x">
+    <span class="lbl">Risk assessments — contributing suppliers, active-on-top</span>
+    <table><thead><tr><th>supplier</th><th>score</th><th>grade</th><th>active</th>
+      <th>evidence ref</th></tr></thead>
+      <tbody><tr class="band-a-row"><td><span class="dot band-a"></span>sup-a</td><td class="mono">96.67</td><td>즉시</td><td>YES</td><td class="ref mono">dev:cds-supplier-a.example-active, dev:cds-supplier-a.example-stale, exp:cb-supplier-a.example-0, exp:cds-supplier-a.example-active, exp:cds-supplier-a.example-stale, exp:cl-supplier-a.example-0, exp:ub-supplier-a.example-0</td></tr><tr class="band-a-row"><td><span class="dot band-a"></span>sup-g</td><td class="mono">95.76</td><td>즉시</td><td>YES</td><td class="ref mono">dev:cds-avionics-g.example-active, dev:cds-avionics-g.example-stale, exp:cb-avionics-g.example-0, exp:cds-avionics-g.example-active, exp:cds-avionics-g.example-stale, exp:cl-avionics-g.example-0, exp:ub-avionics-g.example-0</td></tr><tr class="band-a-row"><td><span class="dot band-a"></span>sup-h</td><td class="mono">95.76</td><td>즉시</td><td>YES</td><td class="ref mono">dev:cds-micro-h.example-active, dev:cds-micro-h.example-stale, exp:cb-micro-h.example-0, exp:cds-micro-h.example-active, exp:cds-micro-h.example-stale, exp:cl-micro-h.example-0, exp:ub-micro-h.example-0</td></tr><tr class="band-b-row"><td><span class="dot band-b"></span>sup-b</td><td class="mono">56.97</td><td>주의</td><td>&mdash;</td><td class="ref mono">dev:cds-supplier-b.example-stale, exp:cb-supplier-b.example-0, exp:cds-supplier-b.example-stale, exp:cl-supplier-b.example-0, exp:ub-supplier-b.example-0</td></tr></tbody></table>
+  </section>
+
+  <section class="scroll-x">
+    <span class="lbl">Cross-org targets hits (of &ne; targets — asset owned by a prime running this program)</span>
+    <table><thead><tr><th>exposure</th><th>owner (of)</th><th>target (targets)</th>
+      <th>chain membership</th><th>evidence ref</th></tr></thead>
+      <tbody><tr class="cross-row"><td class="mono">exp:cds-micro-h.example-active</td><td>sup-h <span class="ref">(micro-h.example)</span></td><td><span class="cross-arrow">targets &rarr;</span> vpn.prime-x.example <span class="ref">(prime-x)</span></td><td>in-chain<div class="ref">exact</div></td><td class="ref mono">cds-micro-h.example-active</td></tr></tbody></table>
+  </section>
+
+  <section>
+    <span class="lbl">Forward cross-check (PropagateRisk ProgramExposure)</span>
+    <div class="pexp band-a"><b>ProgramExposure</b> (forward rollup, cross-check) — score=100.0 grade=즉시 active=YES ev=[risk:sup-a, risk:sup-b, risk:sup-g, risk:sup-h, incident:sup-a, incident:sup-g, incident:sup-h]</div>
+  </section>
+</main>
+<div class="footer">SYNTHETIC DEMO — every id is *.example / fictional (sup-*, prime-*, prog-*).
+No real organization is named or targeted. Read-only reverse query over the SAME ontology
+objects PropagateRisk already writes forward &mdash; no new object types, no renamed links.</div>
+</body></html>

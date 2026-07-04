@@ -82,6 +82,17 @@ suppliers:
     criticality: 3        # high
     subcontracts: sup-f   # delivers UP to the tier-1 parent (2차→1차)
 
+  # NOISY dominance-pair counterpart to sup-h: tens of stale, re-circulated
+  # Band-C hits, NO active-compromise path. Proves ranking cannot be won by
+  # volume alone — base_cap (60) keeps it strictly below any active supplier's
+  # floor (70), see adapter/mock.py FLOOD_DOMAIN / ontology.md §3.1, §6.
+  - id: sup-i
+    name: India Fabrication
+    domains: [supplier-i.example]
+    tier: 1
+    criticality: 2        # medium
+    supplies: prime-y
+
 # Primes (원청/주계약) — synthetic. Supplier --supplies--> Prime (N:M) above.
 primes:
   - id: prime-x
@@ -99,3 +110,13 @@ programs:
   - id: prog-harbor
     name: Harbor Sustainment Program
     sensitivity: medium
+
+# Prime-owned target assets (Prime --prime_owns--> Domain). These are NOT
+# supplier domains — a Prime itself owns this asset (e.g. its VPN portal), yet
+# a SUPPLIER's leaked credential can still `targets` it. This is the of≠targets
+# cross-org signal (ontology.md §0): micro-h.example's active exposure belongs
+# to Identity(ops@micro-h.example) — a sup-h (supplier) employee — but its
+# targets edge points here instead of anywhere in sup-h's own domain.
+prime_domains:
+  - fqdn: vpn.prime-x.example
+    prime: prime-x

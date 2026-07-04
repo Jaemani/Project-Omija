@@ -8,11 +8,14 @@
 # constants change.
 #
 # GUARDRAIL / HONESTY NOTE: the mock corpus is SYNTHETIC (*.example domains),
-# SMALL (8 suppliers, 30 records) and CLEAN (email domains match registered
+# SMALL (9 suppliers, 74 records) and CLEAN (email domains match registered
 # suppliers 1:1, no ambiguous/adversarial records). Precision/recall computed
 # against this fixture therefore sit at their CEILING and prove the pipe is
 # wired correctly end-to-end — they are NOT a claim about field performance on
 # messy real StealthMole data. `scripts/p6_eval.py` prints this caveat too.
+# sup-i (supplier-i.example) is the NOISY dominance-pair supplier: 44 of the 74
+# records are its tens-of-stale re-circulated Band-C hits, added deliberately
+# to prove volume alone cannot out-rank an active-compromise supplier.
 
 # --- supplier-level classification -------------------------------------------
 
@@ -33,7 +36,9 @@ clean_suppliers: [sup-e, sup-f]
 
 # Exposed but NOT actively compromised (only stale / non-privileged signals).
 # Source: the remaining non-clean SEED_SUPPLIERS not in ACTIVE_DOMAINS.
-exposed_nonactive_suppliers: [sup-b, sup-c, sup-d]
+# sup-i is the NOISY dominance-pair supplier (adapter/mock.py FLOOD_DOMAIN):
+# 44 stale, re-circulated Band-C records and no active path whatsoever.
+exposed_nonactive_suppliers: [sup-b, sup-c, sup-d, sup-i]
 
 # --- exposure -> supplier attribution (correlation ground truth) -------------
 # Each raw-record id (from adapter/mock._gen_* naming) belongs to the supplier
@@ -96,6 +101,56 @@ exposure_attribution:
     - ub-micro-h.example-0
     - cl-micro-h.example-0
     - cb-micro-h.example-0
+
+  # supplier-i.example -> sup-i. NOISY dominance-pair case (adapter/mock.py
+  # FLOOD_DOMAIN/_gen_flood): the 4 standard records plus FLOOD_COUNT=40
+  # re-circulated Band-C combo-list hits across a small (4-identity) pool, all
+  # stale, none carrying a cookie/vpn/admin signal — no active path.
+  sup-i:
+    - cds-supplier-i.example-stale
+    - ub-supplier-i.example-0
+    - cl-supplier-i.example-0
+    - cb-supplier-i.example-0
+    - cb-supplier-i.example-flood-000
+    - cb-supplier-i.example-flood-001
+    - cb-supplier-i.example-flood-002
+    - cb-supplier-i.example-flood-003
+    - cb-supplier-i.example-flood-004
+    - cb-supplier-i.example-flood-005
+    - cb-supplier-i.example-flood-006
+    - cb-supplier-i.example-flood-007
+    - cb-supplier-i.example-flood-008
+    - cb-supplier-i.example-flood-009
+    - cb-supplier-i.example-flood-010
+    - cb-supplier-i.example-flood-011
+    - cb-supplier-i.example-flood-012
+    - cb-supplier-i.example-flood-013
+    - cb-supplier-i.example-flood-014
+    - cb-supplier-i.example-flood-015
+    - cb-supplier-i.example-flood-016
+    - cb-supplier-i.example-flood-017
+    - cb-supplier-i.example-flood-018
+    - cb-supplier-i.example-flood-019
+    - cb-supplier-i.example-flood-020
+    - cb-supplier-i.example-flood-021
+    - cb-supplier-i.example-flood-022
+    - cb-supplier-i.example-flood-023
+    - cb-supplier-i.example-flood-024
+    - cb-supplier-i.example-flood-025
+    - cb-supplier-i.example-flood-026
+    - cb-supplier-i.example-flood-027
+    - cb-supplier-i.example-flood-028
+    - cb-supplier-i.example-flood-029
+    - cb-supplier-i.example-flood-030
+    - cb-supplier-i.example-flood-031
+    - cb-supplier-i.example-flood-032
+    - cb-supplier-i.example-flood-033
+    - cb-supplier-i.example-flood-034
+    - cb-supplier-i.example-flood-035
+    - cb-supplier-i.example-flood-036
+    - cb-supplier-i.example-flood-037
+    - cb-supplier-i.example-flood-038
+    - cb-supplier-i.example-flood-039
 
 # --- golden-time (response-speed) assumption ---------------------------------
 # Analyst wall-clock to review ONE item — a raw record in the bare-enumeration
