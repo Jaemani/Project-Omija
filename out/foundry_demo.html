@@ -12,17 +12,14 @@
   --line: #d9dee8;
   --paper: #f7f8fb;
   --panel: #ffffff;
-  --danger: #b42318;
-  --danger-soft: #fffbfa;
-  --blue: #175cd3;
-  --blue-soft: #eff8ff;
-  --green: #067647;
-  --green-soft: #ecfdf3;
-  --amber: #b54708;
+  --critical: #b42318;
+  --critical-soft: #fffbfa;
+  --program: #175cd3;
+  --program-soft: #eff8ff;
+  --ok: #067647;
+  --ok-soft: #ecfdf3;
 }
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 body {
   margin: 0;
   font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -32,12 +29,41 @@ body {
 header {
   background: var(--panel);
   border-bottom: 1px solid var(--line);
-  padding: 22px 28px 16px;
+  padding: 18px 28px 16px;
 }
 main {
   max-width: 1280px;
   margin: 0 auto;
   padding: 18px 28px 30px;
+}
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+}
+.incident-bar {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.status-pill,
+.tag,
+.chip {
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.status-pill {
+  background: var(--critical-soft);
+  border: 1px solid #fecdca;
+  color: var(--critical);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  text-transform: uppercase;
 }
 .eyebrow {
   color: var(--muted);
@@ -56,16 +82,14 @@ h2 {
   font-size: 15px;
   letter-spacing: 0;
 }
-p {
-  margin: 0;
-}
+p { margin: 0; }
 .sub {
   color: var(--muted);
   max-width: 900px;
 }
 .impact {
   display: grid;
-  grid-template-columns: minmax(220px, 1.1fr) repeat(3, minmax(150px, .7fr));
+  grid-template-columns: minmax(240px, 1fr) repeat(3, minmax(150px, .65fr));
   gap: 12px;
   margin-bottom: 14px;
 }
@@ -76,12 +100,10 @@ p {
   border-radius: 8px;
 }
 .metric {
-  min-height: 92px;
+  min-height: 104px;
   padding: 14px;
 }
-.metric.severity {
-  border-left: 4px solid var(--danger);
-}
+.metric.severity { border-left: 4px solid var(--critical); }
 .metric .label {
   color: var(--muted);
   display: block;
@@ -92,54 +114,91 @@ p {
   font-size: 24px;
   margin-top: 6px;
 }
-.metric.severity strong {
-  color: var(--danger);
+.metric small {
+  color: var(--muted);
+  display: block;
+  margin-top: 6px;
 }
+.metric.severity strong { color: var(--critical); }
 .workspace {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(300px, .85fr);
   gap: 14px;
   align-items: start;
 }
-.panel {
-  padding: 16px;
-}
-.decision {
-  min-height: 290px;
-}
+.panel { padding: 16px; }
+.decision { min-height: 310px; }
 .chain {
-  align-items: center;
+  align-items: stretch;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 12px 0;
+  justify-content: center;
+  margin: 14px 0;
 }
 .node {
-  align-items: center;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 6px;
-  display: inline-flex;
-  font-weight: 650;
-  min-height: 34px;
-  padding: 7px 10px;
-  white-space: nowrap;
+  min-width: 150px;
+  padding: 9px 10px;
 }
-.node.supplier {
+.node .type {
+  color: var(--muted);
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.node .name {
+  display: block;
+  font-weight: 700;
+  margin-top: 2px;
+}
+.node .qualifier {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.node.supplier.origin {
+  background: var(--critical-soft);
   border-color: #fecdca;
-  color: var(--danger);
 }
-.node.prime {
-  border-color: #b2ddff;
-  color: var(--blue);
-}
+.node.prime { border-color: #b2ddff; }
 .node.program {
-  border-color: #abefc6;
-  color: var(--green);
+  background: var(--program-soft);
+  border-color: #b2ddff;
 }
-.arrow {
+.edge {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  justify-content: center;
+  min-width: 72px;
+}
+.edge .arrow {
   color: var(--muted);
   font-size: 18px;
+  line-height: 1;
+}
+.tag {
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 4px 7px;
+}
+.tag.hot {
+  border-color: #fecdca;
+  color: var(--critical);
+}
+.tag.program {
+  border-color: #b2ddff;
+  color: var(--program);
 }
 .chips {
   display: flex;
@@ -150,25 +209,24 @@ p {
 .chip {
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 999px;
   color: var(--muted);
   font-size: 12px;
   padding: 6px 9px;
 }
 .chip.hot {
-  background: var(--danger-soft);
+  background: var(--critical-soft);
   border-color: #fecdca;
-  color: var(--danger);
+  color: var(--critical);
 }
 .chip.blue {
-  background: var(--blue-soft);
+  background: var(--program-soft);
   border-color: #b2ddff;
-  color: var(--blue);
+  color: var(--program);
 }
 .chip.green {
-  background: var(--green-soft);
+  background: var(--ok-soft);
   border-color: #abefc6;
-  color: var(--green);
+  color: var(--ok);
 }
 .paths,
 .programs {
@@ -179,9 +237,7 @@ p {
   list-style: none;
   padding-left: 0;
 }
-.paths li {
-  margin-top: 8px;
-}
+.paths li { margin-top: 8px; }
 .draft {
   background: #fbfcff;
   border: 1px solid var(--line);
@@ -193,11 +249,9 @@ p {
   padding: 12px;
   white-space: pre-wrap;
 }
-details {
-  margin-top: 14px;
-}
+details { margin-top: 14px; }
 summary {
-  color: var(--blue);
+  color: var(--program);
   cursor: pointer;
   font-weight: 650;
 }
@@ -218,10 +272,6 @@ th {
   font-size: 12px;
   font-weight: 650;
 }
-.mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
-}
 @media (max-width: 900px) {
   header,
   main {
@@ -232,32 +282,55 @@ th {
   .workspace {
     grid-template-columns: 1fr;
   }
-  h1 {
-    font-size: 22px;
+  .chain {
+    justify-content: flex-start;
   }
+  h1 { font-size: 22px; }
 }
 </style>
 </head>
 <body>
   <header>
+    <div class="incident-bar mono">
+      <span>incident:micro-h:active</span>
+      <span>2026-07-03</span>
+      <span>owner sup-h</span>
+      <span class="status-pill">open</span>
+    </div>
     <div class="eyebrow">Project Omija · Foundry Ontology + Python OSDK</div>
     <h1>Hotel Microelectronics active compromise reaches defense programs</h1>
-    <p class="sub">Foundry seed read through OSDK. This screen proves the decision path, not a flat leaked-credential table.</p>
+    <p class="sub">Synthetic Foundry seed read through OSDK. This screen proves the decision path, not a flat leaked-credential table.</p>
   </header>
 
   <main>
     <section class="impact" aria-label="Impact summary">
-      <div class="metric severity"><span class="label">Risk band</span><strong>A</strong></div>
-      <div class="metric"><span class="label">Impacted programs</span><strong>2</strong></div>
-      <div class="metric"><span class="label">Evidence records</span><strong>1</strong></div>
-      <div class="metric"><span class="label">Path confidence</span><strong>0.9</strong></div>
+      <div class="metric severity">
+        <span class="label">Risk band</span>
+        <strong>A · 95.76</strong>
+        <small>active path to program, credential verified</small>
+      </div>
+      <div class="metric">
+        <span class="label">Path confidence</span>
+        <strong>0.90</strong>
+        <small>source: incident:micro-h:active</small>
+      </div>
+      <div class="metric">
+        <span class="label">Impacted programs</span>
+        <strong>2</strong>
+        <small>via supplier-to-prime chain</small>
+      </div>
+      <div class="metric">
+        <span class="label">Evidence records</span>
+        <strong>1</strong>
+        <small>3 records · 1 sources</small>
+      </div>
     </section>
 
     <div class="workspace">
       <section class="panel decision">
         <h2>Active Path</h2>
         <p class="sub">Credential exposure belongs to the supplier identity, while the target asset belongs upstream.</p>
-        <div class="chain"><span class="node supplier">sup-h</span><span class="arrow">&rarr;</span><span class="node supplier">sup-f</span><span class="arrow">&rarr;</span><span class="node prime">prime-x</span><span class="arrow">&rarr;</span><span class="node program">prog-sentinel</span></div>
+        <div class="chain"><div class="node supplier origin"><span class="type">Supplier</span><span class="name">Hotel Microelectronics</span><span class="qualifier mono">sup-h</span><span class="qualifier">credential exposed</span><span class="tag hot">compromised origin</span></div><div class="edge"><span class="arrow">&rarr;</span><span class="mono">subcontractsTo</span></div><div class="node supplier"><span class="type">Supplier</span><span class="name">Foxtrot Metals</span><span class="qualifier mono">sup-f</span><span class="qualifier">supplier hop</span></div><div class="edge"><span class="arrow">&rarr;</span><span class="mono">supplies</span></div><div class="node prime"><span class="type">Prime</span><span class="name">Xenon Aerospace</span><span class="qualifier mono">prime-x</span><span class="qualifier">prime contractor</span></div><div class="edge"><span class="arrow">&rarr;</span><span class="mono">runs</span></div><div class="node program endpoint"><span class="type">Program</span><span class="name">Sentinel ISR Program</span><span class="qualifier mono">prog-sentinel</span><span class="qualifier">crown-jewel program</span><span class="tag program">target program</span></div></div>
         <div class="chips">
           
           <span class="chip">identity: id:ops@micro-h.example</span>
@@ -266,8 +339,8 @@ th {
           <span class="chip">source: src:stealthmole:mock</span>
         </div>
         <details open>
-          <summary>All reachable paths</summary>
-          <ul class="paths"><li><span class="node supplier">sup-h</span><span class="arrow">&rarr;</span><span class="node supplier">sup-f</span><span class="arrow">&rarr;</span><span class="node prime">prime-x</span><span class="arrow">&rarr;</span><span class="node program">prog-sentinel</span></li><li><span class="node supplier">sup-h</span><span class="arrow">&rarr;</span><span class="node supplier">sup-f</span><span class="arrow">&rarr;</span><span class="node prime">prime-x</span><span class="arrow">&rarr;</span><span class="node program">prog-harbor</span></li></ul>
+          <summary>All reachable paths (2)</summary>
+          <ul class="paths"><li>sup-h <span class="mono">-&gt;</span> sup-f <span class="mono">-&gt;</span> prime-x <span class="mono">-&gt;</span> prog-sentinel</li><li>sup-h <span class="mono">-&gt;</span> sup-f <span class="mono">-&gt;</span> prime-x <span class="mono">-&gt;</span> prog-harbor</li></ul>
         </details>
       </section>
 
@@ -277,6 +350,11 @@ th {
         <ul class="programs"><li>prog-harbor</li><li>prog-sentinel</li></ul>
 
         <h2 style="margin-top:18px">Notification Draft</h2>
+        <div class="chips">
+          <span class="chip hot">UNSENT</span>
+          <span class="chip">approval required</span>
+          <span class="chip">status: draft</span>
+        </div>
         <div class="draft">Synthetic demo draft: rotate exposed account, revoke sessions, enforce MFA, and review VPN access evidence.</div>
       </section>
     </div>
@@ -287,6 +365,7 @@ th {
         <span class="chip hot">incident: incident:micro-h:active</span>
         <span class="chip green">draft: draft:sup-h:2026-07-03</span>
         <span class="chip">supplier: sup-h</span>
+        <span class="chip">3 records · 1 sources</span>
       </div>
       <details>
         <summary>Raw record view</summary>

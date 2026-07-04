@@ -30,6 +30,13 @@ out/*
 !out/foundry_seed/**
 !out/foundry_demo.html
 !out/demo_e2e_*.json
+!out/blast_radius_*.json
+!out/intelligence_demo.html
+!out/intelligence_demo.json
+!out/osint/
+!out/osint/**
+!out/p0b/
+!out/p0b/stealthmole_auth_evidence.json
 
 # Local tool state
 .tokensave/

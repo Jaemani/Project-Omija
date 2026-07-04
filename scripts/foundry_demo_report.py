@@ -1,7 +1,8 @@
 """Generate a Foundry-backed static demo report.
 
-Design direction from Opus review: lead with severity and program impact, keep
-the active path centered, show provenance chips, and keep raw records secondary.
+Design changes here are limited to the Opus review received for the final demo:
+incident bar, risk/confidence first, labeled path edges, clear origin/program
+endpoints, visible provenance, and an unsent approval-gated draft.
 """
 
 from __future__ import annotations
@@ -28,17 +29,14 @@ CSS = """
   --line: #d9dee8;
   --paper: #f7f8fb;
   --panel: #ffffff;
-  --danger: #b42318;
-  --danger-soft: #fffbfa;
-  --blue: #175cd3;
-  --blue-soft: #eff8ff;
-  --green: #067647;
-  --green-soft: #ecfdf3;
-  --amber: #b54708;
+  --critical: #b42318;
+  --critical-soft: #fffbfa;
+  --program: #175cd3;
+  --program-soft: #eff8ff;
+  --ok: #067647;
+  --ok-soft: #ecfdf3;
 }
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 body {
   margin: 0;
   font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -48,12 +46,41 @@ body {
 header {
   background: var(--panel);
   border-bottom: 1px solid var(--line);
-  padding: 22px 28px 16px;
+  padding: 18px 28px 16px;
 }
 main {
   max-width: 1280px;
   margin: 0 auto;
   padding: 18px 28px 30px;
+}
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+}
+.incident-bar {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.status-pill,
+.tag,
+.chip {
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.status-pill {
+  background: var(--critical-soft);
+  border: 1px solid #fecdca;
+  color: var(--critical);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  text-transform: uppercase;
 }
 .eyebrow {
   color: var(--muted);
@@ -72,16 +99,14 @@ h2 {
   font-size: 15px;
   letter-spacing: 0;
 }
-p {
-  margin: 0;
-}
+p { margin: 0; }
 .sub {
   color: var(--muted);
   max-width: 900px;
 }
 .impact {
   display: grid;
-  grid-template-columns: minmax(220px, 1.1fr) repeat(3, minmax(150px, .7fr));
+  grid-template-columns: minmax(240px, 1fr) repeat(3, minmax(150px, .65fr));
   gap: 12px;
   margin-bottom: 14px;
 }
@@ -92,12 +117,10 @@ p {
   border-radius: 8px;
 }
 .metric {
-  min-height: 92px;
+  min-height: 104px;
   padding: 14px;
 }
-.metric.severity {
-  border-left: 4px solid var(--danger);
-}
+.metric.severity { border-left: 4px solid var(--critical); }
 .metric .label {
   color: var(--muted);
   display: block;
@@ -108,54 +131,91 @@ p {
   font-size: 24px;
   margin-top: 6px;
 }
-.metric.severity strong {
-  color: var(--danger);
+.metric small {
+  color: var(--muted);
+  display: block;
+  margin-top: 6px;
 }
+.metric.severity strong { color: var(--critical); }
 .workspace {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(300px, .85fr);
   gap: 14px;
   align-items: start;
 }
-.panel {
-  padding: 16px;
-}
-.decision {
-  min-height: 290px;
-}
+.panel { padding: 16px; }
+.decision { min-height: 310px; }
 .chain {
-  align-items: center;
+  align-items: stretch;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 12px 0;
+  justify-content: center;
+  margin: 14px 0;
 }
 .node {
-  align-items: center;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 6px;
-  display: inline-flex;
-  font-weight: 650;
-  min-height: 34px;
-  padding: 7px 10px;
-  white-space: nowrap;
+  min-width: 150px;
+  padding: 9px 10px;
 }
-.node.supplier {
+.node .type {
+  color: var(--muted);
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.node .name {
+  display: block;
+  font-weight: 700;
+  margin-top: 2px;
+}
+.node .qualifier {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.node.supplier.origin {
+  background: var(--critical-soft);
   border-color: #fecdca;
-  color: var(--danger);
 }
-.node.prime {
-  border-color: #b2ddff;
-  color: var(--blue);
-}
+.node.prime { border-color: #b2ddff; }
 .node.program {
-  border-color: #abefc6;
-  color: var(--green);
+  background: var(--program-soft);
+  border-color: #b2ddff;
 }
-.arrow {
+.edge {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  justify-content: center;
+  min-width: 72px;
+}
+.edge .arrow {
   color: var(--muted);
   font-size: 18px;
+  line-height: 1;
+}
+.tag {
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 4px 7px;
+}
+.tag.hot {
+  border-color: #fecdca;
+  color: var(--critical);
+}
+.tag.program {
+  border-color: #b2ddff;
+  color: var(--program);
 }
 .chips {
   display: flex;
@@ -166,25 +226,24 @@ p {
 .chip {
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 999px;
   color: var(--muted);
   font-size: 12px;
   padding: 6px 9px;
 }
 .chip.hot {
-  background: var(--danger-soft);
+  background: var(--critical-soft);
   border-color: #fecdca;
-  color: var(--danger);
+  color: var(--critical);
 }
 .chip.blue {
-  background: var(--blue-soft);
+  background: var(--program-soft);
   border-color: #b2ddff;
-  color: var(--blue);
+  color: var(--program);
 }
 .chip.green {
-  background: var(--green-soft);
+  background: var(--ok-soft);
   border-color: #abefc6;
-  color: var(--green);
+  color: var(--ok);
 }
 .paths,
 .programs {
@@ -195,9 +254,7 @@ p {
   list-style: none;
   padding-left: 0;
 }
-.paths li {
-  margin-top: 8px;
-}
+.paths li { margin-top: 8px; }
 .draft {
   background: #fbfcff;
   border: 1px solid var(--line);
@@ -209,11 +266,9 @@ p {
   padding: 12px;
   white-space: pre-wrap;
 }
-details {
-  margin-top: 14px;
-}
+details { margin-top: 14px; }
 summary {
-  color: var(--blue);
+  color: var(--program);
   cursor: pointer;
   font-weight: 650;
 }
@@ -234,10 +289,6 @@ th {
   font-size: 12px;
   font-weight: 650;
 }
-.mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
-}
 @media (max-width: 900px) {
   header,
   main {
@@ -248,42 +299,16 @@ th {
   .workspace {
     grid-template-columns: 1fr;
   }
-  h1 {
-    font-size: 22px;
+  .chain {
+    justify-content: flex-start;
   }
+  h1 { font-size: 22px; }
 }
 """
 
 
 def e(value: Any) -> str:
     return html.escape("" if value is None else str(value), quote=True)
-
-
-def chain_nodes(path: str) -> list[str]:
-    return [part.strip() for part in path.split("->") if part.strip()]
-
-
-def node_class(ref: str) -> str:
-    if ref.startswith("prog-"):
-        return "program"
-    if ref.startswith("prime-"):
-        return "prime"
-    if ref.startswith("sup-"):
-        return "supplier"
-    return "neutral"
-
-
-def render_chain(path: str) -> str:
-    nodes = chain_nodes(path)
-    if not nodes:
-        return '<span class="node neutral">No path</span>'
-
-    parts: list[str] = []
-    for index, node in enumerate(nodes):
-        parts.append(f'<span class="node {node_class(node)}">{e(node)}</span>')
-        if index < len(nodes) - 1:
-            parts.append('<span class="arrow">&rarr;</span>')
-    return "".join(parts)
 
 
 def path_label(path: list[dict[str, Any]]) -> str:
@@ -301,6 +326,84 @@ def unique_programs(paths: list[list[dict[str, Any]]]) -> list[str]:
     )
 
 
+def edge_label(left: dict[str, Any], right: dict[str, Any]) -> str:
+    pair = (left.get("type"), right.get("type"))
+    if pair == ("Supplier", "Supplier"):
+        return "subcontractsTo"
+    if pair == ("Supplier", "Prime"):
+        return "supplies"
+    if pair == ("Prime", "Program"):
+        return "runs"
+    return "links"
+
+
+def node_qualifier(node: dict[str, Any], index: int, last_index: int) -> str:
+    node_type = node.get("type")
+    if index == 0:
+        return "credential exposed"
+    if node_type == "Supplier":
+        return "supplier hop"
+    if node_type == "Prime":
+        return "prime contractor"
+    if node_type == "Program":
+        return "crown-jewel program"
+    return "on path"
+
+
+def node_class(node: dict[str, Any], index: int, last_index: int) -> str:
+    classes = [str(node.get("type", "node")).lower()]
+    if index == 0:
+        classes.append("origin")
+    if index == last_index:
+        classes.append("endpoint")
+    return " ".join(classes)
+
+
+def render_path(path: list[dict[str, Any]]) -> str:
+    if not path:
+        return '<span class="node"><span class="name">No path</span></span>'
+
+    parts: list[str] = []
+    last_index = len(path) - 1
+    for index, node in enumerate(path):
+        ref = str(node.get("ref") or "")
+        display = node.get("name") or ref
+        tag = ""
+        if index == 0:
+            tag = '<span class="tag hot">compromised origin</span>'
+        elif index == last_index:
+            tag = '<span class="tag program">target program</span>'
+        parts.append(
+            f'<div class="node {node_class(node, index, last_index)}">'
+            f'<span class="type">{e(node.get("type"))}</span>'
+            f'<span class="name">{e(display)}</span>'
+            f'<span class="qualifier mono">{e(ref)}</span>'
+            f'<span class="qualifier">{e(node_qualifier(node, index, last_index))}</span>'
+            f"{tag}</div>"
+        )
+        if index < last_index:
+            parts.append(
+                '<div class="edge">'
+                '<span class="arrow">&rarr;</span>'
+                f'<span class="mono">{e(edge_label(node, path[index + 1]))}</span>'
+                "</div>"
+            )
+    return "".join(parts)
+
+
+def render_compact_path(path: str) -> str:
+    return e(path).replace(" -&gt; ", ' <span class="mono">-&gt;</span> ')
+
+
+def score_text(value: Any) -> str:
+    if value is None or value == "":
+        return "-"
+    try:
+        return f"{float(value):.2f}"
+    except (TypeError, ValueError):
+        return str(value)
+
+
 def render_report(supplier_id: str = "sup-h") -> str:
     store = FoundryOntologyStore()
     try:
@@ -309,6 +412,10 @@ def render_report(supplier_id: str = "sup-h") -> str:
         paths_raw = store.propagation_paths(supplier_id)
         exposures = store.exposures_for_supplier(supplier_id)
         incidents = store.incidents_for_supplier(supplier_id)
+        risk = next(
+            (row for row in store.risk_assessments() if row.get("supplier_ref") == supplier_id),
+            {},
+        )
         draft = store.draft_for_supplier(supplier_id) or {}
     finally:
         close = getattr(store, "close", None)
@@ -320,16 +427,23 @@ def render_report(supplier_id: str = "sup-h") -> str:
     incident = incidents[0] if incidents else {}
     exposure = exposures[0] if exposures else {}
 
-    risk_band = incident.get("risk_band") or "A"
-    path_confidence = incident.get("path_confidence") or "-"
-    primary_path = paths[0] if paths else supplier_id
+    risk_band = incident.get("risk_band") or risk.get("risk_band") or "A"
+    risk_score = score_text(risk.get("score"))
+    path_confidence = score_text(incident.get("path_confidence"))
     supplier_name = supplier.get("name") or supplier_id
+    primary_path = paths_raw[0] if paths_raw else []
+    opened_at = incident.get("opened_at") or risk.get("computed_at") or "unknown time"
+    incident_status = incident.get("status") or "open"
+    evidence_count = len(exposures)
+    record_count = len(exposures) + len(incidents) + (1 if draft else 0)
+    source_count = len({row.get("source_ref") for row in exposures if row.get("source_ref")})
 
+    risk_driver = "active path to program, credential verified"
     program_items = "".join(f"<li>{e(program)}</li>" for program in programs) or "<li>No reachable program</li>"
-    path_rows = "".join(f"<li>{render_chain(path)}</li>" for path in paths) or "<li>No path</li>"
+    path_rows = "".join(f"<li>{render_compact_path(path)}</li>" for path in paths) or "<li>No path</li>"
     exposure_rows = "".join(
         "<tr>"
-        f"<td class=\"mono\">{e(row.get('id'))}</td>"
+        f'<td class="mono">{e(row.get("id"))}</td>'
         f"<td>{e(row.get('identity_ref'))}</td>"
         f"<td>{e(row.get('domain_ref'))}</td>"
         f"<td>{e(row.get('target_domain_ref'))}</td>"
@@ -345,6 +459,7 @@ def render_report(supplier_id: str = "sup-h") -> str:
     draft_body = draft.get("body") or "No notification draft found."
     incident_id = incident.get("id") or "none"
     draft_id = draft.get("id") or "none"
+    draft_status = draft.get("status") or "draft"
 
     return f"""<!doctype html>
 <html lang="ko">
@@ -356,24 +471,46 @@ def render_report(supplier_id: str = "sup-h") -> str:
 </head>
 <body>
   <header>
+    <div class="incident-bar mono">
+      <span>{e(incident_id)}</span>
+      <span>{e(opened_at)}</span>
+      <span>owner {e(supplier_id)}</span>
+      <span class="status-pill">{e(incident_status)}</span>
+    </div>
     <div class="eyebrow">Project Omija · Foundry Ontology + Python OSDK</div>
     <h1>{e(supplier_name)} active compromise reaches defense programs</h1>
-    <p class="sub">Foundry seed read through OSDK. This screen proves the decision path, not a flat leaked-credential table.</p>
+    <p class="sub">Synthetic Foundry seed read through OSDK. This screen proves the decision path, not a flat leaked-credential table.</p>
   </header>
 
   <main>
     <section class="impact" aria-label="Impact summary">
-      <div class="metric severity"><span class="label">Risk band</span><strong>{e(risk_band)}</strong></div>
-      <div class="metric"><span class="label">Impacted programs</span><strong>{len(programs)}</strong></div>
-      <div class="metric"><span class="label">Evidence records</span><strong>{len(exposures)}</strong></div>
-      <div class="metric"><span class="label">Path confidence</span><strong>{e(path_confidence)}</strong></div>
+      <div class="metric severity">
+        <span class="label">Risk band</span>
+        <strong>{e(risk_band)} · {e(risk_score)}</strong>
+        <small>{e(risk_driver)}</small>
+      </div>
+      <div class="metric">
+        <span class="label">Path confidence</span>
+        <strong>{e(path_confidence)}</strong>
+        <small>source: {e(incident_id)}</small>
+      </div>
+      <div class="metric">
+        <span class="label">Impacted programs</span>
+        <strong>{len(programs)}</strong>
+        <small>via supplier-to-prime chain</small>
+      </div>
+      <div class="metric">
+        <span class="label">Evidence records</span>
+        <strong>{evidence_count}</strong>
+        <small>{record_count} records · {source_count or 0} sources</small>
+      </div>
     </section>
 
     <div class="workspace">
       <section class="panel decision">
         <h2>Active Path</h2>
         <p class="sub">Credential exposure belongs to the supplier identity, while the target asset belongs upstream.</p>
-        <div class="chain">{render_chain(primary_path)}</div>
+        <div class="chain">{render_path(primary_path)}</div>
         <div class="chips">
           {cookie_chip}
           <span class="chip">identity: {e(exposure.get("identity_ref"))}</span>
@@ -382,7 +519,7 @@ def render_report(supplier_id: str = "sup-h") -> str:
           <span class="chip">source: {e(exposure.get("source_ref"))}</span>
         </div>
         <details open>
-          <summary>All reachable paths</summary>
+          <summary>All reachable paths ({len(paths)})</summary>
           <ul class="paths">{path_rows}</ul>
         </details>
       </section>
@@ -393,6 +530,11 @@ def render_report(supplier_id: str = "sup-h") -> str:
         <ul class="programs">{program_items}</ul>
 
         <h2 style="margin-top:18px">Notification Draft</h2>
+        <div class="chips">
+          <span class="chip hot">UNSENT</span>
+          <span class="chip">approval required</span>
+          <span class="chip">status: {e(draft_status)}</span>
+        </div>
         <div class="draft">{e(draft_body)}</div>
       </section>
     </div>
@@ -403,6 +545,7 @@ def render_report(supplier_id: str = "sup-h") -> str:
         <span class="chip hot">incident: {e(incident_id)}</span>
         <span class="chip green">draft: {e(draft_id)}</span>
         <span class="chip">supplier: {e(supplier_id)}</span>
+        <span class="chip">{record_count} records · {source_count or 0} sources</span>
       </div>
       <details>
         <summary>Raw record view</summary>

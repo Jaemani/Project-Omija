@@ -5,6 +5,8 @@ contract and that search() builds the right URL/params against an injected
 fake client.
 """
 
+import time
+
 import jwt
 
 from adapter.stealthmole import BASE_URL, USER_AGENT, StealthMoleSource, sm_headers
@@ -33,6 +35,14 @@ def test_nonce_is_fresh_per_call():
         "SK", algorithms=["HS256"],
     )
     assert a["nonce"] != b["nonce"]
+
+
+def test_iat_offset_can_compensate_clock_skew():
+    before = int(time.time())
+    token = sm_headers("AK", "SK", iat_offset_seconds=-3600)["Authorization"].split(" ", 1)[1]
+    payload = jwt.decode(token, "SK", algorithms=["HS256"])
+
+    assert before - 3610 <= payload["iat"] <= before - 3590
 
 
 class _FakeResponse:

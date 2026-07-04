@@ -28,7 +28,22 @@ USER_AGENT = "netskope-ce-5.1.1-cre-stealthmole-v1.0.0"
 OBS_TYPES = ("email", "domain", "ip", "url")
 
 
-def sm_headers(access_key: str, secret_key: str) -> dict:
+def _env_iat_offset() -> int:
+    raw = os.environ.get("STEALTHMOLE_IAT_OFFSET_SECONDS", "").strip()
+    if not raw:
+        return 0
+    try:
+        return int(raw)
+    except ValueError as exc:
+        raise RuntimeError("STEALTHMOLE_IAT_OFFSET_SECONDS must be an integer") from exc
+
+
+def sm_headers(
+    access_key: str,
+    secret_key: str,
+    *,
+    iat_offset_seconds: int | None = None,
+) -> dict:
     """JWT (HS256) auth header, fresh per request [검증됨].
 
     payload = access_key + nonce(uuid4) + iat(current UTC epoch), signed with
@@ -37,7 +52,8 @@ def sm_headers(access_key: str, secret_key: str) -> dict:
     payload = {
         "access_key": access_key,
         "nonce": str(uuid.uuid4()),
-        "iat": int(datetime.datetime.now(timezone.utc).timestamp()),
+            "iat": int(datetime.datetime.now(timezone.utc).timestamp())
+            + (iat_offset_seconds if iat_offset_seconds is not None else _env_iat_offset()),
     }
     token = jwt.encode(payload, secret_key)  # HS256 default
     return {"Authorization": f"Bearer {token}", "User-Agent": USER_AGENT}
@@ -58,12 +74,14 @@ class StealthMoleSource:
         client=None,  # injected fake client in tests
         base_url: str = BASE_URL,
         timeout: float = 30.0,
+        iat_offset_seconds: int | None = None,
     ) -> None:
         self.access_key = access_key or os.environ.get("STEALTHMOLE_ACCESS_KEY", "")
         self.secret_key = secret_key or os.environ.get("STEALTHMOLE_SECRET_KEY", "")
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
         self._client = client
+        self.iat_offset_seconds = iat_offset_seconds
         self.last_response_meta: dict = {}
 
     # -- internals ---------------------------------------------------------
@@ -74,7 +92,11 @@ class StealthMoleSource:
                 "StealthMole credentials missing. Set STEALTHMOLE_ACCESS_KEY / "
                 "STEALTHMOLE_SECRET_KEY. Use the mock adapter for offline validation."
             )
-        return sm_headers(self.access_key, self.secret_key)
+        return sm_headers(
+            self.access_key,
+            self.secret_key,
+            iat_offset_seconds=self.iat_offset_seconds,
+        )
 
     def _get_client(self):
         return self._client

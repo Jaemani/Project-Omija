@@ -1,0 +1,25 @@
+{
+  "exposure": {
+    "id": "exp:micro-h:active",
+    "identity_ref": "id:ops@micro-h.example",
+    "owner_domain": "micro-h.example",
+    "target_domain": "vpn.prime-x.example",
+    "source_ref": "src:stealthmole:mock",
+    "has_session_cookie": null
+  },
+  "supplier": "sup-h",
+  "programs": [
+    "prog-harbor",
+    "prog-sentinel"
+  ],
+  "paths": [
+    "sup-h -> sup-f -> prime-x -> prog-sentinel",
+    "sup-h -> sup-f -> prime-x -> prog-harbor"
+  ],
+  "provenance": {
+    "incident": "incident:micro-h:active",
+    "risk_band": "A",
+    "path_confidence": 0.9,
+    "path_hash": "pathhash:micro-h-active"
+  }
+}

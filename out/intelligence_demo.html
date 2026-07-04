@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Omija Intelligence Demo</title>
+  <style>
+    body { margin: 0; font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #172033; background: #f7f8fb; }
+    header { background: #fff; border-bottom: 1px solid #d9dee8; padding: 18px 28px; }
+    main { max-width: 1280px; margin: 0 auto; padding: 18px 28px 30px; }
+    h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: 0; }
+    h2 { margin: 0 0 10px; font-size: 16px; }
+    .sub { color: #596276; }
+    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+    section, .metric { background: #fff; border: 1px solid #d9dee8; border-radius: 8px; padding: 14px; }
+    .metric span { display: block; color: #596276; font-size: 12px; }
+    .metric strong { display: block; font-size: 22px; margin-top: 4px; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); gap: 14px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+    .hot { color: #b42318; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; border-bottom: 1px solid #d9dee8; padding: 7px; vertical-align: top; }
+    th { color: #596276; font-size: 12px; }
+    @media (max-width: 900px) { .grid, .layout { grid-template-columns: 1fr; } header, main { padding-left: 16px; padding-right: 16px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Project Omija Intelligence Demo</h1>
+    <p class="sub">OSINT 실제 공개 피드 + Foundry 온톨로지 경로 + credential feed 상태를 한 화면에 연결.</p>
+  </header>
+  <main>
+    <div class="grid">
+      <div class="metric"><span>Supplier</span><strong>sup-h</strong></div>
+      <div class="metric"><span>Impacted programs</span><strong>2</strong></div>
+      <div class="metric"><span>Access-relevant KEV</span><strong>1200</strong></div>
+      <div class="metric"><span>Credential feed</span><strong class="hot">AUTH BLOCKED (401)</strong></div>
+    </div>
+    <div class="layout">
+      <section>
+        <h2>Ontology Path</h2>
+        <p>Exposure <span class="mono">exp:micro-h:active</span> targets <span class="mono">vpn.prime-x.example</span>.</p>
+        <ul><li>sup-h -&gt; sup-f -&gt; prime-x -&gt; prog-sentinel</li><li>sup-h -&gt; sup-f -&gt; prime-x -&gt; prog-harbor</li></ul>
+        <h2 style="margin-top:18px">Target Asset OSINT Overlay</h2>
+        <p>Asset <span class="mono">vpn.prime-x.example</span> type <span class="mono">vpn</span> has 12 CISA KEV matches by asset class.</p>
+        <table><thead><tr><th>CVE</th><th>vendor/severity</th><th>product/score</th><th>description</th></tr></thead><tbody><tr><td>CVE-2026-20230</td><td>Cisco</td><td>Unified Communications Manager</td><td>Cisco Unified Communications Manager Server-Side Request Forgery (SSRF) Vulnerability</td></tr><tr><td>CVE-2026-20262</td><td>Cisco</td><td>Catalyst SD-WAN Manager</td><td>Cisco Catalyst SD-WAN Manager Directory or Path Traversal Vulnerability</td></tr><tr><td>CVE-2026-10520</td><td>Ivanti</td><td>Sentry</td><td>Ivanti Sentry OS Command Injection Vulnerability</td></tr><tr><td>CVE-2026-20245</td><td>Cisco</td><td>Catalyst SD-WAN Manager</td><td>Cisco Catalyst SD-WAN Manager Improper Encoding or Escaping of Output Vulnerability</td></tr><tr><td>CVE-2026-50751</td><td>Check Point</td><td>Security Gateway</td><td>Check Point Security Gateway Improper Authentication Vulnerability</td></tr><tr><td>CVE-2026-0257</td><td>Palo Alto Networks</td><td>PAN-OS</td><td>Palo Alto Networks PAN-OS Authentication Bypass Vulnerability</td></tr><tr><td>CVE-2026-20182</td><td>Cisco</td><td>Catalyst SD-WAN</td><td>Cisco Catalyst SD-WAN Controller Authentication Bypass Vulnerability</td></tr><tr><td>CVE-2026-6973</td><td>Ivanti</td><td>Endpoint Manager Mobile (EPMM)</td><td>Ivanti Endpoint Manager Mobile (EPMM) Improper Input Validation Vulnerability</td></tr></tbody></table>
+      </section>
+      <section>
+        <h2>Data Fusion Contract</h2>
+        <ul><li>CredentialExposure.of -&gt; Identity</li><li>CredentialExposure.targets -&gt; Domain</li><li>Domain.owner -&gt; Supplier / Prime</li><li>Supplier.subcontractsTo -&gt; Supplier</li><li>Supplier.supplies -&gt; Prime</li><li>Prime.runs -&gt; Program</li><li>RiskAssessment.components &lt;- OSINT overlay + credential signal</li><li>NotificationDraft.cites -&gt; Incident / Evidence</li></ul>
+        <h2 style="margin-top:18px">Feed Status</h2>
+        <p class="mono">StealthMole: https://hackathon.stealthmole.com/user/quotas</p>
+        <p class="mono">status: 401, iat skew: 0s</p>
+        <p class="sub">endpoint and JWT iat look aligned; if status is 401, check issued key pair, account activation, API product enablement, or IP allowlist</p>
+        <h2 style="margin-top:18px">Public OSINT</h2>
+        <p>NVD critical VPN CVEs: 20</p>
+        <p>MITRE selected techniques: 234</p>
+        <p>URLhaus sampled rows: 1000</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -25,6 +25,7 @@ REQUIRED_OUTPUTS = (
     OUT_DIR / "demo_e2e_compare.json",
     OUT_DIR / "demo_e2e_foundry.json",
     OUT_DIR / "demo_e2e_sqlite.json",
+    OUT_DIR / "blast_radius_exp_micro-h_active.json",
     FOUNDRY_HTML,
 )
 HTML_MARKERS = (
@@ -66,6 +67,10 @@ def build_steps(*, supplier: str, full: bool) -> list[Step]:
                 (python, "scripts/demo_e2e.py", "--compare", "--supplier", supplier),
             ),
             Step(
+                "Foundry blast radius",
+                (python, "scripts/foundry_blast_radius.py", "exp:micro-h:active"),
+            ),
+            Step(
                 "Foundry HTML report",
                 (python, "scripts/foundry_demo_report.py", supplier),
             ),
@@ -102,7 +107,7 @@ def run_step(step: Step) -> None:
     elapsed = time.time() - started
     if proc.returncode:
         raise SystemExit(f"FAILED {step.name} rc={proc.returncode} elapsed={elapsed:.1f}s")
-    print(f"OK {step.name} elapsed={elapsed:.1f}s")
+    print(f"PASS {step.name} elapsed={elapsed:.1f}s")
 
 
 def verify_outputs() -> None:
@@ -117,7 +122,7 @@ def verify_outputs() -> None:
         raise SystemExit("FAILED html missing markers: " + ", ".join(missing_markers))
 
     for path in REQUIRED_OUTPUTS:
-        print(f"OK {path.relative_to(REPO_ROOT)} bytes={path.stat().st_size}")
+        print(f"PASS {path.relative_to(REPO_ROOT)} bytes={path.stat().st_size}")
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
