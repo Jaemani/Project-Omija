@@ -301,12 +301,6 @@ def main() -> int:
                 "right-Identity-primary-key": "id:ops@micro-h.example",
             },
         ],
-        "31_link_merge_candidates_identity.csv": [
-            {
-                "left-MergeProposal-primary-key": "merge:micro-h:ops",
-                "right-Identity-primary-key": "id:ops@micro-h.example",
-            },
-        ],
         "32_link_risk_evidenced_by_exposure.csv": [
             {
                 "left-RiskAssessment-primary-key": "risk:sup-h:2026-07-03",
@@ -419,11 +413,13 @@ def main() -> int:
                 "",
                 "Import/replace object CSVs `01_*.csv` through `13_*.csv` first.",
                 "Then use link CSVs `20_*.csv` through `45_*.csv` as join-table datasources for the matching Link Types.",
+                "`31_link_merge_candidates_identity.csv` is intentionally absent: current Foundry uses a foreign-key link for `merge_candidates`.",
                 "",
                 "Important:",
                 "- If a Link Type was recreated as foreign-key based, it will not use these link CSVs. Recreate it as join-table based or add the FK property to the Object Type.",
                 "- If Foundry generated different join-table column names, keep the row values but rename the two CSV headers to exactly match the Link Type's expected columns.",
                 "- Foundry Link Types are concrete pairs. Conceptual union links like `evidenced_by` and `cites` are split by target type in this seed.",
+                "- `merge_candidates` is the exception in this Foundry build: it is foreign-key based, so no separate join-table CSV is used.",
                 "",
                 "Primary Object Explorer paths to verify:",
                 "1. `sup-h -> subcontractsTo -> sup-f -> supplies -> prime-x -> runs -> prog-sentinel`",
