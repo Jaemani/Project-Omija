@@ -12,7 +12,7 @@ StealthMole 유출 자격증명과 인포스틸러 감염기기를 Palantir Foun
 
 ## 현재 상태
 
-**P0-P6 로컬 파이프 완료 · 106 tests green.**
+**P0-P6 로컬 파이프 + StealthMole live entrypoint 완료 · 110 tests green.**
 
 - mock adapter 기반 상관, 엔티티 해소, 활성침해 탐지, 위험 점수, 대시보드, 통보 초안, 평가 파이프가 동작합니다.
 - `ontology.md`는 Foundry Ontology Manager에서 만들 객체, 링크, 파생 데이터셋, API 이름을 바로 입력할 수 있게 정리했습니다.
@@ -33,6 +33,19 @@ uv run python scripts/p4_dashboard.py
 uv run python scripts/p6_eval.py
 ```
 
+인가된 실데이터 파이프(Foundry 제외, 로컬 SQLite):
+
+```bash
+uv run python scripts/p0c_live_pipeline.py \
+  --authorized \
+  --registry registry/suppliers.live.yaml \
+  --domains REPLACE_WITH_AUTHORIZED_DOMAIN \
+  --modules cds
+```
+
+실행 전 `registry/suppliers.live.example.yaml`을 private registry로 복사해
+실제 Supplier→Prime→Program 관계와 조회 허가 도메인을 채워야 합니다.
+
 주요 산출물:
 
 ```bash
@@ -41,6 +54,7 @@ uv run python scripts/p3_rank.py       # CLI 위험 순위 + Incident 경로
 uv run python scripts/p4_dashboard.py  # out/dashboard.html
 uv run python scripts/p5_drafts.py     # out/drafts/*.md
 uv run python scripts/p6_eval.py       # out/eval.json
+uv run python scripts/p0c_live_pipeline.py  # out/live/*.sqlite + summary.json
 ```
 
 StealthMole 키는 `.env`에만 둡니다. `.env.example`에는 변수 이름만 있습니다.
@@ -51,7 +65,7 @@ StealthMole 키는 `.env`에만 둡니다. `.env.example`에는 변수 이름만
 - `store/`: `OntologyStore` Protocol, SQLite validation store, Foundry/OSDK hot-swap target.
 - `actions/`: correlation, entity resolution proposal, active-compromise flagging, scoring, propagation, notification draft.
 - `scripts/`: report, rank, dashboard, draft, eval, live recon commands.
-- `registry/`: synthetic supply-chain seed data.
+- `registry/`: synthetic seed + private live registry template.
 - `docs/spec/`: direction, ontology, data sources, AIP integration, architecture, execution prompts.
 - `ontology.md`: Foundry Ontology Manager build guide.
 

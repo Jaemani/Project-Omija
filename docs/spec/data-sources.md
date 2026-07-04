@@ -114,3 +114,36 @@ Exposure {
 - validation endpoint: `GET https://hackathon.stealthmole.com/user/quotas`
 
 Live result: 해커톤 Base URL에서 `/user/quotas` 200과 `/cds/search` 200을 확인했다. CDS 합성 도메인 응답은 `totalCount`, `cursor`, `limit`, `queryCost`, `data`를 포함했고 결과는 0건이었다. 요청당 새 JWT를 사용하며, 기본 정찰은 CDS 1회로 제한한다. 실제 CDS 필드 스키마는 권한 있는 자기 도메인에서 결과가 나오면 승격한다.
+
+## 7. 사용 가능한 데이터 형태와 후보 우선순위
+
+| 우선순위 | 데이터 | 현재 객체 매핑 | 상태/용도 |
+|---|---|---|---|
+| P0 | Supplier registry YAML/JSON | Supplier·Domain·Prime·Program + links | live 상관과 전파에 **필수**. 조회 도메인은 registry에 등록돼야 함 |
+| P0 | StealthMole `cds` | Exposure·Identity·InfectedDevice | 직접 연동. 최근 감염·세션·malware 후보. 활성 판정은 명시 필드만 사용 |
+| P1 | StealthMole `cl` | Exposure·Identity·ThreatSource | 직접 연동. 계정 유출 규모·최근성 근거 |
+| P1 | StealthMole `cb` | Exposure·Identity·ThreatSource | 직접 연동. 재유통 combo라 낮은 confidence |
+| P1 | Foundry seed CSV | 위 registry/ontology 객체와 join links | Foundry 담당자가 별도 진행; 이 live 파이프에서는 수정하지 않음 |
+| P2 | `cdf` 문서/파일 분석 | 신규 DocumentExposure/Artifact 후보 | 기존 CredentialExposure에 억지 매핑하지 않음 |
+| P2 | `rm`·`gm`·`lm` 모니터링 | 신규 ThreatEvent/OrganizationMention 후보 | 공급망 외부 사건 context. 별도 ADR 후 도입 |
+| P2 | `tt` 게시물/채널 | 신규 ThreatPost/Actor 후보 | 콘텐츠·행위자 그래프가 필요하므로 현재 스코프 밖 |
+| 제외 | `dt`, `ub` live | - | 해커톤 미제공. mock의 `ub`는 회귀 데모용으로만 유지 |
+
+### Live 입력 계약
+
+- 설정: `.env`의 `OMIJA_LIVE_REGISTRY`, `STEALTHMOLE_QUERY_DOMAINS`, `STEALTHMOLE_MODULES`.
+- 실행: `scripts/p0c_live_pipeline.py --authorized`.
+- 기본 모듈은 `cds`; `cl,cb`는 명시적으로 추가한다.
+- registry에 없는 도메인, 예약/합성 도메인, DT/UB 및 미지원 모듈은 실행 전에 거부한다.
+- 검색은 도메인·모듈당 첫 페이지 한 번만 읽고 cursor pagination은 자동 추종하지 않는다.
+- raw password/cookie는 `normalize()` 경계에서 마스킹하며 SQLite에는 원문을 저장하지 않는다.
+- 결과는 `out/live/omija-live.sqlite`와 비식별 실행 요약 `out/live/summary.json`에 저장한다.
+- 파이프 순서: live search → normalize/mask → correlate → merge proposal → active path → risk → program propagation → notification draft. 자동 발송은 없다.
+
+### 보수적 필드 매핑
+
+실 응답 변형을 위해 `user/email/login/username`, `password/passwd/pwd`,
+`host/url/domain`, epoch·ISO timestamp, `malware/stealer/family` 별칭을 받는다.
+단, VPN URL이나 username만 보고 `account_type=admin|vpn`을 추정하지 않는다.
+활성침해는 API가 privilege/account type을 명시하거나 검토된 asset mapping이 생긴
+경우에만 성립한다.

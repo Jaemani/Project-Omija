@@ -1,0 +1,21 @@
+# Copy to a gitignored/private path, replace every placeholder, then point
+# OMIJA_LIVE_REGISTRY at it. Never query a domain without authorization.
+suppliers:
+  - id: supplier-authorized-1
+    name: Authorized Supplier 1
+    tier: 1
+    criticality: 3
+    domains:
+      - replace-with-authorized-domain.invalid
+    supplies: prime-authorized-1
+
+primes:
+  - id: prime-authorized-1
+    name: Authorized Prime 1
+    runs:
+      - program-authorized-1
+
+programs:
+  - id: program-authorized-1
+    name: Authorized Program 1
+    sensitivity: high

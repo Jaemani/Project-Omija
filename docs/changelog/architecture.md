@@ -4,6 +4,13 @@
 
 ---
 
+## 2026-07-04 — P0-C StealthMole live end-to-end entrypoint
+- `scripts/p0c_live_pipeline.py`: 인가된 registry/domain을 명시해야만 CDS/CL/CB 첫 페이지를 조회하고 `normalize → correlate → merge proposal → active incident → supplier risk → program propagation → notification draft`를 로컬 SQLite에서 실행한다. `--authorized` 확인, registry membership, 예약/합성 도메인 거부, DT/UB 및 미지원 모듈 거부, quota 선확인을 강제한다.
+- `adapter/base.py`: live 플랜별 필드 차이를 위해 identity/secret/host/timestamp/malware 별칭을 보수적으로 정규화한다. URL·username으로 privilege를 추측하지 않으며, raw password/cookie는 기존과 같이 masking boundary 밖으로 나가지 않는다.
+- live registry template와 `.env.example` 설정을 추가했다. 실제 registry는 `registry/suppliers.live.yaml`로 gitignore하며, 결과 DB/요약은 기존 gitignored `out/live/`에 저장한다.
+- 데이터 후보를 현재 객체에 직접 맞는 CDS/CL/CB와 별도 객체가 필요한 CDF/TT/RM/GM/LM으로 분리했다. Foundry/OSDK 구현은 별도 담당 범위라 변경하지 않았다.
+- 검증: 관련 20 tests, 전체 110 tests 통과. live fake record가 Exposure→Incident→RiskAssessment→ProgramExposure→NotificationDraft까지 도달하고 raw password/cookie가 DB·초안에 남지 않음을 고정했다.
+
 ## 2026-07-04 — P0-B hackathon live API verified
 - 해커톤 전용 Base URL로 교정한 후 `/user/quotas` JWT 인증과 `/cds/search` 합성 도메인 조회가 200으로 성공했다. 운영 API URL에서의 기존 401은 키 결함이 아니라 endpoint 불일치였다.
 - 해커톤 미제공 DT/UB를 기본 정찰에서 제외하고 CDS 1회만 기본으로 제한했다. quotas는 `allowed-used`로 잔량을 계산하고 실응답 `totalCount/cursor/limit/queryCost`를 스키마 증거에 보존한다.

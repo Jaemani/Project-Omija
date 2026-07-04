@@ -143,10 +143,17 @@ def _build_body(
 
     # (a) detection summary — observed facts
     out.append("## 1. 탐지 요약 (관측됨)")
-    out.append(
-        "아래 자격증명 노출이 외부 위협 인텔리전스에서 관측되었습니다. "
-        "본 데모는 모의 데이터(합성 `*.example` 도메인)이며, 비밀값은 전량 마스킹되어 있습니다."
-    )
+    if exposures and all(bool(r.get("is_mock")) for r in exposures):
+        out.append(
+            "아래 자격증명 노출이 외부 위협 인텔리전스에서 관측되었습니다. "
+            "본 데모는 모의 데이터(합성 `*.example` 도메인)이며, 비밀값은 전량 "
+            "마스킹되어 있습니다."
+        )
+    else:
+        out.append(
+            "아래 자격증명 노출이 인가된 외부 위협 인텔리전스 연동에서 관측되었습니다. "
+            "비밀값은 수집 경계에서 마스킹되었으며 원문은 저장하지 않습니다."
+        )
     out.extend(_detection_lines(exposures))
     out.append("")
 

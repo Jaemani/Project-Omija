@@ -15,6 +15,7 @@ venv/
 *.secret
 secrets/
 credentials.json
+registry/suppliers.live.yaml
 
 # OS
 .DS_Store

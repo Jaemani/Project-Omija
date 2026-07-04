@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import time
 from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
 from typing import Any, Protocol, runtime_checkable
 
 # Module reliability → confidence (data-sources.md §5, decision 4).
@@ -120,13 +121,62 @@ def mask_secret(value: str | None) -> str | None:
     return v[:2] + "***"
 
 
+def _first(raw: dict, *names: str) -> Any:
+    """Return the first non-empty top-level field from a live record.
+
+    StealthMole response names can vary by module/plan. This keeps the mapping
+    conservative and explicit; it never guesses privilege or active status.
+    """
+    for name in names:
+        value = raw.get(name)
+        if value is not None and value != "":
+            return value
+    return None
+
+
+def _timestamp(value: Any) -> int | None:
+    """Normalize epoch seconds/milliseconds or an ISO-8601 string."""
+    if value is None or value == "":
+        return None
+    if isinstance(value, (int, float)):
+        ts = int(value)
+        return ts // 1000 if ts > 10_000_000_000 else ts
+    text = str(value).strip()
+    if text.isdigit():
+        ts = int(text)
+        return ts // 1000 if ts > 10_000_000_000 else ts
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return int(parsed.timestamp())
+    except ValueError:
+        return None
+
+
+def _boolish(value: Any) -> bool | None:
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return bool(value)
+    text = str(value).strip().lower()
+    if text in {"true", "yes", "y", "1"}:
+        return True
+    if text in {"false", "no", "n", "0"}:
+        return False
+    return None
+
+
 def _pick_secret(module: str, raw: dict) -> tuple[str, str | None]:
     """Choose the primary stolen secret and its type. For active cds records
     the session cookie is the operative secret; otherwise the password."""
-    cookie = raw.get("session_cookie") or raw.get("cookie")
-    if module == "cds" and (raw.get("has_cookie") or cookie) and cookie:
+    cookie = _first(raw, "session_cookie", "cookie", "session")
+    has_cookie = _first(raw, "has_cookie", "has_session_cookie")
+    if module == "cds" and (has_cookie or cookie) and cookie:
         return "cookie", cookie
-    password = raw.get("password")
+    password = _first(raw, "password", "passwd", "pwd")
     if password:
         return ("hash" if module == "cl" else "plaintext"), password
     if cookie:
@@ -135,10 +185,12 @@ def _pick_secret(module: str, raw: dict) -> tuple[str, str | None]:
 
 
 def _source_ref(module: str, raw: dict) -> str:
-    ref = raw.get("id")
+    ref = _first(raw, "id", "_id", "record_id", "uuid")
     if ref:
         return str(ref)
-    basis = f"{module}|{raw.get('user')}|{raw.get('host')}"
+    user = _first(raw, "user", "email", "login", "username", "account")
+    host = _first(raw, "host", "url", "domain", "site")
+    basis = f"{module}|{user}|{host}"
     return f"{module}:{hashlib.sha1(basis.encode()).hexdigest()[:12]}"
 
 
@@ -148,7 +200,7 @@ def normalize(module: str, raw: dict, *, fetched_at: int | None = None) -> Expos
     module = module.lower()
     fetched_at = int(time.time()) if fetched_at is None else fetched_at
 
-    user = raw.get("user")
+    user = _first(raw, "user", "email", "login", "username", "account")
     email = user if (user and "@" in user) else None
     username = None if email else user
     identity = Identity(email=email, username=username)
@@ -160,18 +212,31 @@ def normalize(module: str, raw: dict, *, fetched_at: int | None = None) -> Expos
         present=raw_value is not None,
     )
 
+    cookie = _first(raw, "session_cookie", "cookie", "session")
+    explicit_cookie = _first(raw, "has_cookie", "has_session_cookie")
     device = Device(
-        infected_at=raw.get("infected_at"),
-        malware=raw.get("malware"),
-        has_session_cookie=bool(raw["has_cookie"]) if "has_cookie" in raw else None,
-        account_type=raw.get("account_type"),
-        os=raw.get("os"),
+        infected_at=_timestamp(_first(
+            raw, "infected_at", "infection_date", "compromised_at", "log_date"
+        )),
+        malware=_first(raw, "malware", "stealer", "family", "malware_name"),
+        has_session_cookie=(
+            _boolish(explicit_cookie) if explicit_cookie is not None
+            else (True if cookie else None)
+        ),
+        # Never infer privilege from a URL/username. Active status requires an
+        # explicit API field or a later reviewed asset mapping.
+        account_type=_first(raw, "account_type", "privilege_type"),
+        os=_first(raw, "os", "operating_system"),
     )
 
     if module == "cds":
-        observed_at = raw.get("infected_at") or raw.get("leak_date")
+        observed_at = device.infected_at or _timestamp(_first(
+            raw, "leak_date", "breach_date", "observed_at", "date"
+        ))
     else:
-        observed_at = raw.get("leak_date")
+        observed_at = _timestamp(_first(
+            raw, "leak_date", "breach_date", "observed_at", "date"
+        ))
     if observed_at is None:
         observed_at = fetched_at
 
@@ -184,7 +249,7 @@ def normalize(module: str, raw: dict, *, fetched_at: int | None = None) -> Expos
         fetched_at=fetched_at,
         identity=identity,
         secret=secret,
-        host=raw.get("host"),
+        host=_first(raw, "host", "url", "domain", "site"),
         device=device,
         observed_at=observed_at,
         confidence=CONFIDENCE.get(module, 0.3),

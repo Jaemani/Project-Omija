@@ -82,3 +82,25 @@ def test_is_mock_flag_propagates():
     exp = normalize("cb", {"user": "a@x.example", "password": "Synthetic-9!", "_mock": True})
     assert exp.is_mock is True
     assert exp.source == "stealthmole"
+
+
+def test_live_aliases_and_timestamp_are_normalized_without_guessing_privilege():
+    exp = normalize("cds", {
+        "record_id": "live-1",
+        "email": "ops@owned-company.com",
+        "passwd": "RawLivePassword!",
+        "url": "https://vpn.owned-company.com",
+        "log_date": "2026-07-04T08:00:00Z",
+        "stealer": "RedLine",
+        "session_cookie": "SID-raw-live-cookie",
+        "has_session_cookie": "true",
+    })
+    assert exp.identity.email == "ops@owned-company.com"
+    assert exp.host == "https://vpn.owned-company.com"
+    assert exp.device.malware == "RedLine"
+    assert exp.device.infected_at == 1783152000
+    assert exp.device.has_session_cookie is True
+    assert exp.device.account_type is None  # never inferred from a VPN URL
+    blob = json.dumps(exp.to_dict())
+    assert "RawLivePassword!" not in blob
+    assert "SID-raw-live-cookie" not in blob

@@ -40,7 +40,7 @@ uv run python scripts/p6_eval.py
 
 ## 리허설 체크리스트
 
-- [ ] `uv run pytest -q` -> 106 passed.
+- [ ] `uv run pytest -q` -> 110 passed.
 - [ ] `uv run python scripts/p6_eval.py` -> `RESULT: OK`, top active suppliers 확인.
 - [ ] `uv run python scripts/p4_dashboard.py` -> `out/dashboard.html` 생성.
 - [ ] 화면에서 active 상단, drilldown, path graph, draft preview 확인.

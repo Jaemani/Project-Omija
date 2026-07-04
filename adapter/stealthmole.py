@@ -47,14 +47,15 @@ class StealthMoleSource:
     """Implements `ExposureSource` against the live API.
 
     Credentials come from env (`STEALTHMOLE_ACCESS_KEY` / `STEALTHMOLE_SECRET_KEY`).
-    A `httpx.Client` can be injected for testing (network is mocked in tests).
+    A requests-compatible fake client can be injected for tests. Live requests
+    use the standard library and generate a fresh JWT for every call.
     """
 
     def __init__(
         self,
         access_key: str | None = None,
         secret_key: str | None = None,
-        client=None,  # httpx.Client | None — injected in tests
+        client=None,  # injected fake client in tests
         base_url: str = BASE_URL,
         timeout: float = 30.0,
     ) -> None:
@@ -107,7 +108,7 @@ class StealthMoleSource:
         value: str,
         start: int | None = None,
     ) -> list[dict]:
-        """GET /v2/{module}/search?query={obs_type}:{value}&order=asc.
+        """GET /{module}/search?query={obs_type}:{value}&order=asc.
 
         `start` (unix epoch) → prefer /export for time-filtered incremental
         pulls. Returns the raw `data` list; `normalize()` maps to Exposure.
@@ -134,7 +135,7 @@ class StealthMoleSource:
         start: int | None = None,
         limit: int = 0,
     ) -> list[dict]:
-        """GET /v2/{module}/export — bulk + time filter (incremental polling)."""
+        """GET /{module}/export — bulk + time filter (incremental polling)."""
         params: dict = {
             "query": f"{obs_type}:{value}",
             "limit": limit,        # 0 = all
