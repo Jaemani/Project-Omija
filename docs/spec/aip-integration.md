@@ -1,4 +1,8 @@
-# aip-integration.md — Palantir AIP + OSDK 실사용 (Supply-chain Cred)
+# aip-integration.md — Palantir AIP + OSDK usage (superseded live-feed assumptions)
+
+Current status as of 2026-07-05: this historical document may mention live data
+handoff. The active implementation keeps the ontology/AIP reasoning concept but
+does not fetch or handle live credential/public data.
 
 AIP는 옵션이 아니라 **척추**. 온톨로지(`ontology.md`)를 Foundry에 올리고 StealthMole 어댑터(`data-sources.md`)로 채운 뒤 OSDK/AIP Logic로 위험판정·경보·통보초안을 짓는 구체 경로. 검증된 사실 기반(2026-07 조사).
 

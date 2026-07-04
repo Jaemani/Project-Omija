@@ -1,5 +1,8 @@
 # Runbook — Foundry / OSDK day-1 (P0-A, part A)
 
+Current status as of 2026-07-05: use this only for Foundry/OSDK ontology
+operations. Do not use it to resume live credential-feed or public-feed work.
+
 목적: **AIP가 spine**임을 증명하는 최소 왕복. Foundry 콘솔에서 Object/Link/Action을
 손으로 만들고 OSDK를 발행해 Python으로 Supplier를 write/read 한다. 콘솔 단계는
 자동화 불가라 유저가 직접 수행한다(코드 파이프 검증은 이미 SQLite로 완료 — ADR-0003).

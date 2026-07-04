@@ -1,4 +1,9 @@
-# data-sources.md — StealthMole 실계약 + 어댑터 + 목 (Supply-chain Cred)
+# data-sources.md — historical live-feed design (superseded)
+
+Current status as of 2026-07-05: this document is retained for historical
+context only. Live credential-feed work is neutralized, public/live data is not
+used in the active demo, and the current source of truth is `HANDOFF.md` plus
+`docs/data-strategy.md`.
 
 **핵심**: 이 트랙은 StealthMole API에 설계가 종속. 접근은 **내일부터** 열림 → 오늘은 **contract-first**로 어댑터 인터페이스+목(mock)을 만들고, 접근 열리면 어댑터만 hot-swap.
 

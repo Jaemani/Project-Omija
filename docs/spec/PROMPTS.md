@@ -1,4 +1,8 @@
-# PROMPTS.md — 콜드스타트 실행 프롬프트
+# PROMPTS.md — historical cold-start prompts
+
+Current status as of 2026-07-05: prompts below are historical and must not
+override the active no-live-data directive. Use them only for ontology reasoning
+context, not for live feed or public-feed implementation.
 
 목표는 이틀짜리 해커톤에서 바로 결과를 내는 것입니다. 날짜를 나눠 기다리지 않습니다. live API/OSDK가 막히면 mock+SQLite 보험 파이프로 데모를 유지하고, 열리는 즉시 같은 adapter/store 경계에서 교체합니다.
 

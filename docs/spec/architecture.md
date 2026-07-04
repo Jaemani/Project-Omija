@@ -1,4 +1,8 @@
-# architecture.md — 기술 설계 (Supply-chain Credential Exposure)
+# architecture.md — technical design (superseded live-feed assumptions)
+
+Current status as of 2026-07-05: historical design details below may mention
+live feeds. The active implementation is a no-live-data ontology-engine demo
+with empty candidate evidence slots.
 
 빌드용 정밀 설계. 전제: `direction.md`(백본) · `ontology.md`(척추) · `data-sources.md`(StealthMole 실계약+어댑터+목) · `aip-integration.md`(AIP 경로).
 

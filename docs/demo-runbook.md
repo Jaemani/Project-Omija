@@ -1,12 +1,9 @@
 # Demo Runbook
 
-Use this sequence for the hackathon demo. The goal is to prove data fusion:
-public OSINT context, Foundry ontology traversal, credential-feed readiness, and
-approval-gated response.
+Use this sequence for the current no-live-data demo. The goal is to prove the
+ontology engine and decision workflow, not to show feed collection.
 
-## 0. Primary Preflight
-
-Run the integrated demo first:
+## 0. Preflight
 
 ```bash
 uv run python scripts/intelligence_demo.py
@@ -17,137 +14,80 @@ Pass condition:
 
 - terminal ends with `RESULT: READY`;
 - `out/intelligence_demo.json` exists;
-- `out/intelligence_demo.html` opens.
-
-This is the preferred judging screen because it connects all three surfaces:
-public OSINT, Foundry OSDK readback, and credential-feed auth status.
-
-## 0-B. Foundry-Only Preflight
-
-Use this when public feed collection is slow or network availability is poor:
-
-```bash
-uv run python scripts/final_demo_check.py --full
-open out/foundry_demo.html
-```
-
-Fast rerun when tests were already executed:
-
-```bash
-uv run python scripts/final_demo_check.py
-open out/foundry_demo.html
-```
-
-Pass condition: terminal ends with `RESULT: READY`.
+- `out/intelligence_demo.html` opens;
+- no external feed command is run.
 
 ## 1. Opening Claim
 
 Use this message:
 
-> We are not just collecting OSINT. We connect public intelligence, credential
-> exposure signals, and the defense supply-chain ontology to decide which
-> supplier and program need action first.
+> Omija is an ontology-centered operating surface. It shows how a candidate
+> supply-chain exposure would be resolved into identity, target asset, supplier
+> path, program impact, decision objects, and a human-reviewed response, without
+> handling sensitive data.
 
-Point to these values on the report:
+Point to:
 
-- `Operational Value`: why the system exists;
-- `Ontology Path — Credential To Program`: how the active path is proven;
-- `Public Source Corroboration`: why the target asset class matters now;
-- `Recommended Response — Analyst Review Required`: what the analyst should do;
-- `Unsent Advisory — Draft`: response output is generated but not sent;
-- public OSINT counts: NVD, CISA KEV, MITRE ATT&CK, URLhaus;
-- risk band and path confidence;
-- impacted programs;
-- active ontology path;
-- provenance and generated artifacts;
-- notification draft marked as unsent / approval required.
+- `Live Data: Disabled`
+- `Sensitive Handling: Blocked`
+- `Ontology Core: Ready`
+- `Action Output: Draft Only`
 
-## 2. Object Explorer Walk
+## 2. Core Console
 
-Start at `CredentialExposure exp:micro-h:active` and traverse:
-
-1. `CredentialExposure exp:micro-h:active`
-2. `of` -> `Identity id:ops@micro-h.example`
-3. `belongs_to` -> `Domain micro-h.example`
-4. owner supplier -> `Supplier sup-h`
-5. `subcontractsTo` -> `Supplier sup-f`
-6. `supplies` -> `Prime prime-x`
-7. `runs` -> `Program prog-sentinel`
-8. back to `CompromiseIncident incident:micro-h:active`
-9. inspect `traverses_supplier` and `traverses_program`
-10. inspect `NotificationDraft draft:sup-h:2026-07-03`
-
-Key explanation:
-
-- `of` is the exposed account owner.
-- `targets` is the asset the credential appears to access.
-- The cross-organization case matters: a supplier account can target a prime
-  VPN, SSO, mail, or admin asset.
-
-## 3. CLI Proof
-
-Show the blast radius for the seed exposure:
+Open:
 
 ```bash
-uv run python scripts/foundry_blast_radius.py exp:micro-h:active
+open out/omija_console_core.html
 ```
 
-Pass condition:
+Explain:
 
-- supplier is `sup-h`;
-- programs include `prog-sentinel` and `prog-harbor`;
-- incident is `incident:micro-h:active`;
-- terminal ends with `RESULT: OK`;
-- `out/blast_radius_exp_micro-h_active.json` is written.
+- evidence slots are empty by design;
+- the system is proving the reasoning structure;
+- policy gates prevent live feed access and raw secret handling.
 
-## 4. Static Report Closer
+## 3. Graph Workbench
 
-Open the integrated report:
+Open:
 
 ```bash
-open out/intelligence_demo.html
+open out/omija_console_graph.html
 ```
 
-Narrate:
+Explain the path:
 
-- origin endpoint: compromised supplier credential signal;
-- target endpoint: protected program access surface;
-- relationship labels: `subcontractsTo`, `supplies`, `runs`;
-- OSINT overlay: why this target asset class matters now;
-- notification draft: generated but not sent.
+```text
+Candidate Signal
+-> Identity resolved by of
+-> Target Asset resolved by targets
+-> Supplier Path
+-> ProgramExposure
+```
 
-## 5. Failure Modes
+The important point is that `of` and `targets` are separate. This allows the
+system to represent a supplier identity and a target asset owned by another
+organization.
 
-If Foundry is unavailable:
+## 4. Response Review
+
+Open:
 
 ```bash
-uv run python scripts/p4_dashboard.py
-open out/dashboard.html
+open out/omija_console_response.html
 ```
 
-Then say: the same store boundary runs locally through SQLite, and Foundry OSDK
-readback is already captured in committed demo artifacts.
+Explain:
 
-If StealthMole is unavailable:
+- derived decisions are ontology objects;
+- `NotificationDraft` remains draft-only;
+- recipient, body, and evidence citations remain blank until an approved
+  non-sensitive evidence package exists.
 
-```bash
-cat out/p0b/stealthmole_auth_evidence.json
-```
+## 5. Do Not Do
 
-Then say: credential-feed auth is blocked, but endpoint and JWT timing evidence
-are captured without secrets. The public OSINT layer and Foundry ontology path
-still demonstrate the fusion workflow.
-
-If live credential data is unavailable, do not run arbitrary queries and do not
-claim synthetic seed data is real. Use the committed synthetic seed only.
-
-## Feature Freeze
-
-Before judging, do not:
-
-- add new ontology types;
-- rename link types;
-- wire broad write support;
-- change scoring semantics.
-
-Only runbook, fallback, and documentation fixes are allowed.
+- Do not run live credential feed scripts.
+- Do not paste API keys.
+- Do not fetch public feeds for the main demo.
+- Do not claim live data ingestion.
+- Do not show real leaked records.

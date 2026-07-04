@@ -1,4 +1,9 @@
-# direction.md — 백본 5요소 (Supply-chain Credential Exposure)
+# direction.md — project backbone (superseded live-feed assumptions)
+
+Current status as of 2026-07-05: historical direction below is superseded where
+it discusses live/public data handling. The active direction is no-live-data
+ontology reasoning: blank candidate slots, no external fetches, no sensitive
+records.
 
 프로젝트 기준점. 데모·피칭·기능결정 전부 이 5개에 정렬.
 

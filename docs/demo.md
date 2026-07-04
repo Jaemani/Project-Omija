@@ -1,15 +1,14 @@
 # Demo Script
 
-D4D Hackathon Track 2/3: OSINT and defense-intelligence data fusion for
-defense supply-chain credential exposure early warning.
+D4D Track 2/3: ontology-based defense-intelligence reasoning for supply-chain
+exposure early warning.
 
-Data boundary:
-
-- public OSINT feeds are real public data;
-- Foundry credential seed is synthetic;
-- StealthMole live credential ingestion is only claimed after authorized
-  registry and successful auth;
-- notification output is a draft, not a sent message.
+Current data boundary:
+- no live credential feed;
+- no public-feed fetching in the main demo;
+- no raw credential, cookie, JWT, bearer token, or reusable secret;
+- notification output is draft-only and human-reviewed;
+- candidate evidence slots are intentionally empty.
 
 ## Preparation
 
@@ -20,58 +19,51 @@ uv run python scripts/intelligence_demo.py
 open out/intelligence_demo.html
 ```
 
-Fallback:
+Optional page variants:
 
 ```bash
-uv run python scripts/final_demo_check.py --full
-open out/foundry_demo.html
+uv run python scripts/palantir_pages.py
+open out/palantir_v1.html
+open out/palantir_v2.html
+open out/palantir_v3.html
 ```
 
 ## Three-Minute Flow
 
 ### Problem
 
-Defense supply chains span prime contractors and many first- and second-tier
-suppliers. Attackers often start at the edge: leaked supplier credentials,
-infostealer-infected devices, and exposed access surfaces. A flat list of leaks
-does not answer the operational question: which supplier creates a live path to
-a protected program?
+Defense supply chains span primes, first-tier suppliers, and deeper suppliers.
+A flat list of leaked-looking records does not answer the operational question:
+does a supplier identity create a path to a protected target asset and program?
 
 ### Solution
 
-Project Omija connects credential exposure, identity, domain ownership,
-supplier relationships, prime contractors, and programs in a Foundry ontology.
-The model separates `of` from `targets`:
+Project Omija models the decision path as ontology objects and links. The
+important split is `CredentialExposure.of -> Identity` versus
+`CredentialExposure.targets -> Domain`: whose account is involved can differ
+from the asset being targeted.
 
-- `of`: whose account was exposed;
-- `targets`: what asset that account appears able to access.
-
-That distinction lets the graph show a supplier account targeting a prime VPN,
-SSO, mail, or admin asset.
-
-### Live Demo
+### Demo
 
 1. Open `out/intelligence_demo.html`.
-2. Show public OSINT counts from NVD, CISA KEV, MITRE ATT&CK, and URLhaus.
-3. Show the active path and impacted programs.
-4. Run:
-
-```bash
-uv run python scripts/foundry_blast_radius.py exp:micro-h:active
-```
-
-5. Explain that the notification is an approval-gated draft.
+2. Point to the policy gates: live data disabled, sensitive handling blocked,
+   draft-only response.
+3. Open `out/omija_console_graph.html`.
+4. Explain why `of`, `targets`, `subcontractsTo`, `traverses_*`, and `cites`
+   are ontology links, not extra columns.
+5. Open `out/omija_console_response.html`.
+6. Show that `RiskAssessment`, `CompromiseIncident`, `ProgramExposure`, and
+   `NotificationDraft` are derived decision objects with blank evidence slots.
 
 ### Close
 
-The system does not rank by volume alone. It prioritizes active paths where an
-exposed supplier identity can reach a sensitive target asset and a prime
-program. Public OSINT explains why the target asset class matters, while the
-ontology explains blast radius and response ownership.
+Omija does not rank by volume alone. It prioritizes active paths where an
+identity, target asset, supplier chain, prime, and program can be connected by
+the ontology. No sensitive data is needed to demonstrate that reasoning core.
 
 ## Do Not Claim
 
-- Do not claim synthetic seed credentials are real leaked data.
-- Do not claim StealthMole live ingestion succeeded while `/user/quotas` returns
-  `401`.
-- Do not claim a notification was sent.
+- Do not claim live credential ingestion.
+- Do not claim public feeds were fetched for the current demo.
+- Do not show real leaked records.
+- Do not claim notification was sent.

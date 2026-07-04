@@ -1,5 +1,10 @@
 # 2026-07-04 Intelligence Demo Integration
 
+Superseded on 2026-07-05 by the no-live-data directive. Do not use this entry as
+the current demo runbook. The active runbook is `docs/demo-runbook.md`; the
+active demo script is `scripts/intelligence_demo.py`, which generates ontology
+pages with empty candidate slots and no external fetches.
+
 This changelog records the current demo integration so another reviewer can
 verify what changed, why it changed, and what is still unresolved.
 

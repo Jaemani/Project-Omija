@@ -1,4 +1,4 @@
-"""Deterministic mock StealthMole source (data-sources.md §3, §4).
+"""Deterministic synthetic candidate source (data-sources.md §3, §4).
 
 Builds a fixed synthetic corpus (seeded RNG) so demos are reproducible and
 tests are stable. Only synthetic `*.example` domains are used — no real
@@ -79,7 +79,7 @@ class MockExposureSource:
     # -- ExposureSource contract ------------------------------------------
 
     def quotas(self) -> dict:
-        """Mirror /v2/user/quotas shape. Mock reports generous credits."""
+        """Return deterministic availability counters for tests."""
         return {m.upper(): {"allowed": 1000, "_mock": True} for m in MODULES}
 
     def search(

@@ -3,6 +3,10 @@
 날짜: 2026-07-03
 상태: 승인
 
+2026-07-05 note: live credential-feed implementation references below are
+historical. The active demo uses no-live-data ontology reasoning and empty
+candidate evidence slots.
+
 ## 맥락
 P0-A는 (A) Foundry/OSDK 파이프 검증과 (B) StealthMole 어댑터+목 구현을 요구한다.
 그러나 Foundry 온톨로지 생성과 OSDK 발행은 **build.palantir.com 콘솔의 수동 단계**라

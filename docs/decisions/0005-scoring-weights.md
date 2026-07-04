@@ -3,6 +3,10 @@
 날짜: 2026-07-03
 상태: 승인
 
+2026-07-05 note: scoring structure remains useful for ontology reasoning, but
+any live-feed assumptions are historical. Current demo uses empty candidate
+slots and does not fetch or display live records.
+
 ## 맥락
 P3의 위험 스코어링은 이 프로젝트의 **핵심 차별점**이다(심사: Creativity·Technical
 Execution). 경쟁 제품은 StealthMole 유출 레코드를 나열한다. 우리는 "지금 뚫리는 중"

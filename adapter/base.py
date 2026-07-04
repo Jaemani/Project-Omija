@@ -1,8 +1,8 @@
 """Adapter contract + normalization gateway (data-sources.md §2, §5).
 
-`ExposureSource` is the Protocol both the real StealthMole adapter and the
-mock implement, so the source is hot-swappable (day-1). `normalize()` is the
-single boundary that maps raw StealthMole records to the `Exposure` ontology
+`ExposureSource` is the Protocol for synthetic and future approved
+candidate sources. `normalize()` is the
+single boundary that maps raw candidate records to the `Exposure` ontology
 object AND enforces secret masking: the raw secret is read only to compute a
 masked value (first 2 chars + `***`) and is never stored on any field.
 
@@ -32,7 +32,7 @@ THREAT_KIND: dict[str, str] = {
 
 @runtime_checkable
 class ExposureSource(Protocol):
-    """Common interface for real + mock StealthMole sources (hot-swap)."""
+    """Common interface for synthetic or approved non-sensitive sources."""
 
     def quotas(self) -> dict: ...
 
@@ -122,9 +122,9 @@ def mask_secret(value: str | None) -> str | None:
 
 
 def _first(raw: dict, *names: str) -> Any:
-    """Return the first non-empty top-level field from a live record.
+    """Return the first non-empty top-level field from a candidate record.
 
-    StealthMole response names can vary by module/plan. This keeps the mapping
+    Candidate-source response names can vary by module/plan. This keeps the mapping
     conservative and explicit; it never guesses privilege or active status.
     """
     for name in names:
@@ -195,7 +195,7 @@ def _source_ref(module: str, raw: dict) -> str:
 
 
 def normalize(module: str, raw: dict, *, fetched_at: int | None = None) -> Exposure:
-    """Map a raw StealthMole record → `Exposure`. Masking is enforced here:
+    """Map a raw candidate record to `Exposure`. Masking is enforced here:
     the raw secret is consumed only to produce `masked_value`."""
     module = module.lower()
     fetched_at = int(time.time()) if fetched_at is None else fetched_at

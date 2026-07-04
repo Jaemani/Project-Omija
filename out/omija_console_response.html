@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ontology Core Console</title>
+<title>Response Review Surface</title>
 <style>
 :root {
   color-scheme: light;
@@ -99,25 +99,24 @@ th { color: var(--muted); font-size: 12px; text-transform: uppercase; }
 <body>
 <header>
   <div class="kicker">OMIJA ONTOLOGY ENGINE - NO LIVE DATA MODE</div>
-  <h1>Ontology Core Console</h1>
-  <p>A Palantir-style operating surface for the supply-chain exposure problem, without live data ingestion.</p>
-  <nav class="tabs"><a class='nav active' href='omija_console_core.html'>Core Console</a><a class='nav ' href='omija_console_graph.html'>Graph Workbench</a><a class='nav ' href='omija_console_response.html'>Response Review</a></nav>
+  <h1>Response Review Surface</h1>
+  <p>Decision objects and draft outputs are prepared, but no sensitive record is handled.</p>
+  <nav class="tabs"><a class='nav ' href='omija_console_core.html'>Core Console</a><a class='nav ' href='omija_console_graph.html'>Graph Workbench</a><a class='nav active' href='omija_console_response.html'>Response Review</a></nav>
 </header>
 <main>
-<section class="grid"><div class='metric'><span>Live Data</span><strong>Disabled</strong></div><div class='metric'><span>Sensitive Handling</span><strong>Blocked</strong></div><div class='metric'><span>Ontology Core</span><strong>Ready</strong></div><div class='metric'><span>Action Output</span><strong>Draft Only</strong></div></section>
-<div class="layout">
-  <section class="panel">
-    <h2>Problem Solving Spine</h2>
-    <p class="sub">The page shows how the ontology engine turns a candidate
-    exposure into a supplier, program, risk, incident, and draft-review workflow.
-    Evidence slots are intentionally empty.</p>
-    <table><thead><tr><th>Step</th><th>Engine Function</th><th>Why It Matters</th></tr></thead><tbody><tr><td>1</td><td>Collect Candidate Signal</td><td>Input slot is intentionally empty. No feed data is pulled in this build.</td></tr><tr><td>2</td><td>Resolve Identity And Target</td><td>`of` and `targets` remain separate so cross-organization access is visible.</td></tr><tr><td>3</td><td>Traverse Supplier Path</td><td>`Supplier -&gt; Supplier -&gt; Prime -&gt; Program` explains blast radius.</td></tr><tr><td>4</td><td>Create Decision Objects</td><td>`RiskAssessment`, `CompromiseIncident`, and `ProgramExposure` hold the decision.</td></tr><tr><td>5</td><td>Prepare Human Review</td><td>`NotificationDraft` is never sent automatically.</td></tr></tbody></table>
-  </section>
-  <aside class="panel">
-    <h2>Policy Gates</h2>
-    <table><thead><tr><th>Surface</th><th>State</th><th>Reason</th></tr></thead><tbody><tr><td>Live credential feed</td><td>Disabled</td><td>Code boundary intentionally empty</td></tr><tr><td>Public feed fetching</td><td>Disabled</td><td>Use candidate slots, not direct collection</td></tr><tr><td>Raw secrets</td><td>Blocked</td><td>No password, cookie, JWT, or bearer token storage</td></tr><tr><td>Notification sending</td><td>Blocked</td><td>Draft only, human approval required</td></tr></tbody></table>
-  </aside>
-</div>
+<section class="panel">
+  <h2>Decision Object Registry</h2>
+  <p class="sub">Derived decisions are objects, not loose dashboard numbers.
+  This keeps review, provenance, and lifecycle state explicit.</p>
+  <table><thead><tr><th>Object Type</th><th>Purpose</th><th>Current State</th></tr></thead><tbody><tr><td>Supplier</td><td>Supply-chain organization</td><td>No live organization loaded</td></tr><tr><td>Prime</td><td>Prime or tier-0 program owner</td><td>Kept separate for v0.2</td></tr><tr><td>Program</td><td>Protected mission or contract scope</td><td>Impact endpoint</td></tr><tr><td>Domain</td><td>Asset-lite access surface</td><td>fqdn and asset_type only</td></tr><tr><td>Identity</td><td>Account handle or principal</td><td>No credential value stored</td></tr><tr><td>CredentialExposure</td><td>Potential exposure signal</td><td>Candidate slot only</td></tr><tr><td>InfectedDevice</td><td>Infostealer device signal</td><td>Candidate slot only</td></tr><tr><td>ThreatSource</td><td>Collection provenance</td><td>Neutralized live source</td></tr><tr><td>RiskAssessment</td><td>Supplier risk decision</td><td>Derived object</td></tr><tr><td>CompromiseIncident</td><td>Active path case</td><td>Derived object</td></tr><tr><td>ProgramExposure</td><td>Program rollup</td><td>Derived object</td></tr><tr><td>NotificationDraft</td><td>Human-reviewed advisory</td><td>Draft only</td></tr></tbody></table>
+</section>
+<section class="panel">
+  <h2>Human Review Output</h2>
+  <p><span class="badge hold">Draft only</span></p>
+  <p class="sub">Notification text, recipient details, and evidence citations
+  are candidate slots. They remain blank until an approved non-sensitive
+  evidence package is available.</p>
+</section>
 </main>
 </body>
 </html>

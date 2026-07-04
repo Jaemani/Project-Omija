@@ -1,93 +1,65 @@
-# ADR-0007: OSINT Data Fusion Overlay
+# ADR-0007: Public Context Slots, Not Live OSINT Fetching
 
-Date: 2026-07-04
-Status: Approved
+Date: 2026-07-04  
+Status: Superseded by 2026-07-05 no-live-data directive
 
 ## Context
 
-The project target is Track 2/3: OSINT, knowledge graph, LLM-assisted analysis,
-data fusion, and defense intelligence. StealthMole credential exposure remains a
-strong early-warning signal, but the demo cannot depend on a single commercial
-feed being available at judging time.
+Project Omija targets Track 2/3: OSINT, knowledge graph, LLM-assisted analysis,
+data fusion, and defense intelligence. The core claim is not feed collection.
+The core claim is that the ontology can turn an approved candidate signal into
+identity, target asset, supplier path, program impact, risk object, incident
+object, and human-reviewed response.
 
-The current Foundry ontology already proves the core graph:
+The Foundry ontology already proves the reasoning spine:
 
 ```text
-CredentialExposure -> Identity -> Domain -> Supplier
-Supplier -> Supplier -> Prime -> Program
-CredentialExposure -> target Domain -> Prime asset
-CompromiseIncident -> traverses_* provenance
-NotificationDraft -> cites evidence
+CredentialExposure.of -> Identity
+CredentialExposure.targets -> Domain
+Identity.belongs_to -> Domain
+Supplier.owns -> Domain
+Supplier.subcontractsTo -> Supplier
+Supplier.supplies -> Prime
+Prime.runs -> Program
+CompromiseIncident.traverses_* -> path nodes
+NotificationDraft.cites -> reviewed evidence slots
 ```
 
-The missing piece was public intelligence context explaining why the target
-asset and exposure path matter now.
+## Current Decision
 
-## Decision
+Do not fetch public feeds in the main demo. Keep public intelligence as empty
+candidate context slots only. This preserves the Track 2/3 data-fusion story
+without handling live records during the demo.
 
-Use public OSINT feeds as an overlay for the hackathon demo. Do not add CVE,
-TTP, IOC, or advisory object types before the deadline.
-
-Implemented public feeds:
-
-- NVD CVE API for critical VPN CVEs.
-- CISA KEV for known exploited vulnerabilities.
-- MITRE ATT&CK Enterprise for credential-access and initial-access techniques.
-- abuse.ch URLhaus for recent malicious URL tags and stealer/loader context.
-
-Mapping:
-
-- `Domain.asset_type` selects the relevant OSINT filter.
-- `CredentialExposure.targets -> Domain` identifies the target asset.
-- `RiskAssessment.components` stores the derived context.
-- `CompromiseIncident.path_snapshot` remains the active path record.
-- `NotificationDraft.cites` can cite incident and evidence summaries.
+Current implementation:
+- `scripts/intelligence_demo.py` writes no-live-data ontology pages.
+- `scripts/osint_collect.py` writes disabled placeholder context if run.
+- Existing summarizer helpers remain for tests and future approved offline
+  fixtures.
 
 ## Rationale
 
-This preserves the ontology that was already built and validated in Foundry. It
-also keeps the demo honest:
-
-- public OSINT is real and refreshable;
-- Foundry path traversal is live OSDK readback;
-- credential-exposure records remain synthetic unless the authorized live
-  StealthMole pipeline succeeds.
+This keeps the project focused on the ontology engine:
+- `of` and `targets` separation explains cross-organization access.
+- variable-depth `subcontractsTo` explains supplier-path propagation.
+- `traverses_*` links preserve path drill-down.
+- `cites` and draft-only action state preserve review provenance.
+- risk banding is a structural ontology outcome, not a feed-volume score.
 
 ## Consequences
 
 Positive:
-
-- The demo no longer blocks on StealthMole availability.
-- The Track 2/3 story becomes data fusion instead of API integration only.
-- Reviewers can inspect generated JSON/HTML artifacts without secrets.
-- Ontology churn is minimized before the hackathon deadline.
+- demo cannot accidentally fetch or display live public-feed records;
+- reviewers see the problem-solving model without data-handling risk;
+- future approved evidence packages can occupy the same slots without ontology
+  redesign.
 
 Tradeoffs:
+- no current claim of real public-feed collection;
+- CVE/TTP/IOC/advisory objects remain future work;
+- presentation must explain candidate slots clearly.
 
-- CVE/TTP/IOC search is not first-class in Foundry yet.
-- OSINT evidence is summarized into risk components rather than modeled as full
-  ontology objects.
-- Future ACL/audit requirements may require first-class `Vulnerability`,
-  `Technique`, `Indicator`, or `Advisory` objects.
+## Rejected Current Option
 
-## Rejected Options
-
-| Option | Reason rejected |
-|---|---|
-| Add `CVE`, `Technique`, `IOC`, and `Advisory` object types immediately | Too much ontology churn before demo; link and action surface would expand without enough testing time. |
-| Treat synthetic `CredentialExposure` seed as real leaked data | Incorrect and unsafe claim. |
-| Block the demo on StealthMole auth | The project must still prove data fusion when one feed is unavailable. |
-| Hide StealthMole status | Reviewers should see that the integration boundary exists and that 401 evidence is captured without secrets. |
-
-## Follow-Up
-
-After the demo, consider a v0.4 ontology ADR for first-class OSINT objects:
-
-- `Vulnerability`
-- `Technique`
-- `Indicator`
-- `Advisory`
-- `Observation`
-
-Only add them when search, ACL, audit, or workflow requirements justify the
-additional ontology surface.
+Using live public feeds as the demo surface is rejected for the current handoff.
+The project should show where such context would attach, not collect it.

@@ -1,71 +1,61 @@
 # Reviewer Guide
 
-Use this page when handing the project to another teammate or judge. It lists
-the exact files and checks needed to verify the current state.
+Use this page when handing the project to another teammate or judge.
 
 ## Review Order
 
-1. Read [HANDOFF.md](../HANDOFF.md) for full project context and remaining work.
-2. Read [README.md](../README.md) for the project entrypoint.
+1. Read [HANDOFF.md](../HANDOFF.md) for current project direction.
+2. Read [README.md](../README.md) for the entrypoint.
 3. Read [docs/data-strategy.md](data-strategy.md) for data boundaries.
-4. Read [docs/decisions/0007-osint-data-fusion.md](decisions/0007-osint-data-fusion.md) for the main design decision.
-5. Read [docs/decisions/0008-dashboard-first-demo-surface.md](decisions/0008-dashboard-first-demo-surface.md) for the dashboard presentation decision.
-6. Read [docs/changelog/intelligence-demo-2026-07-04.md](changelog/intelligence-demo-2026-07-04.md) for the change inventory.
-7. Run the verification commands below.
+4. Read [docs/demo-runbook.md](demo-runbook.md) for the demo flow.
+5. Read [ontology.md](../ontology.md) for the Foundry ontology structure.
+6. Read [docs/decisions/0007-osint-data-fusion.md](decisions/0007-osint-data-fusion.md)
+   and [docs/decisions/0008-dashboard-first-demo-surface.md](decisions/0008-dashboard-first-demo-surface.md).
 
 ## Verification Commands
 
 ```bash
 uv run pytest -q
 uv run python scripts/intelligence_demo.py
+uv run python scripts/palantir_pages.py
 open out/intelligence_demo.html
-```
-
-Foundry-only fallback:
-
-```bash
-uv run python scripts/final_demo_check.py --full
-uv run python scripts/foundry_blast_radius.py exp:micro-h:active
-open out/foundry_demo.html
 ```
 
 ## Expected Artifacts
 
 | Artifact | Meaning |
 |---|---|
-| `out/intelligence_demo.json` | Integrated machine-readable demo summary. |
-| `out/intelligence_demo.html` | Main judging report. |
-| `out/osint/osint_summary.json` | Public OSINT collection summary. |
-| `out/osint/osint_report.html` | Public OSINT report. |
-| `out/p0b/stealthmole_auth_evidence.json` | Secret-free StealthMole auth evidence. |
-| `out/blast_radius_exp_micro-h_active.json` | Foundry OSDK blast-radius proof. |
-| `out/foundry_demo.html` | Foundry-only report. |
+| `out/intelligence_demo.json` | Machine-readable no-live-data ontology summary. |
+| `out/intelligence_demo.html` | Main operating-surface report. |
+| `out/omija_console_core.html` | Policy gates and decision workflow. |
+| `out/omija_console_graph.html` | Ontology graph path explanation. |
+| `out/omija_console_response.html` | Decision objects and draft-only response. |
+| `out/palantir_v1.html` | Variant 1 page for comparison. |
+| `out/palantir_v2.html` | Variant 2 page for comparison. |
+| `out/palantir_v3.html` | Variant 3 page for comparison. |
 
 ## What To Confirm
 
-- Public OSINT counts are present.
-- The first viewport explains operational value, not just pipeline status.
-- Foundry OSDK smoke check reports core links as `OK`.
-- `exp:micro-h:active` reaches supplier `sup-h`.
-- Blast radius includes `prog-sentinel` and `prog-harbor`.
-- The active path is visible as `CredentialExposure -> Supplier -> Prime -> Program`.
-- Recommended actions and the advisory are marked for analyst or human review.
-- StealthMole status is shown as blocked if `/user/quotas` returns `401`.
-- No generated artifact contains access keys, secret keys, JWTs, bearer tokens,
-  raw passwords, or reusable cookies.
+- No external data fetch is part of the main demo.
+- Evidence, recipient, notification body, and cited-record slots are blank.
+- `of` and `targets` are explained as separate links.
+- `subcontractsTo` explains variable-depth supplier propagation.
+- `traverses_*` links explain incident path drill-down.
+- `NotificationDraft.cites` and draft-only state explain review provenance.
+- Risk bands are presented as ontology-path outcomes, not volume sorting.
+- Generated artifacts contain no API keys, JWTs, bearer tokens, raw passwords,
+  cookies, or reusable secrets.
 
 ## Claim Boundary
 
 Allowed:
+- "Omija demonstrates an ontology-centered reasoning engine."
+- "The demo shows where approved candidate evidence would attach."
+- "Sensitive data handling and live data fetching are disabled."
+- "Notifications are draft-only and require human review."
 
-- "The public OSINT layer uses real public data."
-- "The Foundry path is live OSDK readback."
-- "The live StealthMole integration boundary exists and records auth evidence."
-
-Not allowed unless the live pipeline succeeds:
-
-- "The seed credential exposure is real leaked data."
-- "StealthMole live credential data was ingested."
+Not allowed:
+- "Live credential data was ingested."
+- "Public feeds were fetched for the current demo."
+- "The seed evidence is real leaked data."
 - "A notification was sent."
-
-Notifications remain drafts and require human approval.

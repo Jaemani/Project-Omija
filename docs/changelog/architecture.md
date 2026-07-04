@@ -1,5 +1,10 @@
 # architecture.md — 온톨로지·아키텍처 변경로그
 
+Current status as of 2026-07-05: live credential-feed work is neutralized and
+must not be resumed from this historical changelog. Use `HANDOFF.md`,
+`docs/data-strategy.md`, and `docs/demo-runbook.md` for the active no-live-data
+ontology-engine direction.
+
 온톨로지·아키텍처 변경(Object/Link/Action 추가·수정, 스코어링 로직 변경 등) 시 날짜·변경·이유 1줄씩 추가한다. 스펙 문서(`docs/spec/`) 수정과 동시에 기록.
 
 ---

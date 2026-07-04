@@ -1,12 +1,8 @@
-"""Collect public OSINT feeds and build a defense-intelligence overlay.
+"""Build empty public-context slots for the ontology demo.
 
-Sources are public, non-secret, and safe to commit as derived summaries:
-- CISA Known Exploited Vulnerabilities catalog
-- MITRE ATT&CK Enterprise STIX
-- abuse.ch URLhaus recent URL feed
-
-This is not credential dumping. It adds public threat/vulnerability context to
-the supply-chain credential exposure graph.
+Current project mode does not fetch public feeds. The summarizer helpers stay
+available for tests and future approved offline fixtures, but `main()` writes a
+no-live-data placeholder artifact.
 """
 
 from __future__ import annotations
@@ -21,7 +17,6 @@ from io import StringIO
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlencode
-from urllib.request import Request, urlopen
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -29,13 +24,10 @@ OUT_DIR = REPO_ROOT / "out" / "osint"
 OUT_JSON = OUT_DIR / "osint_summary.json"
 OUT_HTML = OUT_DIR / "osint_report.html"
 
-CISA_KEV_URL = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
-MITRE_ATTACK_URL = (
-    "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/"
-    "enterprise-attack/enterprise-attack.json"
-)
-URLHAUS_RECENT_CSV_URL = "https://urlhaus.abuse.ch/downloads/csv_recent/"
-NVD_CVE_API_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0"
+CISA_KEV_URL = "disabled:cisa-kev"
+MITRE_ATTACK_URL = "disabled:mitre-attack"
+URLHAUS_RECENT_CSV_URL = "disabled:urlhaus-recent"
+NVD_CVE_API_URL = "disabled:nvd-cve"
 NVD_QUERY = {
     "keywordSearch": "vpn",
     "cvssV3Severity": "CRITICAL",
@@ -103,17 +95,15 @@ ATTACK_TACTICS = {"credential-access", "initial-access", "discovery", "persisten
 
 
 def fetch_text(url: str, *, timeout: int = 45) -> str:
-    req = Request(url, headers={"User-Agent": "Project-Omija-OSINT/1.0"})
-    with urlopen(req, timeout=timeout) as response:
-        return response.read().decode("utf-8", errors="replace")
+    raise RuntimeError("Public feed fetching is disabled in no-live-data mode.")
 
 
 def fetch_json(url: str) -> dict[str, Any]:
-    return json.loads(fetch_text(url))
+    raise RuntimeError("Public feed fetching is disabled in no-live-data mode.")
 
 
 def fetch_nvd() -> dict[str, Any]:
-    return fetch_json(f"{NVD_CVE_API_URL}?{urlencode(NVD_QUERY)}")
+    raise RuntimeError("Public feed fetching is disabled in no-live-data mode.")
 
 
 def _contains_keyword(text: str, keywords: set[str]) -> bool:
@@ -295,25 +285,54 @@ def build_asset_overlays(assets: list[dict[str, str]], kev_items: list[dict[str,
 
 
 def build_summary() -> dict[str, Any]:
-    nvd = summarize_nvd(fetch_nvd())
-    kev = summarize_kev(fetch_json(CISA_KEV_URL))
-    attack = summarize_attack(fetch_json(MITRE_ATTACK_URL))
-    urlhaus = summarize_urlhaus(fetch_text(URLHAUS_RECENT_CSV_URL))
     assets = read_foundry_seed_assets()
-    overlays = build_asset_overlays(assets, kev["recent_access_relevant"])
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "mode": "no_live_data",
         "sources": {
-            "cisa_kev": CISA_KEV_URL,
-            "nvd": nvd["source"],
-            "mitre_attack": MITRE_ATTACK_URL,
-            "urlhaus_recent": URLHAUS_RECENT_CSV_URL,
+            "cisa_kev": "disabled",
+            "nvd": "disabled",
+            "mitre_attack": "disabled",
+            "urlhaus_recent": "disabled",
         },
-        "nvd": nvd,
-        "cisa_kev": kev,
-        "mitre_attack": attack,
-        "urlhaus": urlhaus,
-        "asset_overlays": overlays,
+        "nvd": {
+            "source": "disabled",
+            "query": NVD_QUERY,
+            "total_results": 0,
+            "result_count": 0,
+            "critical_vpn_cves": [],
+        },
+        "cisa_kev": {
+            "source": "disabled",
+            "catalog_version": None,
+            "date_released": None,
+            "total_vulnerabilities": 0,
+            "access_relevant_count": 0,
+            "recent_access_relevant": [],
+        },
+        "mitre_attack": {
+            "source": "disabled",
+            "total_attack_patterns": 0,
+            "selected_count": 0,
+            "selected_techniques": [],
+        },
+        "urlhaus": {
+            "source": "disabled",
+            "sampled_rows": 0,
+            "top_tags": [],
+            "stealer_or_loader_rows": [],
+            "stealer_or_loader_count": 0,
+        },
+        "asset_overlays": [
+            {
+                "fqdn": asset.get("fqdn") or asset.get("domain_fqdn"),
+                "asset_type": (asset.get("asset_type") or "domain").lower(),
+                "criticality": asset.get("criticality"),
+                "kev_match_count": 0,
+                "top_kev_matches": [],
+            }
+            for asset in assets
+        ],
     }
 
 
@@ -367,7 +386,7 @@ def render_html(summary: dict[str, Any]) -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Omija OSINT Overlay</title>
+    <title>Project Omija Candidate Context Slots</title>
   <style>
     body {{ margin: 0; font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #172033; background: #f7f8fb; }}
     header, main {{ max-width: 1280px; margin: 0 auto; padding: 20px 28px; }}
@@ -387,34 +406,34 @@ def render_html(summary: dict[str, Any]) -> str:
 </head>
 <body>
   <header>
-    <h1>Project Omija OSINT Overlay</h1>
-    <p class="sub">Public feeds: CISA KEV, MITRE ATT&CK, abuse.ch URLhaus. Generated {e(summary["generated_at"])}.</p>
+    <h1>Project Omija Candidate Context Slots</h1>
+    <p class="sub">No public feeds fetched. Empty ontology context slots generated {e(summary["generated_at"])}.</p>
   </header>
   <main>
     <div class="grid">
-      <div class="metric"><span>CISA KEV total</span><strong>{summary["cisa_kev"]["total_vulnerabilities"]}</strong></div>
+      <div class="metric"><span>KEV slots</span><strong>{summary["cisa_kev"]["total_vulnerabilities"]}</strong></div>
       <div class="metric"><span>Access-relevant KEV</span><strong>{summary["cisa_kev"]["access_relevant_count"]}</strong></div>
-      <div class="metric"><span>NVD critical VPN CVEs</span><strong>{summary["nvd"]["result_count"]}</strong></div>
-      <div class="metric"><span>URLhaus sampled rows</span><strong>{summary["urlhaus"]["sampled_rows"]}</strong></div>
+      <div class="metric"><span>CVE slots</span><strong>{summary["nvd"]["result_count"]}</strong></div>
+      <div class="metric"><span>IOC slots</span><strong>{summary["urlhaus"]["sampled_rows"]}</strong></div>
     </div>
     <section>
       <h2>Asset Overlay</h2>
       <table><thead><tr><th>asset</th><th>type</th><th>KEV matches</th><th>top CVEs</th></tr></thead><tbody>{overlay_rows}</tbody></table>
     </section>
     <section>
-      <h2>NVD Critical VPN CVEs</h2>
+      <h2>CVE Context Slots</h2>
       <table><thead><tr><th>CVE</th><th>score</th><th>published</th><th>description</th></tr></thead><tbody>{nvd_rows}</tbody></table>
     </section>
     <section>
-      <h2>Recent Access-Relevant CISA KEV</h2>
+      <h2>Known-Exploited Context Slots</h2>
       <table><thead><tr><th>CVE</th><th>vendor</th><th>product</th><th>date</th><th>name</th></tr></thead><tbody>{kev_rows}</tbody></table>
     </section>
     <section>
-      <h2>MITRE ATT&CK Techniques</h2>
+      <h2>Technique Context Slots</h2>
       <table><thead><tr><th>ID</th><th>name</th><th>tactics</th></tr></thead><tbody>{technique_rows}</tbody></table>
     </section>
     <section>
-      <h2>URLhaus Top Tags</h2>
+      <h2>Indicator Context Slots</h2>
       <table><thead><tr><th>tag</th><th>count</th></tr></thead><tbody>{tag_rows}</tbody></table>
     </section>
   </main>
@@ -430,12 +449,12 @@ def main() -> int:
     print(f"wrote {OUT_JSON.relative_to(REPO_ROOT)}")
     print(f"wrote {OUT_HTML.relative_to(REPO_ROOT)}")
     print(
-        "OSINT "
+        "CONTEXT slots "
         f"kev={summary['cisa_kev']['access_relevant_count']}/"
         f"{summary['cisa_kev']['total_vulnerabilities']} "
-        f"nvd={summary['nvd']['result_count']} "
-        f"attack={summary['mitre_attack']['selected_count']} "
-        f"urlhaus_sample={summary['urlhaus']['sampled_rows']}"
+        f"cve={summary['nvd']['result_count']} "
+        f"technique={summary['mitre_attack']['selected_count']} "
+        f"indicator={summary['urlhaus']['sampled_rows']}"
     )
     print("RESULT: OK")
     return 0
