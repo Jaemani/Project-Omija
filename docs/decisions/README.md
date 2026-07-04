@@ -10,6 +10,7 @@
 | [0003](./0003-local-validation-store.md) | 로컬 검증 스토어 (Foundry 대기용) | 승인 |
 | [0004](./0004-python-312-pin.md) | Python 3.12 고정 (OSDK 호환) | 승인 |
 | [0005](./0005-scoring-weights.md) | 스코어링 가중 설계 원칙 (활성침해 지배) | 승인 |
+| [0006](./0006-multitier-propagation.md) | 멀티티어 전파 (subcontracts 재귀 + ProgramExposure 롤업) | 승인 |
 
 ## 템플릿
 새 ADR 작성 시 아래 형식을 그대로 사용, 파일명은 `NNNN-짧은-제목.md`.

@@ -18,11 +18,12 @@
 [StealthMole v2]  cds/ub/cl/cb ─ 어댑터(실|목) ─┐
 [Supplier Registry]  합성/공개 도메인 ──────────┤ ingest → Foundry
                                                 ▼
-[Ontology (Foundry)]  Supplier·Prime·Program·Domain·Identity·Exposure·InfectedDevice·RiskAssessment·CompromiseIncident·NotificationDraft
+[Ontology (Foundry)]  Supplier·Prime·Program·Domain·Identity·Exposure·InfectedDevice·RiskAssessment·CompromiseIncident·ProgramExposure·NotificationDraft
       │  OSDK 타입드 접근                     ▲ Actions (human review, 발송 없음)
       ├──► [Correlation]  CorrelateExposure: Exposure→Identity(엔티티 해소)→Supplier
       ├──► [Risk (AIP Logic)]  ComputeRisk: 활성침해 가중 스코어(evidence)
-      ├──► [Active]  FlagActiveCompromise: 경로 존재 탐지 → Incident(traverses)
+      ├──► [Active]  FlagActiveCompromise: 경로 존재 탐지 → Incident(traverses+blast)
+      ├──► [Propagate (AIP Logic)]  PropagateRisk: subcontracts 재귀 롤업 → ProgramExposure
       └──► [Draft (AIP agent)]  GenerateNotificationDraft: 근거 인용 초안
                     │
                     ▼
@@ -34,7 +35,7 @@
 2. **Normalize**: 레코드 → Exposure 스키마(활성 신호 필드 보존). `source`·`module`·`source_ref` 채움(provenance).
 3. **Correlate**: 이메일 도메인 = Supplier 도메인 → Identity belongs_to → Supplier. 서브도메인/별칭 처리.
 4. **Entity resolution**: 같은 email/username 변형을 하나의 Identity로 병합(EntityResolver 보조, 사람 확인).
-5. **Propagate**: Supplier supplies Prime runs Program 링크로 위험 상향 전파 경로 구성.
+5. **Propagate**: 두 단계. (a) **경로 구성** — Supplier의 `subcontracts_to`(2차→1차→…, 가변깊이) 재귀 traverse + supplies→runs로 Supplier…→Prime→Program 경로 조립(`store.propagation_paths`, SQLite `WITH RECURSIVE`, 사이클 안전). 2차 말단만 subcontracts를 갖고 직결 supplies가 없어도 상위 Prime/Program에 도달. (b) **위험 롤업** — `PropagateRisk`가 각 Program에 닿는 모든 협력사 RiskAssessment를 집계해 **ProgramExposure** 생성(§4). "지금 어느 프로그램이 타나"를 점수로 답함. 활성 감염의 다운스트림 도달은 CompromiseIncident의 `blast_radius`(device 레벨)로 보존.
 
 ## 3. 위험 스코어링 (핵심 차별점)
 `ComputeRisk` Action(AIP Logic). 점수 = base + 활성침해 가중 × criticality. 설명가능(기여분 표시), evidenced_by 필수.
@@ -48,8 +49,10 @@
 | criticality | tier1 / 핵심 Program 노출 | × |
 - 정규화 0~100 + grade(즉시/주의/관찰). 각 점수에 evidence(원 레코드) 배열.
 
+**프로그램 롤업(ProgramExposure)** — 협력사 점수는 귀속일 뿐이므로, `PropagateRisk`가 재귀 traverse로 한 Program에 닿는 모든 협력사 위험을 롤업: score = 지배 경로(최고 협력사 score) + breadth(distinct 활성 협력사, Supplier 기준 dedup) × program sensitivity. 활성 Program은 비활성보다 상단 밴드. evidenced_by(기여 Incident/Assessment) 비면 거부. 다이아몬드 공급망은 distinct Supplier/ref 기준 dedup(경로 수로 부풀림 금지). 경유 Prime은 별도 객체 없이 components 소계로 표기. (ontology.md §4-b)
+
 ## 4. 활성침해 탐지 (그래프 경로)
-`FlagActiveCompromise`: `InfectedDevice(최근, has_session_cookie) → compromises → Identity → belongs_to → Supplier → supplies → Prime → runs → Program` 경로가 성립하면 **CompromiseIncident** 생성(traverses 경로 필수). 이 경로 존재 자체가 경보 = "유출 나열"과의 근본 차이.
+`FlagActiveCompromise`: `InfectedDevice(최근, has_session_cookie) → compromises → Identity → belongs_to → Supplier → [subcontracts_to → Supplier …(가변 홉)] → supplies → Prime → runs → Program` 경로가 성립하면 **CompromiseIncident** 생성(traverses 경로 필수, 가변길이). Supplier→…→Prime→Program 반부는 재귀 traverse(`propagation_paths`)로 해소하므로 subcontracts만 가진 2차 말단도 상위 Program에 도달·탐지된다. 이 경로 존재 자체가 경보 = "유출 나열"과의 근본 차이.
 
 ## 5. 조치 에이전트 (Action)
 - `GenerateNotificationDraft`(AIP agent): 상위 업체별 방어 조치 권고(비번 리셋·세션 폐기·MFA·계정 격리) + 통보 초안 텍스트(근거 요약·출처 포함).
