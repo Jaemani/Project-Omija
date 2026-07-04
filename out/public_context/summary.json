@@ -1,0 +1,1298 @@
+{
+  "generated_at": "2026-07-04T20:40:42.317702+00:00",
+  "mode": "public_context_snapshot_non_sensitive",
+  "policy": {
+    "raw_credentials": "not collected",
+    "account_identifiers": "not collected",
+    "malicious_urls": "not stored",
+    "main_demo": "not automatically wired"
+  },
+  "cisa_kev": {
+    "source": "https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json",
+    "total_vulnerabilities": 1631,
+    "access_relevant_count": 863,
+    "recent_access_relevant": [
+      {
+        "cveID": "CVE-2026-48558",
+        "vendorProject": "SimpleHelp ",
+        "product": "SimpleHelp",
+        "dateAdded": "2026-06-29",
+        "vulnerabilityName": "SimpleHelp Authentication Bypass Vulnerability",
+        "requiredAction": "Apply mitigations in accordance with vendor instructions, ensuring compliance with CISA’s BOD 26-04 Prioritizing Security Updates Based on Risk (see URL in Notes) guidance and CISA’s “Forensics Triage Requirements” (see URL in Notes). Follow applicable BOD 26-04 guidance for cloud services or discontinue use of the product if mitigations are unavailable. Stakeholders are responsible for evaluating each asset's internet exposure and ensuring adherence to BOD 26-04 patching guidelines."
+      },
+      {
+        "cveID": "CVE-2026-12569",
+        "vendorProject": "PTC",
+        "product": "Windchill and FlexPLM",
+        "dateAdded": "2026-06-25",
+        "vulnerabilityName": "PTC Windchill and FlexPLM Improper Input Validation Vulnerability",
+        "requiredAction": "Apply mitigations in accordance with vendor instructions, ensuring compliance with CISA’s BOD 26-04 Prioritizing Security Updates Based on Risk (see URL in Notes) guidance and CISA’s “Forensics Triage Requirements” (see URL in Notes). Follow applicable BOD 26-04 guidance for cloud services or discontinue use of the product if mitigations are unavailable. Stakeholders are responsible for evaluating each asset's internet exposure and ensuring adherence to BOD 26-04 patching guidelines."
+      },
+      {
+        "cveID": "CVE-2026-20230",
+        "vendorProject": "Cisco",
+        "product": "Unified Communications Manager",
+        "dateAdded": "2026-06-25",
+        "vulnerabilityName": "Cisco Unified Communications Manager Server-Side Request Forgery (SSRF) Vulnerability",
+        "requiredAction": "Apply mitigations in accordance with vendor instructions, ensuring compliance with CISA’s BOD 26-04 Prioritizing Security Updates Based on Risk (see URL in Notes) guidance and CISA’s “Forensics Triage Requirements” (see URL in Notes). Follow applicable BOD 26-04 guidance for cloud services or discontinue use of the product if mitigations are unavailable. Stakeholders are responsible for evaluating each asset's internet exposure and ensuring adherence to BOD 26-04 patching guidelines."
+      },
+      {
+        "cveID": "CVE-2026-20262",
+        "vendorProject": "Cisco",
+        "product": "Catalyst SD-WAN Manager",
+        "dateAdded": "2026-06-15",
+        "vulnerabilityName": "Cisco Catalyst SD-WAN Manager Directory or Path Traversal Vulnerability",
+        "requiredAction": "Apply mitigations in accordance with vendor instructions, ensuring compliance with CISA’s BOD 26-04 Prioritizing Security Updates Based on Risk (see URL in Notes) guidance and CISA’s “Forensics Triage Requirements” (see URL in Notes). Follow applicable BOD 26-04 guidance for cloud services or discontinue use of the product if mitigations are unavailable. Stakeholders are responsible for evaluating each asset's internet exposure and ensuring adherence to BOD 26-04 patching guidelines."
+      },
+      {
+        "cveID": "CVE-2026-10520",
+        "vendorProject": "Ivanti",
+        "product": "Sentry",
+        "dateAdded": "2026-06-11",
+        "vulnerabilityName": "Ivanti Sentry OS Command Injection Vulnerability",
+        "requiredAction": "Apply mitigations in accordance with vendor instructions, ensuring compliance with CISA’s BOD 26-04 Prioritizing Security Updates Based on Risk (see URL in Notes) guidance and CISA’s “Forensics Triage Requirements” (see URL in Notes). Follow applicable BOD 26-04 guidance for cloud services or discontinue use of the product if mitigations are unavailable. Stakeholders are responsible for evaluating each asset's internet exposure and ensuring adherence to BOD 26-04 patching guidelines."
+      },
+      {
+        "cveID": "CVE-2026-11645",
+        "vendorProject": "Google",
+        "product": "Chromium V8",
+        "dateAdded": "2026-06-09",
+        "vulnerabilityName": "Google Chromium V8 Out-of-Bounds Read and Write Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2026-50751",
+        "vendorProject": "Check Point",
+        "product": "Security Gateway",
+        "dateAdded": "2026-06-08",
+        "vulnerabilityName": "Check Point Security Gateway Improper Authentication Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2026-45247",
+        "vendorProject": "Mirasvit",
+        "product": "Mirasvit Full Page Cache Warmer",
+        "dateAdded": "2026-06-03",
+        "vulnerabilityName": "Mirasvit Full Page Cache Warmer Deserialization of Untrusted Data Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2026-0257",
+        "vendorProject": "Palo Alto Networks",
+        "product": "PAN-OS",
+        "dateAdded": "2026-05-29",
+        "vulnerabilityName": "Palo Alto Networks PAN-OS Authentication Bypass Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2026-45321",
+        "vendorProject": "TanStack",
+        "product": "TanStack",
+        "dateAdded": "2026-05-27",
+        "vulnerabilityName": "TanStack Unspecified Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2026-9082",
+        "vendorProject": "Drupal",
+        "product": "Core",
+        "dateAdded": "2026-05-22",
+        "vulnerabilityName": "Drupal Core SQL Injection Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2008-4250",
+        "vendorProject": "Microsoft",
+        "product": "Windows",
+        "dateAdded": "2026-05-20",
+        "vulnerabilityName": "Microsoft Windows Buffer Overflow Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2009-1537",
+        "vendorProject": "Microsoft",
+        "product": "DirectX",
+        "dateAdded": "2026-05-20",
+        "vulnerabilityName": "Microsoft DirectX NULL Byte Overwrite Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2009-3459",
+        "vendorProject": "Adobe",
+        "product": "Acrobat and Reader",
+        "dateAdded": "2026-05-20",
+        "vulnerabilityName": "Adobe Acrobat and Reader Heap-Based Buffer Overflow Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2010-0249",
+        "vendorProject": "Microsoft",
+        "product": "Internet Explorer",
+        "dateAdded": "2026-05-20",
+        "vulnerabilityName": "Microsoft Internet Explorer Use-After-Free Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2010-0806",
+        "vendorProject": "Microsoft",
+        "product": "Internet Explorer",
+        "dateAdded": "2026-05-20",
+        "vulnerabilityName": "Microsoft Internet Explorer Use-After-Free Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2026-42897",
+        "vendorProject": "Microsoft",
+        "product": "Microsoft",
+        "dateAdded": "2026-05-15",
+        "vulnerabilityName": "Microsoft Exchange Server Cross-Site Scripting Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2026-20182",
+        "vendorProject": "Cisco",
+        "product": "Catalyst SD-WAN",
+        "dateAdded": "2026-05-14",
+        "vulnerabilityName": "Cisco Catalyst SD-WAN Controller Authentication Bypass Vulnerability",
+        "requiredAction": "Please adhere to CISA’s guidelines to assess exposure and mitigate risks associated with Cisco SD-WAN devices as outlined in CISA’s Emergency Directive 26-03 (URL listed below in Notes) and CISA’s Hunt & Hardening Guidance for Cisco SD-WAN Devices (URL listed below in Notes). Adhere to the applicable BOD 22-01 guidance for cloud services or discontinue use of the product if mitigations are not available."
+      },
+      {
+        "cveID": "CVE-2026-6973",
+        "vendorProject": "Ivanti",
+        "product": "Endpoint Manager Mobile (EPMM)",
+        "dateAdded": "2026-05-07",
+        "vulnerabilityName": "Ivanti Endpoint Manager Mobile (EPMM) Improper Input Validation Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable."
+      },
+      {
+        "cveID": "CVE-2026-0300",
+        "vendorProject": "Palo Alto Networks",
+        "product": "PAN-OS",
+        "dateAdded": "2026-05-06",
+        "vulnerabilityName": "Palo Alto Networks PAN-OS Out-of-bounds Write Vulnerability",
+        "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable. Until the vendor releases an official fix, the following workaround should be implemented:  - Restrict User-ID Authentication Portal access to only trusted zones.  - Disable User-ID Authentication Portal if not required. 5/13/2026: Palo Alto has released a variety of patches. If these are relevant to your environment, please apply the designated patch."
+      }
+    ]
+  },
+  "nvd": {
+    "queries": [
+      {
+        "label": "vpn",
+        "source": "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=vpn&cvssV3Severity=CRITICAL&resultsPerPage=20",
+        "total_results": 73,
+        "result_count": 8,
+        "items": [
+          {
+            "id": "CVE-2016-3657",
+            "published": "2016-04-12T17:59:05.997",
+            "score": 9.8,
+            "severity": "CRITICAL",
+            "description": "Buffer overflow in the GlobalProtect Portal in Palo Alto Networks PAN-OS before 5.0.18, 6.0.x before 6.0.13, 6.1.x before 6.1.10, and 7.0.x before 7.0.5 allows remote attackers to "
+          },
+          {
+            "id": "CVE-2017-3882",
+            "published": "2017-05-16T17:29:00.293",
+            "score": 9.6,
+            "severity": "CRITICAL",
+            "description": "A vulnerability in the Universal Plug-and-Play (UPnP) implementation in the Cisco CVR100W Wireless-N VPN Router could allow an unauthenticated, Layer 2-adjacent attacker to execute"
+          },
+          {
+            "id": "CVE-2018-6000",
+            "published": "2018-01-22T20:29:00.290",
+            "score": 9.8,
+            "severity": "CRITICAL",
+            "description": "An issue was discovered in AsusWRT before 3.0.0.4.384_10007. The do_vpnupload_post function in router/httpd/web.c in vpnupload.cgi provides functionality for setting NVRAM configur"
+          },
+          {
+            "id": "CVE-2018-0101",
+            "published": "2018-01-29T20:29:00.280",
+            "score": 10.0,
+            "severity": "CRITICAL",
+            "description": "A vulnerability in the Secure Sockets Layer (SSL) VPN functionality of the Cisco Adaptive Security Appliance (ASA) Software could allow an unauthenticated, remote attacker to cause"
+          },
+          {
+            "id": "CVE-2018-6823",
+            "published": "2018-02-07T16:29:00.227",
+            "score": 9.8,
+            "severity": "CRITICAL",
+            "description": "In the VPN client in Mailbutler Shimo before 4.1.5.1 on macOS, the com.feingeist.shimo.helper tool LaunchDaemon implements an unprotected XPC service that can be abused to execute "
+          },
+          {
+            "id": "CVE-2018-0125",
+            "published": "2018-02-08T07:29:00.570",
+            "score": 9.8,
+            "severity": "CRITICAL",
+            "description": "A vulnerability in the web interface of the Cisco RV132W ADSL2+ Wireless-N VPN and RV134W VDSL2 Wireless-AC VPN Routers could allow an unauthenticated, remote attacker to execute a"
+          },
+          {
+            "id": "CVE-2018-0127",
+            "published": "2018-02-08T07:29:00.633",
+            "score": 9.8,
+            "severity": "CRITICAL",
+            "description": "A vulnerability in the web interface of Cisco RV132W ADSL2+ Wireless-N VPN Routers and Cisco RV134W VDSL2 Wireless-AC VPN Routers could allow an unauthenticated, remote attacker to"
+          },
+          {
+            "id": "CVE-2018-7716",
+            "published": "2018-03-05T23:29:00.410",
+            "score": 9.8,
+            "severity": "CRITICAL",
+            "description": "PrivateVPN 2.0.31 for macOS suffers from a root privilege escalation vulnerability with its com.privat.vpn.helper privileged helper tool. This privileged helper tool implements an "
+          }
+        ]
+      },
+      {
+        "label": "sso",
+        "source": "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=single+sign+on&cvssV3Severity=HIGH&resultsPerPage=20",
+        "total_results": 25,
+        "result_count": 8,
+        "items": [
+          {
+            "id": "CVE-2018-16178",
+            "published": "2019-01-09T23:29:03.717",
+            "score": 7.5,
+            "severity": "HIGH",
+            "description": "Cybozu Garoon 3.0.0 to 4.10.0 allows remote attackers to bypass access restriction to view information available only for a sign-on user via Single sign-on function."
+          },
+          {
+            "id": "CVE-2019-13347",
+            "published": "2019-12-13T13:15:11.193",
+            "score": 7.5,
+            "severity": "HIGH",
+            "description": "An issue was discovered in the SAML Single Sign On (SSO) plugin for several Atlassian products affecting versions 3.1.0 through 3.2.2 for Jira and Confluence, versions 2.4.0 throug"
+          },
+          {
+            "id": "CVE-2020-13822",
+            "published": "2020-06-04T15:15:13.510",
+            "score": 7.7,
+            "severity": "HIGH",
+            "description": "The Elliptic package 6.5.2 for Node.js allows ECDSA signature malleability via variations in encoding, leading '\\0' bytes, or integer overflows. This could conceivably have a secur"
+          },
+          {
+            "id": "CVE-2020-14966",
+            "published": "2020-06-22T12:15:10.087",
+            "score": 7.5,
+            "severity": "HIGH",
+            "description": "An issue was discovered in the jsrsasign package through 8.0.18 for Node.js. It allows a malleability in ECDSA signatures by not checking overflows in the length of a sequence and "
+          },
+          {
+            "id": "CVE-2020-7591",
+            "published": "2020-10-15T19:15:13.080",
+            "score": 8.8,
+            "severity": "HIGH",
+            "description": "A vulnerability has been identified in SIPORT MP (All versions < 3.2.1). Vulnerable versions of the device could allow an authenticated attacker to impersonate other users of the s"
+          },
+          {
+            "id": "CVE-2020-5425",
+            "published": "2020-10-31T22:15:11.877",
+            "score": 7.9,
+            "severity": "HIGH",
+            "description": "Single Sign-On for Vmware Tanzu all versions prior to 1.11.3 ,1.12.x versions prior to 1.12.4 and 1.13.x prior to 1.13.1 are vulnerable to user impersonation attack.If two users ar"
+          },
+          {
+            "id": "CVE-2022-2083",
+            "published": "2022-09-05T13:15:08.167",
+            "score": 7.5,
+            "severity": "HIGH",
+            "description": "The Simple Single Sign On WordPress plugin through 4.1.0 leaks its OAuth client_secret, which could be used by attackers to gain unauthorized access to the site."
+          },
+          {
+            "id": "CVE-2022-3119",
+            "published": "2022-09-26T13:15:11.217",
+            "score": 7.5,
+            "severity": "HIGH",
+            "description": "The OAuth client Single Sign On WordPress plugin before 3.0.4 does not have authorisation and CSRF when updating its settings, which could allow unauthenticated attackers to update"
+          }
+        ]
+      },
+      {
+        "label": "citrix",
+        "source": "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=citrix&resultsPerPage=20",
+        "total_results": 309,
+        "result_count": 8,
+        "items": [
+          {
+            "id": "CVE-2000-0244",
+            "published": "2000-03-29T05:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "The Citrix ICA (Independent Computing Architecture) protocol uses weak encryption (XOR) for user authentication."
+          },
+          {
+            "id": "CVE-2001-0760",
+            "published": "2001-10-18T04:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "Citrix Nfuse 1.51 allows remote attackers to obtain the absolute path of the web root via a malformed request to launch.asp that does not provide the session field."
+          },
+          {
+            "id": "CVE-2001-0908",
+            "published": "2001-11-21T05:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "CITRIX Metaframe 1.8 logs the Client Address (IP address) that is provided by the client instead of obtaining it from the packet headers, which allows clients to spoof their public"
+          },
+          {
+            "id": "CVE-2001-0716",
+            "published": "2001-12-06T05:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "Citrix MetaFrame 1.8 Server with Service Pack 3, and XP Server Service Pack 1 and earlier, allows remote attackers to cause a denial of service (crash) via a large number of incomp"
+          },
+          {
+            "id": "CVE-2001-1192",
+            "published": "2001-12-13T05:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "Citrix Independent Computing Architecture (ICA) Client for Windows 6.1 allows remote malicious web sites to execute arbitrary code via a .ICA file, which is downloaded and automati"
+          },
+          {
+            "id": "CVE-2002-0301",
+            "published": "2002-05-31T04:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "Citrix NFuse 1.6 allows remote attackers to bypass authentication and obtain sensitive information by directly calling launch.asp with invalid NFUSE_USER and NFUSE_PASSWORD paramet"
+          },
+          {
+            "id": "CVE-2002-0502",
+            "published": "2002-08-12T04:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "Citrix NFuse 1.6 may allow remote attackers to list applications without authentication by accessing the applist.asp page."
+          },
+          {
+            "id": "CVE-2002-0503",
+            "published": "2002-08-12T04:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "Directory traversal vulnerability in boilerplate.asp for Citrix NFuse 1.5 allows remote authenticated users to read arbitrary files via a .. (dot dot) in the NFuse_Template paramet"
+          }
+        ]
+      },
+      {
+        "label": "fortinet",
+        "source": "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=fortinet&resultsPerPage=20",
+        "total_results": 672,
+        "result_count": 8,
+        "items": [
+          {
+            "id": "CVE-2005-1837",
+            "published": "2005-06-01T04:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "Fortinet firewall running FortiOS 2.x contains a hardcoded username with the password set to the serial number, which allows local users with console access to gain privileges."
+          },
+          {
+            "id": "CVE-2005-3221",
+            "published": "2005-10-14T10:02:00.000",
+            "score": null,
+            "severity": null,
+            "description": "Multiple interpretation error in unspecified versions of Fortinet Antivirus allows remote attackers to bypass virus detection via a malicious executable in a specially crafted RAR "
+          },
+          {
+            "id": "CVE-2005-3400",
+            "published": "2005-11-01T12:47:00.000",
+            "score": null,
+            "severity": null,
+            "description": "Multiple interpretation error in Fortinet 2.48.0.0 allows remote attackers to bypass virus scanning via a file such as BAT, HTML, and EML with an \"MZ\" magic byte sequence which is "
+          },
+          {
+            "id": "CVE-2005-4570",
+            "published": "2005-12-29T11:03:00.000",
+            "score": null,
+            "severity": null,
+            "description": "The Internet Key Exchange version 1 (IKEv1) implementations in Fortinet FortiOS 2.50, 2.80 and 3.0, FortiClient 2.0,; and FortiManager 2.80 and 3.0 allow remote attackers to cause "
+          },
+          {
+            "id": "CVE-2005-3057",
+            "published": "2005-12-31T05:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "The FTP component in FortiGate 2.8 running FortiOS 2.8MR10 and v3beta, and other versions before 3.0 MR1, allows remote attackers to bypass the Fortinet FTP anti-virus engine by se"
+          },
+          {
+            "id": "CVE-2005-3058",
+            "published": "2005-12-31T05:00:00.000",
+            "score": null,
+            "severity": null,
+            "description": "Interpretation conflict in Fortinet FortiGate 2.8, running FortiOS 2.8MR10 and v3beta, allows remote attackers to bypass the URL blocker via an (1) HTTP request terminated with a l"
+          },
+          {
+            "id": "CVE-2006-1966",
+            "published": "2006-04-21T10:02:00.000",
+            "score": null,
+            "severity": null,
+            "description": "An unspecified Fortinet product, possibly Fortinet28, allows remote attackers to cause a denial of service via a \"small synflood\" to the SMTP port (TCP port 25), as demonstrated by"
+          },
+          {
+            "id": "CVE-2006-3222",
+            "published": "2006-06-24T10:06:00.000",
+            "score": null,
+            "severity": null,
+            "description": "The FTP proxy module in Fortinet FortiOS (FortiGate) before 2.80 MR12 and 3.0 MR2 allows remote attackers to bypass anti-virus scanning via the Enhanced Passive (EPSV) FTP mode."
+          }
+        ]
+      },
+      {
+        "label": "ivanti",
+        "source": "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=ivanti&resultsPerPage=20",
+        "total_results": 379,
+        "result_count": 8,
+        "items": [
+          {
+            "id": "CVE-2017-11463",
+            "published": "2017-12-11T06:29:00.223",
+            "score": 8.8,
+            "severity": "HIGH",
+            "description": "In Ivanti Service Desk (formerly LANDESK Management Suite) versions between 2016.3 and 2017.3, an Unrestricted Direct Object Reference leads to referencing/updating objects belongi"
+          },
+          {
+            "id": "CVE-2018-6316",
+            "published": "2018-02-15T23:29:00.620",
+            "score": 7.5,
+            "severity": "HIGH",
+            "description": "Ivanti Endpoint Security (formerly HEAT Endpoint Management and Security Suite) 8.5 Update 1 and earlier allows an authenticated user with low privileges and access to the local ne"
+          },
+          {
+            "id": "CVE-2018-8901",
+            "published": "2018-06-29T15:29:00.413",
+            "score": 7.8,
+            "severity": "HIGH",
+            "description": "An issue was discovered in Ivanti Avalanche for all versions between 5.3 and 6.2. A local user with database access privileges can read the encrypted passwords for users who authen"
+          },
+          {
+            "id": "CVE-2018-8902",
+            "published": "2018-06-29T15:29:00.443",
+            "score": 6.5,
+            "severity": "MEDIUM",
+            "description": "An issue was discovered in Ivanti Avalanche for all versions between 5.3 and 6.2. The impacted products used a single shared key encryption model to encrypt data. A user with acces"
+          },
+          {
+            "id": "CVE-2018-15590",
+            "published": "2018-10-15T16:29:00.737",
+            "score": 5.5,
+            "severity": "MEDIUM",
+            "description": "An issue was discovered in Ivanti Workspace Control before 10.3.0.0 and RES One Workspace, when file and folder security are configured. A local authenticated user can bypass file "
+          },
+          {
+            "id": "CVE-2018-15591",
+            "published": "2018-10-15T16:29:01.147",
+            "score": 7.8,
+            "severity": "HIGH",
+            "description": "An issue was discovered in Ivanti Workspace Control before 10.3.10.0 and RES One Workspace. A local authenticated user can bypass Application Whitelisting restrictions to execute a"
+          },
+          {
+            "id": "CVE-2018-15592",
+            "published": "2018-10-15T16:29:01.660",
+            "score": 7.8,
+            "severity": "HIGH",
+            "description": "An issue was discovered in Ivanti Workspace Control before 10.3.10.0 and RES One Workspace. A local authenticated user can execute processes with elevated privileges via an unspeci"
+          },
+          {
+            "id": "CVE-2018-15593",
+            "published": "2018-10-15T16:29:02.083",
+            "score": 7.8,
+            "severity": "HIGH",
+            "description": "An issue was discovered in Ivanti Workspace Control before 10.3.10.0 and RES One Workspace. A local authenticated user can decrypt the encrypted datastore or relay server password "
+          }
+        ]
+      }
+    ]
+  },
+  "mitre_attack": {
+    "source": "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack.json",
+    "selected_count": 234,
+    "selected_techniques": [
+      {
+        "id": "T1003",
+        "name": "OS Credential Dumping",
+        "tactics": [
+          "credential-access"
+        ],
+        "modified": "2025-10-24T17:48:22.201Z"
+      },
+      {
+        "id": "T1003.001",
+        "name": "LSASS Memory",
+        "tactics": [
+          "credential-access"
+        ],
+        "modified": "2026-05-12T15:12:00.637Z"
+      },
+      {
+        "id": "T1003.002",
+        "name": "Security Account Manager",
+        "tactics": [
+          "credential-access"
+        ],
+        "modified": "2026-05-12T15:12:00.621Z"
+      },
+      {
+        "id": "T1003.003",
+        "name": "NTDS",
+        "tactics": [
+          "credential-access"
+        ],
+        "modified": "2026-05-12T15:12:00.723Z"
+      },
+      {
+        "id": "T1003.004",
+        "name": "LSA Secrets",
+        "tactics": [
+          "credential-access"
+        ],
+        "modified": "2025-10-24T17:48:29.945Z"
+      },
+      {
+        "id": "T1003.005",
+        "name": "Cached Domain Credentials",
+        "tactics": [
+          "credential-access"
+        ],
+        "modified": "2025-10-24T17:48:54.919Z"
+      },
+      {
+        "id": "T1003.006",
+        "name": "DCSync",
+        "tactics": [
+          "credential-access"
+        ],
+        "modified": "2025-10-24T17:49:36.308Z"
+      },
+      {
+        "id": "T1003.007",
+        "name": "Proc Filesystem",
+        "tactics": [
+          "credential-access"
+        ],
+        "modified": "2025-10-24T17:48:36.165Z"
+      },
+      {
+        "id": "T1003.008",
+        "name": "/etc/passwd and /etc/shadow",
+        "tactics": [
+          "credential-access"
+        ],
+        "modified": "2025-10-24T17:49:25.253Z"
+      },
+      {
+        "id": "T1007",
+        "name": "System Service Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.624Z"
+      },
+      {
+        "id": "T1010",
+        "name": "Application Window Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.630Z"
+      },
+      {
+        "id": "T1012",
+        "name": "Query Registry",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.714Z"
+      },
+      {
+        "id": "T1016",
+        "name": "System Network Configuration Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.641Z"
+      },
+      {
+        "id": "T1016.001",
+        "name": "Internet Connection Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2025-10-24T17:48:26.017Z"
+      },
+      {
+        "id": "T1016.002",
+        "name": "Wi-Fi Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2025-10-24T17:48:44.123Z"
+      },
+      {
+        "id": "T1018",
+        "name": "Remote System Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.722Z"
+      },
+      {
+        "id": "T1033",
+        "name": "System Owner/User Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.620Z"
+      },
+      {
+        "id": "T1037",
+        "name": "Boot or Logon Initialization Scripts",
+        "tactics": [
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2026-05-12T15:12:00.619Z"
+      },
+      {
+        "id": "T1037.001",
+        "name": "Logon Script (Windows)",
+        "tactics": [
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2025-10-24T17:49:33.610Z"
+      },
+      {
+        "id": "T1037.002",
+        "name": "Login Hook",
+        "tactics": [
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2025-10-24T17:48:42.963Z"
+      },
+      {
+        "id": "T1037.003",
+        "name": "Network Logon Script",
+        "tactics": [
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2025-10-24T17:49:21.921Z"
+      },
+      {
+        "id": "T1037.004",
+        "name": "RC Scripts",
+        "tactics": [
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2025-10-24T17:49:28.955Z"
+      },
+      {
+        "id": "T1037.005",
+        "name": "Startup Items",
+        "tactics": [
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2025-10-24T17:49:19.678Z"
+      },
+      {
+        "id": "T1040",
+        "name": "Network Sniffing",
+        "tactics": [
+          "credential-access",
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.624Z"
+      },
+      {
+        "id": "T1046",
+        "name": "Network Service Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.723Z"
+      },
+      {
+        "id": "T1049",
+        "name": "System Network Connections Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.652Z"
+      },
+      {
+        "id": "T1053",
+        "name": "Scheduled Task/Job",
+        "tactics": [
+          "execution",
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2026-05-12T15:12:00.626Z"
+      },
+      {
+        "id": "T1053.002",
+        "name": "At",
+        "tactics": [
+          "execution",
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2025-10-24T17:49:36.495Z"
+      },
+      {
+        "id": "T1053.003",
+        "name": "Cron",
+        "tactics": [
+          "execution",
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2025-10-24T17:48:33.856Z"
+      },
+      {
+        "id": "T1053.005",
+        "name": "Scheduled Task",
+        "tactics": [
+          "execution",
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2026-05-12T15:12:00.618Z"
+      },
+      {
+        "id": "T1053.006",
+        "name": "Systemd Timers",
+        "tactics": [
+          "execution",
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2025-10-24T17:49:11.261Z"
+      },
+      {
+        "id": "T1053.007",
+        "name": "Container Orchestration Job",
+        "tactics": [
+          "execution",
+          "persistence",
+          "privilege-escalation"
+        ],
+        "modified": "2025-10-24T17:48:25.363Z"
+      },
+      {
+        "id": "T1056",
+        "name": "Input Capture",
+        "tactics": [
+          "collection",
+          "credential-access"
+        ],
+        "modified": "2025-10-24T17:49:17.884Z"
+      },
+      {
+        "id": "T1056.001",
+        "name": "Keylogging",
+        "tactics": [
+          "collection",
+          "credential-access"
+        ],
+        "modified": "2026-05-12T15:12:00.620Z"
+      },
+      {
+        "id": "T1056.002",
+        "name": "GUI Input Capture",
+        "tactics": [
+          "collection",
+          "credential-access"
+        ],
+        "modified": "2026-05-12T15:12:00.706Z"
+      },
+      {
+        "id": "T1056.003",
+        "name": "Web Portal Capture",
+        "tactics": [
+          "collection",
+          "credential-access"
+        ],
+        "modified": "2026-05-12T15:12:00.640Z"
+      },
+      {
+        "id": "T1056.004",
+        "name": "Credential API Hooking",
+        "tactics": [
+          "collection",
+          "credential-access"
+        ],
+        "modified": "2025-10-24T17:49:37.119Z"
+      },
+      {
+        "id": "T1057",
+        "name": "Process Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.705Z"
+      },
+      {
+        "id": "T1069",
+        "name": "Permission Groups Discovery",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2025-10-24T17:48:26.378Z"
+      },
+      {
+        "id": "T1069.001",
+        "name": "Local Groups",
+        "tactics": [
+          "discovery"
+        ],
+        "modified": "2026-05-12T15:12:00.706Z"
+      }
+    ]
+  },
+  "urlhaus": {
+    "source": "https://urlhaus.abuse.ch/downloads/csv_recent/",
+    "sampled_rows": 1000,
+    "top_tags": [
+      [
+        "elf",
+        417
+      ],
+      [
+        "Mozi",
+        399
+      ],
+      [
+        "32-bit",
+        354
+      ],
+      [
+        "None",
+        300
+      ],
+      [
+        "mips",
+        271
+      ],
+      [
+        "mirai",
+        186
+      ],
+      [
+        "ClearFake",
+        87
+      ],
+      [
+        "arm",
+        83
+      ],
+      [
+        "ua-wget",
+        72
+      ],
+      [
+        "botnetdomain",
+        58
+      ],
+      [
+        "windows",
+        51
+      ],
+      [
+        "win-0x4679",
+        48
+      ],
+      [
+        "Vidar",
+        37
+      ],
+      [
+        "macOS",
+        35
+      ],
+      [
+        "mac-0x68dc",
+        19
+      ],
+      [
+        "opendir",
+        19
+      ],
+      [
+        "dropped-by-amadey",
+        13
+      ],
+      [
+        "gafgyt",
+        11
+      ],
+      [
+        "c2-monitor-auto",
+        9
+      ],
+      [
+        "sh",
+        9
+      ]
+    ],
+    "top_threats": [
+      [
+        "malware_download",
+        1000
+      ]
+    ],
+    "stealer_or_loader_count": 42
+  },
+  "hibp": {
+    "source": "https://haveibeenpwned.com/api/v3/breaches",
+    "breach_count": 1015,
+    "top_data_classes": [
+      [
+        "Email addresses",
+        1008
+      ],
+      [
+        "Passwords",
+        672
+      ],
+      [
+        "Names",
+        536
+      ],
+      [
+        "Usernames",
+        481
+      ],
+      [
+        "IP addresses",
+        384
+      ],
+      [
+        "Phone numbers",
+        358
+      ],
+      [
+        "Physical addresses",
+        286
+      ],
+      [
+        "Dates of birth",
+        277
+      ],
+      [
+        "Genders",
+        190
+      ],
+      [
+        "Geographic locations",
+        144
+      ],
+      [
+        "Purchases",
+        81
+      ],
+      [
+        "Website activity",
+        77
+      ],
+      [
+        "Social media profiles",
+        50
+      ],
+      [
+        "Job titles",
+        46
+      ],
+      [
+        "Private messages",
+        39
+      ],
+      [
+        "Employers",
+        37
+      ],
+      [
+        "Partial credit card data",
+        35
+      ],
+      [
+        "Device information",
+        29
+      ],
+      [
+        "Salutations",
+        28
+      ],
+      [
+        "Government issued IDs",
+        26
+      ]
+    ],
+    "recent_breaches": [
+      {
+        "Name": "OperationEndgame4",
+        "Title": "Operation Endgame 4.0",
+        "BreachDate": "2026-06-18",
+        "PwnCount": 4160519,
+        "DataClasses": [
+          "Email addresses",
+          "Passwords"
+        ]
+      },
+      {
+        "Name": "June2026StealerLogs",
+        "Title": "June 2026 Stealer Logs",
+        "BreachDate": "2026-06-15",
+        "PwnCount": 56278397,
+        "DataClasses": [
+          "Email addresses",
+          "Passwords"
+        ]
+      },
+      {
+        "Name": "MoodyBibleInstitute",
+        "Title": "Moody Bible Institute",
+        "BreachDate": "2026-06-15",
+        "PwnCount": 2303416,
+        "DataClasses": [
+          "Dates of birth",
+          "Email addresses",
+          "Genders",
+          "Marital statuses",
+          "Names",
+          "Phone numbers",
+          "Physical addresses"
+        ]
+      },
+      {
+        "Name": "Sysco",
+        "Title": "Sysco",
+        "BreachDate": "2026-06-15",
+        "PwnCount": 2691852,
+        "DataClasses": [
+          "Customer feedback",
+          "Email addresses",
+          "Employers",
+          "Job titles",
+          "Names",
+          "Phone numbers",
+          "Physical addresses",
+          "Usernames"
+        ]
+      },
+      {
+        "Name": "AmericanTower",
+        "Title": "American Tower",
+        "BreachDate": "2026-06-12",
+        "PwnCount": 216601,
+        "DataClasses": [
+          "Email addresses",
+          "Job titles",
+          "Names",
+          "Phone numbers",
+          "Physical addresses"
+        ]
+      },
+      {
+        "Name": "JCPenney",
+        "Title": "JCPenney",
+        "BreachDate": "2026-06-12",
+        "PwnCount": 368418,
+        "DataClasses": [
+          "Dates of birth",
+          "Email addresses",
+          "Government issued IDs",
+          "Job titles",
+          "Names",
+          "Phone numbers",
+          "Physical addresses",
+          "Usernames"
+        ]
+      },
+      {
+        "Name": "RalphLauren",
+        "Title": "Ralph Lauren",
+        "BreachDate": "2026-06-11",
+        "PwnCount": 139903,
+        "DataClasses": [
+          "Age groups",
+          "Email addresses",
+          "Genders",
+          "Names",
+          "Phone numbers"
+        ]
+      },
+      {
+        "Name": "UniversityOfNottingham",
+        "Title": "University of Nottingham",
+        "BreachDate": "2026-06-09",
+        "PwnCount": 454635,
+        "DataClasses": [
+          "Academic records",
+          "Citizenship statuses",
+          "Dates of birth",
+          "Disabilities",
+          "Email addresses",
+          "Ethnicities",
+          "Genders",
+          "IP addresses"
+        ]
+      },
+      {
+        "Name": "MadisonSquareGardenSports",
+        "Title": "Madison Square Garden Sports",
+        "BreachDate": "2026-06-05",
+        "PwnCount": 9796738,
+        "DataClasses": [
+          "Customer service records",
+          "Email addresses",
+          "Names",
+          "Phone numbers",
+          "Physical addresses"
+        ]
+      },
+      {
+        "Name": "AtlasMenu",
+        "Title": "Atlas Menu",
+        "BreachDate": "2026-05-30",
+        "PwnCount": 63926,
+        "DataClasses": [
+          "Email addresses",
+          "IP addresses",
+          "Passwords",
+          "Support tickets",
+          "Usernames"
+        ]
+      },
+      {
+        "Name": "BCDTravel",
+        "Title": "BCD Travel",
+        "BreachDate": "2026-05-29",
+        "PwnCount": 396313,
+        "DataClasses": [
+          "Email addresses",
+          "Employers",
+          "Job titles",
+          "Names",
+          "Phone numbers",
+          "Physical addresses",
+          "Support tickets"
+        ]
+      },
+      {
+        "Name": "BakerDistributing",
+        "Title": "Baker Distributing",
+        "BreachDate": "2026-05-23",
+        "PwnCount": 102935,
+        "DataClasses": [
+          "Email addresses",
+          "Names",
+          "Phone numbers",
+          "Physical addresses",
+          "Support tickets"
+        ]
+      },
+      {
+        "Name": "Charter",
+        "Title": "Charter",
+        "BreachDate": "2026-05-23",
+        "PwnCount": 4851517,
+        "DataClasses": [
+          "Email addresses",
+          "Job titles",
+          "Names",
+          "Phone numbers",
+          "Physical addresses"
+        ]
+      },
+      {
+        "Name": "DentaQuest",
+        "Title": "DentaQuest",
+        "BreachDate": "2026-05-23",
+        "PwnCount": 2553599,
+        "DataClasses": [
+          "Dates of birth",
+          "Email addresses",
+          "Genders",
+          "Government issued IDs",
+          "Health insurance information",
+          "Names",
+          "Phone numbers",
+          "Physical addresses"
+        ]
+      },
+      {
+        "Name": "CushmanWakefield",
+        "Title": "Cushman & Wakefield",
+        "BreachDate": "2026-05-05",
+        "PwnCount": 310431,
+        "DataClasses": [
+          "Email addresses",
+          "Job titles",
+          "Names",
+          "Phone numbers",
+          "Physical addresses",
+          "Salutations"
+        ]
+      },
+      {
+        "Name": "RebornGaming",
+        "Title": "Reborn Gaming",
+        "BreachDate": "2026-04-30",
+        "PwnCount": 126,
+        "DataClasses": [
+          "Email addresses",
+          "IP addresses"
+        ]
+      },
+      {
+        "Name": "Vimeo",
+        "Title": "Vimeo",
+        "BreachDate": "2026-04-28",
+        "PwnCount": 119167,
+        "DataClasses": [
+          "Email addresses",
+          "Names"
+        ]
+      },
+      {
+        "Name": "CTT",
+        "Title": "CTT",
+        "BreachDate": "2026-04-26",
+        "PwnCount": 468124,
+        "DataClasses": [
+          "Email addresses",
+          "Names",
+          "Phone numbers"
+        ]
+      },
+      {
+        "Name": "Udemy",
+        "Title": "Udemy",
+        "BreachDate": "2026-04-24",
+        "PwnCount": 1401259,
+        "DataClasses": [
+          "Email addresses",
+          "Employers",
+          "Job titles",
+          "Names",
+          "Payment methods",
+          "Phone numbers",
+          "Physical addresses"
+        ]
+      },
+      {
+        "Name": "ADT",
+        "Title": "ADT",
+        "BreachDate": "2026-04-20",
+        "PwnCount": 5488888,
+        "DataClasses": [
+          "Dates of birth",
+          "Email addresses",
+          "Names",
+          "Partial government issued IDs",
+          "Phone numbers",
+          "Physical addresses"
+        ]
+      }
+    ]
+  }
+}
