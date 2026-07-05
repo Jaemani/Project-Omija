@@ -844,7 +844,7 @@ _CAPTURE_SLOTS: list[dict[str, str]] = [
     {
         "slug": "objects-list",
         "title": "Object types",
-        "cap": "13 object types configured in Foundry Ontology Manager",
+        "cap": "Ontology object types configured in Foundry Ontology Manager",
         "where": "Foundry <b>Ontology Manager → Object Types</b> 목록 뷰",
     },
     {
