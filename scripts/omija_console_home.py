@@ -160,7 +160,8 @@ PAGE_CSS = """
   padding:9px 13px;min-width:104px}
 .kpi .n{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--ink);line-height:1.1}
 .kpi .l{font-size:10.5px;color:var(--muted);margin-top:3px}
-.tree{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);line-height:1.85}
+.tree{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);line-height:1.85;
+  overflow-wrap:anywhere}
 .tree .pr{color:var(--ink);font-weight:600}
 .tree .tw{color:var(--muted)}
 .tree .bdg{display:inline-block;font-size:9px;letter-spacing:.4px;padding:0 6px;

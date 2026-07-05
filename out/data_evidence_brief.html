@@ -7,11 +7,13 @@
   <style>
     :root { color-scheme: dark; --bg:#0b0c0d; --panel:#151719; --panel2:#1d2024; --line:#333942; --ink:#f2f4f8; --muted:#aeb7c2; --public:#d6a21d; --live:#58a6ff; --good:#2ea043; --warn:#f0b73f; --bad:#f85149; }
     * { box-sizing:border-box; }
+    html,body { overflow-x:hidden; }
     body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.48 system-ui,-apple-system,"Segoe UI",sans-serif; }
     header { padding:22px; border-bottom:1px solid var(--line); background:linear-gradient(180deg,#171a1e,#101214); }
-    main { padding:18px 22px 42px; display:grid; gap:18px; }
+    main { padding:18px 22px 42px; display:grid; grid-template-columns:minmax(0,1fr); gap:18px; }
     .kicker,.eyebrow { font:11px ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--muted); letter-spacing:1.2px; text-transform:uppercase; }
-    h1 { margin:5px 0 6px; font-size:24px; letter-spacing:0; }
+    h1 { margin:5px 0 6px; font-size:24px; letter-spacing:0; overflow-wrap:anywhere; }
+    header p,.cd { overflow-wrap:anywhere; }
     h2 { margin:0 0 10px; font-size:16px; }
     p { margin:0; color:var(--muted); }
     a { color:var(--live); }
@@ -41,6 +43,11 @@
     .step span { color:var(--muted); font-size:12px; }
     .note { border:1px solid color-mix(in srgb,var(--warn) 48%,var(--line)); border-left:4px solid var(--warn); border-radius:8px; padding:12px; background:#17130a; color:#f3d58b; }
     @media (max-width:900px) { .grid,.split,.flow-grid { grid-template-columns:1fr; } .policy div { grid-template-columns:1fr; } }
+    @media (max-width:560px) {
+      main { padding:16px 14px; }
+      h1 { font-size:20px; }
+      .split table { display:block; overflow-x:auto; white-space:nowrap; }
+    }
   </style>
 </head>
 <body>
@@ -58,10 +65,11 @@
 .omija-nav a.onav-item.cur::before{content:"● ";color:#3987e5;font-size:8px}
 /* narrow: brand takes its own line so all four items get a clean full-width row;
    items still wrap (never clip) and horizontally scroll as a last resort */
-@media(max-width:480px){
-  .omija-nav .onav-wrap{gap:4px 14px;padding:0 14px}
+@media(max-width:520px){
+  .omija-nav .onav-wrap{gap:2px 14px;padding:0 14px}
   .omija-nav .onav-brand{width:100%}
-  .omija-nav .onav-items{flex-wrap:wrap;overflow-x:auto;max-width:100%}
+  .omija-nav .onav-items{width:100%;flex-wrap:wrap}
+  .omija-nav a.onav-item{padding:7px 10px 7px 0}
 }
 </style>
 <nav class="omija-nav" aria-label="Omija surfaces">

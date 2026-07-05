@@ -126,12 +126,13 @@ def render(payload: dict[str, Any]) -> str:
   --engine:#2ea043; --live:#58a6ff; --danger:#f85149; --lock:#6e7681;
 }}
 * {{ box-sizing:border-box; }}
+html,body {{ overflow-x:hidden; }}
 body {{ margin:0; background:var(--bg); color:var(--ink); font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif; }}
 header {{ padding:18px 22px; border-bottom:1px solid var(--line); background:var(--panel); }}
 .kicker {{ font:11px ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--muted); letter-spacing:1.2px; text-transform:uppercase; }}
-h1 {{ margin:5px 0 4px; font-size:22px; letter-spacing:0; }}
-.sub {{ color:var(--muted); max-width:920px; }}
-main {{ padding:18px 22px 42px; display:grid; gap:18px; }}
+h1 {{ margin:5px 0 4px; font-size:22px; letter-spacing:0; overflow-wrap:anywhere; }}
+.sub {{ color:var(--muted); max-width:920px; overflow-wrap:anywhere; }}
+main {{ padding:18px 22px 42px; display:grid; grid-template-columns:minmax(0,1fr); gap:18px; }}
 .legend {{ display:flex; flex-wrap:wrap; gap:8px; }}
 .chip {{ border:1px solid var(--line); border-radius:4px; padding:4px 7px; font:11px ui-monospace,SFMono-Regular,Menlo,monospace; }}
 .seed {{ color:var(--seed); }} .public {{ color:var(--public); }} .engine {{ color:var(--engine); }} .live {{ color:var(--live); }} .locked {{ color:var(--lock); }}
@@ -154,6 +155,7 @@ svg {{ display:block; min-width:1120px; width:100%; height:auto; }}
 .edge.public {{ stroke:var(--public); }} .edge.engine {{ stroke:var(--engine); }} .edge.live {{ stroke:var(--live); }}
 .caption {{ color:var(--muted); font-size:12px; margin-top:8px; }}
 @media (max-width:900px) {{ .grid {{ grid-template-columns:1fr; }} .stats {{ grid-template-columns:1fr 1fr; }} }}
+@media (max-width:560px) {{ header {{ padding:16px 14px; }} main {{ padding:16px 14px 36px; }} h1 {{ font-size:19px; }} .stats {{ grid-template-columns:1fr; }} }}
 </style>
 </head>
 <body>

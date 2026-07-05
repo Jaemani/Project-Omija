@@ -104,10 +104,11 @@ NAV_CSS = """
 .omija-nav a.onav-item.cur::before{content:"● ";color:#3987e5;font-size:8px}
 /* narrow: brand takes its own line so all four items get a clean full-width row;
    items still wrap (never clip) and horizontally scroll as a last resort */
-@media(max-width:480px){
-  .omija-nav .onav-wrap{gap:4px 14px;padding:0 14px}
+@media(max-width:520px){
+  .omija-nav .onav-wrap{gap:2px 14px;padding:0 14px}
   .omija-nav .onav-brand{width:100%}
-  .omija-nav .onav-items{flex-wrap:wrap;overflow-x:auto;max-width:100%}
+  .omija-nav .onav-items{width:100%;flex-wrap:wrap}
+  .omija-nav a.onav-item{padding:7px 10px 7px 0}
 }
 """
 
@@ -186,6 +187,11 @@ code,kbd,.mono{font-family:var(--mono)}
   box-shadow:0 0 8px var(--band-b);flex:none}
 .synbar b{color:#ffe6a6;font-family:var(--mono);letter-spacing:.5px}
 .synbar .kr{color:#d9c184}
+@media(max-width:640px){
+  .synbar{flex-wrap:wrap;align-items:flex-start;row-gap:2px;gap:8px}
+  .synbar b{flex:none}
+  .synbar .kr{flex:1 1 100%;white-space:normal;word-break:keep-all}
+}
 
 /* provenance chips — the real/synthetic separation, fixed colors */
 .pchip{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);

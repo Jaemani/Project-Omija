@@ -437,8 +437,10 @@ body{{padding:0 0 28px;overflow-x:hidden}}
 .topbar .ver{{font-family:var(--mono);font-size:11px;color:var(--muted);
   border:1px solid var(--hair-2);border-radius:3px;padding:2px 7px}}
 .hero{{padding:16px 20px;border-bottom:1px solid var(--hair);background:var(--surface-2)}}
-.hero h1{{margin:0 0 4px;font-size:18px;font-weight:600}}
-.hero .sub{{color:var(--ink-2);font-size:12.5px}}
+.hero h1{{margin:0 0 4px;font-size:18px;font-weight:600;overflow-wrap:anywhere}}
+.hero .sub{{color:var(--ink-2);font-size:12.5px;overflow-wrap:anywhere}}
+.lbl{{overflow-wrap:anywhere}}
+@media(max-width:560px){{.hero,main,.topbar{{padding-left:14px;padding-right:14px}}}}
 .caption{{margin-top:10px;padding:9px 12px;border-left:2px solid var(--c-output);
   background:rgba(144,133,233,.08);border-radius:0 5px 5px 0;font-size:13px;color:var(--ink)}}
 main{{padding:18px 20px;display:flex;flex-direction:column;gap:22px}}

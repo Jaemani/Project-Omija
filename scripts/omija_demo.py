@@ -159,6 +159,13 @@ PAGE_CSS = """
 .problem{margin-top:14px;font-size:13px;color:var(--ink-2);border-left:2px solid var(--band-a);
   padding:7px 12px;background:rgba(208,59,59,.05);border-radius:0 5px 5px 0}
 .problem b{color:var(--ink)}
+@media(max-width:700px){
+  .alert .abody{grid-template-columns:1fr;gap:14px}
+  .alert .meta{margin-left:0;text-align:left}
+  .alert .atitle{overflow-wrap:anywhere}
+  .alert .chain{overflow-wrap:anywhere;word-break:break-word;line-height:1.8}
+  .alert .facts b{overflow-wrap:anywhere}
+}
 
 /* TRIAGE queue */
 .qcap{font-size:13px;color:var(--c-derived);margin-bottom:14px;font-weight:500}
@@ -364,23 +371,24 @@ details.ev>summary .src{margin-left:auto;font-family:var(--mono);font-size:10.5p
    captured, instruction cards saying what to shoot and what it proves) */
 .captures{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
 @media(max-width:820px){.captures{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.captures{grid-template-columns:1fr}}
-.capslot{border:1px solid var(--hair-2);border-radius:8px;background:var(--surface);overflow:hidden;
-  display:flex;flex-direction:column}
-.capslot .cap-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 11px;
-  border-bottom:1px solid var(--hair);background:var(--surface-2)}
-.capslot .cap-slug{font-family:var(--mono);font-size:9px;letter-spacing:.6px;color:var(--muted);
-  text-transform:uppercase}
-.capslot .cap-t{font-size:12.5px;font-weight:600;color:var(--ink)}
+@media(max-width:560px){.captures{grid-template-columns:1fr}}
+.capslot{margin:0;border:1px solid var(--hair-2);border-radius:8px;background:var(--surface);
+  overflow:hidden;display:flex;flex-direction:column}
 .capslot img{display:block;width:100%;max-width:100%;height:auto;border-bottom:1px solid var(--hair)}
-.capslot .cap-body{padding:10px 12px;font-size:11.5px;color:var(--ink-2);line-height:1.6;flex:1}
-.capslot .cap-body b{color:var(--ink)}
-.capslot.empty{border-style:dashed;background:
-  repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(255,255,255,.012) 7px,rgba(255,255,255,.012) 14px),var(--surface)}
-.capslot .cap-shot{display:inline-block;margin-bottom:7px;font-family:var(--mono);font-size:9px;
-  letter-spacing:.6px;color:var(--band-b);border:1px solid rgba(250,178,25,.4);border-radius:3px;padding:1px 7px}
-.capslot .cap-where b{color:var(--ink)}
-.capslot .cap-proves{margin-top:7px;padding-top:7px;border-top:1px solid var(--hair);color:var(--c-evidence)}
+.capslot .cap-body{padding:9px 12px 11px;display:flex;flex-direction:column;gap:3px;flex:1}
+.capslot .cap-t{font-size:12.5px;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+.capslot .cap-cap{font-size:11.5px;color:var(--c-evidence);line-height:1.5;overflow-wrap:anywhere}
+.opt-caps{margin-top:12px;border:1px solid var(--hair);border-radius:7px;background:var(--surface)}
+.opt-caps summary{cursor:pointer;padding:9px 12px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.5px;color:var(--muted);list-style:none}
+.opt-caps summary::-webkit-details-marker{display:none}
+.opt-caps summary::before{content:"▸ ";color:var(--muted)}
+.opt-caps[open] summary::before{content:"▾ "}
+.opt-list{padding:0 12px 10px}
+.opt-row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  padding:6px 0;border-top:1px solid var(--hair);font-size:11.5px}
+.opt-row .cap-t{font-weight:500}
+.opt-row .opt-note{font-family:var(--mono);font-size:9.5px;letter-spacing:.4px;color:var(--muted)}
 """
 
 
@@ -828,42 +836,46 @@ def _workflow(inc: dict, draft: dict, cites: list, merge: dict | None) -> str:
 # Foundry capture slots — real-platform screenshots that back the LIVE claim.
 # slug, title, where-to-shoot, what-it-proves. Korean prose, English API names.
 # --------------------------------------------------------------------------- #
+# Three slots have real captures for the final submission (rendered as
+# "Captured Evidence"); the rest are optional Q&A backups shown, downgraded, only
+# if their PNG is later added. Presence on disk drives which group a slot lands
+# in — so this stays honest to whatever is actually in out/captures/.
 _CAPTURE_SLOTS: list[dict[str, str]] = [
     {
         "slug": "objects-list",
-        "title": "객체 13종 목록",
-        "where": "Foundry <b>Ontology Manager → Object Types</b> 목록 뷰 (13종이 한 화면에)",
-        "proves": f"{ONTOLOGY_OBJECT_TYPES}종 객체 타입이 실제 배포돼 있음 (registry 4 + evidence 4 + derived 5)",
-    },
-    {
-        "slug": "link-graph",
-        "title": "링크 그래프 · of/targets 보이게",
-        "where": "Ontology Manager <b>링크 그래프</b> — CredentialExposure 노드에서 <span class='mono'>of</span>·<span class='mono'>targets</span> 두 엣지가 함께 보이게",
-        "proves": "of ≠ targets 가 별도 링크 타입으로 존재 — 계정 소유(of)와 표적 자산(targets)이 분리됨",
+        "title": "Object types",
+        "cap": "13 object types configured in Foundry Ontology Manager",
+        "where": "Foundry <b>Ontology Manager → Object Types</b> 목록 뷰",
     },
     {
         "slug": "action-types",
-        "title": "워크플로 액션 8종",
-        "where": "Ontology Manager <b>→ Action Types</b> 목록 (8종 워크플로 액션)",
-        "proves": "상태 전이 액션 8종이 온톨로지에 배포돼 있음 — 데모의 상태 기계가 실재",
-    },
-    {
-        "slug": "merged-proposal",
-        "title": "승인·머지된 proposal",
-        "where": "Ontology <b>Proposals</b> 뷰 — approved/merged 상태의 온톨로지 변경 proposal",
-        "proves": "온톨로지 변경이 사람 검토·승인 후 main에 머지됨 (human-on-the-loop 거버넌스)",
-    },
-    {
-        "slug": "incident-history",
-        "title": "오늘 상태 전이 History 탭",
-        "where": "임의의 <b>CompromiseIncident</b> 객체 → <b>History</b> 탭 (오늘 실행된 status 전이)",
-        "proves": "가상 인시던트의 상태 전이가 오늘 실제 감사 History로 기록됨 (open→triaged→…)",
+        "title": "Workflow actions",
+        "cap": "Semantic workflow actions, not plain CRUD",
+        "where": "Ontology Manager <b>→ Action Types</b> 목록 (상태 전이 액션)",
     },
     {
         "slug": "osdk-020",
         "title": f"Developer Console SDK {OSDK_VERSION}",
-        "where": f"<b>Developer Console → SDK</b> 페이지, 버전 <span class='mono'>{OSDK_VERSION}</span> 표기",
-        "proves": f"OSDK {OSDK_VERSION} 패키지가 published — program_threat_view 등 코드가 붙는 대상",
+        "cap": "Ontology is code-addressable through SDK/API",
+        "where": f"<b>Developer Console → SDK</b>, 버전 <span class='mono'>{OSDK_VERSION}</span>",
+    },
+    {
+        "slug": "link-graph",
+        "title": "Link graph (of / targets)",
+        "cap": "of ≠ targets shown as distinct link types",
+        "where": "Ontology Manager 링크 그래프 — CredentialExposure의 of·targets 엣지",
+    },
+    {
+        "slug": "merged-proposal",
+        "title": "Merged proposal",
+        "cap": "Ontology change human-reviewed and merged",
+        "where": "Ontology <b>Proposals</b> 뷰 — approved/merged 상태",
+    },
+    {
+        "slug": "incident-history",
+        "title": "Incident history",
+        "cap": "State transitions recorded in audit history",
+        "where": "<b>CompromiseIncident → History</b> 탭",
     },
 ]
 
@@ -878,45 +890,55 @@ def _capture_data_uri(path: str) -> tuple[str, int]:
 
 
 def _foundry_captures() -> tuple[str, list[str]]:
-    """Render the 6-slot Foundry capture grid. For each slug: embed
-    out/captures/<slug>.png inline if it exists, else an instruction card (what
-    to shoot + what it proves). Returns (html, warnings); warnings flag any
-    embed over 600KB for the CLI output."""
+    """Render the Foundry capture evidence. Slots whose PNG exists in
+    out/captures/ are shown as prominent "Captured Evidence" image cards with a
+    one-line English caption; slots without a PNG are downgraded into a
+    collapsed "Q&A backup — capture pending" list (never a broken empty card).
+    Returns (html, warnings); warnings flag any embed over 600KB."""
     warnings: list[str] = []
-    slots = []
+    captured: list[str] = []
+    pending: list[str] = []
     for s in _CAPTURE_SLOTS:
         png = os.path.join(CAPTURES_DIR, f"{s['slug']}.png")
-        head = (f'<div class="cap-h"><span class="cap-slug">{_e(s["slug"])}</span>'
-                f'<span class="cap-t">{s["title"]}</span>{chip("live")}</div>')
         if os.path.isfile(png):
             uri, size = _capture_data_uri(png)
             if size > CAPTURE_WARN_BYTES:
                 warnings.append(
                     f"{s['slug']}.png is {size / 1024:.0f}KB (>600KB) — compress before demo")
-            slots.append(
-                f'<div class="capslot">{head}'
+            captured.append(
+                f'<figure class="capslot">'
                 f'<img src="{uri}" alt="{_e(s["title"])} — Foundry capture">'
-                f'<div class="cap-body"><span class="cap-proves">증명: {s["proves"]}</span></div>'
-                f'</div>'
+                f'<figcaption class="cap-body">'
+                f'<span class="cap-t">{s["title"]}</span>'
+                f'<span class="cap-cap">{s["cap"]}</span></figcaption>'
+                f'</figure>'
             )
         else:
-            slots.append(
-                f'<div class="capslot empty">{head}'
-                f'<div class="cap-body"><span class="cap-shot">촬영 대기</span>'
-                f'<div class="cap-where"><b>어디서:</b> {s["where"]}</div>'
-                f'<div class="cap-proves">증명: {s["proves"]}</div></div></div>'
+            pending.append(
+                f'<div class="opt-row"><span class="cap-t">{s["title"]}</span>'
+                f'<span class="opt-note">Q&amp;A backup · capture pending</span></div>'
             )
-    grid = f'<div class="captures">{"".join(slots)}</div>'
-    return grid, warnings
+
+    blocks = []
+    if captured:
+        blocks.append(f'<div class="captures">{"".join(captured)}</div>')
+    else:
+        blocks.append('<div class="sec-sub">확보된 캡처 없음 — 발표에서는 상단 감사 기록으로 증명.</div>')
+    if pending:
+        blocks.append(
+            f'<details class="opt-caps"><summary>선택 캡처 · Q&amp;A 백업 ({len(pending)}종 · 미확보)</summary>'
+            f'<div class="opt-list">{"".join(pending)}</div></details>'
+        )
+    return "".join(blocks), warnings
 
 
 def _captures_block(captures_grid: str) -> str:
-    """The captures grid wrapped with its in-section header, injected into the
+    """The captures block wrapped with its in-section header, injected into the
     실제로 존재하는 것 (#live) section."""
     return f"""
-  <div class="sec-k" style="margin-top:26px">실물 캡처 · Foundry 화면 증거 {chip('live')}</div>
-  <div class="sec-sub" style="margin-bottom:0">위 감사 기록이 실제 Foundry 위에서 벌어진다는 6종 화면 증거 —
-     캡처가 있으면 이미지로, 없으면 무엇을·어디서 찍고 무엇을 증명하는지가 표시된다.</div>
+  <div class="sec-k" style="margin-top:26px">Captured Evidence · Foundry 화면 {chip('live')}</div>
+  <div class="sec-sub" style="margin-bottom:0">상단 감사 기록이 실제 Foundry 위에서 벌어진다는 것을,
+     확보된 화면 캡처로 뒷받침한다 — 객체 타입, 워크플로 액션, SDK 접근.</div>
   {captures_grid}"""
 
 
@@ -929,6 +951,9 @@ def _live_strip(chain: dict | None, captures_grid: str) -> str:
         " 온톨로지에서 실행되고 readback으로 검증된 상태 전이 감사 기록입니다.",
         f"온톨로지 {ONTOLOGY_OBJECT_TYPES}개 객체 타입과 8종 워크플로 액션은 승인된 proposal로"
         f" main에 병합됐고 OSDK {OSDK_VERSION}으로 배포돼 있습니다.",
+        "Foundry 화면 증거는 <b>세 가지만</b> 씁니다 — 객체 타입 목록, 워크플로 액션"
+        "(단순 CRUD 아님), Developer Console의 SDK 접근. 화면만 만든 게 아니라 코드에서"
+        " 다룰 수 있는 온톨로지라는 증거입니다. (실제 reasoning 검증은 로컬 SQLite 엔진에서 수행)",
         "이 표가 '데이터는 가상, 시스템은 진짜'의 증거입니다 — <b>가상 인시던트가 진짜 플랫폼"
         " 위를 흘렀습니다.</b>",
     ])
