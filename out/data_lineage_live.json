@@ -1,0 +1,101 @@
+{
+  "generated_at": "2026-07-05T04:56:08.789070+00:00",
+  "source": "scripts/data_lineage_live.py",
+  "honesty": "approved live StealthMole run executed; this seed returned 0 rows; provider+redaction lanes are real, normalized/ontology/engine counts from this run are 0; the same populated pipeline is demonstrated on the synthetic scenario and labelled distinctly",
+  "run": {
+    "generated_at": "2026-07-04T23:46:31.064187+00:00",
+    "seed_id": "domain:sup-a:supplier-a.example",
+    "obs_type": "domain",
+    "domain_value": "supplier-a.example",
+    "modules": {
+      "cl": {
+        "status": 200,
+        "returned": 0,
+        "written": 0,
+        "error": null
+      },
+      "cds": {
+        "status": 200,
+        "returned": 0,
+        "written": 0,
+        "error": null
+      },
+      "cb": {
+        "status": 200,
+        "returned": 0,
+        "written": 0,
+        "error": null
+      },
+      "dt": {
+        "status": 403,
+        "returned": 0,
+        "written": 0,
+        "error": "HTTPError"
+      },
+      "tt": {
+        "status": 404,
+        "returned": 0,
+        "written": 0,
+        "error": "HTTPError"
+      }
+    },
+    "returned_total": 0,
+    "raw_secret_removed": true
+  },
+  "import_boundary": {
+    "input_records": 0,
+    "normalized_exposures": 0,
+    "threat_sources": 0,
+    "rejected": 0,
+    "provider_api_called_at_import": false,
+    "raw_secret_output": "redacted"
+  },
+  "synthetic_scenario": {
+    "eval_records": 74,
+    "active_suppliers": 3,
+    "suppliers": 9,
+    "query_items": 118,
+    "asset_surface_seeds": 81
+  },
+  "foundry": {
+    "verified": {
+      "of_link": {
+        "dataset": "Seed/26_link_of",
+        "schema": "ok"
+      },
+      "targets_link": {
+        "dataset": "Seed/27_link_targets",
+        "schema": "ok"
+      },
+      "workflow_actions": 8,
+      "osdk": "0.2.0",
+      "action_transitions_readback_verified": 5,
+      "ontology_api_name": "ontology-cafadd0c-45e2-4808-98ab-787ee7f2903a"
+    },
+    "in_progress_schema_repair": [
+      {
+        "entity": "CredentialExposure object",
+        "dataset": "Seed/06_credential_exposure",
+        "state": "schemaNotFound"
+      },
+      {
+        "entity": "ThreatSource object",
+        "dataset": "Seed/08_threat_source",
+        "state": "schemaNotFound"
+      },
+      {
+        "entity": "sourced_from link",
+        "dataset": "Seed/28_link_sourced_from",
+        "state": "schemaNotFound"
+      }
+    ]
+  },
+  "redaction": {
+    "password": "removed",
+    "cookie": "removed",
+    "token": "removed",
+    "provider_raw_payload": "not_exported",
+    "source_ref": "hashed",
+    "masked_value": "boundary-generated"
+  }
+}

@@ -11,6 +11,7 @@ build:
 	uv run python scripts/data_coverage_map.py
 	uv run python scripts/data_evidence_brief.py
 	uv run python scripts/program_threat_view.py
+	uv run python scripts/data_lineage_live.py
 
 test:
 	uv run pytest -q

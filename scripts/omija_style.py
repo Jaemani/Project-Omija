@@ -85,6 +85,7 @@ NAV_ITEMS: list[tuple[str, str]] = [
     ("data_coverage_map.html",  "커버리지 맵"),
     ("data_evidence_brief.html", "데이터 증거"),
     ("program_threat_view.html", "프로그램 뷰"),
+    ("data_lineage_live.html", "데이터 계보"),
 ]
 
 # Self-contained: carries its own <style> with hardcoded dark tokens so it looks
