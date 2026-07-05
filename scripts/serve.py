@@ -160,10 +160,40 @@ class _InjectingHandler(SimpleHTTPRequestHandler):
 _PORT = 8000
 
 
+def _reachable_addrs() -> list[tuple[str, str]]:
+    """Best-effort list of (label, ip) the server is reachable on."""
+    addrs: list[tuple[str, str]] = []
+    # Tailscale IP (100.64.0.0/10 CGNAT range), if tailscale is up
+    try:
+        out = subprocess.run(["tailscale", "ip", "-4"], capture_output=True,
+                             text=True, timeout=3)
+        ip = out.stdout.strip().splitlines()[0] if out.stdout.strip() else ""
+        if ip:
+            addrs.append(("tailscale", ip))
+    except Exception:
+        pass
+    # LAN IP via a dummy connect (no packets actually sent)
+    try:
+        import socket
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        lan = s.getsockname()[0]
+        s.close()
+        if lan and all(lan != a for _, a in addrs):
+            addrs.append(("lan", lan))
+    except Exception:
+        pass
+    return addrs
+
+
 def main() -> int:
     global _PORT
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8000)
+    ap.add_argument("--host", default="0.0.0.0",
+                    help="bind address; 0.0.0.0 exposes to LAN/Tailscale "
+                         "(default), 127.0.0.1 for localhost-only")
     ap.add_argument("--no-watch", action="store_true",
                     help="serve current out/ without rebuilding on change")
     ap.add_argument("--no-build", action="store_true",
@@ -178,10 +208,13 @@ def main() -> int:
         threading.Thread(target=watch_loop, daemon=True).start()
 
     handler = partial(_InjectingHandler, directory=str(OUT))
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), handler)
-    print(f"\n  Omija dev server → http://localhost:{args.port}/")
+    server = ThreadingHTTPServer((args.host, args.port), handler)
+    print(f"\n  Omija dev server → http://localhost:{args.port}/", flush=True)
+    if args.host == "0.0.0.0":
+        for label, addr in _reachable_addrs():
+            print(f"  {label:9} http://{addr}:{args.port}/", flush=True)
     print(f"  landing: {LANDING}   |   watch: {'off' if args.no_watch else 'on'}"
-          f"   |   Ctrl-C to stop\n")
+          f"   |   Ctrl-C to stop\n", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
