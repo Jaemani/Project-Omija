@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T21:01:23.888042+00:00",
+  "generated_at": "2026-07-05T00:21:08.430674+00:00",
   "mode": "public_context_snapshot_non_sensitive",
   "policy": {
     "raw_credentials": "not collected",
@@ -852,40 +852,36 @@
     "sampled_rows": 1000,
     "top_tags": [
       [
-        "elf",
-        414
+        "Mozi",
+        406
       ],
       [
-        "Mozi",
-        400
+        "elf",
+        402
       ],
       [
         "32-bit",
-        355
+        358
       ],
       [
         "None",
-        299
+        298
       ],
       [
         "mips",
-        271
+        279
       ],
       [
         "mirai",
-        188
+        183
       ],
       [
         "ClearFake",
-        88
+        94
       ],
       [
         "arm",
-        84
-      ],
-      [
-        "ua-wget",
-        68
+        79
       ],
       [
         "botnetdomain",
@@ -893,23 +889,27 @@
       ],
       [
         "windows",
-        52
+        55
+      ],
+      [
+        "ua-wget",
+        53
       ],
       [
         "win-0x4679",
-        49
+        52
+      ],
+      [
+        "macOS",
+        38
       ],
       [
         "Vidar",
         37
       ],
       [
-        "macOS",
-        35
-      ],
-      [
         "mac-0x68dc",
-        19
+        20
       ],
       [
         "opendir",
@@ -917,18 +917,18 @@
       ],
       [
         "dropped-by-amadey",
-        15
+        17
       ],
       [
         "gafgyt",
         11
       ],
       [
-        "c2-monitor-auto",
+        "mac-0xfb64",
         9
       ],
       [
-        "sh",
+        "mac-0x76c7",
         9
       ]
     ],
@@ -938,7 +938,7 @@
         1000
       ]
     ],
-    "stealer_or_loader_count": 44
+    "stealer_or_loader_count": 45
   },
   "hibp": {
     "source": "https://haveibeenpwned.com/api/v3/breaches",

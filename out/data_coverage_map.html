@@ -55,11 +55,18 @@ svg { display:block; min-width:1120px; width:100%; height:auto; }
 .omija-nav a.onav-item:hover{color:#ececea;background:rgba(255,255,255,.03)}
 .omija-nav a.onav-item.cur{color:#ececea;border-bottom-color:#3987e5}
 .omija-nav a.onav-item.cur::before{content:"● ";color:#3987e5;font-size:8px}
+/* narrow: brand takes its own line so all four items get a clean full-width row;
+   items still wrap (never clip) and horizontally scroll as a last resort */
+@media(max-width:480px){
+  .omija-nav .onav-wrap{gap:4px 14px;padding:0 14px}
+  .omija-nav .onav-brand{width:100%}
+  .omija-nav .onav-items{flex-wrap:wrap;overflow-x:auto;max-width:100%}
+}
 </style>
 <nav class="omija-nav" aria-label="Omija surfaces">
   <div class="onav-wrap">
     <span class="onav-brand">OMIJA</span>
-    <div class="onav-items"><a class="onav-item" href="omija_console_home.html">평시 콘솔</a><a class="onav-item" href="omija_demo.html">사건 보고서</a><a class="onav-item cur" href="data_coverage_map.html" aria-current="page">커버리지 맵</a><a class="onav-item" href="program_threat_view.html">프로그램 뷰</a></div>
+    <div class="onav-items"><a class="onav-item" href="omija_console_home.html">평시 콘솔</a><a class="onav-item" href="omija_demo.html">사건 보고서</a><a class="onav-item cur" href="data_coverage_map.html" aria-current="page">커버리지 맵</a><a class="onav-item" href="data_evidence_brief.html">데이터 증거</a><a class="onav-item" href="program_threat_view.html">프로그램 뷰</a></div>
   </div>
 </nav>
 <header>

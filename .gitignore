@@ -49,6 +49,7 @@ out/p0b/
 !out/program_threat_view.json
 !out/foundry_action_chain.json
 !out/data_coverage_map.html
+!out/data_evidence_brief.html
 !out/stealthmole_role_map.html
 !out/public_context_matrix.html
 !out/collection_plan.json
@@ -60,3 +61,4 @@ out/p0b/
 !out/public_context/summary.md
 !out/captures/
 !out/captures/.gitkeep
+out/captures/_qa_refs/

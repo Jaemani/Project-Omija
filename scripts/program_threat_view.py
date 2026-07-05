@@ -427,10 +427,10 @@ def render_html(view: dict[str, Any], *, backend: str) -> str:
 *{{box-sizing:border-box}}
 html,body{{margin:0;background:var(--plane);color:var(--ink);font-family:var(--sans);
   font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}}
-body{{padding:0 0 28px}}
+body{{padding:0 0 28px;overflow-x:hidden}}
 .mono{{font-family:var(--mono)}}
 .scroll-x{{overflow-x:auto}}
-.topbar{{display:flex;align-items:center;gap:14px;padding:12px 20px;
+.topbar{{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;padding:12px 20px;
   border-bottom:1px solid var(--hair);background:var(--surface);position:sticky;top:0}}
 .topbar .brand{{font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
   text-transform:uppercase}}

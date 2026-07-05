@@ -16,10 +16,10 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--sans);
   font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
-body{padding:0 0 28px}
+body{padding:0 0 28px;overflow-x:hidden}
 .mono{font-family:var(--mono)}
 .scroll-x{overflow-x:auto}
-.topbar{display:flex;align-items:center;gap:14px;padding:12px 20px;
+.topbar{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;padding:12px 20px;
   border-bottom:1px solid var(--hair);background:var(--surface);position:sticky;top:0}
 .topbar .brand{font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
   text-transform:uppercase}
@@ -70,11 +70,18 @@ tr.cross-row{background:rgba(236,131,90,.08)}
 .omija-nav a.onav-item:hover{color:#ececea;background:rgba(255,255,255,.03)}
 .omija-nav a.onav-item.cur{color:#ececea;border-bottom-color:#3987e5}
 .omija-nav a.onav-item.cur::before{content:"● ";color:#3987e5;font-size:8px}
+/* narrow: brand takes its own line so all four items get a clean full-width row;
+   items still wrap (never clip) and horizontally scroll as a last resort */
+@media(max-width:480px){
+  .omija-nav .onav-wrap{gap:4px 14px;padding:0 14px}
+  .omija-nav .onav-brand{width:100%}
+  .omija-nav .onav-items{flex-wrap:wrap;overflow-x:auto;max-width:100%}
+}
 </style>
 <nav class="omija-nav" aria-label="Omija surfaces">
   <div class="onav-wrap">
     <span class="onav-brand">OMIJA</span>
-    <div class="onav-items"><a class="onav-item" href="omija_console_home.html">평시 콘솔</a><a class="onav-item" href="omija_demo.html">사건 보고서</a><a class="onav-item" href="data_coverage_map.html">커버리지 맵</a><a class="onav-item cur" href="program_threat_view.html" aria-current="page">프로그램 뷰</a></div>
+    <div class="onav-items"><a class="onav-item" href="omija_console_home.html">평시 콘솔</a><a class="onav-item" href="omija_demo.html">사건 보고서</a><a class="onav-item" href="data_coverage_map.html">커버리지 맵</a><a class="onav-item" href="data_evidence_brief.html">데이터 증거</a><a class="onav-item cur" href="program_threat_view.html" aria-current="page">프로그램 뷰</a></div>
   </div>
 </nav>
 <div class="topbar">

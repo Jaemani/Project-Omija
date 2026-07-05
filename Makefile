@@ -9,6 +9,7 @@ build:
 	uv run python scripts/omija_console_home.py
 	uv run python scripts/omija_demo.py
 	uv run python scripts/data_coverage_map.py
+	uv run python scripts/data_evidence_brief.py
 	uv run python scripts/program_threat_view.py
 
 test:

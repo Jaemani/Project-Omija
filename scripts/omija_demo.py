@@ -168,7 +168,7 @@ PAGE_CSS = """
 .qrow:first-child{border-top:none}
 .qrow .rk{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right}
 .qrow .bd{width:10px;height:10px;border-radius:50%;justify-self:center}
-.qrow .nm{color:var(--ink);font-weight:500}
+.qrow .nm{color:var(--ink);font-weight:500;min-width:0;overflow-wrap:anywhere}
 .qrow .nm .sid{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-left:6px}
 .qrow .nm .hl{font-family:var(--mono);font-size:9.5px;letter-spacing:.6px;color:var(--band-a);
   border:1px solid rgba(208,59,59,.5);border-radius:3px;padding:1px 6px;margin-left:8px}
@@ -189,6 +189,21 @@ PAGE_CSS = """
 .qstale .n{font-family:var(--mono);font-size:15px;color:var(--ink-2)}
 .qstale .l{font-size:12px;color:var(--muted)}
 .evn{font-family:var(--mono);font-size:10.5px;color:var(--c-evidence)}
+/* narrow: the 6-col triage grid clips the score/cites columns — reflow each
+   supplier row into a stacked card. line1 rank+dot+name(+id+HEADLINE);
+   line2 program path (inside .nm, wraps); line3 meta = band label + score +
+   grade + cites, flex-wrapped so nothing clips. table stays intact above 700px. */
+@media(max-width:700px){
+  .qrow{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:7px;padding:12px 14px}
+  .qrow .rk{order:1;flex:none}
+  .qrow .bd{order:2;flex:none;align-self:center}
+  .qrow .nm{order:3;flex:1 1 auto;min-width:60%}
+  .qrow .nm .tier{white-space:normal}
+  .qrow>.tier{order:4}
+  .qrow .sc{order:5;text-align:left;display:flex;align-items:baseline;gap:6px}
+  .qrow .sc .gr{text-align:left}
+  .qrow .evn{order:6;margin-left:auto}
+}
 
 /* DIFFERENTIATION — same input, three systems */
 .tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}
@@ -1112,11 +1127,13 @@ def build_html() -> tuple[str, dict]:
 {synthetic_banner()}
 {nav_strip("omija_demo.html")}
 {chip_legend()}
-<div class="mast"><div class="wrap">
+<div class="mast"><div class="wrap"><div class="masthead">
+  <div class="mhead-main">
+    <div class="brand">OMIJA · SUPPLY-CHAIN CREDENTIAL EXPOSURE — EARLY WARNING</div>
+    <div class="tag">방산 공급망 자격증명 노출 조기경보 · 활성 경로 우선 트리아지 · human-on-the-loop</div>
+  </div>
   <span class="ver">engine · sqlite mock pipeline · offline</span>
-  <div class="brand">OMIJA · SUPPLY-CHAIN CREDENTIAL EXPOSURE — EARLY WARNING</div>
-  <div class="tag">방산 공급망 자격증명 노출 조기경보 · 활성 경로 우선 트리아지 · human-on-the-loop</div>
-</div></div>
+</div></div></div>
 {body}
 </body></html>"""
 

@@ -82,6 +82,7 @@ NAV_ITEMS: list[tuple[str, str]] = [
     ("omija_console_home.html", "평시 콘솔"),
     ("omija_demo.html",         "사건 보고서"),
     ("data_coverage_map.html",  "커버리지 맵"),
+    ("data_evidence_brief.html", "데이터 증거"),
     ("program_threat_view.html", "프로그램 뷰"),
 ]
 
@@ -101,6 +102,13 @@ NAV_CSS = """
 .omija-nav a.onav-item:hover{color:#ececea;background:rgba(255,255,255,.03)}
 .omija-nav a.onav-item.cur{color:#ececea;border-bottom-color:#3987e5}
 .omija-nav a.onav-item.cur::before{content:"● ";color:#3987e5;font-size:8px}
+/* narrow: brand takes its own line so all four items get a clean full-width row;
+   items still wrap (never clip) and horizontally scroll as a last resort */
+@media(max-width:480px){
+  .omija-nav .onav-wrap{gap:4px 14px;padding:0 14px}
+  .omija-nav .onav-brand{width:100%}
+  .omija-nav .onav-items{flex-wrap:wrap;overflow-x:auto;max-width:100%}
+}
 """
 
 
@@ -195,14 +203,22 @@ code,kbd,.mono{font-family:var(--mono)}
 .pl-item{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-2)}
 .pl-claim{margin-top:7px;font-size:12px;color:var(--ink-2)}
 .pl-claim b{color:var(--ink)}
+/* narrow: each legend item takes a full row; description wraps within padding */
+@media(max-width:640px){
+  .pl-row{gap:9px 0}
+  .pl-item{width:100%;align-items:flex-start}
+  .pl-item>span:not(.pchip){flex:1;min-width:0;overflow-wrap:anywhere}
+}
 
-/* masthead */
+/* masthead — flex row: title group grows, ver chip wraps below title on narrow */
 .mast{border-bottom:1px solid var(--hair);background:var(--surface);padding:14px 0}
+.mast .masthead{display:flex;align-items:flex-start;gap:8px 16px;flex-wrap:wrap}
+.mast .mhead-main{flex:1 1 300px;min-width:0}
 .mast .brand{font-family:var(--mono);font-size:12px;letter-spacing:1.6px;
   text-transform:uppercase;color:var(--ink)}
 .mast .tag{font-size:12.5px;color:var(--ink-2);margin-top:3px}
-.mast .ver{float:right;font-family:var(--mono);font-size:10.5px;color:var(--muted);
-  border:1px solid var(--hair-2);border-radius:3px;padding:2px 7px}
+.mast .ver{flex:0 0 auto;max-width:100%;font-family:var(--mono);font-size:10.5px;color:var(--muted);
+  border:1px solid var(--hair-2);border-radius:3px;padding:2px 7px;white-space:nowrap}
 
 section{padding:30px 0;border-bottom:1px solid var(--hair)}
 .sec-k{font-family:var(--mono);font-size:10px;letter-spacing:1.6px;color:var(--muted);
@@ -223,4 +239,25 @@ details.pnote .pb{padding:2px 14px 12px;font-size:12.5px;color:var(--ink-2);line
 details.pnote .pb b{color:var(--ink)}
 
 .footer{padding:18px 0 40px;color:var(--muted);font-size:11px;font-family:var(--mono)}
+
+/* ---- responsive: keep the desktop-first layout from breaking on narrow ---- */
+/* Body never scrolls horizontally (above); every wide element must wrap or live
+   in a .scroll-x container so nothing important is hidden by that clip. */
+@media(max-width:720px){
+  section{padding:22px 0}
+  .sec-h{font-size:17px}
+  .sec-k{font-size:9.5px;letter-spacing:1.3px}
+  .sec-sub{font-size:12.5px}
+  .mast{padding:12px 0}
+  /* SYNTHETIC banner: let the long KR line drop to its own full-width row */
+  .synbar{flex-wrap:wrap;font-size:12px;padding:8px 16px;gap:8px 10px}
+  .synbar .kr{flex:1 1 100%}
+  .provlegend{padding:10px 0}
+}
+@media(max-width:480px){
+  html,body{font-size:13.5px}
+  section{padding:18px 0}
+  .sec-h{font-size:15.5px}
+  .synbar{font-size:11.5px}
+}
 """

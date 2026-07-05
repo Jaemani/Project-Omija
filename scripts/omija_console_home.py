@@ -753,11 +753,13 @@ def build_html() -> tuple[str, dict]:
 {nav_strip("omija_console_home.html")}
 {chip_legend()}
 {_core4_strip()}
-<div class="mast"><div class="wrap">
+<div class="mast"><div class="wrap"><div class="masthead">
+  <div class="mhead-main">
+    <div class="brand">OMIJA · STEADY-STATE CONSOLE</div>
+    <div class="tag">사건이 없을 때 분석가가 켜놓는 기본 화면 · 감시 태세 · negative evidence · human-on-the-loop</div>
+  </div>
   <span class="ver">engine · sqlite mock pipeline · offline</span>
-  <div class="brand">OMIJA · STEADY-STATE CONSOLE</div>
-  <div class="tag">사건이 없을 때 분석가가 켜놓는 기본 화면 · 감시 태세 · negative evidence · human-on-the-loop</div>
-</div></div>
+</div></div></div>
 {body}
 </body></html>"""
 
