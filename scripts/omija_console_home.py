@@ -56,6 +56,8 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(REPO_ROOT, "out")
 OUT_HTML = os.path.join(OUT_DIR, "omija_console_home.html")
 ACTION_CHAIN_JSON = os.path.join(OUT_DIR, "foundry_action_chain.json")
+PRIVATE_COLLECTION_META = os.path.join(REPO_ROOT, "data", "private_candidates", "collection_meta.json")
+PRIVATE_IMPORT_JSON = os.path.join(OUT_DIR, "private_candidate_import.json")
 
 # Steady-state scenario clock: 42 days after the incident anchor. Every seeded
 # stealer infection is then OUTSIDE the 14-day active window, so the sweep's
@@ -91,6 +93,50 @@ def _load_action_chain() -> dict | None:
     if not isinstance(data, dict) or not data.get("steps"):
         return None
     return data
+
+
+def _load_private_collection_status() -> dict:
+    """Return safe connector readiness metadata, never provider records."""
+    try:
+        with open(PRIVATE_COLLECTION_META, encoding="utf-8") as fh:
+            meta = json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return {"available": False, "modules": {}, "import_summary": None}
+
+    collection = meta.get("collection") or {}
+    modules = {}
+    for name, module in sorted((collection.get("modules") or {}).items()):
+        if not isinstance(module, dict):
+            continue
+        modules[name.lower()] = {
+            "status": module.get("status"),
+            "returned": int(module.get("returned") or 0),
+            "written": int(module.get("written") or 0),
+            "error": module.get("error"),
+        }
+
+    import_summary = None
+    try:
+        with open(PRIVATE_IMPORT_JSON, encoding="utf-8") as fh:
+            imported = json.load(fh)
+        summary = imported.get("summary") or {}
+        import_summary = {
+            "input_records": int(summary.get("input_records") or 0),
+            "normalized_exposures": int(summary.get("normalized_exposures") or 0),
+            "threat_sources": int(summary.get("threat_sources") or 0),
+            "rejected": int(summary.get("rejected") or 0),
+        }
+    except (OSError, json.JSONDecodeError, TypeError, ValueError):
+        import_summary = None
+
+    return {
+        "available": True,
+        "generated_at": meta.get("generated_at"),
+        "seed_id": collection.get("seed_id"),
+        "obs_type": collection.get("obs_type"),
+        "modules": modules,
+        "import_summary": import_summary,
+    }
 
 
 # --------------------------------------------------------------------------- #
@@ -289,6 +335,7 @@ def compute_console_data() -> dict:
         "pending_merges": pending_merges,
         "invariants": invariants,
         "action_chain": _load_action_chain(),
+        "private_collection": _load_private_collection_status(),
     }
 
 
@@ -401,8 +448,66 @@ def _p2_allclear(d: dict) -> str:
         <div style="font-size:11px;color:var(--muted);margin-bottom:4px">엔진 자기 검증 — 스코어링 불변식</div>
         {inv_rows}
       </div>
-    </div>
-  </div>"""
+  </div>
+</div>"""
+
+
+def _private_feed_panel(d: dict) -> str:
+    status = d.get("private_collection") or {}
+    if not status.get("available"):
+        return f"""
+    <div class="feed slot">
+      <div class="fh"><span class="nm">private exposure provider</span>
+        <span class="st off">연결 증적 없음</span>{chip('eng')}</div>
+      <div class="fd">local connector meta가 없어서 화면은 잠긴 슬롯으로 남긴다.<br>
+        계약: 승인된 범위에서만 수집 · adapter 경계(normalize) 통과 ·
+        마스킹 강제 · 원문 비밀값 미저장.</div>
+    </div>"""
+
+    modules = status.get("modules") or {}
+    live_core = all((modules.get(name) or {}).get("status") == 200 for name in ("cl", "cds"))
+    badge = '<span class="st on">CL/CDS 연결 확인</span>' if live_core else '<span class="st off">부분 연결</span>'
+    feed_chip = chip("live") if live_core else chip("eng")
+
+    order = ("cl", "cds", "cb", "dt", "tt")
+    rows = []
+    for name in order:
+        module = modules.get(name)
+        if not module:
+            continue
+        code = module.get("status")
+        label = name.upper()
+        if code == 200:
+            rows.append(
+                f"<b>{_e(label)}</b> 200 · returned {module.get('returned', 0)} · written {module.get('written', 0)}"
+            )
+        else:
+            rows.append(
+                f"<b>{_e(label)}</b> {_e(code)} · {_e(module.get('error') or 'not connected')}"
+            )
+
+    summary = status.get("import_summary")
+    if summary:
+        import_line = (
+            f"import boundary: input <b>{summary['input_records']}</b> · "
+            f"normalized <b>{summary['normalized_exposures']}</b> · "
+            f"threat sources <b>{summary['threat_sources']}</b> · "
+            f"rejected <b>{summary['rejected']}</b>"
+        )
+    else:
+        import_line = "import boundary: 아직 실행 증적 없음"
+
+    seed = status.get("seed_id") or "synthetic seed"
+    generated = _fmt_iso(status.get("generated_at"))
+    return f"""
+    <div class="feed">
+      <div class="fh"><span class="nm">private exposure provider</span>{badge}{feed_chip}</div>
+      <div class="fd">마지막 safe connector check <b>{_e(generated)}</b><br>
+        seed <b>{_e(seed)}</b> · synthetic zero-row connectivity check<br>
+        {'<br>'.join(rows)}<br>
+        {import_line}<br>
+        raw password/cookie/token 저장 없음 · 실제 조직 coverage 주장 아님.</div>
+    </div>"""
 
 
 def _p3_feeds(d: dict) -> str:
@@ -419,14 +524,7 @@ def _p3_feeds(d: dict) -> str:
         sync_status = '<span class="st off">대기</span>'
         sync_chip = chip("eng")
     return f"""
-  <div class="feeds">
-    <div class="feed slot">
-      <div class="fh"><span class="nm">credential exposure feed</span>
-        <span class="st off">비활성 · 승인 대기</span>{chip('eng')}</div>
-      <div class="fd">벤더 중립 빈 슬롯 — 연결된 척 하지 않는다.<br>
-        계약: 승인·법무 검토 완료 시 <b>adapter 경계(normalize)</b>에서 교체 ·
-        마스킹 강제 · 원문 미저장 · incremental poll.</div>
-    </div>
+  <div class="feeds">{_private_feed_panel(d)}
     <div class="feed">
       <div class="fh"><span class="nm">OSINT feed</span>
         <span class="st off">수동 수집 전용</span>{chip('eng')}</div>

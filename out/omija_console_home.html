@@ -387,20 +387,21 @@ details.pnote .pb b{color:var(--ink)}
         <div style="font-size:11px;color:var(--muted);margin-bottom:4px">엔진 자기 검증 — 스코어링 불변식</div>
         <div class="irow"><span class="ok">OK</span><span>supplier scoring</span><span style="color:var(--muted)">active_floor &gt; base_cap</span><b>70 &gt; 60</b><span class="pchip eng">ENGINE·실측</span></div><div class="irow"><span class="ok">OK</span><span>program rollup</span><span style="color:var(--muted)">active_floor &gt; base_cap</span><b>70 &gt; 60</b><span class="pchip eng">ENGINE·실측</span></div><div class="irow"><span class="ok">OK</span><span>grade thresholds</span><span style="color:var(--muted)">즉시 70 / 주의 40</span><b>70 / 40</b><span class="pchip eng">ENGINE·실측</span></div>
       </div>
-    </div>
   </div>
+</div>
   </div>
 </div></section>
 <section><div class="wrap">
   <div class="sec-k">P3 · 피드 상태 / collection posture — 정직한 상태 표시, "연결된 척" 금지</div>
   
   <div class="feeds">
-    <div class="feed slot">
-      <div class="fh"><span class="nm">credential exposure feed</span>
-        <span class="st off">비활성 · 승인 대기</span><span class="pchip eng">ENGINE·실측</span></div>
-      <div class="fd">벤더 중립 빈 슬롯 — 연결된 척 하지 않는다.<br>
-        계약: 승인·법무 검토 완료 시 <b>adapter 경계(normalize)</b>에서 교체 ·
-        마스킹 강제 · 원문 미저장 · incremental poll.</div>
+    <div class="feed">
+      <div class="fh"><span class="nm">private exposure provider</span><span class="st on">CL/CDS 연결 확인</span><span class="pchip live">LIVE·Foundry</span></div>
+      <div class="fd">마지막 safe connector check <b>2026-07-04 23:46:31Z</b><br>
+        seed <b>domain:sup-a:supplier-a.example</b> · synthetic zero-row connectivity check<br>
+        <b>CL</b> 200 · returned 0 · written 0<br><b>CDS</b> 200 · returned 0 · written 0<br><b>CB</b> 200 · returned 0 · written 0<br><b>DT</b> 403 · HTTPError<br><b>TT</b> 404 · HTTPError<br>
+        import boundary: input <b>0</b> · normalized <b>0</b> · threat sources <b>0</b> · rejected <b>0</b><br>
+        raw password/cookie/token 저장 없음 · 실제 조직 coverage 주장 아님.</div>
     </div>
     <div class="feed">
       <div class="fh"><span class="nm">OSINT feed</span>
