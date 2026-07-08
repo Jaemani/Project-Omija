@@ -1,0 +1,347 @@
+{
+  "generated_at": "2026-07-08T04:40:11.744Z",
+  "tool": "npx -p playwright node scripts/capture_demo_screenshots.mjs",
+  "note": "Captured locally with Chromium. Playwright MCP namespace was not exposed in this Codex session.",
+  "viewport": {
+    "desktop": "1366x900",
+    "mobile": "390x844"
+  },
+  "pages": [
+    {
+      "slug": "01-console-home",
+      "title": "평시 콘솔",
+      "file": "out/omija_console_home.html",
+      "purpose": "사건이 없을 때 감시 범위, quiet proof, provider readiness, Foundry action evidence를 보여준다.",
+      "screenshots": [
+        {
+          "kind": "desktop-full-page",
+          "path": "out/screenshots/playwright/01-console-home--desktop-full.png"
+        },
+        {
+          "kind": "mobile-top-viewport",
+          "path": "out/screenshots/playwright/01-console-home--mobile-top.png"
+        }
+      ],
+      "features": [
+        {
+          "name": "steady-state-top",
+          "selector": "body",
+          "screenshot": "out/screenshots/playwright/01-console-home--feature-steady-state-top.png",
+          "excerpt": "세계 4위 방산 수출국의 깊은 협력사망에서, 공격자가 노리는 말단의 유출 자격증명·인포스틸러 감염 신호를 온톨로지로 원청·프로그램까지 연결해 먼저 확인할 협력사와 방산 프로그램을 짚어내는 조기경보 시스템. SYNTHETIC DEMO SCENARIO 가상 시나리오 — 실제 조직·자격증명 아님 · 모든 도메인은 합성 *.example · 비밀값 전량 마스킹(•••) OMIJA 평시 콘솔 사건 보고서 커버리지 맵 데이터 증거 프로그"
+        },
+        {
+          "name": "coverage-and-quiet-proof",
+          "selector": "section[0]",
+          "screenshot": "out/screenshots/playwright/01-console-home--feature-coverage-and-quiet-proof.png",
+          "excerpt": "감시 태세 + 시스템 신뢰 / STEADY STATE 사건이 없을 때의 화면 — 조용함은 \"안 본 것\"이 아니라 \"봤는데 없는 것\" 사건 보고서(omija_demo)가 \"왜 지금 움직여야 하나\"라면, 이 콘솔은 \"평소에 뭘 하고 있나\"다. 커버리지의 구멍까지 그대로 보여주는 것이 신뢰 장치다. P1 감시 범위 · coverage map ENGINE·실측 SEED·가상 9 등록 협력사 ENGINE·실측 9 감시 도메인 ENGIN"
+        },
+        {
+          "name": "provider-posture",
+          "selector": "section[1]",
+          "screenshot": "out/screenshots/playwright/01-console-home--feature-provider-posture.png",
+          "excerpt": "P3 · 피드 상태 / COLLECTION POSTURE — 정직한 상태 표시, \"연결된 척\" 금지 private exposure provider CL/CDS 연결 확인 LIVE·Foundry 마지막 safe connector check 2026-07-05 05:39:54Z seed probe:domain:naver.com · approved filtered-row API check CL 200 · returned 50 · w"
+        },
+        {
+          "name": "decision-audit",
+          "selector": "section[2]",
+          "screenshot": "out/screenshots/playwright/01-console-home--feature-decision-audit.png",
+          "excerpt": "P4 결정 감사 스트림 · decision audit LIVE·Foundry TIMESTAMP (UTC) ACTION APINAME OBJECT · PK STATUS BEFORE → AFTER READBACK 2026-07-04 19:36:20Z acknowledge-incident CompromiseIncident · incident:micro-h:active assigned → acknowledged ✓ verified ·"
+        },
+        {
+          "name": "sensitive-access-boundary",
+          "selector": "section[3]",
+          "screenshot": "out/screenshots/playwright/01-console-home--feature-sensitive-access-boundary.png",
+          "excerpt": "P5 민감정보 열람 구역 · sensitive record access APPROVED CONNECTOR · RAW SECRET BLOCKED 승인된 provider row는 redaction boundary를 통과해 측정되며, raw password/cookie/token과 provider envelope은 표시·export하지 않습니다. 접근 게이트 — 열람 사유 입력 필수 → 사유가 감사로그에 기록된 후 개방 마스킹 기본"
+        }
+      ]
+    },
+    {
+      "slug": "02-data-coverage-map",
+      "title": "데이터 커버리지 맵",
+      "file": "out/data_coverage_map.html",
+      "purpose": "무엇을 어디서 관리하고, 어떤 데이터와 엔진 산출로 감시하는지 한 장으로 설명한다.",
+      "screenshots": [
+        {
+          "kind": "desktop-full-page",
+          "path": "out/screenshots/playwright/02-data-coverage-map--desktop-full.png"
+        },
+        {
+          "kind": "mobile-top-viewport",
+          "path": "out/screenshots/playwright/02-data-coverage-map--mobile-top.png"
+        }
+      ],
+      "features": [
+        {
+          "name": "map-top",
+          "selector": "body",
+          "screenshot": "out/screenshots/playwright/02-data-coverage-map--feature-map-top.png",
+          "excerpt": "OMIJA 평시 콘솔 사건 보고서 커버리지 맵 데이터 증거 프로그램 뷰 데이터 계보 OMIJA DATA COVERAGE MAP 무엇을 어디서 관리하고, 무엇으로 감시하는가 민감 데이터는 잠긴 슬롯으로 두고, synthetic seed · 공개 컨텍스트 · 실제 엔진 산출 · Foundry readback을 구분해 보여주는 평시 운영 지도. SEED synthetic entity PUBLIC_CONTEXT open data EN"
+        },
+        {
+          "name": "managed-synthetic",
+          "selector": "section[0]",
+          "screenshot": "out/screenshots/playwright/02-data-coverage-map--feature-managed-synthetic.png",
+          "excerpt": "Foundry seed CSV suppliers/domains/programs Synthetic corpus exposure/device slots Credential feed approved · redacted Open context KEV/NVD/ATT&CK/HIBP Ontology objects Supplier Domain Identity Evidence slots Exposure Device Source Sensitiv"
+        },
+        {
+          "name": "open-public-context",
+          "selector": "section[1]",
+          "screenshot": "out/screenshots/playwright/02-data-coverage-map--feature-open-public-context.png",
+          "excerpt": "Managed synthetic structure Suppliers 2 Domains 3 Identities 1 Exposure slots 1 Infected devices 1 Incidents 1 Programs 2 Drafts 1"
+        },
+        {
+          "name": "engine-live-evidence",
+          "selector": "section[2]",
+          "screenshot": "out/screenshots/playwright/02-data-coverage-map--feature-engine-live-evidence.png",
+          "excerpt": "Open public context CISA KEV 1631 Access-relevant KEV 957 NVD asset queries 1458 ATT&CK techniques 89 URLhaus sample 1000 HIBP breach metadata 1015"
+        }
+      ]
+    },
+    {
+      "slug": "03-data-evidence-brief",
+      "title": "데이터 증거",
+      "file": "out/data_evidence_brief.html",
+      "purpose": "공개 OSINT, 승인된 StealthMole lineage, synthetic 사건 데이터를 어떻게 분리해 쓰는지 설명한다.",
+      "screenshots": [
+        {
+          "kind": "desktop-full-page",
+          "path": "out/screenshots/playwright/03-data-evidence-brief--desktop-full.png"
+        },
+        {
+          "kind": "mobile-top-viewport",
+          "path": "out/screenshots/playwright/03-data-evidence-brief--mobile-top.png"
+        }
+      ],
+      "features": [
+        {
+          "name": "evidence-top",
+          "selector": "body",
+          "screenshot": "out/screenshots/playwright/03-data-evidence-brief--feature-evidence-top.png",
+          "excerpt": "OMIJA 평시 콘솔 사건 보고서 커버리지 맵 데이터 증거 프로그램 뷰 데이터 계보 OMIJA DATA EVIDENCE BRIEF 데이터는 이렇게 쓴다: 공개 OSINT + 승인된 StealthMole 해커톤 lineage + synthetic 사건 Generated from out/public_context/summary.json at 2026-07-05T00:21:08.430674+00:00. 공개 데이터는 실제 스냅샷이고"
+        },
+        {
+          "name": "public-osint-examples",
+          "selector": "section[0]",
+          "screenshot": "out/screenshots/playwright/03-data-evidence-brief--feature-public-osint-examples.png",
+          "excerpt": "실제 공개 데이터 예시 CISA KEV 957 / 1,631 최근 access-relevant 예: CVE-2026-48558 · SimpleHelp NVD ASSET CONTEXT 1,458 vpn, sso, citrix, fortinet, ivanti 같은 access-surface 키워드 CVE 배경. FIRST EPSS 513 상위 예: CVE-2024-3400 · EPSS 0.999990000 MITRE ATT&CK "
+        },
+        {
+          "name": "ontology-use",
+          "selector": "section[1]",
+          "screenshot": "out/screenshots/playwright/03-data-evidence-brief--feature-ontology-use.png",
+          "excerpt": "STEALTHMOLE APPROVED HACKATHON RAIL 해커톤 API filtered row는 사용 가능하지만, raw secret과 provider envelope은 공개하지 않는다 아래 표는 승인된 해커톤 API 실행 메타다. CL/CDS/CB 같은 provider module이 실제로 호출되고, 반환 row는 정규화 경계에서 source hash와 ontology lineage로만 공개된다. MODULE STAT"
+        }
+      ]
+    },
+    {
+      "slug": "04-data-lineage-live",
+      "title": "데이터 계보",
+      "file": "out/data_lineage_live.html",
+      "purpose": "승인된 provider row가 redaction boundary, normalized objects, Foundry measurement로 이어지는 흐름을 보여준다.",
+      "screenshots": [
+        {
+          "kind": "desktop-full-page",
+          "path": "out/screenshots/playwright/04-data-lineage-live--desktop-full.png"
+        },
+        {
+          "kind": "mobile-top-viewport",
+          "path": "out/screenshots/playwright/04-data-lineage-live--mobile-top.png"
+        }
+      ],
+      "features": [
+        {
+          "name": "lineage-top",
+          "selector": "body",
+          "screenshot": "out/screenshots/playwright/04-data-lineage-live--feature-lineage-top.png",
+          "excerpt": "세계 4위 방산 수출국의 깊은 협력사망에서, 공격자가 노리는 말단의 유출 자격증명·인포스틸러 감염 신호를 온톨로지로 원청·프로그램까지 연결해 먼저 확인할 협력사와 방산 프로그램을 짚어내는 조기경보 시스템. SYNTHETIC DEMO SCENARIO 가상 시나리오 — 실제 조직·자격증명 아님 · 모든 도메인은 합성 *.example · 비밀값 전량 마스킹(•••) OMIJA 평시 콘솔 사건 보고서 커버리지 맵 데이터 증거 프로그"
+        },
+        {
+          "name": "run-summary",
+          "selector": "section[0]",
+          "screenshot": "out/screenshots/playwright/04-data-lineage-live--feature-run-summary.png",
+          "excerpt": "OPERATIONAL DATA LINEAGE · PROVIDER → REDACTION → ONTOLOGY → ENGINE → FOUNDRY 승인된 StealthMole 라이브 run을 계보로 추적 — 원문은 잠그고, 안전 변환만 전 구간 표시 승인된 라이브 run 실행됨 · provider total 150건 · 제한 저장/정규화 150건. 공개 페이지에는 source_ref hash와 lineage만 표시한다. 확정된 침해 "
+        },
+        {
+          "name": "swimlane",
+          "selector": "section[1]",
+          "screenshot": "out/screenshots/playwright/04-data-lineage-live--feature-swimlane.png",
+          "excerpt": "RECORD-LEVEL LINEAGE · 레코드 단위 계보 라이브 sanitized row-level lineage NORMALIZED CL sanitized lineage CL #427d9532be3e26a2 → PRIVATE_RAW → REDACTION → CredentialExposure → InfectedDevice → Identity → ThreatSource → links: of, targets, sourced_fr"
+        },
+        {
+          "name": "record-lineage",
+          "selector": "section[2]",
+          "screenshot": "out/screenshots/playwright/04-data-lineage-live--feature-record-lineage.png",
+          "excerpt": "REDACTION PROOF LOCKED_SECRET LIVE·Foundry password removed 제거 — 원문 미저장 cookie removed 제거 — 세션 쿠키 값 미저장 token removed 제거 — bearer/토큰 값 미저장 provider raw payload not exported 원문 봉투는 로컬 private · export 금지 source_ref hashed 레코드 추적용 해시만 보존 mask"
+        },
+        {
+          "name": "redaction-proof",
+          "selector": "section[3]",
+          "screenshot": "out/screenshots/playwright/04-data-lineage-live--feature-redaction-proof.png",
+          "excerpt": "FOUNDRY LINEAGE EVIDENCE · MCP 실사 of/targets 링크와 액션 감사는 Foundry로 실증 · 일부 seed 데이터셋 스키마는 정비 중 VERIFIED · FOUNDRY LINEAGE LIVE_FOUNDRY LIVE·Foundry MCP/SQL로 실사 — of/targets schema, action audit, live measurement count를 확인했다. of 링크 (Credential"
+        },
+        {
+          "name": "foundry-evidence",
+          "selector": "section[4]",
+          "screenshot": "out/screenshots/playwright/04-data-lineage-live--feature-foundry-evidence.png",
+          "excerpt": "Approved StealthMole records are ingested live, stripped of raw secrets, normalized into Omija ontology objects, and traced through every decision object by lineage. 승인된 StealthMole 레코드는 라이브로 수집되어 원문 비밀값이 제거되고, Omija 온톨로지 객체로 정규화된 뒤 모든 결정 객"
+        }
+      ]
+    },
+    {
+      "slug": "05-foundry-live-measurement",
+      "title": "Foundry Live Measurement",
+      "file": "out/foundry_live_measurement.html",
+      "purpose": "sanitized provider rows가 Foundry schema-aware datasets에서 측정됐고 SQL count가 맞는지 보여준다.",
+      "screenshots": [
+        {
+          "kind": "desktop-full-page",
+          "path": "out/screenshots/playwright/05-foundry-live-measurement--desktop-full.png"
+        },
+        {
+          "kind": "mobile-top-viewport",
+          "path": "out/screenshots/playwright/05-foundry-live-measurement--mobile-top.png"
+        }
+      ],
+      "features": [
+        {
+          "name": "measurement-top",
+          "selector": "body",
+          "screenshot": "out/screenshots/playwright/05-foundry-live-measurement--feature-measurement-top.png",
+          "excerpt": "OMIJA · FOUNDRY LIVE MEASUREMENT 승인된 StealthMole row → Foundry-ready ontology measurement Raw provider envelope, raw email, API secret, JWT, password, cookie, token are not exported. PROVIDER ROWS 150 CREDENTIALEXPOSURE 150 THREATSOURCE 150"
+        },
+        {
+          "name": "module-counts",
+          "selector": "section[0]",
+          "screenshot": "out/screenshots/playwright/05-foundry-live-measurement--feature-module-counts.png",
+          "excerpt": "Module Counts MODULE RECORDS CB 50 CDS 50 CL 50"
+        },
+        {
+          "name": "generated-csvs",
+          "selector": "section[1]",
+          "screenshot": "out/screenshots/playwright/05-foundry-live-measurement--feature-generated-csvs.png",
+          "excerpt": "Generated Foundry CSVs FILE ROWS 01_supplier.csv 1 03_program.csv 1 04_domain.csv 17 05_identity.csv 150 06_credential_exposure.csv 150 07_infected_device.csv 150 08_threat_source.csv 150 23_link_owns.csv 17 25_link_belongs_to.csv 150 26_li"
+        },
+        {
+          "name": "upload-readback",
+          "selector": "section[2]",
+          "screenshot": "out/screenshots/playwright/05-foundry-live-measurement--feature-upload-readback.png",
+          "excerpt": "Foundry Upload / Readback Backing dataset uploads: 14/14. Explicit schemas: 14/14. OSDK object readback: not indexed yet. Artifacts: upload_result.json, schema_put_result.json, readback_result.json."
+        },
+        {
+          "name": "sql-counts",
+          "selector": "section[3]",
+          "screenshot": "out/screenshots/playwright/05-foundry-live-measurement--feature-sql-counts.png",
+          "excerpt": "Foundry SQL Counts Separate schema-aware live measurement datasets were created from the same sanitized CSVs so judges can see real approved provider rows measured in Foundry while ontology datasource indexing is refreshed. DATASET SQL COUN"
+        }
+      ]
+    },
+    {
+      "slug": "06-incident-report",
+      "title": "사건 보고서",
+      "file": "out/omija_demo.html",
+      "purpose": "synthetic incident scenario에서 active-on-top, of/targets, blast radius, human-reviewed draft를 설명한다.",
+      "screenshots": [
+        {
+          "kind": "desktop-full-page",
+          "path": "out/screenshots/playwright/06-incident-report--desktop-full.png"
+        },
+        {
+          "kind": "mobile-top-viewport",
+          "path": "out/screenshots/playwright/06-incident-report--mobile-top.png"
+        }
+      ],
+      "features": [
+        {
+          "name": "incident-top",
+          "selector": "body",
+          "screenshot": "out/screenshots/playwright/06-incident-report--feature-incident-top.png",
+          "excerpt": "세계 4위 방산 수출국의 깊은 협력사망에서, 공격자가 노리는 말단의 유출 자격증명·인포스틸러 감염 신호를 온톨로지로 원청·프로그램까지 연결해 먼저 확인할 협력사와 방산 프로그램을 짚어내는 조기경보 시스템. SYNTHETIC DEMO SCENARIO 가상 시나리오 — 실제 조직·자격증명 아님 · 모든 도메인은 합성 *.example · 비밀값 전량 마스킹(•••) OMIJA 평시 콘솔 사건 보고서 커버리지 맵 데이터 증거 프로그"
+        },
+        {
+          "name": "incident-summary",
+          "selector": "section[0]",
+          "screenshot": "out/screenshots/playwright/06-incident-report--feature-incident-summary.png",
+          "excerpt": "01 · 경보 착지 / INCIDENT LANDING ENGINE·실측 SEED·가상 BAND A · 즉시 활성 침해 경로 탐지 — 2차 협력사 감염 기기가 원청 방산 프로그램에 도달 탐지 2026-07-01 SEED·가상 브리핑 클럭 2026-07-03 (시나리오) 활성 경로 · COMPROMISEINCIDENT ENGINE·실측 감염기기 · RedLine→ops@micro-h.example→micro-h.example→Ho"
+        },
+        {
+          "name": "triage-and-bands",
+          "selector": "section[1]",
+          "screenshot": "out/screenshots/playwright/06-incident-report--feature-triage-and-bands.png",
+          "excerpt": "02 · 트리아지 큐 / TRIAGE QUEUE ENGINE·실측 머니샷 — 볼륨이 아니라 활성 경로가 큐를 세운다 Omija는 볼륨으로 세우지 않는다 — 활성 경로가 항상 위. 활성 침해 3건이 노출 레코드 전량 위에 고정되고, 대량 유출 볼륨은 자동으로 밑으로 내려간다. 1 Alpha Precisionsup-a T1 · Harbor Sustainment Program · Sentinel ISR Program 활성 경로 96"
+        },
+        {
+          "name": "comparison-panel",
+          "selector": "section[2]",
+          "screenshot": "out/screenshots/playwright/06-incident-report--feature-comparison-panel.png",
+          "excerpt": "03 · 차별점 / SAME INPUT, THREE SYSTEMS FRAME·연출 ENGINE·실측 같은 입력, 세 개의 시스템, 세 개의 답 입력은 동일하다 — 대량 비활성 유출(연출 ~4,120건 · 시드 실측 71건)과 활성 경로 1건. 무엇이 위로 올라오는지는 시스템이 정한다. 유출 목록 뷰어 FRAME·연출 volume rank · 건수는 시드 실측 1 India Fabrication 44건 2 Charlie Comp"
+        },
+        {
+          "name": "blast-radius-path",
+          "selector": "section[3]",
+          "screenshot": "out/screenshots/playwright/06-incident-report--feature-blast-radius-path.png",
+          "excerpt": "04 · 블라스트 반경 / BLAST RADIUS (INSTANCE) ENGINE·실측 SEED·가상 이 침해 인스턴스가 실제로 무엇에 닿는가 스키마가 아니라 실제 인시던트 데이터다. 감염 기기 → 계정 → 도메인 → 2차 협력사 → (clean) 1차 → 원청 → 방산 프로그램. 가변 깊이 recursive traverse가 두 티어를 건너뛰지 않고 잇는다. compromises of owns subcontractsTo su"
+        },
+        {
+          "name": "human-review-draft",
+          "selector": "section[5]",
+          "screenshot": "out/screenshots/playwright/06-incident-report--feature-human-review-draft.png",
+          "excerpt": "06 · 대응 워크플로 / RESPONSE WORKFLOW ENGINE·실측 FRAME·연출 이 화면 앞에 앉는 사람과, 그가 하는 일 방산 협력망 CERT 분석가: 트리아지 → 확인(acknowledge) → 배정 → 초안 검토 → 승인 → 내보내기. 이 워크플로 자체가 군 배치 가능성의 논거다. 인시던트 상태 · INCIDENT:SUP-H FRAME·연출 flagged → acknowledged → assigned → cl"
+        },
+        {
+          "name": "foundry-object-list-capture",
+          "selector": "figure.capslot[0]",
+          "screenshot": "out/screenshots/playwright/06-incident-report--feature-foundry-object-list-capture.png",
+          "excerpt": "Object types Ontology object types configured in Foundry Ontology Manager"
+        },
+        {
+          "name": "foundry-action-types-capture",
+          "selector": "figure.capslot[1]",
+          "screenshot": "out/screenshots/playwright/06-incident-report--feature-foundry-action-types-capture.png",
+          "excerpt": "Workflow actions Semantic workflow actions, not plain CRUD"
+        },
+        {
+          "name": "foundry-osdk-capture",
+          "selector": "figure.capslot[2]",
+          "screenshot": "out/screenshots/playwright/06-incident-report--feature-foundry-osdk-capture.png",
+          "excerpt": "Developer Console SDK 0.2.0 Ontology is code-addressable through SDK/API"
+        },
+        {
+          "name": "outcome-summary",
+          "selector": "section[7]",
+          "screenshot": "out/screenshots/playwright/06-incident-report--feature-outcome-summary.png",
+          "excerpt": "08 · 성과 / OUTCOME ENGINE·실측 단일 실행의 결과 (전량 엔진 실측) 74 노출 레코드 수집·상관 ENGINE·실측 7개 협력사 귀속 3 활성 침해 인시던트 ENGINE·실측 Device→…→Program 경로 성립 2 버닝 방산 프로그램 ENGINE·실측 Harbor Sustainment Program · Sentinel ISR Program 96% 노이즈 자동 후순위 ENGINE·실측 71/74 비활성 후"
+        }
+      ]
+    },
+    {
+      "slug": "07-program-threat-view",
+      "title": "프로그램 뷰",
+      "file": "out/program_threat_view.html",
+      "purpose": "프로그램에서 공급망/노출 경로를 역방향으로 보는 Q&A 백업 화면이다.",
+      "screenshots": [
+        {
+          "kind": "desktop-full-page",
+          "path": "out/screenshots/playwright/07-program-threat-view--desktop-full.png"
+        },
+        {
+          "kind": "mobile-top-viewport",
+          "path": "out/screenshots/playwright/07-program-threat-view--mobile-top.png"
+        }
+      ],
+      "features": [
+        {
+          "name": "program-top",
+          "selector": "body",
+          "screenshot": "out/screenshots/playwright/07-program-threat-view--feature-program-top.png",
+          "excerpt": "OMIJA 평시 콘솔 사건 보고서 커버리지 맵 데이터 증거 프로그램 뷰 데이터 계보 OMIJA · SUPPLY-CHAIN CREDENTIAL EXPOSURE PROGRAM THREAT VIEW · backend=local Sentinel ISR Program prog-sentinel sensitivity=high · reverse query: Program → contributing Supplier/Prime chain → o"
+        },
+        {
+          "name": "program-sections",
+          "selector": "section[0]",
+          "screenshot": "out/screenshots/playwright/07-program-threat-view--feature-program-sections.png",
+          "excerpt": "CONTRIBUTING SUPPLY CHAIN (REVERSE-WALKED SUBCONTRACTSTO* → SUPPLIES → RUNS) DEPTH SUPPLIER PRIME EXPOSURES ACTIVE PATH 0 Alpha Precision sup-a Xenon Aerospace 5 ACTIVE Supplier(Alpha Precision) -> Prime(Xenon Aerospace) -> Program(S… 0 Bra"
+        }
+      ]
+    }
+  ]
+}

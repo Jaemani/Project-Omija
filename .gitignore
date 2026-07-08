@@ -35,6 +35,9 @@ out/*
 !out/foundry_live_measurement/
 !out/foundry_live_measurement/**
 !out/foundry_live_measurement.html
+!out/screenshots/
+!out/screenshots/playwright/
+!out/screenshots/playwright/**
 !out/foundry_demo.html
 !out/demo_e2e_*.json
 !out/blast_radius_*.json

@@ -260,6 +260,7 @@ Expected today: upload/schema/schema-aware SQL measurement succeeds; `foundry_li
 | `docs/final-demo-alignment.md` | 웹, 데이터, 발표 흐름을 맞출 때 |
 | `docs/finals-data-lineage-upgrade.md` | 본선 피드백 이후 data lineage 보강 내역 |
 | `docs/review/foundry-live-measurement-update.md` | Foundry live measurement 결과 요약 |
+| `docs/review/playwright-screenshot-inventory.md` | Playwright로 캡처한 페이지/기능별 스크린샷 목록 |
 | `docs/decisions/0009-approved-provider-foundry-lineage.md` | 승인 provider row를 lineage 입력으로 쓰기로 한 결정 |
 | `docs/review/finals-foundry-lineage-check.md` | Foundry MCP로 확인한 of/targets lineage 상태 |
 | `docs/practical-early-warning-plan.md` | 실제 조기경보 체계로 구현 가능한 범위 |
