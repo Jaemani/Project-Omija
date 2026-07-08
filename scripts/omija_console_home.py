@@ -487,6 +487,9 @@ def _private_feed_panel(d: dict) -> str:
                 f"<b>{_e(label)}</b> {_e(code)} · {_e(module.get('error') or 'not connected')}"
             )
 
+    returned_total = sum(int((module or {}).get("returned") or 0) for module in modules.values())
+    run_label = "approved filtered-row API check" if returned_total else "zero-row connectivity check"
+
     summary = status.get("import_summary")
     if summary:
         import_line = (
@@ -504,7 +507,7 @@ def _private_feed_panel(d: dict) -> str:
     <div class="feed">
       <div class="fh"><span class="nm">private exposure provider</span>{badge}{feed_chip}</div>
       <div class="fd">마지막 safe connector check <b>{_e(generated)}</b><br>
-        seed <b>{_e(seed)}</b> · synthetic zero-row connectivity check<br>
+      seed <b>{_e(seed)}</b> · {run_label}<br>
         {'<br>'.join(rows)}<br>
         {import_line}<br>
         raw password/cookie/token 저장 없음 · 실제 조직 coverage 주장 아님.</div>
@@ -578,8 +581,8 @@ def _p5_locked() -> str:
     <div class="lh2"><span class="pk" style="font-family:var(--mono);font-size:10px;
       letter-spacing:1.2px;color:var(--muted)">P5</span>
       <span class="t">민감정보 열람 구역 · sensitive record access</span>
-      <span class="badge">LOCKED · EMPTY SLOT</span></div>
-    <div class="slottxt">이 구역은 승인된 피드 연결 및 열람 권한 정책 확정 후 활성화됩니다.</div>
+        <span class="badge">APPROVED CONNECTOR · RAW SECRET BLOCKED</span></div>
+      <div class="slottxt">승인된 provider row는 redaction boundary를 통과해 측정되며, raw password/cookie/token과 provider envelope은 표시·export하지 않습니다.</div>
     <ul>
       <li><b>접근 게이트</b> — 열람 사유 입력 필수 → 사유가 감사로그에 기록된 후 개방</li>
       <li><b>마스킹 기본값</b> — 비밀값은 항상 <span class="mono">•••</span> + fingerprint;
@@ -803,7 +806,7 @@ def run() -> int:
     print(f"P2 all-clear (real sweep @ steady clock): {meta['n_candidates']} candidates reviewed → "
           f"{meta['n_incidents']} active · {meta['n_paths']} paths evaluated")
     print(f"P4 audit stream: {meta['live_steps']} verified Foundry transitions")
-    print("P5: LOCKED empty slot (requirement contract only)")
+    print("P5: approved connector boundary (raw secret/export blocked)")
     print("safety: no vendor names, no external refs, no animation/ticker, no raw secret — OK")
     print(f"written: {OUT_HTML} ({os.path.getsize(OUT_HTML):,} bytes)")
     print("RESULT: OK")

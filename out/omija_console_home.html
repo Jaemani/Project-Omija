@@ -448,10 +448,10 @@ details.pnote .pb b{color:var(--ink)}
   <div class="feeds">
     <div class="feed">
       <div class="fh"><span class="nm">private exposure provider</span><span class="st on">CL/CDS 연결 확인</span><span class="pchip live">LIVE·Foundry</span></div>
-      <div class="fd">마지막 safe connector check <b>2026-07-04 23:46:31Z</b><br>
-        seed <b>domain:sup-a:supplier-a.example</b> · synthetic zero-row connectivity check<br>
-        <b>CL</b> 200 · returned 0 · written 0<br><b>CDS</b> 200 · returned 0 · written 0<br><b>CB</b> 200 · returned 0 · written 0<br><b>DT</b> 403 · HTTPError<br><b>TT</b> 404 · HTTPError<br>
-        import boundary: input <b>0</b> · normalized <b>0</b> · threat sources <b>0</b> · rejected <b>0</b><br>
+      <div class="fd">마지막 safe connector check <b>2026-07-05 05:39:54Z</b><br>
+      seed <b>probe:domain:naver.com</b> · approved filtered-row API check<br>
+        <b>CL</b> 200 · returned 50 · written 50<br><b>CDS</b> 200 · returned 50 · written 50<br><b>CB</b> 200 · returned 50 · written 50<br>
+        import boundary: input <b>150</b> · normalized <b>150</b> · threat sources <b>0</b> · rejected <b>0</b><br>
         raw password/cookie/token 저장 없음 · 실제 조직 coverage 주장 아님.</div>
     </div>
     <div class="feed">
@@ -484,8 +484,8 @@ details.pnote .pb b{color:var(--ink)}
     <div class="lh2"><span class="pk" style="font-family:var(--mono);font-size:10px;
       letter-spacing:1.2px;color:var(--muted)">P5</span>
       <span class="t">민감정보 열람 구역 · sensitive record access</span>
-      <span class="badge">LOCKED · EMPTY SLOT</span></div>
-    <div class="slottxt">이 구역은 승인된 피드 연결 및 열람 권한 정책 확정 후 활성화됩니다.</div>
+        <span class="badge">APPROVED CONNECTOR · RAW SECRET BLOCKED</span></div>
+      <div class="slottxt">승인된 provider row는 redaction boundary를 통과해 측정되며, raw password/cookie/token과 provider envelope은 표시·export하지 않습니다.</div>
     <ul>
       <li><b>접근 게이트</b> — 열람 사유 입력 필수 → 사유가 감사로그에 기록된 후 개방</li>
       <li><b>마스킹 기본값</b> — 비밀값은 항상 <span class="mono">•••</span> + fingerprint;

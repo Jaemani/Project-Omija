@@ -1,0 +1,289 @@
+{
+  "generated_at": "2026-07-05T06:33:19.414519+00:00",
+  "folder": "/Omija-e4b739/Omija/Seed",
+  "run_id": "20260705_063216",
+  "target_count": 14,
+  "ok_count": 14,
+  "results": [
+    {
+      "name": "supplier",
+      "dataset_name": "live_measurement_01_supplier_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/01_supplier.csv",
+      "rows_expected": 1,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.06e2ca9b-e4a5-4067-8f65-0999f415d6aa\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_01_supplier_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fbf-3e69-806a-481ddbad17a2\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.06e2ca9b-e4a5-4067-8f65-0999f415d6aa/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.06e2ca9b-e4a5-4067-8f65-0999f415d6aa\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_01_supplier_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fbf-3e69-806a-481ddbad17a2\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.06e2ca9b-e4a5-4067-8f65-0999f415d6aa/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 2
+      }
+    },
+    {
+      "name": "program",
+      "dataset_name": "live_measurement_03_program_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/03_program.csv",
+      "rows_expected": 1,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.b1a2aadc-aaca-477f-b99b-4e62c2128717\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_03_program_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc0-1109-a99c-533253f89d9c\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.b1a2aadc-aaca-477f-b99b-4e62c2128717/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.b1a2aadc-aaca-477f-b99b-4e62c2128717\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_03_program_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc0-1109-a99c-533253f89d9c\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.b1a2aadc-aaca-477f-b99b-4e62c2128717/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 3
+      }
+    },
+    {
+      "name": "domain",
+      "dataset_name": "live_measurement_04_domain_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/04_domain.csv",
+      "rows_expected": 17,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.ae5bd31e-3ea0-470f-81b6-ab1d82d3167b\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_04_domain_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc0-f2c9-bffe-591e5493d22d\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.ae5bd31e-3ea0-470f-81b6-ab1d82d3167b/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.ae5bd31e-3ea0-470f-81b6-ab1d82d3167b\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_04_domain_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc0-f2c9-bffe-591e5493d22d\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.ae5bd31e-3ea0-470f-81b6-ab1d82d3167b/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 4
+      }
+    },
+    {
+      "name": "identity",
+      "dataset_name": "live_measurement_05_identity_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/05_identity.csv",
+      "rows_expected": 150,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.1f98415a-4d38-4957-8d9f-66d342137155\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_05_identity_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc1-adc9-891a-d945d706c1ff\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.1f98415a-4d38-4957-8d9f-66d342137155/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.1f98415a-4d38-4957-8d9f-66d342137155\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_05_identity_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc1-adc9-891a-d945d706c1ff\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.1f98415a-4d38-4957-8d9f-66d342137155/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 5
+      }
+    },
+    {
+      "name": "credential_exposure",
+      "dataset_name": "live_measurement_06_credential_exposure_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/06_credential_exposure.csv",
+      "rows_expected": 150,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.53f0fca4-b78f-436e-a1d3-833dbbc9ba4b\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_06_credential_exposure_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc2-6f99-8109-f45d47745dcd\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.53f0fca4-b78f-436e-a1d3-833dbbc9ba4b/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.53f0fca4-b78f-436e-a1d3-833dbbc9ba4b\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_06_credential_exposure_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc2-6f99-8109-f45d47745dcd\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.53f0fca4-b78f-436e-a1d3-833dbbc9ba4b/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 6
+      }
+    },
+    {
+      "name": "infected_device",
+      "dataset_name": "live_measurement_07_infected_device_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/07_infected_device.csv",
+      "rows_expected": 150,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.0bca332a-7d71-4c91-8027-93b85c1ad812\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_07_infected_device_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc3-4d19-842c-9620afb2d06b\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.0bca332a-7d71-4c91-8027-93b85c1ad812/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.0bca332a-7d71-4c91-8027-93b85c1ad812\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_07_infected_device_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc3-4d19-842c-9620afb2d06b\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.0bca332a-7d71-4c91-8027-93b85c1ad812/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 7
+      }
+    },
+    {
+      "name": "threat_source",
+      "dataset_name": "live_measurement_08_threat_source_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/08_threat_source.csv",
+      "rows_expected": 150,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.459b19d2-255f-4ab3-a135-3563ff6635f3\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_08_threat_source_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc4-1bd9-870b-3981fa9f8164\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.459b19d2-255f-4ab3-a135-3563ff6635f3/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.459b19d2-255f-4ab3-a135-3563ff6635f3\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_08_threat_source_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc4-1bd9-870b-3981fa9f8164\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.459b19d2-255f-4ab3-a135-3563ff6635f3/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 8
+      }
+    },
+    {
+      "name": "owns",
+      "dataset_name": "live_measurement_23_link_owns_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/23_link_owns.csv",
+      "rows_expected": 17,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.985dda58-c995-4bdd-8652-e3ca3b48f6ac\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_23_link_owns_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc4-f359-af74-38d381010dbf\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.985dda58-c995-4bdd-8652-e3ca3b48f6ac/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.985dda58-c995-4bdd-8652-e3ca3b48f6ac\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_23_link_owns_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc4-f359-af74-38d381010dbf\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.985dda58-c995-4bdd-8652-e3ca3b48f6ac/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 9
+      }
+    },
+    {
+      "name": "belongs_to",
+      "dataset_name": "live_measurement_25_link_belongs_to_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/25_link_belongs_to.csv",
+      "rows_expected": 150,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.8c759d81-7257-4e08-bd86-372d1e0eda6b\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_25_link_belongs_to_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc5-b909-ade6-71c847e3612c\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.8c759d81-7257-4e08-bd86-372d1e0eda6b/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.8c759d81-7257-4e08-bd86-372d1e0eda6b\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_25_link_belongs_to_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc5-b909-ade6-71c847e3612c\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.8c759d81-7257-4e08-bd86-372d1e0eda6b/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 10
+      }
+    },
+    {
+      "name": "of",
+      "dataset_name": "live_measurement_26_link_of_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/26_link_of.csv",
+      "rows_expected": 150,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.faa25d8c-5cd5-4eae-8303-e88fcfb3f35d\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_26_link_of_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc6-a389-804f-7cfbe9416fe2\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.faa25d8c-5cd5-4eae-8303-e88fcfb3f35d/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.faa25d8c-5cd5-4eae-8303-e88fcfb3f35d\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_26_link_of_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc6-a389-804f-7cfbe9416fe2\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.faa25d8c-5cd5-4eae-8303-e88fcfb3f35d/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 11
+      }
+    },
+    {
+      "name": "targets",
+      "dataset_name": "live_measurement_27_link_targets_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/27_link_targets.csv",
+      "rows_expected": 150,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.344a4a5b-a358-45b9-8a86-4d06ed6f9ec8\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_27_link_targets_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc7-8869-a273-68b86b8ba39d\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.344a4a5b-a358-45b9-8a86-4d06ed6f9ec8/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.344a4a5b-a358-45b9-8a86-4d06ed6f9ec8\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_27_link_targets_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc7-8869-a273-68b86b8ba39d\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.344a4a5b-a358-45b9-8a86-4d06ed6f9ec8/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 12
+      }
+    },
+    {
+      "name": "sourced_from",
+      "dataset_name": "live_measurement_28_link_sourced_from_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/28_link_sourced_from.csv",
+      "rows_expected": 150,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.470a20f8-cde7-4c29-8d5c-ecd4d7a9fd70\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_28_link_sourced_from_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc8-6979-9be9-c39b463e7243\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.470a20f8-cde7-4c29-8d5c-ecd4d7a9fd70/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.470a20f8-cde7-4c29-8d5c-ecd4d7a9fd70\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_28_link_sourced_from_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc8-6979-9be9-c39b463e7243\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.470a20f8-cde7-4c29-8d5c-ecd4d7a9fd70/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 13
+      }
+    },
+    {
+      "name": "leaked",
+      "dataset_name": "live_measurement_29_link_leaked_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/29_link_leaked.csv",
+      "rows_expected": 150,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.ce1f40e3-cade-4e33-9b09-45c9ddfb37be\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_29_link_leaked_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc9-5689-abc6-a87f172d012a\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.ce1f40e3-cade-4e33-9b09-45c9ddfb37be/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.ce1f40e3-cade-4e33-9b09-45c9ddfb37be\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_29_link_leaked_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fc9-5689-abc6-a87f172d012a\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.ce1f40e3-cade-4e33-9b09-45c9ddfb37be/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 14
+      }
+    },
+    {
+      "name": "compromises",
+      "dataset_name": "live_measurement_30_link_compromises_20260705_063216",
+      "source_csv": "out/foundry_live_measurement/30_link_compromises.csv",
+      "rows_expected": 150,
+      "ok": true,
+      "response_preview": "Dataset created successfully:\nRid: ri.foundry.main.dataset.95c59f72-5576-442b-8c9b-2549a5bc83f6\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_30_link_compromises_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fca-3539-9558-d1c4e277402d\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.95c59f72-5576-442b-8c9b-2549a5bc83f6/master",
+      "response": {
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Dataset created successfully:\nRid: ri.foundry.main.dataset.95c59f72-5576-442b-8c9b-2549a5bc83f6\nBranch: master\nPath: /Omija-e4b739/Omija/Seed/live_measurement_30_link_compromises_20260705_063216\nTransactionRid: ri.foundry.main.transaction.0000004b-2fca-3539-9558-d1c4e277402d\nFoundry link https://jaeman.usw-22.palantirfoundry.com/workspace/dataset/preview/ri.foundry.main.dataset.95c59f72-5576-442b-8c9b-2549a5bc83f6/master"
+            }
+          ]
+        },
+        "jsonrpc": "2.0",
+        "id": 15
+      }
+    }
+  ]
+}

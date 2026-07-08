@@ -1,0 +1,16 @@
+{
+  "rid": "ri.foundry.main.dataset.53f0fca4-b78f-436e-a1d3-833dbbc9ba4b",
+  "query": "SELECT COUNT(*) AS c FROM `ri.foundry.main.dataset.53f0fca4-b78f-436e-a1d3-833dbbc9ba4b`",
+  "response": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "|c|\n|---|\n|150| \n \n"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 2
+  }
+}

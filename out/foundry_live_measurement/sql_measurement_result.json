@@ -1,0 +1,135 @@
+{
+  "generated_at": "2026-07-05T06:35:15.330168+00:00",
+  "source": "out/foundry_live_measurement/schema_dataset_create_result.json",
+  "run_id": "20260705_063216",
+  "target_count": 14,
+  "ok_count": 14,
+  "results": [
+    {
+      "name": "supplier",
+      "dataset_name": "live_measurement_01_supplier_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.06e2ca9b-e4a5-4067-8f65-0999f415d6aa",
+      "rows_expected": 1,
+      "sql_count": 1,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|1| \n \n"
+    },
+    {
+      "name": "program",
+      "dataset_name": "live_measurement_03_program_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.b1a2aadc-aaca-477f-b99b-4e62c2128717",
+      "rows_expected": 1,
+      "sql_count": 1,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|1| \n \n"
+    },
+    {
+      "name": "domain",
+      "dataset_name": "live_measurement_04_domain_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.ae5bd31e-3ea0-470f-81b6-ab1d82d3167b",
+      "rows_expected": 17,
+      "sql_count": 17,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|17| \n \n"
+    },
+    {
+      "name": "identity",
+      "dataset_name": "live_measurement_05_identity_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.1f98415a-4d38-4957-8d9f-66d342137155",
+      "rows_expected": 150,
+      "sql_count": 150,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|150| \n \n"
+    },
+    {
+      "name": "credential_exposure",
+      "dataset_name": "live_measurement_06_credential_exposure_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.53f0fca4-b78f-436e-a1d3-833dbbc9ba4b",
+      "rows_expected": 150,
+      "sql_count": 150,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|150| \n \n"
+    },
+    {
+      "name": "infected_device",
+      "dataset_name": "live_measurement_07_infected_device_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.0bca332a-7d71-4c91-8027-93b85c1ad812",
+      "rows_expected": 150,
+      "sql_count": 150,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|150| \n \n"
+    },
+    {
+      "name": "threat_source",
+      "dataset_name": "live_measurement_08_threat_source_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.459b19d2-255f-4ab3-a135-3563ff6635f3",
+      "rows_expected": 150,
+      "sql_count": 150,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|150| \n \n"
+    },
+    {
+      "name": "owns",
+      "dataset_name": "live_measurement_23_link_owns_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.985dda58-c995-4bdd-8652-e3ca3b48f6ac",
+      "rows_expected": 17,
+      "sql_count": 17,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|17| \n \n"
+    },
+    {
+      "name": "belongs_to",
+      "dataset_name": "live_measurement_25_link_belongs_to_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.8c759d81-7257-4e08-bd86-372d1e0eda6b",
+      "rows_expected": 150,
+      "sql_count": 150,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|150| \n \n"
+    },
+    {
+      "name": "of",
+      "dataset_name": "live_measurement_26_link_of_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.faa25d8c-5cd5-4eae-8303-e88fcfb3f35d",
+      "rows_expected": 150,
+      "sql_count": 150,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|150| \n \n"
+    },
+    {
+      "name": "targets",
+      "dataset_name": "live_measurement_27_link_targets_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.344a4a5b-a358-45b9-8a86-4d06ed6f9ec8",
+      "rows_expected": 150,
+      "sql_count": 150,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|150| \n \n"
+    },
+    {
+      "name": "sourced_from",
+      "dataset_name": "live_measurement_28_link_sourced_from_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.470a20f8-cde7-4c29-8d5c-ecd4d7a9fd70",
+      "rows_expected": 150,
+      "sql_count": 150,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|150| \n \n"
+    },
+    {
+      "name": "leaked",
+      "dataset_name": "live_measurement_29_link_leaked_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.ce1f40e3-cade-4e33-9b09-45c9ddfb37be",
+      "rows_expected": 150,
+      "sql_count": 150,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|150| \n \n"
+    },
+    {
+      "name": "compromises",
+      "dataset_name": "live_measurement_30_link_compromises_20260705_063216",
+      "dataset_rid": "ri.foundry.main.dataset.95c59f72-5576-442b-8c9b-2549a5bc83f6",
+      "rows_expected": 150,
+      "sql_count": 150,
+      "ok": true,
+      "response_preview": "|c|\n|---|\n|150| \n \n"
+    }
+  ]
+}

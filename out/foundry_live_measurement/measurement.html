@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omija Foundry Live Measurement</title>
+<style>
+:root { color-scheme: dark; --bg:#0b0c0d; --panel:#151719; --line:#333942; --ink:#f2f4f8; --muted:#aeb7c2; --good:#2ea043; --warn:#f0b73f; --bad:#f85149; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.5 system-ui,-apple-system,Segoe UI,sans-serif; }
+header,main { max-width:1040px; margin:0 auto; padding:22px; }
+h1 { margin:0 0 8px; font-size:26px; letter-spacing:0; }
+p { color:var(--muted); margin:0; }
+.grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:18px 0; }
+.card { border:1px solid var(--line); border-radius:8px; background:var(--panel); padding:14px; }
+.k { color:var(--muted); font:11px ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.9px; }
+.v { margin-top:6px; font:24px ui-monospace,SFMono-Regular,Menlo,monospace; }
+.ok { color:var(--good); } .warn { color:var(--warn); }
+table { width:100%; border-collapse:collapse; margin-top:10px; }
+td,th { border-top:1px solid var(--line); padding:7px 8px; text-align:left; font-size:12px; }
+th { color:var(--muted); font:10px ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; }
+section { border:1px solid var(--line); border-radius:8px; background:var(--panel); padding:14px; margin:14px 0; }
+@media(max-width:760px) { .grid { grid-template-columns:1fr 1fr; } }
+@media(max-width:460px) { .grid { grid-template-columns:1fr; } header,main { padding:16px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="k">OMIJA · FOUNDRY LIVE MEASUREMENT</div>
+  <h1>승인된 StealthMole row → Foundry-ready ontology measurement</h1>
+  <p>Raw provider envelope, raw email, API secret, JWT, password, cookie, token are not exported.</p>
+</header>
+<main>
+  <div class="grid">
+    <div class="card"><div class="k">Provider rows</div><div class="v">150</div></div>
+    <div class="card"><div class="k">CredentialExposure</div><div class="v">150</div></div>
+    <div class="card"><div class="k">ThreatSource</div><div class="v">150</div></div>
+      <div class="card"><div class="k">Schema PUT</div><div class="v ok">14/14</div></div>
+      <div class="card"><div class="k">SQL Counts</div><div class="v ok">14/14</div></div>
+      <div class="card"><div class="k">Ontology Readback</div><div class="v warn">NOT_INDEXED</div></div>
+  </div>
+  <section>
+    <h2>Module Counts</h2>
+    <table><thead><tr><th>module</th><th>records</th></tr></thead><tbody><tr><td>CB</td><td>50</td></tr>
+<tr><td>CDS</td><td>50</td></tr>
+<tr><td>CL</td><td>50</td></tr></tbody></table>
+  </section>
+  <section>
+    <h2>Generated Foundry CSVs</h2>
+    <table><thead><tr><th>file</th><th>rows</th></tr></thead><tbody><tr><td>01_supplier.csv</td><td>1</td></tr>
+<tr><td>03_program.csv</td><td>1</td></tr>
+<tr><td>04_domain.csv</td><td>17</td></tr>
+<tr><td>05_identity.csv</td><td>150</td></tr>
+<tr><td>06_credential_exposure.csv</td><td>150</td></tr>
+<tr><td>07_infected_device.csv</td><td>150</td></tr>
+<tr><td>08_threat_source.csv</td><td>150</td></tr>
+<tr><td>23_link_owns.csv</td><td>17</td></tr>
+<tr><td>25_link_belongs_to.csv</td><td>150</td></tr>
+<tr><td>26_link_of.csv</td><td>150</td></tr>
+<tr><td>27_link_targets.csv</td><td>150</td></tr>
+<tr><td>28_link_sourced_from.csv</td><td>150</td></tr>
+<tr><td>29_link_leaked.csv</td><td>150</td></tr>
+<tr><td>30_link_compromises.csv</td><td>150</td></tr></tbody></table>
+  </section>
+    <section>
+      <h2>Foundry Upload / Readback</h2>
+      <p>Backing dataset uploads: <b>14/14</b>. Explicit schemas: <b>14/14</b>. OSDK object readback: <b>not indexed yet</b>.</p>
+      <p>Artifacts: <code>upload_result.json</code>, <code>schema_put_result.json</code>, <code>readback_result.json</code>.</p>
+    </section>
+    <section>
+      <h2>Foundry SQL Counts</h2>
+      <p>Separate schema-aware live measurement datasets were created from the same sanitized CSVs so judges can see real approved provider rows measured in Foundry while ontology datasource indexing is refreshed.</p>
+      <table><thead><tr><th>dataset</th><th>sql count</th><th>expected</th><th>status</th></tr></thead><tbody><tr><td>supplier</td><td>1</td><td>1</td><td>OK</td></tr>
+<tr><td>program</td><td>1</td><td>1</td><td>OK</td></tr>
+<tr><td>domain</td><td>17</td><td>17</td><td>OK</td></tr>
+<tr><td>identity</td><td>150</td><td>150</td><td>OK</td></tr>
+<tr><td>credential_exposure</td><td>150</td><td>150</td><td>OK</td></tr>
+<tr><td>infected_device</td><td>150</td><td>150</td><td>OK</td></tr>
+<tr><td>threat_source</td><td>150</td><td>150</td><td>OK</td></tr>
+<tr><td>owns</td><td>17</td><td>17</td><td>OK</td></tr>
+<tr><td>belongs_to</td><td>150</td><td>150</td><td>OK</td></tr>
+<tr><td>of</td><td>150</td><td>150</td><td>OK</td></tr>
+<tr><td>targets</td><td>150</td><td>150</td><td>OK</td></tr>
+<tr><td>sourced_from</td><td>150</td><td>150</td><td>OK</td></tr>
+<tr><td>leaked</td><td>150</td><td>150</td><td>OK</td></tr>
+<tr><td>compromises</td><td>150</td><td>150</td><td>OK</td></tr></tbody></table>
+      <p>Artifact: <code>sql_measurement_result.json</code>.</p>
+    </section>
+</main>
+</body>
+</html>

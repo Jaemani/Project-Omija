@@ -1,0 +1,2419 @@
+{
+  "data": [
+    {
+      "apiName": "InfectedDevice",
+      "displayName": "Infected Device",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Infected Devices",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "infectedAt": {
+          "displayName": "infected_at",
+          "dataType": {
+            "type": "date"
+          },
+          "rid": "ri.ontology.main.property.842bd52b-b4f0-48fd-80c7-6dd7a5fd036c",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "malware": {
+          "displayName": "malware",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.c16ef8a1-fa63-4998-8a8c-280bd6e35258",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "deviceFingerprint": {
+          "displayName": "device_fingerprint",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.25073a02-1f03-468f-93f5-7dec9cfa9856",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "os": {
+          "displayName": "os",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.8288c26e-419b-4557-aa56-d89e49120b0d",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "hasSessionCookie": {
+          "displayName": "has_session_cookie",
+          "dataType": {
+            "type": "boolean"
+          },
+          "rid": "ri.ontology.main.property.8c7e85d9-e6a6-4ae0-8230-ca0b1420f036",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "LOW_CARDINALITY"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.869368f6-2ed3-4575-97b9-1ea0c19fb08c",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.4226259f-d803-4b88-9807-22ed42ffb453",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.04a54228-ad4e-4b18-9d35-04d274cc320a",
+      "titleProperty": "deviceFingerprint",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "RiskAssessment",
+      "displayName": "Risk Assessment",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Risk Assessments",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "scoringVersion": {
+          "displayName": "scoring_version",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.e3531587-73a2-4728-9f63-c738c1ec1d21",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "riskBand": {
+          "displayName": "risk_band",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.d0596ea5-9d19-4eb7-88ae-6f94f67a8e16",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "score": {
+          "displayName": "score",
+          "dataType": {
+            "type": "double"
+          },
+          "rid": "ri.ontology.main.property.25fe6495-1c98-4ad2-a8ff-75a694844b27",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "components": {
+          "displayName": "components",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.b1c681b3-40ee-414d-96a9-4c31cde69e19",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "schemaVersion": {
+          "displayName": "schema_version",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.1e766c51-1e83-4916-a774-c83a816b3dfd",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "supplierRef": {
+          "displayName": "supplier_ref",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.b3697dde-304d-4c9e-91b9-62683c08941b",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "computedAt": {
+          "displayName": "computed_at",
+          "dataType": {
+            "type": "date"
+          },
+          "rid": "ri.ontology.main.property.363e3aa3-87fc-4e6b-83fb-bd98c2e4f407",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "grade": {
+          "displayName": "grade",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.4a6b8844-3e5f-43c0-96af-35d549396c89",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.11fa8be3-661c-4358-98c5-370736f99c89",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "activeFlag": {
+          "displayName": "active_flag",
+          "dataType": {
+            "type": "boolean"
+          },
+          "rid": "ri.ontology.main.property.07775ee6-e1b4-4b32-a528-05b2ca22a818",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "LOW_CARDINALITY"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.7d1d8df6-2e41-4180-8523-50c923c2787b",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.05c29bb9-50ae-496a-bf20-624f83c1dc54",
+      "titleProperty": "supplierRef",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "CompromiseIncident",
+      "displayName": "Compromise Incident",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Compromise Incidents",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "riskBand": {
+          "displayName": "risk_band",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.26ec5b77-9c94-4862-8ff0-44b9902fa229",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "pathSnapshot": {
+          "displayName": "path_snapshot",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.42a369a3-5f61-4296-b0d7-aabe516cf982",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "supplierRef": {
+          "displayName": "supplier_ref",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.08cc0886-f87a-48cb-bc13-bd2e8650571b",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "blastRadius": {
+          "displayName": "blast_radius",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.7884a91a-5f93-4e7f-864c-fd95f760deda",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "pathConfidence": {
+          "displayName": "path_confidence",
+          "dataType": {
+            "type": "double"
+          },
+          "rid": "ri.ontology.main.property.50ef4cca-05ed-439a-b097-b41eddf900c0",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.25c9cafb-75a8-49bf-bd51-0630f0f51a27",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "pathHash": {
+          "displayName": "path_hash",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.aff91bc2-c4d0-4a2a-b3d3-ca76ed067bda",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "openedAt": {
+          "displayName": "opened_at",
+          "dataType": {
+            "type": "date"
+          },
+          "rid": "ri.ontology.main.property.9b598238-e7aa-4740-8797-bac638ebfe31",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.9e831049-2ad3-4e56-84bb-66860a53a437",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.17042e8b-eccb-4294-b16b-6c5f8015c046",
+      "titleProperty": "supplierRef",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "Program",
+      "displayName": "Program",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Programs",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "name": {
+          "displayName": "name",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.f81b7143-98ea-403b-9054-c309bdebf836",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.49070ad0-a1c3-4afe-8748-487df9e9bafd",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "sensitivity": {
+          "displayName": "sensitivity",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.11202b50-2a0d-4897-93ba-c3c8c78010a0",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.5c1e7a03-787c-44bd-b7dd-44b7b03e2364",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.1e29de3c-0cff-4581-9b7d-6dcf9f5dd537",
+      "titleProperty": "name",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "ProgramExposure",
+      "displayName": "Program Exposure",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Program Exposures",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "scoringVersion": {
+          "displayName": "scoring_version",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.b23cbb74-9d1c-4468-b56c-eae2864ad880",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "riskBand": {
+          "displayName": "risk_band",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.24dda5c5-cccd-49ea-a44f-6911aab3fbff",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "score": {
+          "displayName": "score",
+          "dataType": {
+            "type": "double"
+          },
+          "rid": "ri.ontology.main.property.af7a3ab6-8210-4ff3-9166-8db50b428843",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "components": {
+          "displayName": "components",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.fbd8d565-0dcc-4561-9ccc-877b117b53a4",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "computedAt": {
+          "displayName": "computed_at",
+          "dataType": {
+            "type": "date"
+          },
+          "rid": "ri.ontology.main.property.0342d354-1632-493c-9ab0-697a63988eba",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "grade": {
+          "displayName": "grade",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.d174f89b-c20b-4bef-bc86-573ce2cddc2e",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "contributingPaths": {
+          "displayName": "contributing_paths",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.632b4797-66cc-4acc-a2f2-d192a4d6d166",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.0c60db76-2d1e-4f24-aa77-bd05a57a10a4",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "programRef": {
+          "displayName": "program_ref",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.e76581ff-2996-455e-868b-846b0f4925fc",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "activeFlag": {
+          "displayName": "active_flag",
+          "dataType": {
+            "type": "boolean"
+          },
+          "rid": "ri.ontology.main.property.1f40f4b1-adc4-4284-b756-de00858f0552",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "LOW_CARDINALITY"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.134efd5b-752f-4c93-aa23-39cffd8671c7",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.23cad621-244c-4ada-aaf4-ca80107e5d44",
+      "titleProperty": "id",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "NotificationDraft",
+      "displayName": "Notification Draft",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Notification Drafts",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "createdAt": {
+          "displayName": "created_at",
+          "dataType": {
+            "type": "date"
+          },
+          "rid": "ri.ontology.main.property.1a0d67bd-ee59-46ae-847e-15927e17c412",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "createdBy": {
+          "displayName": "created_by",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.021f6850-c399-41b1-8f77-afd52d1d45e7",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "recipientRef": {
+          "displayName": "recipient_ref",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.9fddf9a3-4595-4ce1-a800-6b6480542b4a",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.99897b11-d154-4602-81db-9ab84e1796fc",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "reviewer": {
+          "displayName": "reviewer",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.023ee9fa-f7f9-4e8d-909e-94166b773fd5",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "body": {
+          "displayName": "body",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.c9a78d65-cf94-4856-b744-325880c2a81c",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "Status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.966ecd94-8020-4c93-8343-c3418862ea4e",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.3aad8deb-ae29-4011-b0e4-8e7f1d540f1a",
+      "titleProperty": "id",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "ExampleExplainer",
+      "displayName": "[Example] Explainer",
+      "status": "EXPERIMENTAL",
+      "description": "Stores re-usable callout references to integrate into Workshop and other one state examples",
+      "pluralDisplayName": "[Example] Explainers",
+      "icon": {
+        "type": "blueprint",
+        "color": "#BD6BBD",
+        "name": "help"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "linkUrl": {
+          "displayName": "Link Url",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.f74be01b-236d-4510-aea9-4f87053ad420",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "linkText": {
+          "displayName": "Link Text",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.609b37c0-857f-4c05-8bf9-6f31bf34a41b",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "Id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.497238c8-2708-4aa4-91bb-5ae24365193c",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "text": {
+          "displayName": "Text",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.4f60f7bb-67ff-4c1e-a8a1-56b1bf78b565",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "title": {
+          "displayName": "Title",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.163cca55-5c59-486c-981c-56a9b8e4808d",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.5e2239a3-fc1b-42eb-b1fd-defd5f822412",
+      "titleProperty": "title",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "Identity",
+      "displayName": "Identity",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Identities",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "canonicalHandle": {
+          "displayName": "canonical_handle",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.ff06ddbb-2b0b-4338-b77d-68e04541df9a",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "mergedInto": {
+          "displayName": "merged_into",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.e4591e8a-beed-4cc0-a342-7314fdc8bc7b",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "accountType": {
+          "displayName": "account_type",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.9c713b2a-9065-4ce2-8f99-9c9600dbb037",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.0a294bf8-c2b9-4aee-8e1b-6c8627a33ce0",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "email": {
+          "displayName": "email",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.2cec6698-747a-41cd-beb6-87a1471ac55a",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.238a8b45-b364-45eb-a198-67a7862af1ed",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "username": {
+          "displayName": "username",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.430e4301-0628-46c3-b94a-c3f0ef344671",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.5fdf6d4d-5ef2-46c7-9aa9-dd697e4c822d",
+      "titleProperty": "email",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "ExampleLogUpdateRouteAlertStatus",
+      "displayName": "[Example][Log] Update Route Alert Status",
+      "status": "EXPERIMENTAL",
+      "description": "This object type was automatically created when logging was enabled for the Action type: Update Route Alert Status",
+      "pluralDisplayName": "[Example][Logs] Update Route Alert Status",
+      "icon": {
+        "type": "blueprint",
+        "color": "#5F6B7C",
+        "name": "history"
+      },
+      "primaryKey": "actionRid",
+      "properties": {
+        "actionSummary": {
+          "displayName": "Action summary",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.b85b8b98-a3aa-484a-9f74-cec7339e2118",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "actionRid": {
+          "displayName": "Action RID",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.bc2c048c-f4a3-4148-b545-1c73abb57814",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "actionTimestamp": {
+          "displayName": "Action timestamp",
+          "dataType": {
+            "type": "timestamp"
+          },
+          "rid": "ri.ontology.main.property.a8cb0dcf-59f9-4845-a980-5349c3b4cad9",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "valueFormatting": {
+            "type": "timestamp",
+            "format": {
+              "type": "localizedFormat",
+              "format": "DATE_FORMAT_DATE_TIME"
+            },
+            "displayTimezone": {
+              "type": "user"
+            }
+          },
+          "typeClasses": []
+        },
+        "actionTypeRid": {
+          "displayName": "Action type RID",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.c862cc8c-1a00-4e21-a19d-9f4e3e51d576",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "exampleRouteAlert": {
+          "displayName": "[Example] Route Alert",
+          "dataType": {
+            "type": "array",
+            "subType": {
+              "type": "string"
+            },
+            "reducers": []
+          },
+          "rid": "ri.ontology.main.property.481afc94-7365-4668-b223-2f2abab25aaf",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "actionTriggerer": {
+          "displayName": "Action triggerer",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.754e3743-1594-4222-803c-66ee2574d669",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "valueFormatting": {
+            "type": "knownType",
+            "knownType": "USER_OR_GROUP_ID"
+          },
+          "typeClasses": []
+        },
+        "actionTypeVersion": {
+          "displayName": "Action type version",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.9144c095-bfeb-44c5-9123-9e318534e5ea",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "status": {
+          "displayName": "Status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.5b4fc078-1ba1-4a0a-9cf7-c627bbb37111",
+          "status": {
+            "type": "example"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        }
+      },
+      "rid": "ri.ontology.main.object-type.8d4b95ae-bef5-4182-9c6f-a333ff65ece7",
+      "titleProperty": "actionRid",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "ThreatSource",
+      "displayName": "Threat Source",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Threat Sources",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "collectedAt": {
+          "displayName": "collected_at",
+          "dataType": {
+            "type": "date"
+          },
+          "rid": "ri.ontology.main.property.38699190-7547-4773-9cff-78c846ca723e",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "kind": {
+          "displayName": "kind",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.93092dc8-5275-40d0-9513-8e7be6a84926",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "reliability": {
+          "displayName": "reliability",
+          "dataType": {
+            "type": "double"
+          },
+          "rid": "ri.ontology.main.property.2511feff-8840-48a1-9158-a0650e8295e4",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "name": {
+          "displayName": "name",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.d643c925-e792-4157-95a4-59025733f8ef",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.4fa201e7-df0d-48fe-90bc-9a2cda80d4cb",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.c4ce4899-be77-4210-93fe-22258750e61a",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.92e0959a-c577-43e2-b841-488bd09987f4",
+      "titleProperty": "name",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "MergeProposal",
+      "displayName": "Merge Proposal",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Merge Proposals",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "createdAt": {
+          "displayName": "created_at",
+          "dataType": {
+            "type": "date"
+          },
+          "rid": "ri.ontology.main.property.e94218a4-5c5f-4875-82be-b80295c8313b",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "identityB": {
+          "displayName": "identity_b",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.d22a1caf-1f9a-4e0b-bfd1-25461455b185",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "identityA": {
+          "displayName": "identity_a",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.b4404371-8c7c-4564-891a-11a23ed7d8d4",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "confidence": {
+          "displayName": "confidence",
+          "dataType": {
+            "type": "double"
+          },
+          "rid": "ri.ontology.main.property.a6e25756-7846-4d3a-bc60-a0c6c4c54004",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.802f6f81-aeb4-4879-8097-376b702bcd14",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "reviewer": {
+          "displayName": "reviewer",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.0f33f8c3-5223-461a-96a0-a3318af20e0e",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "basis": {
+          "displayName": "basis",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.eb548514-e36e-4efa-a063-2b8318c3e3f6",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.59f4d824-7f82-4717-a2d7-a829361adf88",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.95328ffb-fca8-41eb-ac7b-f3ec21394d4a",
+      "titleProperty": "identityA",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "Domain",
+      "displayName": "Domain",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Domains",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "domainFqdn",
+      "properties": {
+        "accessSurface": {
+          "displayName": "access_surface",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.0ff7c56e-d0b5-426d-930c-2125922bf4cd",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "supplierId": {
+          "displayName": "asset_type",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.c879312b-5cbe-4fbf-81ed-04f12e9d9156",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "fqdn": {
+          "displayName": "asset_id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.69f26e1f-ecb0-4bfe-8f64-6996dd5c2e53",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "verifiedAt": {
+          "displayName": "verified_at",
+          "dataType": {
+            "type": "date"
+          },
+          "rid": "ri.ontology.main.property.cf465ae2-55d3-4ea9-9671-6fa1c4bf194b",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "criticality": {
+          "displayName": "criticality",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.ed6aa6ef-ff79-4eb6-a8fe-eb465ba5eab3",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "host": {
+          "displayName": "host",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.21ebca8c-201b-4f44-9a45-8e2edbce8afe",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "domainFqdn": {
+          "displayName": "fqdn",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.759865bf-7cac-4b28-8ac9-6cdd8e0146e6",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "url": {
+          "displayName": "url",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.2863ec3c-2038-451c-a21f-c074f8ded986",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.a2ad93ca-8861-4f35-9cbf-e787b4264c93",
+      "titleProperty": "domainFqdn",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "Supplier",
+      "displayName": "Supplier",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Suppliers",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "tier": {
+          "displayName": "tier",
+          "dataType": {
+            "type": "integer"
+          },
+          "rid": "ri.ontology.main.property.6e842ce9-1ce1-4267-af2e-67910259aab0",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "criticality": {
+          "displayName": "criticality",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.c0e9ced1-1494-4972-9b58-a2ad38488b7f",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "isPrimeCandidate": {
+          "displayName": "is_prime_candidate",
+          "dataType": {
+            "type": "boolean"
+          },
+          "rid": "ri.ontology.main.property.d92a57d6-e0a7-4834-aaab-b1cd20ad0a7e",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "LOW_CARDINALITY"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            }
+          ]
+        },
+        "name": {
+          "displayName": "name",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.1549991f-8ded-47c7-8d6b-5aae6221ca36",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.c976382d-0e0c-48c2-8725-640c869fb5e9",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.96e2ddff-2f78-4301-8ce5-a48a144302ae",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.e0c754c0-5983-4e85-bff3-810b6512e286",
+      "titleProperty": "name",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "CredentialExposure",
+      "displayName": "Credential Exposure",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Credential Exposures",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "lastSeen": {
+          "displayName": "last_seen",
+          "dataType": {
+            "type": "date"
+          },
+          "rid": "ri.ontology.main.property.b9436e9d-75c6-4d3c-a864-be5e9982e8a5",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "secretFingerprint": {
+          "displayName": "secret_fingerprint",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.30b9288c-0480-4144-8003-75c56565eeac",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "secretPresent": {
+          "displayName": "secret_present",
+          "dataType": {
+            "type": "boolean"
+          },
+          "rid": "ri.ontology.main.property.42835403-c6ac-4a6c-9fe1-481cc7cc5ccd",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "LOW_CARDINALITY"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            }
+          ]
+        },
+        "maskedValue": {
+          "displayName": "masked_value",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.4d3abe63-e4bf-455f-a825-abdc00ad093f",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "secretType": {
+          "displayName": "secret_type",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.95863090-2787-4cb1-9a6a-1a3dc4e1d8bb",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "firstSeen": {
+          "displayName": "first_seen",
+          "dataType": {
+            "type": "date"
+          },
+          "rid": "ri.ontology.main.property.8387a949-87c7-4844-ad4c-cd4b4a67558d",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "confidence": {
+          "displayName": "confidence",
+          "dataType": {
+            "type": "double"
+          },
+          "rid": "ri.ontology.main.property.5e62b99a-26fe-4c6e-8eba-9c13c0052efd",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": []
+        },
+        "module": {
+          "displayName": "module",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.72e13afb-84e2-4e3b-a9aa-2f9ef1909c89",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.98efbb79-b017-48b2-8b84-29909fe6f41b",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "sourceRef": {
+          "displayName": "source_ref",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.8d5cb748-d738-4b40-9591-04c443da5f71",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.18915b8f-a875-49dc-8621-e72ebf51cdf6",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.e786c0d6-9ec6-47bd-ab0d-586db242448b",
+      "titleProperty": "module",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    },
+    {
+      "apiName": "Prime",
+      "displayName": "Prime",
+      "status": "EXPERIMENTAL",
+      "description": "",
+      "pluralDisplayName": "Primes",
+      "icon": {
+        "type": "blueprint",
+        "color": "#4C90F0",
+        "name": "cube"
+      },
+      "primaryKey": "id",
+      "properties": {
+        "name": {
+          "displayName": "name",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.82408711-4e5a-4141-acbb-d7add2f9f8de",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "id": {
+          "displayName": "id",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.ef78deec-063e-4e29-919d-a90ddd7810d1",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        },
+        "status": {
+          "displayName": "status",
+          "dataType": {
+            "type": "string"
+          },
+          "rid": "ri.ontology.main.property.836a158e-13cd-4ee2-8daf-26dffd6f4cf2",
+          "status": {
+            "type": "experimental"
+          },
+          "visibility": "NORMAL",
+          "typeClasses": [
+            {
+              "kind": "render_hint",
+              "name": "SELECTABLE"
+            },
+            {
+              "kind": "render_hint",
+              "name": "SORTABLE"
+            }
+          ]
+        }
+      },
+      "rid": "ri.ontology.main.object-type.fbe5bfb3-7a37-4989-9ff3-a2d150681629",
+      "titleProperty": "name",
+      "visibility": "NORMAL",
+      "aliases": [],
+      "datasources": []
+    }
+  ]
+}

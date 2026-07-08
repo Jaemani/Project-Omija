@@ -19,6 +19,8 @@ SEED_DIR = OUT_DIR / "foundry_seed"
 PUBLIC_CONTEXT = OUT_DIR / "public_context" / "summary.json"
 ACTION_CHAIN = OUT_DIR / "foundry_action_chain.json"
 PROGRAM_VIEW = OUT_DIR / "program_threat_view.json"
+LIVE_MEASUREMENT = OUT_DIR / "foundry_live_measurement" / "measurement.json"
+SQL_MEASUREMENT = OUT_DIR / "foundry_live_measurement" / "sql_measurement_result.json"
 OUT_HTML = OUT_DIR / "data_coverage_map.html"
 
 
@@ -44,6 +46,8 @@ def build_payload() -> dict[str, Any]:
     public = read_json(PUBLIC_CONTEXT) or {}
     actions = read_json(ACTION_CHAIN) or {}
     program = read_json(PROGRAM_VIEW) or {}
+    measurement = read_json(LIVE_MEASUREMENT) or {}
+    sql_measurement = read_json(SQL_MEASUREMENT) or {}
     nvd_total = sum((query.get("total_results") or 0) for query in public.get("nvd", {}).get("queries", []))
     return {
         "seed_counts": {
@@ -71,6 +75,8 @@ def build_payload() -> dict[str, Any]:
             "action_steps": len(actions.get("steps", [])) if isinstance(actions, dict) else 0,
             "program_chain": len(program.get("chain", [])) if isinstance(program, dict) else 0,
             "cross_org_hits": len(program.get("cross_org_hits", [])) if isinstance(program, dict) else 0,
+            "provider_rows": (measurement.get("summary") or {}).get("input_records", 0),
+            "sql_counts_ok": f"{sql_measurement.get('ok_count', 0)}/{sql_measurement.get('target_count', 0)}",
         },
     }
 
@@ -107,6 +113,8 @@ def render(payload: dict[str, Any]) -> str:
     )
     live_stats = "".join(
         [
+            stat("Approved provider rows", live["provider_rows"], "live"),
+            stat("Foundry SQL counts", live["sql_counts_ok"], "live"),
             stat("Foundry action readbacks", live["action_steps"], "live"),
             stat("Program reverse chains", live["program_chain"], "engine"),
             stat("Cross-org hits", live["cross_org_hits"], "engine"),
@@ -171,7 +179,7 @@ svg {{ display:block; min-width:1120px; width:100%; height:auto; }}
     <span class="chip public">PUBLIC_CONTEXT open data</span>
     <span class="chip engine">ENGINE computed decision</span>
     <span class="chip live">LIVE Foundry/readback</span>
-    <span class="chip locked">LOCKED sensitive slot</span>
+    <span class="chip locked">APPROVED provider rail · raw secret blocked</span>
   </div>
 
   <section class="network">
@@ -191,12 +199,12 @@ svg {{ display:block; min-width:1120px; width:100%; height:auto; }}
 
     <g class="node seed"><rect x="30" y="70" width="150" height="70"/><text x="48" y="100">Foundry seed CSV</text><text x="48" y="120" class="small">suppliers/domains/programs</text></g>
     <g class="node seed"><rect x="30" y="150" width="150" height="70"/><text x="48" y="180">Synthetic corpus</text><text x="48" y="200" class="small">exposure/device slots</text></g>
-    <g class="node locked"><rect x="30" y="250" width="150" height="70"/><text x="48" y="280">Credential feed</text><text x="48" y="300" class="small">locked / not queried</text></g>
+<g class="node locked"><rect x="30" y="250" width="150" height="70"/><text x="48" y="280">Credential feed</text><text x="48" y="300" class="small">approved · redacted</text></g>
     <g class="node public"><rect x="30" y="355" width="150" height="70"/><text x="48" y="385">Open context</text><text x="48" y="405" class="small">KEV/NVD/ATT&CK/HIBP</text></g>
 
     <g class="node seed"><rect x="370" y="70" width="175" height="70"/><text x="390" y="100">Ontology objects</text><text x="390" y="120" class="small">Supplier Domain Identity</text></g>
     <g class="node seed"><rect x="370" y="150" width="175" height="70"/><text x="390" y="180">Evidence slots</text><text x="390" y="200" class="small">Exposure Device Source</text></g>
-    <g class="node locked"><rect x="370" y="250" width="175" height="70"/><text x="390" y="280">Sensitive review</text><text x="390" y="300" class="small">masked / gated / audited</text></g>
+<g class="node locked"><rect x="370" y="250" width="175" height="70"/><text x="390" y="280">Sensitive review</text><text x="390" y="300" class="small">raw secret blocked</text></g>
     <g class="node public"><rect x="370" y="355" width="175" height="70"/><text x="390" y="385">Context components</text><text x="390" y="405" class="small">asset risk, techniques</text></g>
 
     <g class="node engine"><rect x="725" y="130" width="155" height="70"/><text x="745" y="160">RiskAssessment</text><text x="745" y="180" class="small">band + score</text></g>
@@ -212,7 +220,7 @@ svg {{ display:block; min-width:1120px; width:100%; height:auto; }}
   <div class="grid">
     <section class="panel"><h2>Managed synthetic structure</h2><div class="stats">{seed_stats}</div></section>
     <section class="panel"><h2>Open public context</h2><div class="stats">{public_stats}</div></section>
-    <section class="panel"><h2>Engine / live evidence</h2><div class="stats">{live_stats}</div><div class="caption">Foundry action readbacks and reverse-query outputs prove the operating workflow; credential-feed slots remain locked.</div></section>
+<section class="panel"><h2>Engine / live evidence</h2><div class="stats">{live_stats}</div><div class="caption">Foundry action readbacks, SQL counts, and reverse-query outputs prove the operating workflow; provider rows stay redacted.</div></section>
   </div>
 </main>
 </body>

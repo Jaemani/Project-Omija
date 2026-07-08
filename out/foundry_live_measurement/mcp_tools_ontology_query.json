@@ -1,0 +1,1207 @@
+[
+  {
+    "name": "get_foundry_ontology_rid",
+    "title": "get_foundry_ontology_rid",
+    "description": "Fetches the Ontology RID for a given Foundry OSDK application, local repository, or lists all available ontologies.\n- Ontology RIDs are required when interacting with a Foundry Ontology.\n- If neither application nor repository is provided, all available ontologies will be listed.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "applicationRidLocator": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "thirdPartyApplicationRid": {
+                      "type": "string",
+                      "description": "Third Party Application. (eg: ri.third-party-applications.main.application.{UUID}). undefined. "
+                    }
+                  },
+                  "required": [
+                    "thirdPartyApplicationRid"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "gitProjectPath": {
+                      "type": "string",
+                      "description": "A path to a local git clone of a Foundry repository where a third party application rid can be read."
+                    }
+                  },
+                  "required": [
+                    "gitProjectPath"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Optional. If not provided, all available ontologies will be listed."
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  },
+  {
+    "name": "view_foundry_object_type",
+    "title": "view_foundry_object_type",
+    "description": "View an existing object type.\n\nThis tool allows you to view the definition of an object type in the ontology, including its properties, link types, and action types.\n\nThis tool can be used repeatedly/recursively to traverse the Ontology graph, by looking at its LinkTypes.\nYou can offer this option to the user when they are asking vague details about ontology entities, as traversing the ontology can provide clarity on its structure and potential uses.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "globalBranchRid": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The global branch rid: e.g. ri.branch..branch.{UUID}.\nMust be provided if available objects within a branch are not visible on other branches or in the main ontology"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The global branch rid: e.g. ri.branch..branch.{UUID}.\nMust be provided if available objects within a branch are not visible on other branches or in the main ontology"
+        },
+        "objectType": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "objectTypeRid": {
+                  "type": "string",
+                  "description": "Ontology Object Type RID. (eg: ri.ontology.main.object-type.{UUID}). undefined. "
+                }
+              },
+              "required": [
+                "objectTypeRid"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "objectTypeId": {
+                  "type": "string",
+                  "description": "This is a human readable id for the ObjectType. Valid ObjectTypeIds have the following conditions:\n* Preferably kebab-case (but snake_case and cameCase is also allowed)\n* The first character must be a lower case letter, subsequent characters can be a lower case letter or number.\n* No special characters are allowed."
+                }
+              },
+              "required": [
+                "objectTypeId"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "objectType"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  },
+  {
+    "name": "query_ontology_objects",
+    "title": "query_ontology_objects",
+    "description": "List objects in the Ontology. \nThis tool allows you to view Objects corresponding to a given ObjectType.\nThis tool allows you to retrieve paginated results.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "objectTypeId": {
+          "type": "string",
+          "description": "This is a human readable id for the ObjectType. Valid ObjectTypeIds have the following conditions:\n* Preferably kebab-case (but snake_case and cameCase is also allowed)\n* The first character must be a lower case letter, subsequent characters can be a lower case letter or number.\n* No special characters are allowed."
+        },
+        "globalBranchRid": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "Global Branch RID. (eg: ri.branch..branch.{UUID}). Must be provided if available objects within a branch are not visible on other branches or in the main ontology. "
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Global Branch RID. (eg: ri.branch..branch.{UUID}). Must be provided if available objects within a branch are not visible on other branches or in the main ontology. "
+        },
+        "propertyIds": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A list of property IDs that you want to query. If includeAllProperties is false, at least one property MUST be defined here."
+        },
+        "pageToken": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Token for pagination (from previous response)"
+        },
+        "includeAllProperties": {
+          "type": "boolean",
+          "description": "Whether to include all properties (default: false). If set to true, propertyIds",
+          "default": false
+        },
+        "orderBy": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "propertyTypeRid": {
+                  "type": "string",
+                  "description": "Property Type RID. (eg: ri.ontology.main.property.{UUID}). undefined. "
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "ASCENDING",
+                    "DESCENDING"
+                  ],
+                  "description": "Sort direction",
+                  "default": "ASCENDING"
+                }
+              },
+              "required": [
+                "propertyTypeRid"
+              ],
+              "additionalProperties": false,
+              "description": "Property-based ordering"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Property-based ordering"
+        }
+      },
+      "required": [
+        "objectTypeId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  },
+  {
+    "name": "aggregate_ontology_objects",
+    "title": "aggregate_ontology_objects",
+    "description": "Perform comprehensive aggregation functions on object fields in the specified ontology and object type.\n\n## Supported Aggregation Functions:\n\n- **count**: Count the number of objects (no field required)\n- **sum**: Sum numeric values across objects\n- **avg**: Calculate average of numeric values\n- **min**: Find minimum value in a field\n- **max**: Find maximum value in a field\n- **approxDistinct**: Approximate count of distinct values (faster than exact)\n\n## Field Name Resolution\n\nField names in aggregations, groupBy, and where clauses are automatically resolved. You can use either:\n\n- **propertyApiName** (e.g., `rcaStatus`) — the API name from `view_foundry_object_type` output's `apiName` field\n- **propertyTypeId** (e.g., `rca_status`) — the property key from `view_foundry_object_type` output\n\nThe tool loads the object type metadata and translates propertyTypeIds to the correct API names before querying. If a field name is not found as a propertyTypeId, it is passed through as-is (assumed to already be an API name).\n\nSimilarly, `objectTypeApiName` accepts either the object type's API name (e.g., `RpsIncident`) or its object type ID (e.g., `rps-incident`). The tool resolves the correct API name automatically.\n\n## Limitations\n\n- **Edit-only properties**: Properties not backed by a dataset column (edit-only properties) do not support groupBy or field-based aggregations (avg, sum, min, max). A basic count without groupBy will still work.\n- **Stream-backed object types**: Object types backed only by streams may have limited aggregation support.\n- **Workaround**: For object types with these limitations, use `run_sql_query_on_foundry_dataset` to run SQL aggregation queries directly against the backing dataset.\n\n## Advanced Features:\n\n- **Grouping**: Group results by one or more fields using the groupBy parameter\n- **Filtering**: Apply where clause to filter objects before aggregation\n- **Accuracy Control**: Choose between EXACT (precise) or APPROXIMATE (faster) calculations\n- **Result Naming**: Assign custom names to aggregation results using the `name` field\n\n## Example Use Cases:\n\n### Basic Count\n\n```json\n{\n    \"ontologyRid\": \"ri.ontology.main.ontology.12345678-1234-1234-1234-123456789012\",\n    \"objectTypeApiName\": \"Employee\",\n    \"aggregations\": [{ \"type\": \"count\", \"name\": \"totalRecords\" }]\n}\n```\n\n### Sales Analytics by Region\n\n```json\n{\n    \"ontologyRid\": \"ri.ontology.main.ontology.12345678-1234-1234-1234-123456789012\",\n    \"objectTypeApiName\": \"Sale\",\n    \"aggregations\": [\n        { \"type\": \"sum\", \"field\": \"revenue\", \"name\": \"totalRevenue\" },\n        { \"type\": \"avg\", \"field\": \"revenue\", \"name\": \"avgRevenue\" },\n        { \"type\": \"count\", \"name\": \"salesCount\" }\n    ],\n    \"groupBy\": [{ \"type\": \"exact\", \"field\": \"region\" }],\n    \"where\": {\n        \"type\": \"and\",\n        \"value\": [\n            { \"type\": \"gte\", \"field\": \"revenue\", \"value\": 1000 },\n            { \"type\": \"eq\", \"field\": \"status\", \"value\": \"completed\" }\n        ]\n    }\n}\n```\n\n### Employee Performance Summary\n\n```json\n{\n    \"ontologyRid\": \"ri.ontology.main.ontology.12345678-1234-1234-1234-123456789012\",\n    \"objectTypeApiName\": \"Employee\",\n    \"aggregations\": [\n        { \"type\": \"avg\", \"field\": \"salary\", \"name\": \"avgSalary\" },\n        { \"type\": \"min\", \"field\": \"salary\", \"name\": \"minSalary\" },\n        { \"type\": \"max\", \"field\": \"salary\", \"name\": \"maxSalary\" },\n        { \"type\": \"approximateDistinct\", \"field\": \"skillSet\", \"name\": \"uniqueSkills\" }\n    ],\n    \"groupBy\": [{ \"type\": \"exact\", \"field\": \"department\" }],\n    \"accuracy\": \"REQUIRE_ACCURATE\"\n}\n```\n\n### Multi-dimensional Analysis\n\n```json\n{\n    \"ontologyRid\": \"ri.ontology.main.ontology.12345678-1234-1234-1234-123456789012\",\n    \"objectTypeApiName\": \"Order\",\n    \"aggregations\": [\n        { \"type\": \"count\", \"name\": \"orderCount\" },\n        { \"type\": \"sum\", \"field\": \"totalAmount\", \"name\": \"revenue\" }\n    ],\n    \"groupBy\": [\n        { \"type\": \"exact\", \"field\": \"customerType\" },\n        { \"type\": \"exact\", \"field\": \"orderDate\" }\n    ],\n    \"where\": {\n        \"type\": \"or\",\n        \"value\": [\n            { \"type\": \"eq\", \"field\": \"priority\", \"value\": \"high\" },\n            { \"type\": \"gte\", \"field\": \"totalAmount\", \"value\": 5000 }\n        ]\n    },\n    \"accuracy\": \"ALLOW_APPROXIMATE\"\n}\n```\n\n## Parameter Definitions\n\n- **ontologyRid**: The unique identifier for your Foundry ontology (format: `ri.ontology.main.ontology.{UUID}`)\n- **objectTypeApiName**: The API name of the object type to aggregate (e.g., \"Employee\", \"Sale\", \"Order\"). Also accepts the object type ID (e.g., \"employee\", \"sale\").\n- **aggregations**: Array of aggregation functions to perform on the data\n- **groupBy**: Optional array of grouping clauses to organize results\n- **where**: Optional filter query to limit which objects are included\n- **accuracy**: Optional accuracy level (`REQUIRE_ACCURATE` for precise results, `ALLOW_APPROXIMATE` for faster processing)\n\n## Advanced Grouping Examples\n\n### Time-Based Grouping (Duration)\n\n```json\n{\n    \"ontologyRid\": \"ri.ontology.main.ontology.12345678-1234-1234-1234-123456789012\",\n    \"objectTypeApiName\": \"Event\",\n    \"aggregations\": [{ \"type\": \"count\", \"name\": \"eventsPerMonth\" }],\n    \"groupBy\": [\n        {\n            \"type\": \"duration\",\n            \"field\": \"createdAt\",\n            \"value\": 1,\n            \"unit\": \"MONTHS\"\n        }\n    ]\n}\n```\n\n### Numeric Range Grouping (Fixed Width)\n\n```json\n{\n    \"ontologyRid\": \"ri.ontology.main.ontology.12345678-1234-1234-1234-123456789012\",\n    \"objectTypeApiName\": \"Product\",\n    \"aggregations\": [{ \"type\": \"count\", \"name\": \"productsPerPriceRange\" }],\n    \"groupBy\": [\n        {\n            \"type\": \"fixedWidth\",\n            \"field\": \"price\",\n            \"fixedWidth\": 100\n        }\n    ]\n}\n```\n\n### Custom Range Grouping\n\n```json\n{\n    \"ontologyRid\": \"ri.ontology.main.ontology.12345678-1234-1234-1234-123456789012\",\n    \"objectTypeApiName\": \"Employee\",\n    \"aggregations\": [{ \"type\": \"avg\", \"field\": \"salary\", \"name\": \"avgSalaryByAgeGroup\" }],\n    \"groupBy\": [\n        {\n            \"type\": \"ranges\",\n            \"field\": \"age\",\n            \"ranges\": [\n                { \"startValue\": 18, \"endValue\": 30 },\n                { \"startValue\": 30, \"endValue\": 50 },\n                { \"startValue\": 50, \"endValue\": 65 }\n            ]\n        }\n    ]\n}\n```\n\n## Search Query Reference\n\n### Text Search Operations\n\n```json\n{\n    \"where\": {\n        \"type\": \"containsAllTerms\",\n        \"field\": \"description\",\n        \"value\": \"machine learning model\"\n    }\n}\n```\n\nAvailable text search types:\n\n- `containsAllTerms`: All terms must be present\n- `containsAllTermsInOrder`: All terms in specified order\n- `containsAllTermsInOrderPrefixLastTerm`: Ordered terms with prefix matching on last term\n- `containsAnyTerm`: Any of the terms present\n- `startsWith`: Field starts with value\n- `wildcard`: Pattern matching with wildcards\n\n### Null and Array Operations\n\n```json\n{\n    \"where\": {\n        \"type\": \"and\",\n        \"value\": [\n            { \"type\": \"isNull\", \"field\": \"deletedAt\", \"value\": false },\n            { \"type\": \"contains\", \"field\": \"tags\", \"value\": \"priority\" }\n        ]\n    }\n}\n```\n\n### Comparison Operations\n\nAll standard comparison operators are supported:\n\n- `eq`: Equal to\n- `gt`/`gte`: Greater than / Greater than or equal\n- `lt`/`lte`: Less than / Less than or equal\n- `in`: Value in array\n\n## Performance Considerations\n\n### Accuracy Settings\n\n- **REQUIRE_ACCURATE**: Use for financial calculations, compliance reports, or when exact numbers are critical\n- **ALLOW_APPROXIMATE**: Use for dashboards, trend analysis, or large datasets where speed matters more than precision\n\n### Optimization Tips\n\n1. **Large Datasets**: Use `ALLOW_APPROXIMATE` with `approximateDistinct` for better performance\n2. **Time Series**: Use duration-based grouping instead of exact grouping for time fields\n3. **Complex Queries**: Use specific filtering to reduce processing overhead\n4. **Filtering**: Apply `where` clauses to reduce data before aggregation\n",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "ontologyRid": {
+          "type": "string",
+          "description": "The ontology rid: e.g. ri.ontology.main.ontology.{UUID}"
+        },
+        "objectTypeApiName": {
+          "type": "string",
+          "description": "The API name of the object type to aggregate"
+        },
+        "aggregations": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Alias for the aggregation result field"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "ASC",
+                      "DESC"
+                    ]
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "count"
+                  }
+                },
+                "required": [
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/name"
+                  },
+                  "direction": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/direction"
+                  },
+                  "field": {
+                    "type": "string",
+                    "description": "PropertyAPIName:\nThis is a human readable name for the PropertyType that will be used for accessing the property via API.\nIt should be strictly PascalCase, with no special characters or numbers allowed."
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "sum"
+                  }
+                },
+                "required": [
+                  "field",
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/name"
+                  },
+                  "direction": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/direction"
+                  },
+                  "field": {
+                    "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "min"
+                  }
+                },
+                "required": [
+                  "field",
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/name"
+                  },
+                  "direction": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/direction"
+                  },
+                  "field": {
+                    "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "max"
+                  }
+                },
+                "required": [
+                  "field",
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/name"
+                  },
+                  "direction": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/direction"
+                  },
+                  "field": {
+                    "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "avg"
+                  }
+                },
+                "required": [
+                  "field",
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/name"
+                  },
+                  "direction": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/direction"
+                  },
+                  "field": {
+                    "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "approximateDistinct"
+                  }
+                },
+                "required": [
+                  "field",
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/name"
+                  },
+                  "direction": {
+                    "$ref": "#/properties/aggregations/items/anyOf/0/properties/direction"
+                  },
+                  "field": {
+                    "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "exactDistinct"
+                  }
+                },
+                "required": [
+                  "field",
+                  "type"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "description": "Array of aggregation functions to perform"
+        },
+        "groupBy": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "exact"
+                  },
+                  "field": {
+                    "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                  },
+                  "maxGroupCount": {
+                    "type": "number",
+                    "description": "Maximum number of groups to create"
+                  },
+                  "defaultValue": {
+                    "type": "string",
+                    "description": "Default value for objects that don't match any group"
+                  },
+                  "includeNullValues": {
+                    "type": "boolean",
+                    "description": "Whether to include null values as a separate group"
+                  }
+                },
+                "required": [
+                  "type",
+                  "field"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "duration"
+                  },
+                  "field": {
+                    "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                  },
+                  "value": {
+                    "type": "number",
+                    "description": "The duration value"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "MILLISECONDS",
+                      "SECONDS",
+                      "MINUTES",
+                      "HOURS",
+                      "DAYS",
+                      "WEEKS",
+                      "MONTHS",
+                      "YEARS",
+                      "QUARTERS"
+                    ],
+                    "description": "The time unit for the duration"
+                  }
+                },
+                "required": [
+                  "type",
+                  "field",
+                  "value",
+                  "unit"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "fixedWidth"
+                  },
+                  "field": {
+                    "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                  },
+                  "fixedWidth": {
+                    "type": "number",
+                    "description": "The fixed width for numeric grouping"
+                  }
+                },
+                "required": [
+                  "type",
+                  "field",
+                  "fixedWidth"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "ranges"
+                  },
+                  "field": {
+                    "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                  },
+                  "ranges": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "startValue": {
+                          "type": [
+                            "string",
+                            "number",
+                            "boolean"
+                          ],
+                          "description": "Inclusive start value for the range"
+                        },
+                        "endValue": {
+                          "type": [
+                            "string",
+                            "number",
+                            "boolean"
+                          ],
+                          "description": "Exclusive end value for the range"
+                        }
+                      },
+                      "required": [
+                        "startValue",
+                        "endValue"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Array of ranges to group by"
+                  }
+                },
+                "required": [
+                  "type",
+                  "field",
+                  "ranges"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "description": "Fields to group the aggregation results by"
+        },
+        "where": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "or"
+                },
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/properties/where"
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "and"
+                },
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/properties/where"
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "not"
+                },
+                "value": {
+                  "$ref": "#/properties/where"
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": [
+                        "string",
+                        "number",
+                        "boolean",
+                        "null"
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/properties/where/anyOf/3/properties/value"
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": {
+                        "$ref": "#/properties/where/anyOf/3/properties/value"
+                      }
+                    }
+                  ],
+                  "description": "OSDK property value. JSON encoding by Foundry type:\n- String: string (e.g. \"active\", \"spaceship\")\n- CipherText: string with the form \"CIPHER::<channel-rid>::<ciphertext>::CIPHER\"\n- Date: ISO 8601 local date string (e.g. \"2021-05-01\")\n- Timestamp: ISO 8601 UTC datetime string (e.g. \"2021-01-04T05:00:00Z\")\n- Long / Decimal: string (e.g. \"58319870951433\", \"2.718281828\")\n- Byte / Short / Integer / Float / Double: number (e.g. 31, 238940, 3.14159265)\n- Boolean: boolean (e.g. true)\n- Array / Vector: array (e.g. [\"alpha\",\"bravo\"], [0.1, 0.3, 0.02])\n- Struct: object of field name to value (e.g. {\"firstName\":\"Alex\",\"lastName\":\"Karp\"})\n- GeoPoint / GeoShape: GeoJSON object (e.g. {\"type\":\"Point\",\"coordinates\":[102.0,0.5]})\n- Attachment: object (e.g. {\"rid\":\"ri.blobster.main.attachment.<uuid>\"})\n- MediaReference: object with mimeType and reference (e.g. {\"mimeType\":\"application/pdf\",\"reference\":{...}})\n- Timeseries: object or seriesId string (e.g. {\"seriesId\":\"...\",\"syncRid\":\"...\"} or \"wellPressureSeriesId\")\nFor backwards compatibility, Boolean, Byte, Double, Float, Integer, and Short can also be encoded as JSON strings."
+                },
+                "type": {
+                  "type": "string",
+                  "const": "lt"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/3/properties/value"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "gt"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/3/properties/value"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "lte"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/3/properties/value"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "gte"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/3/properties/value"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "eq"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "isNull"
+                },
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "field",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/3/properties/value"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "contains"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "in"
+                },
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/properties/where/anyOf/3/properties/value"
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "field",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "containsAllTerms"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/11/properties/value"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "containsAllTermsInOrder"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/11/properties/value"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "containsAllTermsInOrderPrefixLastTerm"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/11/properties/value"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "containsAnyTerm"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/11/properties/value"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "startsWith"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/11/properties/value"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "wildcard"
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "withinDistanceOf"
+                },
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "center": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "Point"
+                        },
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "minItems": 2,
+                          "maxItems": 2,
+                          "description": "[longitude, latitude]"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "coordinates"
+                      ],
+                      "additionalProperties": false,
+                      "description": "GeoJSON Point geometry"
+                    },
+                    "distance": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "number",
+                          "description": "Numeric distance value"
+                        },
+                        "unit": {
+                          "type": "string",
+                          "enum": [
+                            "MILLIMETERS",
+                            "CENTIMETERS",
+                            "METERS",
+                            "KILOMETERS",
+                            "INCHES",
+                            "FEET",
+                            "YARDS",
+                            "MILES",
+                            "NAUTICAL_MILES"
+                          ],
+                          "description": "Distance unit"
+                        }
+                      },
+                      "required": [
+                        "value",
+                        "unit"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "center",
+                    "distance"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Geographic center point with a search radius"
+                }
+              },
+              "required": [
+                "type",
+                "field",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "withinBoundingBox"
+                },
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "topLeft": {
+                      "$ref": "#/properties/where/anyOf/17/properties/value/properties/center"
+                    },
+                    "bottomRight": {
+                      "$ref": "#/properties/where/anyOf/17/properties/value/properties/center"
+                    }
+                  },
+                  "required": [
+                    "topLeft",
+                    "bottomRight"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Bounding box defined by top-left and bottom-right GeoJSON Points"
+                }
+              },
+              "required": [
+                "type",
+                "field",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "intersectsBoundingBox"
+                },
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/18/properties/value"
+                }
+              },
+              "required": [
+                "type",
+                "field",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "doesNotIntersectBoundingBox"
+                },
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/18/properties/value"
+                }
+              },
+              "required": [
+                "type",
+                "field",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "withinPolygon"
+                },
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "Polygon"
+                    },
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/properties/where/anyOf/17/properties/value/properties/center/properties/coordinates"
+                        }
+                      },
+                      "description": "Array of linear rings: first is the exterior ring, subsequent rings are holes"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "coordinates"
+                  ],
+                  "additionalProperties": false,
+                  "description": "GeoJSON Polygon"
+                }
+              },
+              "required": [
+                "type",
+                "field",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "intersectsPolygon"
+                },
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/21/properties/value"
+                }
+              },
+              "required": [
+                "type",
+                "field",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "doesNotIntersectPolygon"
+                },
+                "field": {
+                  "$ref": "#/properties/aggregations/items/anyOf/1/properties/field"
+                },
+                "value": {
+                  "$ref": "#/properties/where/anyOf/21/properties/value"
+                }
+              },
+              "required": [
+                "type",
+                "field",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ],
+          "description": "Filter query to limit which objects are included in aggregation"
+        },
+        "accuracy": {
+          "type": "string",
+          "enum": [
+            "REQUIRE_ACCURATE",
+            "ALLOW_APPROXIMATE"
+          ],
+          "description": "Accuracy level for the aggregation. ALLOW_APPROXIMATE is faster but less precise."
+        }
+      },
+      "required": [
+        "ontologyRid",
+        "objectTypeApiName",
+        "aggregations"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  }
+]

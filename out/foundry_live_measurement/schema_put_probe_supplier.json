@@ -1,0 +1,6 @@
+{
+  "history_status": 400,
+  "history": "{\"errorCode\":\"INVALID_ARGUMENT\",\"errorName\":\"ApiFeaturePreviewUsageOnly\",\"errorInstanceId\":\"b0c8bffb-9a21-41da-b9c0-3bcd62722d21\",\"parameters\":{}}",
+  "put_status": 200,
+  "put_body": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee1-d859-acb5-f96a255daa92\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"id\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"name\",\"nullable\":false},{\"type\":\"INTEGER\",\"name\":\"tier\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"criticality\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"status\",\"nullable\":false},{\"type\":\"BOOLEAN\",\"name\":\"is_prime_candidate\",\"nullable\":false}]},\"versionId\":\"00000002-d5d2-8b58-8e84-fead47397660\"}"
+}

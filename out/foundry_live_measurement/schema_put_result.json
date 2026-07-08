@@ -1,0 +1,134 @@
+{
+  "generated_at": "2026-07-05T06:27:48.813923+00:00",
+  "scope": "put explicit tabular schemas on existing live-measurement backing datasets",
+  "target_count": 14,
+  "ok_count": 14,
+  "results": [
+    {
+      "name": "supplier",
+      "category": "object",
+      "dataset_rid": "ri.foundry.main.dataset.a0b5ad66-08a2-4832-b1e5-9cf0c0cc50b5",
+      "csv": "out/foundry_live_measurement/01_supplier.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee1-d859-acb5-f96a255daa92\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"id\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"name\",\"nullable\":true},{\"type\":\"INTEGER\",\"name\":\"tier\",\"nullable\":true},{\"type\":\"STRING\","
+    },
+    {
+      "name": "program",
+      "category": "object",
+      "dataset_rid": "ri.foundry.main.dataset.78093ab2-406f-4887-8a37-dd160e0524b0",
+      "csv": "out/foundry_live_measurement/03_program.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee2-6ba9-adb0-73811881ae1a\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"id\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"name\",\"nullable\":true},{\"type\":\"STRING\",\"name\":\"sensitivity\",\"nullable\":true},{\"type\":\"ST"
+    },
+    {
+      "name": "domain",
+      "category": "object",
+      "dataset_rid": "ri.foundry.main.dataset.aabf581c-51b9-45d8-bbe5-6d491d53930e",
+      "csv": "out/foundry_live_measurement/04_domain.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee2-fc7c-9c0c-e2e530445b4a\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"fqdn\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"host\",\"nullable\":true},{\"type\":\"STRING\",\"name\":\"url\",\"nullable\":true},{\"type\":\"STRING\","
+    },
+    {
+      "name": "identity",
+      "category": "object",
+      "dataset_rid": "ri.foundry.main.dataset.33284285-d32a-44fa-a511-b404a0ed7f52",
+      "csv": "out/foundry_live_measurement/05_identity.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee3-98c7-8db3-327e8f42e134\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"id\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"email\",\"nullable\":true},{\"type\":\"STRING\",\"name\":\"username\",\"nullable\":true},{\"type\":\"STRI"
+    },
+    {
+      "name": "credential_exposure",
+      "category": "object",
+      "dataset_rid": "ri.foundry.main.dataset.7a4d3db0-a649-4d05-936f-b67593f9a79d",
+      "csv": "out/foundry_live_measurement/06_credential_exposure.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee4-2be7-bf52-5f09d8b2a9e7\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"id\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"module\",\"nullable\":true},{\"type\":\"STRING\",\"name\":\"secret_type\",\"nullable\":true},{\"type\":\""
+    },
+    {
+      "name": "infected_device",
+      "category": "object",
+      "dataset_rid": "ri.foundry.main.dataset.4966e27f-e540-43d7-9a57-c8c1bddaab70",
+      "csv": "out/foundry_live_measurement/07_infected_device.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee4-b74c-bd6c-b99bd484aa2e\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"id\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"device_fingerprint\",\"nullable\":true},{\"type\":\"STRING\",\"name\":\"malware\",\"nullable\":true},{"
+    },
+    {
+      "name": "threat_source",
+      "category": "object",
+      "dataset_rid": "ri.foundry.main.dataset.4558faa7-e05e-4de6-af86-9010fd899a8f",
+      "csv": "out/foundry_live_measurement/08_threat_source.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee5-50ac-9530-53fd6344c432\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"id\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"kind\",\"nullable\":true},{\"type\":\"STRING\",\"name\":\"name\",\"nullable\":true},{\"type\":\"DATE\",\"na"
+    },
+    {
+      "name": "owns",
+      "category": "link",
+      "dataset_rid": "ri.foundry.main.dataset.e9013808-7d72-47c0-bca9-af6ece44907c",
+      "csv": "out/foundry_live_measurement/23_link_owns.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee5-e477-b437-600ecd1bce35\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"left-Supplier-primary-key\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"right-Domain-primary-key\",\"nullable\":false}]},\"versionId\":\"0000000"
+    },
+    {
+      "name": "belongs_to",
+      "category": "link",
+      "dataset_rid": "ri.foundry.main.dataset.a0b1f94e-f72c-4adb-81ad-61f8105e0d9c",
+      "csv": "out/foundry_live_measurement/25_link_belongs_to.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee6-7d99-947d-edf525d4a7c1\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"left-Identity-primary-key\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"right-Domain-primary-key\",\"nullable\":false}]},\"versionId\":\"0000000"
+    },
+    {
+      "name": "of",
+      "category": "link",
+      "dataset_rid": "ri.foundry.main.dataset.23f1a49e-770a-4a02-a4de-172161808bf8",
+      "csv": "out/foundry_live_measurement/26_link_of.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee7-07ec-8763-ebb6b62f77c6\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"left-CredentialExposure-primary-key\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"right-Identity-primary-key\",\"nullable\":false}]},\"version"
+    },
+    {
+      "name": "targets",
+      "category": "link",
+      "dataset_rid": "ri.foundry.main.dataset.e6a2583b-4174-4721-8d33-00fee045c629",
+      "csv": "out/foundry_live_measurement/27_link_targets.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee7-9459-b220-32b0c97d6c6c\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"left-CredentialExposure-primary-key\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"right-Domain-primary-key\",\"nullable\":false}]},\"versionId"
+    },
+    {
+      "name": "sourced_from",
+      "category": "link",
+      "dataset_rid": "ri.foundry.main.dataset.ea8ea557-af14-4d8c-9e74-b7cc7e43c886",
+      "csv": "out/foundry_live_measurement/28_link_sourced_from.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee8-2d69-b602-cfa34ab4903c\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"left-CredentialExposure-primary-key\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"right-ThreatSource-primary-key\",\"nullable\":false}]},\"ver"
+    },
+    {
+      "name": "leaked",
+      "category": "link",
+      "dataset_rid": "ri.foundry.main.dataset.47c0b157-b1eb-4041-b14b-eb59000f7877",
+      "csv": "out/foundry_live_measurement/29_link_leaked.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee8-d4e7-aafc-6a13336c9f43\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"left-InfectedDevice-primary-key\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"right-CredentialExposure-primary-key\",\"nullable\":false}]},\"v"
+    },
+    {
+      "name": "compromises",
+      "category": "link",
+      "dataset_rid": "ri.foundry.main.dataset.428466cf-94e3-4813-8aa6-9e75b5274d8f",
+      "csv": "out/foundry_live_measurement/30_link_compromises.csv",
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"branchName\":\"master\",\"endTransactionRid\":\"ri.foundry.main.transaction.0000004b-2ee9-735c-8bdd-5e41b10c0e37\",\"schema\":{\"fieldSchemaList\":[{\"type\":\"STRING\",\"name\":\"left-InfectedDevice-primary-key\",\"nullable\":false},{\"type\":\"STRING\",\"name\":\"right-Identity-primary-key\",\"nullable\":false}]},\"versionId\":"
+    }
+  ]
+}

@@ -1,5 +1,13 @@
 # Data Strategy
 
+> 2026-07-08 status note: this document records the earlier conservative
+> no-live-data strategy. The current finals strategy is documented in
+> `README.md`, `docs/decisions/0009-approved-provider-foundry-lineage.md`, and
+> `docs/review/foundry-live-measurement-update.md`: approved filtered
+> StealthMole hackathon rows may be used for sanitized lineage and Foundry
+> measurement, while raw provider envelopes, passwords, cookies, tokens, API
+> keys, JWTs, and reusable secret material remain blocked.
+
 Project Omija currently uses **no live data mode**.
 
 The strategic decision is to show the ontology engine and problem-solving

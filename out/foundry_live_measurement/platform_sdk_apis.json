@@ -1,0 +1,13 @@
+{
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "MCP error -32602: Input validation error: Invalid arguments for tool list_platform_sdk_apis: [\n  {\n    \"expected\": \"'aipAgents' | 'admin' | 'connectivity' | 'datasets' | 'filesystem' | 'mediaSets' | 'ontologies' | 'orchestration' | 'sqlQueries' | 'streams'\",\n    \"received\": \"undefined\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"product\"\n    ],\n    \"message\": \"Required\"\n  }\n]"
+      }
+    ],
+    "isError": true
+  },
+  "jsonrpc": "2.0",
+  "id": 2
+}

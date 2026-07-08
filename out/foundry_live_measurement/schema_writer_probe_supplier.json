@@ -1,0 +1,13 @@
+{
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Error creating dataset in {\"folderPath\":\"/Omija-e4b739/Omija/Seed\"}: {\n  \"body\": {\n    \"errorCode\": \"INVALID_ARGUMENT\",\n    \"errorName\": \"Catalog:DuplicateDatasetName\",\n    \"errorInstanceId\": \"afd01d1f-0cd9-4e49-98e0-d482011faff4\",\n    \"parameters\": {\n      \"name\": \"01_supplier\"\n    }\n  },\n  \"status\": 400,\n  \"type\": \"STATUS\"\n}"
+      }
+    ],
+    "isError": true
+  },
+  "jsonrpc": "2.0",
+  "id": 2
+}

@@ -1,0 +1,772 @@
+[
+  {
+    "name": "view_foundry_object_type",
+    "title": "view_foundry_object_type",
+    "description": "View an existing object type.\n\nThis tool allows you to view the definition of an object type in the ontology, including its properties, link types, and action types.\n\nThis tool can be used repeatedly/recursively to traverse the Ontology graph, by looking at its LinkTypes.\nYou can offer this option to the user when they are asking vague details about ontology entities, as traversing the ontology can provide clarity on its structure and potential uses.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "globalBranchRid": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The global branch rid: e.g. ri.branch..branch.{UUID}.\nMust be provided if available objects within a branch are not visible on other branches or in the main ontology"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The global branch rid: e.g. ri.branch..branch.{UUID}.\nMust be provided if available objects within a branch are not visible on other branches or in the main ontology"
+        },
+        "objectType": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "objectTypeRid": {
+                  "type": "string",
+                  "description": "Ontology Object Type RID. (eg: ri.ontology.main.object-type.{UUID}). undefined. "
+                }
+              },
+              "required": [
+                "objectTypeRid"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "objectTypeId": {
+                  "type": "string",
+                  "description": "This is a human readable id for the ObjectType. Valid ObjectTypeIds have the following conditions:\n* Preferably kebab-case (but snake_case and cameCase is also allowed)\n* The first character must be a lower case letter, subsequent characters can be a lower case letter or number.\n* No special characters are allowed."
+                }
+              },
+              "required": [
+                "objectTypeId"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "objectType"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  },
+  {
+    "name": "create_or_update_foundry_object_type",
+    "title": "create_or_update_foundry_object_type",
+    "description": "Create or update Object type in the Ontology.\nAn object type is a schema definition of a real world entity or event - similar to a database table.\nWhen you are working with an Object Type, you will be dealing with either an individual object (an instance) or a collection of objects of the same type.\nYou can optionally specify a folder path or RID (via the location field) to save the object type into a specific folder or project.\nFor more information reference the documentation.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "ontologyRid": {
+          "type": "string",
+          "description": "The ontology rid: e.g. ri.ontology.main.ontology.{UUID}"
+        },
+        "globalBranchRid": {
+          "type": "string",
+          "description": "The global branch rid: e.g. ri.branch..branch.{UUID}.\nMust be provided if available objects within a branch are not visible on other branches or in the main ontology"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "What you want to call the newly created object type"
+        },
+        "pluralDisplayName": {
+          "type": "string",
+          "description": "plural form of displayName"
+        },
+        "apiName": {
+          "type": "string",
+          "description": "A string indicating the API Name to use for the given ObjectType. This API name will be used to access the\nObjectType in programming languages. Valid API names have the following conditions:\n  * PascalCase\n  * The first character must be a lower case letter, subsequent characters can be a lower case letter or number.\n  * No special characters are allowed."
+        },
+        "objectTypeId": {
+          "type": "string",
+          "description": "This is a human readable id for the ObjectType. Valid ObjectTypeIds have the following conditions:\n* Preferably kebab-case (but snake_case and cameCase is also allowed)\n* The first character must be a lower case letter, subsequent characters can be a lower case letter or number.\n* No special characters are allowed."
+        },
+        "propertyTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "propertyTypeId": {
+                "type": "string",
+                "description": "PropertyTypeId:\nThis is a human readable id for the PropertyType. Valid ids.PropertyTypeIds have the following conditions:\n  * Preferably snake_case (but kebab-case and cameCase is also allowed)\n  * The first character must be a lower case letter, subsequent characters can be a lower case letter or number.\n  * No special characters are allowed."
+              },
+              "displayMetadata": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "A short text that describes the PropertyType."
+                  },
+                  "displayName": {
+                    "type": "string",
+                    "description": "A string that would be used as the name of the PropertyType just for display purposes."
+                  }
+                },
+                "required": [
+                  "displayName"
+                ],
+                "additionalProperties": false,
+                "description": "This includes metadata which can be used by front-ends when displaying the PropertyType."
+              },
+              "type": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "string"
+                      },
+                      "string": {
+                        "type": "object",
+                        "properties": {
+                          "isLongText": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": "This flag can be set if the PropertyType is known to contain large texts. This can be used to\ndetermine how to index it and how it should be rendered in the front-end."
+                          },
+                          "supportsExactMatching": {
+                            "type": "boolean",
+                            "default": true,
+                            "description": "This flag can be set if you need to support efficient wildcard queries on the PropertyType.\nThe performance improvements will be especially significant if the property contains high cardinality values.\nThe text being searched is not tokenized."
+                          }
+                        },
+                        "additionalProperties": false,
+                        "default": {
+                          "isLongText": false,
+                          "supportsExactMatching": true
+                        }
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false,
+                    "description": "String type"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "integer"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Integer type"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "long"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Long type"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "double"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Double type"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "timestamp"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false,
+                    "description": "timestamp type"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "date"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false,
+                    "description": "date type"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "boolean"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false,
+                    "description": "boolean type"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "array"
+                      },
+                      "array": {
+                        "$ref": "#/properties/propertyTypes/items/properties/type"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "array"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "description": "Wrapper type for the various supported property types. e.g { type: 'integer' }, { type: 'string', string: { isLongText: false } }"
+              },
+              "indexedForSearch": {
+                "type": [
+                  "boolean",
+                  "null"
+                ],
+                "description": "A flag to control if the PropertyType should be indexed for search. This can be set to false for\nproperties that do not need to be searchable or aggregatable."
+              },
+              "apiName": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "A string indicating the API Name to use for the given entity that will be a field of an ObjectType.\nThis API name will be used to access the entity in programming languages. Valid API names have the following conditions:\n  * cameCase\n  * The first character must be a lower case letter, subsequent characters can be a lower case letter or number.\n  * No special characters are allowed."
+              },
+              "isNullable": {
+                "type": "boolean",
+                "description": "A flag which indicates if the property is nullable"
+              }
+            },
+            "required": [
+              "propertyTypeId",
+              "displayMetadata",
+              "type",
+              "isNullable"
+            ],
+            "additionalProperties": false,
+            "description": "PropertyTypeModification"
+          },
+          "description": "A PropertyTypeModification this will dictate what properties the object type will have, please ensure propertyTypeId is unique. If modificationType is UPDATE missing properties from the list will be deleted"
+        },
+        "primaryKey": {
+          "type": "string",
+          "description": "PropertyType to be used as the primary key"
+        },
+        "titlePropertyTypeId": {
+          "type": "string",
+          "description": "PropertyType id used for the title of the object in the UI"
+        },
+        "modificationType": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "create"
+                },
+                "create": {
+                  "type": "object",
+                  "properties": {
+                    "location": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "folderPath": {
+                              "type": "string",
+                              "description": "The path to a Foundry folder or project (e.g. /namespace/project_name/folder)"
+                            }
+                          },
+                          "required": [
+                            "folderPath"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "projectRid": {
+                              "type": "string",
+                              "description": "Project RID. (eg: ri.compass.main.folder.{UUID}). undefined. "
+                            }
+                          },
+                          "required": [
+                            "projectRid"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ],
+                      "description": "The Foundry folder or project to create the type in. Can be specified as a path or a RID. This field accepts both folderRids and projectRids interchangeably."
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "type",
+                "create"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "update"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          ],
+          "description": "Specify modification type for the Ontology."
+        },
+        "backingDataset": {
+          "type": "object",
+          "properties": {
+            "datasetRid": {
+              "type": "string",
+              "description": "Dataset RID. (eg: ri.foundry.main.dataset.{UUID}). undefined. "
+            },
+            "propertyMapping": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "propertyTypeId": {
+                    "$ref": "#/properties/propertyTypes/items/properties/propertyTypeId"
+                  },
+                  "mappingInfo": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "const": "column"
+                          },
+                          "column": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "column"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "const": "editOnly"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Defines the property as edit only (primary key cannot be editOnly); data will not be stored in the datsource; instead it will be stored and managed in the Ontology"
+                      }
+                    ],
+                    "description": " Wrapper type for mapping info e.g { type: 'column', column: 'exampleColumn'}, { type: 'editOnly' }"
+                  }
+                },
+                "required": [
+                  "propertyTypeId",
+                  "mappingInfo"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "datasetRid",
+            "propertyMapping"
+          ],
+          "additionalProperties": false,
+          "description": "The dataset that will back data for the object \n- An object may have more properties than there are columns in the dataset. Properties not backed by a dataset will be stored in the ontology and updated by users via APIs\n- The dataset has to contain a primary key for the object-type"
+        },
+        "icon": {
+          "type": "object",
+          "properties": {
+            "iconName": {
+              "type": "string",
+              "description": "A BlueprintJS icon name for this object type. Common examples: \"person\", \"office\", \"document\", \"database\", \"globe\", \"briefcase\", \"truck\", \"shopping-cart\", \"build\", \"timeline-events\". Any valid BlueprintJS icon name can be used."
+            },
+            "iconColor": {
+              "type": "string",
+              "pattern": "^#([A-Fa-f0-9]{6})$",
+              "description": "Hex color for the icon, e.g. \"#4C90F0\"",
+              "default": "#4C90F0"
+            }
+          },
+          "required": [
+            "iconName"
+          ],
+          "additionalProperties": false,
+          "description": "Optional icon for the object type. If not provided, defaults to a blue cube icon."
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional description for the object type. Describes the real-world entity or event this object type represents."
+        }
+      },
+      "required": [
+        "ontologyRid",
+        "globalBranchRid",
+        "displayName",
+        "pluralDisplayName",
+        "apiName",
+        "objectTypeId",
+        "propertyTypes",
+        "primaryKey",
+        "titlePropertyTypeId",
+        "modificationType",
+        "backingDataset"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  },
+  {
+    "name": "create_or_update_foundry_link_type",
+    "title": "create_or_update_foundry_link_type",
+    "description": "Create or Update a Link Type in the Ontology. This is required when you want to define a relationship between two different Object Types in your Ontology.\nIf the modificationType is set to CREATE, we will create a new link. You can optionally specify a folder path or RID (via the location field) to save the link type into a specific folder or project.\nIf the modificationType is set to UPDATE, we will update an existing link.\nIf you are asked to \"modify\", \"update\" or \"change\" a link, this usually means the link already exists and you should set the modification type to UPDATE.\n\nEach Link Type requires two Object Types - so every link has two \"sides\".\nThe sides are referred to by different names, depending on what type of link is being created. Specifically:\n\n- ONE_TO_MANY (1<>n):\n    - this is the most common type of link type.\n    - For example, a \"Supplier\" Object Type may have a 1<>n Link Type to a \"Supplier Address\" Object Type.\n    - In this example, a supplier can have many addresses, but an address can only ever belong to one supplier.\n    - left side: \"Supplier\"\n    - right side: \"Supplier Address\"\n\n- ONE_TO_ONE (1<>1):\n    - this is less common, but still used.\n    - For example, a \"User\" object type might have a 1<>1 link to \"User Profile\".\n    - In this example, a user can only ever have one user profile, and a user profile can only belong to one user.\n\n- MANY_TO_MANY (n<>n):\n    - this is less common, but still used.\n    - For example, a \"Student\" object type might have a n<>n link to \"Course\".\n    - In this example, a student can be enrolled in many courses, and a course can have many students enrolled.\n",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "ontologyRid": {
+          "type": "string",
+          "description": "The ontology rid: e.g. ri.ontology.main.ontology.{UUID}"
+        },
+        "globalBranchRid": {
+          "type": "string",
+          "description": "The global branch rid: e.g. ri.branch..branch.{UUID}.\nMust be provided if available objects within a branch are not visible on other branches or in the main ontology"
+        },
+        "modificationType": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "create"
+                },
+                "create": {
+                  "type": "object",
+                  "properties": {
+                    "location": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "folderPath": {
+                              "type": "string",
+                              "description": "The path to a Foundry folder or project (e.g. /namespace/project_name/folder)"
+                            }
+                          },
+                          "required": [
+                            "folderPath"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "projectRid": {
+                              "type": "string",
+                              "description": "Project RID. (eg: ri.compass.main.folder.{UUID}). undefined. "
+                            }
+                          },
+                          "required": [
+                            "projectRid"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ],
+                      "description": "The Foundry folder or project to create the type in. Can be specified as a path or a RID. This field accepts both folderRids and projectRids interchangeably."
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "type",
+                "create"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "update"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          ],
+          "description": "Specify modification type for the Ontology."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "What you want to call the newly created link type. This should be in Title Case. e.g. 'Supplier Address'"
+        },
+        "pluralDisplayName": {
+          "type": "string",
+          "description": "plural form of displayName. This should be in Title Case. e.g. 'Supplier Addresses'"
+        },
+        "apiName": {
+          "type": "string",
+          "description": "The API name for the link type. This should be in camelCase. e.g. 'supplierAddress'"
+        },
+        "linkTypeId": {
+          "type": "string",
+          "description": "This is a human readable id for the LinkType. Valid LinkTypeIds have the following conditions:\n* Preferably kebab-case (but snake_case and cameCase is also allowed)\n* The first character must be a lower case letter, subsequent characters can be a lower case letter or number.\n* No special characters are allowed.\n* \n* Example: \"my-link-type\"\n* \n* It's good convention for the link type to clearly describe the relationship between the two object types.\n* For example, if the link-type is between a \"book\" and an \"author\", the link type could be \"book-to-author-link\"."
+        },
+        "linkTypeCardinality": {
+          "type": "string",
+          "enum": [
+            "ONE_TO_ONE",
+            "ONE_TO_MANY",
+            "MANY_TO_MANY"
+          ],
+          "default": "ONE_TO_MANY",
+          "description": "The cardinality of the link type."
+        },
+        "leftSide": {
+          "type": "object",
+          "properties": {
+            "objectTypeId": {
+              "type": "string",
+              "description": "This is a human readable id for the ObjectType. Valid ObjectTypeIds have the following conditions:\n* Preferably kebab-case (but snake_case and cameCase is also allowed)\n* The first character must be a lower case letter, subsequent characters can be a lower case letter or number.\n* No special characters are allowed."
+            },
+            "propertyId": {
+              "type": "string",
+              "description": "PropertyTypeId:\nThis is a human readable id for the PropertyType. Valid ids.PropertyTypeIds have the following conditions:\n  * Preferably snake_case (but kebab-case and cameCase is also allowed)\n  * The first character must be a lower case letter, subsequent characters can be a lower case letter or number.\n  * No special characters are allowed."
+            }
+          },
+          "required": [
+            "objectTypeId",
+            "propertyId"
+          ],
+          "additionalProperties": false,
+          "description": "The LEFT side of the LinkType. In a One-to-Many Link, this is the 'one' side. \nThe property ID must always be the PrimaryKey of the LEFT-side object type."
+        },
+        "rightSide": {
+          "type": "object",
+          "properties": {
+            "objectTypeId": {
+              "$ref": "#/properties/leftSide/properties/objectTypeId"
+            },
+            "propertyId": {
+              "$ref": "#/properties/leftSide/properties/propertyId"
+            }
+          },
+          "required": [
+            "objectTypeId",
+            "propertyId"
+          ],
+          "additionalProperties": false,
+          "description": "The RIGHT side of the LinkType. \n* In a One-to-One or a Many-to-Many Link, the property ID must be the PrimaryKey of the RIGHT-side object type.\n* In a One-to-Many Link, the property ID must be a ForeignKey in the RIGHT-side object type that points to the PrimaryKey of the LEFT-side object type.\n###\nExample:\nIf One \"Supplier\" has Many \"Supplier Addresses\", the left side is the \"Supplier\" object type and the right side is the \"Supplier Address\" object type.\nThe primary key of the \"Supplier\" object type (i.e. left) would likely be something like \"supplierId\" or \"supplierCode\".\nIn order for a One-to-Many link to be set up for this example successfully, the property ID of the right side must be a ForeignKey in the \"Supplier Address\" \nobject type that points to the PrimaryKey of the \"Supplier\" object type, which would likely be a property with a name like \"supplierId\""
+        },
+        "leftToRightLinkMetadata": {
+          "type": "object",
+          "properties": {
+            "displayName": {
+              "type": "string",
+              "description": "The display name for the left-to-right link. For ONE_TO_MANY links, this describes how to get from the 'one' object to its 'many' objects."
+            },
+            "pluralDisplayName": {
+              "type": "string",
+              "description": "The plural display name for the left-to-right link"
+            },
+            "apiName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "The API name for the left-to-right link"
+            }
+          },
+          "required": [
+            "displayName",
+            "pluralDisplayName"
+          ],
+          "additionalProperties": false
+        },
+        "rightToLeftLinkMetadata": {
+          "type": "object",
+          "properties": {
+            "displayName": {
+              "type": "string",
+              "description": "The display name for the right-to-left link. \nFor ONE_TO_MANY links, this describes how to get from a \"many\" object to its \"one\" object."
+            },
+            "pluralDisplayName": {
+              "type": "string",
+              "description": "The plural display name for the right-to-left link"
+            },
+            "apiName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "The API name for the right-to-left link"
+            }
+          },
+          "required": [
+            "displayName",
+            "pluralDisplayName"
+          ],
+          "additionalProperties": false
+        },
+        "manyToManyLinkTypeDatasources": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "datasetRid": {
+                  "type": "string",
+                  "description": "Dataset RID. (eg: ri.foundry.main.dataset.{UUID}). undefined. "
+                },
+                "leftSidePrimaryKeyMapping": {
+                  "type": "object",
+                  "properties": {
+                    "propertyId": {
+                      "$ref": "#/properties/leftSide/properties/propertyId"
+                    },
+                    "column_name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "propertyId",
+                    "column_name"
+                  ],
+                  "additionalProperties": false
+                },
+                "rightSidePrimaryKeyMapping": {
+                  "type": "object",
+                  "properties": {
+                    "propertyId": {
+                      "$ref": "#/properties/leftSide/properties/propertyId"
+                    },
+                    "column_name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "propertyId",
+                    "column_name"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "datasetRid",
+                "leftSidePrimaryKeyMapping",
+                "rightSidePrimaryKeyMapping"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The dataset and primary key mappings for the link type. This is only required for Many-to-Many links."
+        }
+      },
+      "required": [
+        "ontologyRid",
+        "globalBranchRid",
+        "modificationType",
+        "displayName",
+        "pluralDisplayName",
+        "apiName",
+        "linkTypeId",
+        "leftSide",
+        "rightSide",
+        "leftToRightLinkMetadata",
+        "rightToLeftLinkMetadata"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  }
+]

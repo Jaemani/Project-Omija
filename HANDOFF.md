@@ -1,5 +1,11 @@
 # Project Omija Handoff
 
+> 2026-07-08 status note: `README.md` is now the primary current-state index.
+> This handoff preserves earlier project context. The latest finals strategy is
+> no longer "empty live slot only": approved filtered StealthMole hackathon rows
+> are used after redaction for lineage and Foundry measurement, while raw
+> provider envelopes and reusable secret material remain blocked.
+
 Last updated: 2026-07-05 KST
 
 This is the source of truth for resuming the project without prior conversation context.

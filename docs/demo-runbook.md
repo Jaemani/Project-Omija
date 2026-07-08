@@ -1,5 +1,13 @@
 # Demo Runbook
 
+> 2026-07-08 status note: this runbook describes the legacy no-live-data demo
+> path. The current presentation flow starts from `README.md` and uses
+> `out/omija_console_home.html`, `out/data_coverage_map.html`,
+> `out/data_evidence_brief.html`, `out/data_lineage_live.html`,
+> `out/foundry_live_measurement.html`, and `out/omija_demo.html`. Approved
+> filtered StealthMole hackathon rows are shown only after redaction and as
+> lineage/measurement artifacts.
+
 Use this sequence for the current no-live-data demo. The goal is to prove the
 ontology engine and decision workflow, not to show feed collection.
 

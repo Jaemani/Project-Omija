@@ -1,0 +1,86 @@
+{
+  "Supplier": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "404 Object type not found"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 10
+  },
+  "Program": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "404 Object type not found"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 11
+  },
+  "Domain": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "404 Object type not found"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 12
+  },
+  "Identity": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "404 Object type not found"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 13
+  },
+  "CredentialExposure": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "404 Object type not found"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 14
+  },
+  "InfectedDevice": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "404 Object type not found"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 15
+  },
+  "ThreatSource": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "404 Object type not found"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 16
+  }
+}

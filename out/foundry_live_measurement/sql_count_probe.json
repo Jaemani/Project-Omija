@@ -1,0 +1,49 @@
+[
+  {
+    "query": "SELECT COUNT(*) AS c FROM `ri.foundry.main.dataset.7a4d3db0-a649-4d05-936f-b67593f9a79d`",
+    "response": {
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Sql Query Failed\nError Message: Failed to execute SQL query: Query failed with an internal error, please contact Palantir support\n\nREDACTED\n\nStacktrace:\ncom.palantir.furnace.api.error.SqlExecutionException: Failed to execute SQL query\n... 20 more\nCaused by: java.sql.SQLException: REDACTED\nat io.trino.jdbc.ResultUtils.resultsException(ResultUtils.java:33)\nat io.trino.jdbc.AsyncResultIterator.lambda$new$1(AsyncResultIterator.java:94)\nat java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)\nat java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)\nat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)\nat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)\n... 1 more\nCaused by: io.trino.jdbc.$internal.client.FailureException: REDACTED\nat io.trino.plugin.hive.parquet.ParquetPageSourceFactory.createPageSource(ParquetPageSourceFactory.java:310)\nat io.trino.plugin.hive.parquet.ParquetPageSourceFactory.createPageSource(ParquetPageSourceFactory.java:189)\nat io.trino.plugin.hive.HivePageSourceProvider.createHivePageSource(HivePageSourceProvider.java:208)\nat io.trino.plugin.hive.HivePageSourceProvider.createPageSource(HivePageSourceProvider.java:143)\nat io.trino.spi.connector.ConnectorPageSourceProvider.createPageSource(ConnectorPageSourceProvider.java:37)\nat io.trino.plugin.base.classloader.ClassLoaderSafeConnectorPageSourceProvider.createPageSource(ClassLoaderSafeConnectorPageSourceProvider.java:65)\nat io.trino.split.PageSourceManager$PageSourceProviderInstance.createPageSource(PageSourceManager.java:83)\nat io.trino.operator.TableScanOperator.getOutput(TableScanOperator.java:281)\nat io.trino.operator.OutputValidatingSourceOperator.getOutput(OutputValidatingSourceOperator.java:70)\nat io.trino.operator.Driver.processInternal(Driver.java:403)\nat io.trino.operator.Driver.lambda$process$0(Driver.java:306)\nat io.trino.operator.Driver.tryWithLock(Driver.java:709)\nat io.trino.operator.Driver.process(Driver.java:298)\nat io.trino.operator.Driver.processForDuration(Driver.java:269)\nat io.trino.execution.SqlTaskExecution$DriverSplitRunner.processFor(SqlTaskExecution.java:852)\nat io.trino.execution.executor.dedicated.SplitProcessor.run(SplitProcessor.java:77)\nat io.trino.execution.executor.dedicated.TaskEntry$VersionEmbedderBridge.lambda$run$0(TaskEntry.java:205)\nat io.trino.$gen.Trino_480_10_dirty____20260705_050500_2.run(Unknown Source)\nat io.trino.execution.executor.dedicated.TaskEntry$VersionEmbedderBridge.run(TaskEntry.java:206)\nat io.trino.execution.executor.scheduler.FairScheduler.runTask(FairScheduler.java:177)\nat io.trino.execution.executor.scheduler.FairScheduler.lambda$submit$0(FairScheduler.java:164)\nat java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)\nat com.google.common.util.concurrent.TrustedListenableFutureTask$TrustedFutureInterruptibleTask.runInterruptibly(TrustedListenableFutureTask.java:128)\nat com.google.common.util.concurrent.InterruptibleTask.run(InterruptibleTask.java:74)\nat com.google.common.util.concurrent.TrustedListenableFutureTask.run(TrustedListenableFutureTask.java:80)\nat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)\nat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)\nat java.base/java.lang.Thread.run(Thread.java:1474)\nCaused by: io.trino.jdbc.$internal.client.FailureException: REDACTED\nat io.trino.parquet.ParquetValidationUtils.validateParquet(ParquetValidationUtils.java:28)\nat io.trino.parquet.reader.MetadataReader.readFooter(MetadataReader.java:98)\nat io.trino.plugin.hive.parquet.ParquetPageSourceFactory.createPageSource(ParquetPageSourceFactory.java:239)\n... 27 more"
+          }
+        ]
+      },
+      "jsonrpc": "2.0",
+      "id": 2
+    }
+  },
+  {
+    "query": "SELECT COUNT(*) AS c FROM \"ri.foundry.main.dataset.7a4d3db0-a649-4d05-936f-b67593f9a79d\"",
+    "response": {
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Error: Failed to fetch 400 Bad Request\n\n**Suggestion:** A 403 Forbidden error when querying a dataset often indicates that the dataset RID is incorrect or does not exist. Please verify that the dataset RID in your query is correct."
+          }
+        ],
+        "isError": true
+      },
+      "jsonrpc": "2.0",
+      "id": 3
+    }
+  },
+  {
+    "query": "SELECT COUNT(*) AS c FROM ri.foundry.main.dataset.7a4d3db0-a649-4d05-936f-b67593f9a79d",
+    "response": {
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Error: Failed to fetch 400 Bad Request\n\n**Suggestion:** A 403 Forbidden error when querying a dataset often indicates that the dataset RID is incorrect or does not exist. Please verify that the dataset RID in your query is correct."
+          }
+        ],
+        "isError": true
+      },
+      "jsonrpc": "2.0",
+      "id": 4
+    }
+  }
+]

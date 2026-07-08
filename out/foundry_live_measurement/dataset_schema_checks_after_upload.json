@@ -1,0 +1,184 @@
+{
+  "01_supplier.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.a0b5ad66-08a2-4832-b1e5-9cf0c0cc50b5\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/01_supplier\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 100
+  },
+  "03_program.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.78093ab2-406f-4887-8a37-dd160e0524b0\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/03_program\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 101
+  },
+  "04_domain.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.aabf581c-51b9-45d8-bbe5-6d491d53930e\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/04_domain\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 102
+  },
+  "05_identity.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.33284285-d32a-44fa-a511-b404a0ed7f52\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/05_identity\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 103
+  },
+  "06_credential_exposure.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.7a4d3db0-a649-4d05-936f-b67593f9a79d\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/06_credential_exposure\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 104
+  },
+  "07_infected_device.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.4966e27f-e540-43d7-9a57-c8c1bddaab70\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/07_infected_device\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 105
+  },
+  "08_threat_source.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.4558faa7-e05e-4de6-af86-9010fd899a8f\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/08_threat_source\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 106
+  },
+  "23_link_owns.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.e9013808-7d72-47c0-bca9-af6ece44907c\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/23_link_owns\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 107
+  },
+  "25_link_belongs_to.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.a0b1f94e-f72c-4adb-81ad-61f8105e0d9c\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/25_link_belongs_to\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 108
+  },
+  "26_link_of.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.23f1a49e-770a-4a02-a4de-172161808bf8\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/26_link_of\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 109
+  },
+  "27_link_targets.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.e6a2583b-4174-4721-8d33-00fee045c629\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/27_link_targets\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 110
+  },
+  "28_link_sourced_from.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.ea8ea557-af14-4d8c-9e74-b7cc7e43c886\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/28_link_sourced_from\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 111
+  },
+  "29_link_leaked.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.47c0b157-b1eb-4041-b14b-eb59000f7877\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/29_link_leaked\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 112
+  },
+  "30_link_compromises.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"schemaNotFound\",\"properties\":{\"message\":\"The dataset exists, however, it does not have a schema and data. This can be caused by error in dataset creation or the dataset has not been built on the branch you provided\",\"branch\":\"master\",\"datasetRid\":\"ri.foundry.main.dataset.428466cf-94e3-4813-8aa6-9e75b5274d8f\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/30_link_compromises\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 113
+  }
+}

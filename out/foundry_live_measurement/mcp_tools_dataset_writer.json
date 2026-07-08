@@ -1,0 +1,447 @@
+[
+  {
+    "name": "create_and_write_to_foundry_dataset",
+    "title": "create_and_write_to_foundry_dataset",
+    "description": "Creates a dataset in Foundry with the data provided at **csvFilePath**.\n- This can be useful for uploading local data to Foundry or for the creation of mock data\n- After the dataset has been created the dataset can be used in other Foundry workflows like a Python Transform or as a datasource for an object-type.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "foundryLocation": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "folderPath": {
+                  "type": "string",
+                  "description": "The path to a Foundry folder (eg: /namespace/project_name/folder)"
+                }
+              },
+              "required": [
+                "folderPath"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "folderOrProjectRid": {
+                  "type": "string",
+                  "description": "Compass Folder RID. (eg: ri.compass.main.folder.{UUID}). undefined. "
+                }
+              },
+              "required": [
+                "folderOrProjectRid"
+              ],
+              "additionalProperties": false
+            }
+          ],
+          "description": "Foundry Location where the dataset will be created.\nWhen creating resources it's important to create them in the same Foundry folder as the code repository.\nFor example if the repository path is /FoundryProject/folder/repository then the dataset location should be: /FoundryProject/folder/"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the dataset to create"
+        },
+        "branch": {
+          "type": "string",
+          "description": "This can either be a Foundry/Ontology Branch or an arbitrary string signifying a dataset branch.\nFoundry resources are branched in a similar way as code, different branches can contain different data and schemas.\n\nDataset branch example: \"main\" (Branches names should be simple and contain no spaces, they must not be rids or UUID-like)",
+          "default": "master"
+        },
+        "schema": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "decimal"
+                      },
+                      "decimal": {
+                        "type": "object",
+                        "properties": {
+                          "precision": {
+                            "type": "number"
+                          },
+                          "scale": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "precision",
+                          "scale"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "decimal"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "long"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "binary"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "boolean"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "byte"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "date"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "double"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "float"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "integer"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "short"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "string"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "timestamp"
+                      },
+                      "dateFormat": {
+                        "type": "string",
+                        "description": "Timestamp serialization format e.g. `yyyy-MM-dd HH:mm:ss.S`, `dd/MM/yyyy`, `yyyy-MM-dd'T'HH:mm:ss` or similar"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "dateFormat"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "array"
+                      },
+                      "array": {
+                        "$ref": "#/properties/schema/items"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "array"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "struct"
+                      },
+                      "struct": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/properties/schema/items"
+                        }
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "struct"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Struct has to be serialized as an array, where index of the array matches the schema order, a struct {a:1, b:2} is serialized as [1,2]"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "map"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false,
+                    "description": "A map with key type string and value type string"
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Only optional for array and map types"
+                  },
+                  "description": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "nullable": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                }
+              }
+            ],
+            "description": "Defines a single column in a dataset"
+          }
+        },
+        "primaryKey": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "columns": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "The names of the columns that constitute the primary key. The columns must satisfy the following constraints:\n- The list of columns must be non-empty\n- The list must not contain any duplicate column names after the columns have been normalized\n- Each referenced column must exist in the schema\n- The type of each referenced column must be one of: BYTE, SHORT, INTEGER, LONG, STRING, BOOLEAN, TIMESTAMP, DATE"
+                }
+              },
+              "required": [
+                "columns"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "This field declares the semantics of the primary key within the dataset.\nevery row in the dataset must have a distinct primary key."
+        },
+        "csvFilePath": {
+          "type": "string",
+          "description": "Path to a CSV file to upload to Foundry. Please create the file in the local file-system.\n- For any notional or temporary data please create it in the data-tmp/ folder"
+        }
+      },
+      "required": [
+        "foundryLocation",
+        "name",
+        "schema",
+        "csvFilePath"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  },
+  {
+    "name": "create_foundry_project",
+    "title": "create_foundry_project",
+    "description": "Creates a new Foundry project in a specified namespace using a specified template.\n- Requires a namespace RID (use list_foundry_namespaces to find available namespaces)\n- Requires a template RID (use list_foundry_project_templates to find available templates)\n- Automatically applies the user's organization marking\n\nReturns the project RID, name, path, and Foundry URL.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "projectName": {
+          "type": "string",
+          "maxLength": 700,
+          "description": "Project name (cannot contain '/' or '.', max 700 characters)"
+        },
+        "projectDescription": {
+          "type": "string",
+          "description": "Optional project description"
+        },
+        "templateRid": {
+          "type": "string",
+          "description": "Template RID to use for project creation. Use list_foundry_project_templates to find available templates."
+        },
+        "namespaceRid": {
+          "type": "string",
+          "description": "Namespace RID where the project will be created. Use list_foundry_namespaces to find available namespaces."
+        }
+      },
+      "required": [
+        "projectName",
+        "templateRid",
+        "namespaceRid"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  },
+  {
+    "name": "get_project_imports",
+    "title": "get_project_imports",
+    "description": "Provides a list of resources which have been imported into the current Foundry Project.\n\nSupports two import types via the **importType** parameter:\n- **FILE_SYSTEM** (default): Returns imported datasets from other Foundry Projects.\n- **EXTERNAL**: Returns externally imported resources such as Spark profiles, and other non-dataset resources.\n\nFor FILE_SYSTEM imports:\n- These datasets have been manually added to the current project by the user.\n- These datasets are managed by other Foundry Projects.\n\nFor EXTERNAL imports:\n- Returns resource RID, name, service, and type for each imported resource.\n- Spark profiles have service \"spark-configuration-service\" and type \"spark-profile\".\n\nNote: Project imports are in-addition to the datasets defined in the current Project. Please see the list_resources_in_foundry_folder tool for a list of datasets in the current Project.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "foundryProjectRid": {
+          "type": "string",
+          "description": "Compass Folder RID. (eg: ri.compass.main.folder.{UUID}). undefined. "
+        },
+        "importType": {
+          "type": "string",
+          "enum": [
+            "FILE_SYSTEM",
+            "EXTERNAL"
+          ],
+          "default": "FILE_SYSTEM",
+          "description": "Type of imports to fetch. FILE_SYSTEM returns imported datasets from other projects. EXTERNAL returns externally imported resources such as Spark profiles."
+        },
+        "pageToken": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "foundryProjectRid"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  }
+]

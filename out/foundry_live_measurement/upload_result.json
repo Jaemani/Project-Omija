@@ -1,0 +1,163 @@
+{
+  "generated_at": "2026-07-05T06:16:27.101614+00:00",
+  "scope": "full sanitized live-measurement bundle",
+  "source_dir": "out/foundry_live_measurement",
+  "target_count": 14,
+  "uploaded_count": 14,
+  "results": [
+    {
+      "name": "supplier",
+      "category": "object",
+      "csv": "out/foundry_live_measurement/01_supplier.csv",
+      "dataset_rid": "ri.foundry.main.dataset.a0b5ad66-08a2-4832-b1e5-9cf0c0cc50b5",
+      "file_name": "01_supplier.csv",
+      "rows": 1,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"01_supplier.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee1-d859-acb5-f96a255daa92\",\"sizeBytes\":\"119\",\"updatedTime\":\"2026-07-05T06:15:46.781Z\"}"
+    },
+    {
+      "name": "program",
+      "category": "object",
+      "csv": "out/foundry_live_measurement/03_program.csv",
+      "dataset_rid": "ri.foundry.main.dataset.78093ab2-406f-4887-8a37-dd160e0524b0",
+      "file_name": "03_program.csv",
+      "rows": 1,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"03_program.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee2-6ba9-adb0-73811881ae1a\",\"sizeBytes\":\"109\",\"updatedTime\":\"2026-07-05T06:15:49.732Z\"}"
+    },
+    {
+      "name": "domain",
+      "category": "object",
+      "csv": "out/foundry_live_measurement/04_domain.csv",
+      "dataset_rid": "ri.foundry.main.dataset.aabf581c-51b9-45d8-bbe5-6d491d53930e",
+      "file_name": "04_domain.csv",
+      "rows": 17,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"04_domain.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee2-fc7c-9c0c-e2e530445b4a\",\"sizeBytes\":\"2502\",\"updatedTime\":\"2026-07-05T06:15:52.97Z\"}"
+    },
+    {
+      "name": "identity",
+      "category": "object",
+      "csv": "out/foundry_live_measurement/05_identity.csv",
+      "dataset_rid": "ri.foundry.main.dataset.33284285-d32a-44fa-a511-b404a0ed7f52",
+      "file_name": "05_identity.csv",
+      "rows": 150,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"05_identity.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee3-98c7-8db3-327e8f42e134\",\"sizeBytes\":\"11767\",\"updatedTime\":\"2026-07-05T06:15:55.991Z\"}"
+    },
+    {
+      "name": "credential_exposure",
+      "category": "object",
+      "csv": "out/foundry_live_measurement/06_credential_exposure.csv",
+      "dataset_rid": "ri.foundry.main.dataset.7a4d3db0-a649-4d05-936f-b67593f9a79d",
+      "file_name": "06_credential_exposure.csv",
+      "rows": 150,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"06_credential_exposure.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee4-2be7-bf52-5f09d8b2a9e7\",\"sizeBytes\":\"29371\",\"updatedTime\":\"2026-07-05T06:15:59.075Z\"}"
+    },
+    {
+      "name": "infected_device",
+      "category": "object",
+      "csv": "out/foundry_live_measurement/07_infected_device.csv",
+      "dataset_rid": "ri.foundry.main.dataset.4966e27f-e540-43d7-9a57-c8c1bddaab70",
+      "file_name": "07_infected_device.csv",
+      "rows": 150,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"07_infected_device.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee4-b74c-bd6c-b99bd484aa2e\",\"sizeBytes\":\"12671\",\"updatedTime\":\"2026-07-05T06:16:02.06Z\"}"
+    },
+    {
+      "name": "threat_source",
+      "category": "object",
+      "csv": "out/foundry_live_measurement/08_threat_source.csv",
+      "dataset_rid": "ri.foundry.main.dataset.4558faa7-e05e-4de6-af86-9010fd899a8f",
+      "file_name": "08_threat_source.csv",
+      "rows": 150,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"08_threat_source.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee5-50ac-9530-53fd6344c432\",\"sizeBytes\":\"23295\",\"updatedTime\":\"2026-07-05T06:16:05.12Z\"}"
+    },
+    {
+      "name": "owns",
+      "category": "link",
+      "csv": "out/foundry_live_measurement/23_link_owns.csv",
+      "dataset_rid": "ri.foundry.main.dataset.e9013808-7d72-47c0-bca9-af6ece44907c",
+      "file_name": "23_link_owns.csv",
+      "rows": 17,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"23_link_owns.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee5-e477-b437-600ecd1bce35\",\"sizeBytes\":\"569\",\"updatedTime\":\"2026-07-05T06:16:08.396Z\"}"
+    },
+    {
+      "name": "belongs_to",
+      "category": "link",
+      "csv": "out/foundry_live_measurement/25_link_belongs_to.csv",
+      "dataset_rid": "ri.foundry.main.dataset.a0b1f94e-f72c-4adb-81ad-61f8105e0d9c",
+      "file_name": "25_link_belongs_to.csv",
+      "rows": 150,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"25_link_belongs_to.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee6-7d99-947d-edf525d4a7c1\",\"sizeBytes\":\"5597\",\"updatedTime\":\"2026-07-05T06:16:11.418Z\"}"
+    },
+    {
+      "name": "of",
+      "category": "link",
+      "csv": "out/foundry_live_measurement/26_link_of.csv",
+      "dataset_rid": "ri.foundry.main.dataset.23f1a49e-770a-4a02-a4de-172161808bf8",
+      "file_name": "26_link_of.csv",
+      "rows": 150,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"26_link_of.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee7-07ec-8763-ebb6b62f77c6\",\"sizeBytes\":\"7713\",\"updatedTime\":\"2026-07-05T06:16:14.237Z\"}"
+    },
+    {
+      "name": "targets",
+      "category": "link",
+      "csv": "out/foundry_live_measurement/27_link_targets.csv",
+      "dataset_rid": "ri.foundry.main.dataset.e6a2583b-4174-4721-8d33-00fee045c629",
+      "file_name": "27_link_targets.csv",
+      "rows": 150,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"27_link_targets.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee7-9459-b220-32b0c97d6c6c\",\"sizeBytes\":\"5757\",\"updatedTime\":\"2026-07-05T06:16:17.413Z\"}"
+    },
+    {
+      "name": "sourced_from",
+      "category": "link",
+      "csv": "out/foundry_live_measurement/28_link_sourced_from.csv",
+      "dataset_rid": "ri.foundry.main.dataset.ea8ea557-af14-4d8c-9e74-b7cc7e43c886",
+      "file_name": "28_link_sourced_from.csv",
+      "rows": 150,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"28_link_sourced_from.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee8-2d69-b602-cfa34ab4903c\",\"sizeBytes\":\"9417\",\"updatedTime\":\"2026-07-05T06:16:20.664Z\"}"
+    },
+    {
+      "name": "leaked",
+      "category": "link",
+      "csv": "out/foundry_live_measurement/29_link_leaked.csv",
+      "dataset_rid": "ri.foundry.main.dataset.47c0b157-b1eb-4041-b14b-eb59000f7877",
+      "file_name": "29_link_leaked.csv",
+      "rows": 150,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"29_link_leaked.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee8-d4e7-aafc-6a13336c9f43\",\"sizeBytes\":\"7869\",\"updatedTime\":\"2026-07-05T06:16:23.747Z\"}"
+    },
+    {
+      "name": "compromises",
+      "category": "link",
+      "csv": "out/foundry_live_measurement/30_link_compromises.csv",
+      "dataset_rid": "ri.foundry.main.dataset.428466cf-94e3-4813-8aa6-9e75b5274d8f",
+      "file_name": "30_link_compromises.csv",
+      "rows": 150,
+      "http_status": 200,
+      "ok": true,
+      "body_preview": "{\"path\":\"30_link_compromises.csv\",\"transactionRid\":\"ri.foundry.main.transaction.0000004b-2ee9-735c-8bdd-5e41b10c0e37\",\"sizeBytes\":\"7709\",\"updatedTime\":\"2026-07-05T06:16:26.663Z\"}"
+    }
+  ]
+}

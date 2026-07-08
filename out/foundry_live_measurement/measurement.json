@@ -1,0 +1,100 @@
+{
+  "generated_at": "2026-07-05T06:50:05.357717+00:00",
+  "source": "out/private_candidate_import.json",
+  "policy": {
+    "input_private": true,
+    "raw_provider_payload_exported": false,
+    "api_secret_exported": false,
+    "raw_email_exported": false,
+    "raw_secret_material_exported": false,
+    "identity_strategy": "source_ref_hash"
+  },
+  "summary": {
+    "input_records": 150,
+    "modules": {
+      "cb": 50,
+      "cds": 50,
+      "cl": 50
+    },
+    "active_candidates": 0,
+    "unique_domains": 17,
+    "foundry_object_rows": {
+      "Supplier": 1,
+      "Program": 1,
+      "Domain": 17,
+      "Identity": 150,
+      "CredentialExposure": 150,
+      "InfectedDevice": 150,
+      "ThreatSource": 150
+    },
+    "foundry_link_rows": {
+      "23_link_owns": 17,
+      "25_link_belongs_to": 150,
+      "26_link_of": 150,
+      "27_link_targets": 150,
+      "28_link_sourced_from": 150,
+      "29_link_leaked": 150,
+      "30_link_compromises": 150
+    },
+    "derived_decision_objects": 0,
+    "derived_decision_reason": "approved provider probe has no confirmed defense supplier path; do not create Incident/Draft without provenance"
+  },
+  "top_domains": [
+    [
+      "naver.com",
+      100
+    ],
+    [
+      "cloud.naver.com",
+      14
+    ],
+    [
+      "nid.naver.com",
+      14
+    ],
+    [
+      "ndrive.naver.com",
+      4
+    ],
+    [
+      "mail.naver.com",
+      3
+    ],
+    [
+      "smtp",
+      2
+    ],
+    [
+      "blog.naver.com",
+      2
+    ],
+    [
+      "localad.naver.com",
+      2
+    ],
+    [
+      "imap",
+      1
+    ],
+    [
+      "pop3",
+      1
+    ]
+  ],
+  "files": {
+    "01_supplier.csv": 1,
+    "03_program.csv": 1,
+    "04_domain.csv": 17,
+    "05_identity.csv": 150,
+    "06_credential_exposure.csv": 150,
+    "07_infected_device.csv": 150,
+    "08_threat_source.csv": 150,
+    "23_link_owns.csv": 17,
+    "25_link_belongs_to.csv": 150,
+    "26_link_of.csv": 150,
+    "27_link_targets.csv": 150,
+    "28_link_sourced_from.csv": 150,
+    "29_link_leaked.csv": 150,
+    "30_link_compromises.csv": 150
+  }
+}

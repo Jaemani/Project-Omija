@@ -1,5 +1,7 @@
 # Codex Handoff: Foundry OSDK Readback Broken
 
+> 2026-07-05 update: 이 문서는 과거 `schemaNotFound` 진단 기록이다. 이후 `putSchema`로 backing dataset 14/14 스키마를 복구했고, 별도 schema-aware live measurement datasets 14/14를 생성해 Foundry SQL count까지 확인했다. 현재 남은 문제는 `schemaNotFound`가 아니라 ontology object index/readback refresh다. 최신 상태는 `docs/review/foundry-live-measurement-update.md`를 기준으로 본다.
+
 작성: Fable, 2026-07-05. 공개 repo용으로 provider-specific source ref는 redacted 처리했다.
 
 ## 증상

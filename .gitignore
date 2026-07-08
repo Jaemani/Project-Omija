@@ -32,6 +32,9 @@ dist/
 out/*
 !out/foundry_seed/
 !out/foundry_seed/**
+!out/foundry_live_measurement/
+!out/foundry_live_measurement/**
+!out/foundry_live_measurement.html
 !out/foundry_demo.html
 !out/demo_e2e_*.json
 !out/blast_radius_*.json
@@ -50,6 +53,8 @@ out/p0b/
 !out/foundry_action_chain.json
 !out/data_coverage_map.html
 !out/data_evidence_brief.html
+!out/data_lineage_live.html
+!out/data_lineage_live.json
 !out/stealthmole_role_map.html
 !out/public_context_matrix.html
 !out/collection_plan.json
@@ -62,3 +67,4 @@ out/p0b/
 !out/captures/
 !out/captures/.gitkeep
 out/captures/_qa_refs/
+.vercel

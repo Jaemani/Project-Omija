@@ -1,50 +1,50 @@
 {
-  "generated_at": "2026-07-05T04:56:08.789070+00:00",
+  "generated_at": "2026-07-08T04:22:18.445340+00:00",
   "source": "scripts/data_lineage_live.py",
-  "honesty": "approved live StealthMole run executed; this seed returned 0 rows; provider+redaction lanes are real, normalized/ontology/engine counts from this run are 0; the same populated pipeline is demonstrated on the synthetic scenario and labelled distinctly",
+  "honesty": "approved live StealthMole hackathon API run executed; filtered rows returned; public artifact shows hashed lineage only, with raw provider payload/API keys/JWT excluded",
   "run": {
-    "generated_at": "2026-07-04T23:46:31.064187+00:00",
-    "seed_id": "domain:sup-a:supplier-a.example",
+    "generated_at": "2026-07-05T05:39:54.517435+00:00",
+    "seed_id": "probe:domain:naver.com",
     "obs_type": "domain",
-    "domain_value": "supplier-a.example",
+    "domain_value": "naver.com",
     "modules": {
       "cl": {
         "status": 200,
-        "returned": 0,
-        "written": 0,
+        "returned": 50,
+        "written": 50,
         "error": null
       },
       "cds": {
         "status": 200,
-        "returned": 0,
-        "written": 0,
+        "returned": 50,
+        "written": 50,
         "error": null
       },
       "cb": {
         "status": 200,
+        "returned": 50,
+        "written": 50,
+        "error": null
+      },
+      "dt": {
+        "status": null,
         "returned": 0,
         "written": 0,
         "error": null
       },
-      "dt": {
-        "status": 403,
-        "returned": 0,
-        "written": 0,
-        "error": "HTTPError"
-      },
       "tt": {
-        "status": 404,
+        "status": null,
         "returned": 0,
         "written": 0,
-        "error": "HTTPError"
+        "error": null
       }
     },
-    "returned_total": 0,
+    "returned_total": 150,
     "raw_secret_removed": true
   },
   "import_boundary": {
-    "input_records": 0,
-    "normalized_exposures": 0,
+    "input_records": 150,
+    "normalized_exposures": 150,
     "threat_sources": 0,
     "rejected": 0,
     "provider_api_called_at_import": false,
@@ -72,23 +72,12 @@
       "action_transitions_readback_verified": 5,
       "ontology_api_name": "ontology-cafadd0c-45e2-4808-98ab-787ee7f2903a"
     },
-    "in_progress_schema_repair": [
-      {
-        "entity": "CredentialExposure object",
-        "dataset": "Seed/06_credential_exposure",
-        "state": "schemaNotFound"
-      },
-      {
-        "entity": "ThreatSource object",
-        "dataset": "Seed/08_threat_source",
-        "state": "schemaNotFound"
-      },
-      {
-        "entity": "sourced_from link",
-        "dataset": "Seed/28_link_sourced_from",
-        "state": "schemaNotFound"
-      }
-    ]
+    "live_measurement": {
+      "rows": 150,
+      "backing_dataset_schema_put": "14/14",
+      "schema_aware_sql_counts": "14/14",
+      "ontology_object_readback": "index_refresh_pending"
+    }
   },
   "redaction": {
     "password": "removed",

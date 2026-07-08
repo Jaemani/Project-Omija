@@ -1,0 +1,184 @@
+{
+  "01_supplier.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.a0b5ad66-08a2-4832-b1e5-9cf0c0cc50b5\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/01_supplier\",\"branch\":\"master\",\"sizeInBytes\":\"119\",\"sizeHumanReadable\":\"119 B\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 300
+  },
+  "03_program.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.78093ab2-406f-4887-8a37-dd160e0524b0\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/03_program\",\"branch\":\"master\",\"sizeInBytes\":\"109\",\"sizeHumanReadable\":\"109 B\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 301
+  },
+  "04_domain.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.aabf581c-51b9-45d8-bbe5-6d491d53930e\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/04_domain\",\"branch\":\"master\",\"sizeInBytes\":\"2502\",\"sizeHumanReadable\":\"2.44 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 302
+  },
+  "05_identity.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.33284285-d32a-44fa-a511-b404a0ed7f52\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/05_identity\",\"branch\":\"master\",\"sizeInBytes\":\"11767\",\"sizeHumanReadable\":\"11.49 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 303
+  },
+  "06_credential_exposure.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.7a4d3db0-a649-4d05-936f-b67593f9a79d\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/06_credential_exposure\",\"branch\":\"master\",\"sizeInBytes\":\"29371\",\"sizeHumanReadable\":\"28.68 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 304
+  },
+  "07_infected_device.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.4966e27f-e540-43d7-9a57-c8c1bddaab70\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/07_infected_device\",\"branch\":\"master\",\"sizeInBytes\":\"12671\",\"sizeHumanReadable\":\"12.37 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 305
+  },
+  "08_threat_source.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.4558faa7-e05e-4de6-af86-9010fd899a8f\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/08_threat_source\",\"branch\":\"master\",\"sizeInBytes\":\"23295\",\"sizeHumanReadable\":\"22.75 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 306
+  },
+  "23_link_owns.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.e9013808-7d72-47c0-bca9-af6ece44907c\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/23_link_owns\",\"branch\":\"master\",\"sizeInBytes\":\"569\",\"sizeHumanReadable\":\"569 B\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 307
+  },
+  "25_link_belongs_to.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.a0b1f94e-f72c-4adb-81ad-61f8105e0d9c\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/25_link_belongs_to\",\"branch\":\"master\",\"sizeInBytes\":\"5597\",\"sizeHumanReadable\":\"5.47 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 308
+  },
+  "26_link_of.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.23f1a49e-770a-4a02-a4de-172161808bf8\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/26_link_of\",\"branch\":\"master\",\"sizeInBytes\":\"7713\",\"sizeHumanReadable\":\"7.53 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 309
+  },
+  "27_link_targets.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.e6a2583b-4174-4721-8d33-00fee045c629\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/27_link_targets\",\"branch\":\"master\",\"sizeInBytes\":\"5757\",\"sizeHumanReadable\":\"5.62 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 310
+  },
+  "28_link_sourced_from.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.ea8ea557-af14-4d8c-9e74-b7cc7e43c886\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/28_link_sourced_from\",\"branch\":\"master\",\"sizeInBytes\":\"9417\",\"sizeHumanReadable\":\"9.20 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 311
+  },
+  "29_link_leaked.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.47c0b157-b1eb-4041-b14b-eb59000f7877\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/29_link_leaked\",\"branch\":\"master\",\"sizeInBytes\":\"7869\",\"sizeHumanReadable\":\"7.68 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 312
+  },
+  "30_link_compromises.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"datasetStats\",\"properties\":{\"datasetRid\":\"ri.foundry.main.dataset.428466cf-94e3-4813-8aa6-9e75b5274d8f\",\"datasetPath\":\"/Omija-e4b739/Omija/Seed/30_link_compromises\",\"branch\":\"master\",\"sizeInBytes\":\"7709\",\"sizeHumanReadable\":\"7.53 KB\",\"numFiles\":\"1\",\"hiddenFilesSizeInBytes\":\"0\",\"numHiddenFiles\":\"0\",\"numTransactions\":\"1\"}}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 313
+  }
+}

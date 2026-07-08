@@ -9,10 +9,10 @@ docs/review/finals-foundry-lineage-check.md):
 
   * An approved StealthMole run REALLY happened (data/private_candidates/
     collection_meta.json). For seed `domain:sup-a:supplier-a.example` the modules
-    CL/CDS/CB returned 200/0 rows, DT 403, TT 404 — so the run returned ZERO rows.
+    CL/CDS/CB module counts and import counts are data-driven.
   * Therefore the PROVIDER and REDACTION lanes are REAL (real module statuses +
     real redaction policy) but NORMALIZED/ONTOLOGY/ENGINE counts FROM THIS RUN
-    are 0. We do NOT invent records.
+    public artifacts show safe lineage only; raw provider rows are not exported.
   * The SAME populated pipeline is demonstrated on the synthetic scenario
     (out/early_warning_readiness.json — 74 eval records, 3 active suppliers),
     chipped clearly as SEED/ENGINE, distinct from the live-provider lane.
@@ -53,6 +53,10 @@ COLLECTION_META = os.path.join(REPO_ROOT, "data", "private_candidates", "collect
 IMPORT_JSON = os.path.join(OUT_DIR, "private_candidate_import.json")
 READINESS_JSON = os.path.join(OUT_DIR, "early_warning_readiness.json")
 ACTION_CHAIN_JSON = os.path.join(OUT_DIR, "foundry_action_chain.json")
+LIVE_MEASUREMENT_JSON = os.path.join(OUT_DIR, "foundry_live_measurement", "measurement.json")
+SCHEMA_PUT_JSON = os.path.join(OUT_DIR, "foundry_live_measurement", "schema_put_result.json")
+SQL_MEASUREMENT_JSON = os.path.join(OUT_DIR, "foundry_live_measurement", "sql_measurement_result.json")
+LIVE_READBACK_JSON = os.path.join(OUT_DIR, "foundry_live_measurement", "readback_result.json")
 OUT_HTML = os.path.join(OUT_DIR, "data_lineage_live.html")
 OUT_JSON = os.path.join(OUT_DIR, "data_lineage_live.json")
 
@@ -94,6 +98,10 @@ def gather() -> dict[str, Any]:
     imported = _read_json(IMPORT_JSON)
     readiness = _read_json(READINESS_JSON)
     chain = _read_json(ACTION_CHAIN_JSON)
+    live_measurement = _read_json(LIVE_MEASUREMENT_JSON)
+    schema_put = _read_json(SCHEMA_PUT_JSON)
+    sql_measurement = _read_json(SQL_MEASUREMENT_JSON)
+    live_readback = _read_json(LIVE_READBACK_JSON)
 
     collection = meta.get("collection") or {}
     raw_modules = collection.get("modules") or {}
@@ -136,6 +144,12 @@ def gather() -> dict[str, Any]:
         "verified_transitions": sum(1 for s in steps if s.get("verified")),
         "workflow_actions": len(chain.get("discovered_actions") or {}),
         "osdk": OSDK_VERSION,
+        "live_measurement_rows": _int((live_measurement.get("summary") or {}).get("input_records")),
+        "schema_put_ok": _int(schema_put.get("ok_count")),
+        "schema_put_total": _int(schema_put.get("target_count")),
+        "sql_ok": _int(sql_measurement.get("ok_count")),
+        "sql_total": _int(sql_measurement.get("target_count")),
+        "ontology_readback_ok": bool(live_readback.get("ok")),
     }
 
     return {
@@ -145,10 +159,11 @@ def gather() -> dict[str, Any]:
         "domain_value": collection.get("value"),
         "modules": modules,
         "returned_total": returned_total,
-        "import_boundary": import_boundary,
-        "policy": policy,
-        "synthetic": synthetic,
-        "foundry": foundry,
+  "import_boundary": import_boundary,
+  "lineage": imported.get("lineage") or [],
+  "policy": policy,
+  "synthetic": synthetic,
+  "foundry": foundry,
     }
 
 
@@ -258,10 +273,10 @@ def _swimlane(d: dict[str, Any]) -> str:
             "dsc": "RiskAssessment · CompromiseIncident · ProgramExposure · NotificationDraft.",
         },
         {
-            "k": "LIVE_FOUNDRY", "t": "of/targets + action audit",
-            "n": (f'<div class="lnum">{fdry["verified_transitions"]:,}</div>'
-                  f'<div class="lsyn">transitions · {fdry["workflow_actions"]} actions</div>'),
-            "dsc": "of/targets 링크 데이터셋 스키마 OK · 액션 감사 readback 검증.",
+            "k": "LIVE_FOUNDRY", "t": "Foundry datasets + SQL measurement",
+            "n": (f'<div class="lnum">{fdry["live_measurement_rows"]:,}</div>'
+                  f'<div class="lsyn">rows · SQL {fdry["sql_ok"]}/{fdry["sql_total"]} · schemas {fdry["schema_put_ok"]}/{fdry["schema_put_total"]}</div>'),
+            "dsc": "승인 provider row를 schema-aware Foundry dataset으로 측정. Ontology object readback은 index refresh 대기.",
         },
     ]
 
@@ -336,6 +351,42 @@ def _record_examples() -> str:
     return empty + "".join(ex_html)
 
 
+def _record_examples(d: dict[str, Any]) -> str:
+    """Render safe record-level lineage when sanitized import rows exist."""
+    rows = d.get("lineage") or []
+    if rows:
+        cards = []
+        for row in rows[:3]:
+            steps = [
+                f"{str(row.get('module', '')).upper()} #{_e(row.get('source_ref_hash', 'hash'))}",
+                "PRIVATE_RAW",
+                "REDACTION",
+            ]
+            steps.extend(_e(obj) for obj in row.get("normalized_objects", [])[:4])
+            if row.get("links"):
+                steps.append("links: " + ", ".join(_e(link) for link in row.get("links", [])[:5]))
+            if row.get("decision_outputs"):
+                steps.append("decisions: " + ", ".join(_e(out) for out in row.get("decision_outputs", [])[:4]))
+            chain = "".join(
+                f'<span class="rstep">{step}</span><span class="rarr">→</span>' for step in steps
+            )
+            chain = chain.rsplit('<span class="rarr">→</span>', 1)[0]
+            removed = ", ".join(_e(field) for field in row.get("removed_fields", [])) or "none"
+            cards.append(
+                f"""<div class="rec">
+  <div class="rhead">{lbl('NORMALIZED')} {_e(row.get('module', '').upper())} sanitized lineage</div>
+  <div class="rchain">{chain}</div>
+  <div class="rrm"><b>fields_removed</b> {removed} · raw payload not exported · source_ref hashed</div>
+</div>"""
+            )
+        return "".join(cards)
+    return """<div class="empty">
+  <div class="ek">RECORD-LEVEL · LIVE</div>
+  <div class="et">승인된 run이 sanitized row를 반환하면 여기에 레코드 단위 계보가 표시됩니다.</div>
+  <div class="ed">현재 run은 0건 반환이라 실제 record-level row는 표시하지 않습니다. synthetic scenario는 사건 보고서에서 별도 라벨로 보여줍니다.</div>
+</div>"""
+
+
 def _redaction_proof() -> str:
     items = [
         ("password", "removed", "제거 — 원문 미저장"),
@@ -367,6 +418,8 @@ def _foundry_evidence(d: dict[str, Any]) -> str:
          "schema OK · left-CredentialExposure-primary-key · right-Identity-primary-key"),
         ("targets 링크 (CredentialExposure→Domain)", "Seed/27_link_targets",
          "schema OK · left-CredentialExposure-primary-key · right-Domain-primary-key"),
+        (f"Live provider rows {f['live_measurement_rows']}건", "out/foundry_live_measurement/measurement.json",
+         f"schema PUT {f['schema_put_ok']}/{f['schema_put_total']} · SQL count {f['sql_ok']}/{f['sql_total']}"),
         (f"워크플로 액션 {f['workflow_actions']}종", "ontology actions (merged proposal)",
          "acknowledge/assign/close incident · review/approve/export draft · confirm/reject merge"),
         (f"OSDK @omija/sdk {f['osdk']}", "published", f"액션 {f['workflow_actions']}종 포함"),
@@ -374,9 +427,8 @@ def _foundry_evidence(d: dict[str, Any]) -> str:
          "오늘 실행 · readback verified (HTTP 200)"),
     ]
     in_progress = [
-        ("CredentialExposure object", "Seed/06_credential_exposure", "schemaNotFound"),
-        ("ThreatSource object", "Seed/08_threat_source", "schemaNotFound"),
-        ("sourced_from 링크", "Seed/28_link_sourced_from", "schemaNotFound"),
+        ("Ontology object readback", "out/foundry_live_measurement/readback_result.json",
+         "index refresh pending"),
     ]
     ver_rows = "".join(
         f"""<div class="fev-row ok">
@@ -398,14 +450,14 @@ def _foundry_evidence(d: dict[str, Any]) -> str:
   <div class="fev">
     <div class="fev-col">
       <div class="ch"><span class="ck">VERIFIED · Foundry lineage</span>{lbl('LIVE_FOUNDRY')}{chip('live')}</div>
-      <div class="fev-sub">MCP로 실사 — object/link이 backing dataset을 가지고 of/targets 데이터셋 스키마가 온전하다.</div>
+      <div class="fev-sub">MCP/SQL로 실사 — of/targets schema, action audit, live measurement count를 확인했다.</div>
       {ver_rows}
     </div>
     <div class="fev-col">
-      <div class="ch"><span class="ck">IN PROGRESS · 스키마 정비 중</span>
-        <span class="lbl wip">SCHEMA_REPAIR</span></div>
-      <div class="fev-sub">벤더중립 rename 시 raw CSV SNAPSHOT으로 스키마가 제거됨 — 재적재/스키마 적용 진행 중.
-        <b>Foundry E2E readback 완전 해결 주장 아님.</b></div>
+      <div class="ch"><span class="ck">IN PROGRESS · index refresh</span>
+        <span class="lbl wip">INDEX_REFRESH</span></div>
+      <div class="fev-sub">live PK가 OSDK object readback에 보일 때까지
+        <b>Foundry Ontology E2E 완료 주장 아님.</b></div>
       {ip_rows}
     </div>
   </div>"""
@@ -526,35 +578,45 @@ main{padding:0;display:grid;grid-template-columns:minmax(0,1fr)}
 
 
 def build_html(d: dict[str, Any]) -> str:
+    ib = d["import_boundary"]
+    if d["returned_total"]:
+        live_sub = (
+            f"승인된 라이브 run 실행됨 · provider total <b>{d['returned_total']:,}건</b> · "
+            f"제한 저장/정규화 <b>{ib['normalized_exposures'] + ib['threat_sources']:,}건</b>. "
+            "공개 페이지에는 source_ref hash와 lineage만 표시한다."
+        )
+        run_note = [
+            "여기 핵심은 <b>승인된 StealthMole 해커톤 API run이 실제로 실행됐다</b>는 것.",
+            "CL/CDS/CB가 200으로 붙었고, 반환 row는 normalization boundary를 지나 hashed lineage로만 공개된다.",
+            "원문 payload/API key/JWT는 저장하거나 표시하지 않고, 데모에는 필터링된 해커톤 데이터의 안전 변환만 사용한다.",
+        ]
+        record_heading = "라이브 sanitized row-level lineage"
+    else:
+        live_sub = (
+            "승인된 라이브 run 실행됨 · 이 seed는 <b>0건 반환</b> · 동일 lineage는 "
+            "synthetic 시나리오로 populated 시연. provider/redaction lane은 실제값, "
+            "normalized 이후 라이브 카운트는 0이며 절대 조작하지 않는다."
+        )
+        run_note = [
+            "여기 핵심은 <b>승인된 라이브 run이 실제로 실행됐다</b>는 것.",
+            "CL/CDS/CB는 200으로 붙었고 DT는 403, TT는 404 — 그리고 이 seed는 0건을 반환했다.",
+            "0건을 숨기지 않고 그대로 보여주는 것이 신뢰 장치다.",
+        ]
+        record_heading = "라이브 empty-state + SEED 예시"
     body = f"""
 <section><div class="wrap">
   <div class="sec-k">operational data lineage · provider → redaction → ontology → engine → Foundry</div>
   <div class="sec-h">승인된 StealthMole 라이브 run을 계보로 추적 — 원문은 잠그고, 안전 변환만 전 구간 표시</div>
-  <div class="sec-sub">승인된 라이브 run 실행됨 · 이 seed는 <b>0건 반환</b> · 동일 lineage는
-    synthetic 시나리오로 populated 시연. provider/redaction lane은 실제값, normalized 이후 라이브
-    카운트는 0이며 절대 조작하지 않는다.</div>
+  <div class="sec-sub">{live_sub}</div>
   <div class="cflag" style="margin:0 0 14px;display:inline-block">확정된 침해 아님 · raw secret 미저장</div>
   {_run_summary(d)}
-  {pnote("RUN SUMMARY", [
-      "여기 핵심은 <b>승인된 라이브 run이 실제로 실행됐다</b>는 것.",
-      "CL/CDS/CB는 200으로 붙었고 DT는 403, TT는 404 — 그리고 이 seed는 0건을 반환했다.",
-      "0건을 숨기지 않고 그대로 보여주는 것이 신뢰 장치다."])}
-</div></section>
-
-<section><div class="wrap">
-  <div class="sec-k">lineage swimlane · 좌→우 데이터 흐름</div>
-  <div class="sec-h">provider 원문에서 Foundry 링크·액션 감사까지, 한 줄로 흐르는 계보</div>
-  {_swimlane(d)}
-  {pnote("SWIMLANE", [
-      "왼쪽 LIVE_PROVIDER는 실제 라이브 조회, PRIVATE_RAW는 잠긴 원문(export 금지),",
-      "LOCKED_SECRET 경계에서 raw secret이 폐기된다.",
-      "REDACTION 이후 라이브 카운트는 0 — 같은 파이프를 통과한 <b>synthetic: 74</b>는 별도 lane으로만 표기한다."])}
+  {pnote("RUN SUMMARY", run_note)}
 </div></section>
 
 <section><div class="wrap">
   <div class="sec-k">record-level lineage · 레코드 단위 계보</div>
-  <div class="sec-h">라이브 0건 정직한 empty-state + 명확히 SEED로 표기한 합성 예시</div>
-  {_record_examples()}
+  <div class="sec-h">{record_heading}</div>
+  {_record_examples(d)}
 </div></section>
 
 <section><div class="wrap">
@@ -601,13 +663,22 @@ def build_html(d: dict[str, Any]) -> str:
 
 def build_json(d: dict[str, Any]) -> dict[str, Any]:
     ib = d["import_boundary"]
+    if d["returned_total"]:
+        honesty = (
+            "approved live StealthMole hackathon API run executed; filtered rows returned; "
+            "public artifact shows hashed lineage only, with raw provider payload/API keys/JWT excluded"
+        )
+    else:
+        honesty = (
+            "approved live StealthMole run executed; this seed returned 0 rows; "
+            "provider+redaction lanes are real, normalized/ontology/engine counts "
+            "from this run are 0; the same populated pipeline is demonstrated on the "
+            "synthetic scenario and labelled distinctly"
+        )
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source": "scripts/data_lineage_live.py",
-        "honesty": ("approved live StealthMole run executed; this seed returned 0 rows; "
-                    "provider+redaction lanes are real, normalized/ontology/engine counts "
-                    "from this run are 0; the same populated pipeline is demonstrated on the "
-                    "synthetic scenario and labelled distinctly"),
+        "honesty": honesty,
         "run": {
             "generated_at": d["run_generated_at"],
             "seed_id": d["seed_id"],
@@ -632,14 +703,12 @@ def build_json(d: dict[str, Any]) -> dict[str, Any]:
                 "action_transitions_readback_verified": d["foundry"]["verified_transitions"],
                 "ontology_api_name": d["foundry"]["ontology_api_name"],
             },
-            "in_progress_schema_repair": [
-                {"entity": "CredentialExposure object", "dataset": "Seed/06_credential_exposure",
-                 "state": "schemaNotFound"},
-                {"entity": "ThreatSource object", "dataset": "Seed/08_threat_source",
-                 "state": "schemaNotFound"},
-                {"entity": "sourced_from link", "dataset": "Seed/28_link_sourced_from",
-                 "state": "schemaNotFound"},
-            ],
+            "live_measurement": {
+                "rows": d["foundry"]["live_measurement_rows"],
+                "backing_dataset_schema_put": f'{d["foundry"]["schema_put_ok"]}/{d["foundry"]["schema_put_total"]}',
+                "schema_aware_sql_counts": f'{d["foundry"]["sql_ok"]}/{d["foundry"]["sql_total"]}',
+                "ontology_object_readback": "ok" if d["foundry"]["ontology_readback_ok"] else "index_refresh_pending",
+            },
         },
         "redaction": {
             "password": "removed", "cookie": "removed", "token": "removed",

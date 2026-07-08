@@ -1,5 +1,13 @@
 # StealthMole API Integration Contract
 
+> 2026-07-08 status note: the latest finals state is recorded in `README.md`,
+> `docs/decisions/0009-approved-provider-foundry-lineage.md`, and
+> `docs/review/foundry-live-measurement-update.md`. Approved filtered
+> StealthMole hackathon rows have been used for sanitized lineage and Foundry
+> measurement. This contract still defines the safe boundary: no raw provider
+> envelope, raw password, cookie, token, API key, JWT, or reusable secret value
+> may be committed or displayed.
+
 This document defines how StealthMole can be connected to Omija without storing private API details or sensitive records in the public/tracked repository.
 
 ## Current Status

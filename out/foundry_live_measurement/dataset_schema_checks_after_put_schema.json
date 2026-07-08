@@ -1,0 +1,184 @@
+{
+  "01_supplier.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.a0b5ad66-08a2-4832-b1e5-9cf0c0cc50b5\",\"path\":\"/Omija-e4b739/Omija/Seed/01_supplier\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"id\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"name\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"tier\",\"type\":\"INTEGER\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"criticality\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"status\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"is_prime_candidate\",\"type\":\"BOOLEAN\",\"nullable\":\"true\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 10
+  },
+  "03_program.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.78093ab2-406f-4887-8a37-dd160e0524b0\",\"path\":\"/Omija-e4b739/Omija/Seed/03_program\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"id\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"name\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"sensitivity\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"status\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 11
+  },
+  "04_domain.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.aabf581c-51b9-45d8-bbe5-6d491d53930e\",\"path\":\"/Omija-e4b739/Omija/Seed/04_domain\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"fqdn\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"host\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"url\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"asset_type\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"criticality\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"access_surface\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"verified_at\",\"type\":\"DATE\",\"nullable\":\"true\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 12
+  },
+  "05_identity.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.33284285-d32a-44fa-a511-b404a0ed7f52\",\"path\":\"/Omija-e4b739/Omija/Seed/05_identity\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"id\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"email\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"username\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"canonical_handle\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"account_type\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"status\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"merged_into\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 13
+  },
+  "06_credential_exposure.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.7a4d3db0-a649-4d05-936f-b67593f9a79d\",\"path\":\"/Omija-e4b739/Omija/Seed/06_credential_exposure\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"id\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"module\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"secret_type\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"secret_present\",\"type\":\"BOOLEAN\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"masked_value\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"secret_fingerprint\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"first_seen\",\"type\":\"DATE\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"last_seen\",\"type\":\"DATE\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"source_ref\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"confidence\",\"type\":\"DOUBLE\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"status\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 14
+  },
+  "07_infected_device.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.4966e27f-e540-43d7-9a57-c8c1bddaab70\",\"path\":\"/Omija-e4b739/Omija/Seed/07_infected_device\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"id\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"device_fingerprint\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"malware\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"infected_at\",\"type\":\"DATE\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"has_session_cookie\",\"type\":\"BOOLEAN\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"os\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"status\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 15
+  },
+  "08_threat_source.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.4558faa7-e05e-4de6-af86-9010fd899a8f\",\"path\":\"/Omija-e4b739/Omija/Seed/08_threat_source\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"id\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"kind\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"name\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"collected_at\",\"type\":\"DATE\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"reliability\",\"type\":\"DOUBLE\",\"nullable\":\"true\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"status\",\"type\":\"STRING\",\"nullable\":\"true\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 16
+  },
+  "23_link_owns.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.e9013808-7d72-47c0-bca9-af6ece44907c\",\"path\":\"/Omija-e4b739/Omija/Seed/23_link_owns\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"left-Supplier-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"right-Domain-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 17
+  },
+  "25_link_belongs_to.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.a0b1f94e-f72c-4adb-81ad-61f8105e0d9c\",\"path\":\"/Omija-e4b739/Omija/Seed/25_link_belongs_to\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"left-Identity-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"right-Domain-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 18
+  },
+  "26_link_of.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.23f1a49e-770a-4a02-a4de-172161808bf8\",\"path\":\"/Omija-e4b739/Omija/Seed/26_link_of\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"left-CredentialExposure-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"right-Identity-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 19
+  },
+  "27_link_targets.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.e6a2583b-4174-4721-8d33-00fee045c629\",\"path\":\"/Omija-e4b739/Omija/Seed/27_link_targets\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"left-CredentialExposure-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"right-Domain-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 20
+  },
+  "28_link_sourced_from.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.ea8ea557-af14-4d8c-9e74-b7cc7e43c886\",\"path\":\"/Omija-e4b739/Omija/Seed/28_link_sourced_from\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"left-CredentialExposure-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"right-ThreatSource-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 21
+  },
+  "29_link_leaked.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.47c0b157-b1eb-4041-b14b-eb59000f7877\",\"path\":\"/Omija-e4b739/Omija/Seed/29_link_leaked\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"left-InfectedDevice-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"right-CredentialExposure-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 22
+  },
+  "30_link_compromises.csv": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"dataset\",\"properties\":{\"rid\":\"ri.foundry.main.dataset.428466cf-94e3-4813-8aa6-9e75b5274d8f\",\"path\":\"/Omija-e4b739/Omija/Seed/30_link_compromises\",\"branch\":\"master\"},\"children\":[{\"type\":\"schema\",\"children\":[{\"type\":\"column\",\"properties\":{\"name\":\"left-InfectedDevice-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}},{\"type\":\"column\",\"properties\":{\"name\":\"right-Identity-primary-key\",\"type\":\"STRING\",\"nullable\":\"false\",\"description\":\"\"}}]}]}"
+        }
+      ],
+      "isError": false
+    },
+    "jsonrpc": "2.0",
+    "id": 23
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "Supplier": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Successfully aggregated objects [type=Supplier].\n\n{\n  \"accuracy\": \"ACCURATE\",\n  \"data\": [\n    {\n      \"group\": {},\n      \"metrics\": [\n        {\n          \"name\": \"count\",\n          \"value\": 2\n        }\n      ]\n    }\n  ]\n}"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 10
+  },
+  "Program": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Successfully aggregated objects [type=Program].\n\n{\n  \"accuracy\": \"ACCURATE\",\n  \"data\": [\n    {\n      \"group\": {},\n      \"metrics\": [\n        {\n          \"name\": \"count\",\n          \"value\": 2\n        }\n      ]\n    }\n  ]\n}"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 11
+  },
+  "Domain": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Successfully aggregated objects [type=Domain].\n\n{\n  \"accuracy\": \"ACCURATE\",\n  \"data\": [\n    {\n      \"group\": {},\n      \"metrics\": [\n        {\n          \"name\": \"count\",\n          \"value\": 3\n        }\n      ]\n    }\n  ]\n}"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 12
+  },
+  "Identity": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Successfully aggregated objects [type=Identity].\n\n{\n  \"accuracy\": \"ACCURATE\",\n  \"data\": [\n    {\n      \"group\": {},\n      \"metrics\": [\n        {\n          \"name\": \"count\",\n          \"value\": 1\n        }\n      ]\n    }\n  ]\n}"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 13
+  },
+  "CredentialExposure": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Successfully aggregated objects [type=CredentialExposure].\n\n{\n  \"accuracy\": \"ACCURATE\",\n  \"data\": [\n    {\n      \"group\": {},\n      \"metrics\": [\n        {\n          \"name\": \"count\",\n          \"value\": 1\n        }\n      ]\n    }\n  ]\n}"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 14
+  },
+  "InfectedDevice": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Successfully aggregated objects [type=InfectedDevice].\n\n{\n  \"accuracy\": \"ACCURATE\",\n  \"data\": [\n    {\n      \"group\": {},\n      \"metrics\": [\n        {\n          \"name\": \"count\",\n          \"value\": 1\n        }\n      ]\n    }\n  ]\n}"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 15
+  },
+  "ThreatSource": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Successfully aggregated objects [type=ThreatSource].\n\n{\n  \"accuracy\": \"ACCURATE\",\n  \"data\": [\n    {\n      \"group\": {},\n      \"metrics\": [\n        {\n          \"name\": \"count\",\n          \"value\": 1\n        }\n      ]\n    }\n  ]\n}"
+        }
+      ]
+    },
+    "jsonrpc": "2.0",
+    "id": 16
+  }
+}

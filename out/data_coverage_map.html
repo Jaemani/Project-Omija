@@ -83,7 +83,7 @@ svg { display:block; min-width:1120px; width:100%; height:auto; }
     <span class="chip public">PUBLIC_CONTEXT open data</span>
     <span class="chip engine">ENGINE computed decision</span>
     <span class="chip live">LIVE Foundry/readback</span>
-    <span class="chip locked">LOCKED sensitive slot</span>
+    <span class="chip locked">APPROVED provider rail · raw secret blocked</span>
   </div>
 
   <section class="network">
@@ -103,12 +103,12 @@ svg { display:block; min-width:1120px; width:100%; height:auto; }
 
     <g class="node seed"><rect x="30" y="70" width="150" height="70"/><text x="48" y="100">Foundry seed CSV</text><text x="48" y="120" class="small">suppliers/domains/programs</text></g>
     <g class="node seed"><rect x="30" y="150" width="150" height="70"/><text x="48" y="180">Synthetic corpus</text><text x="48" y="200" class="small">exposure/device slots</text></g>
-    <g class="node locked"><rect x="30" y="250" width="150" height="70"/><text x="48" y="280">Credential feed</text><text x="48" y="300" class="small">locked / not queried</text></g>
+<g class="node locked"><rect x="30" y="250" width="150" height="70"/><text x="48" y="280">Credential feed</text><text x="48" y="300" class="small">approved · redacted</text></g>
     <g class="node public"><rect x="30" y="355" width="150" height="70"/><text x="48" y="385">Open context</text><text x="48" y="405" class="small">KEV/NVD/ATT&CK/HIBP</text></g>
 
     <g class="node seed"><rect x="370" y="70" width="175" height="70"/><text x="390" y="100">Ontology objects</text><text x="390" y="120" class="small">Supplier Domain Identity</text></g>
     <g class="node seed"><rect x="370" y="150" width="175" height="70"/><text x="390" y="180">Evidence slots</text><text x="390" y="200" class="small">Exposure Device Source</text></g>
-    <g class="node locked"><rect x="370" y="250" width="175" height="70"/><text x="390" y="280">Sensitive review</text><text x="390" y="300" class="small">masked / gated / audited</text></g>
+<g class="node locked"><rect x="370" y="250" width="175" height="70"/><text x="390" y="280">Sensitive review</text><text x="390" y="300" class="small">raw secret blocked</text></g>
     <g class="node public"><rect x="370" y="355" width="175" height="70"/><text x="390" y="385">Context components</text><text x="390" y="405" class="small">asset risk, techniques</text></g>
 
     <g class="node engine"><rect x="725" y="130" width="155" height="70"/><text x="745" y="160">RiskAssessment</text><text x="745" y="180" class="small">band + score</text></g>
@@ -124,7 +124,7 @@ svg { display:block; min-width:1120px; width:100%; height:auto; }
   <div class="grid">
     <section class="panel"><h2>Managed synthetic structure</h2><div class="stats"><div class='stat seed'><span>Suppliers</span><strong>2</strong></div><div class='stat seed'><span>Domains</span><strong>3</strong></div><div class='stat seed'><span>Identities</span><strong>1</strong></div><div class='stat seed'><span>Exposure slots</span><strong>1</strong></div><div class='stat seed'><span>Infected devices</span><strong>1</strong></div><div class='stat engine'><span>Incidents</span><strong>1</strong></div><div class='stat seed'><span>Programs</span><strong>2</strong></div><div class='stat engine'><span>Drafts</span><strong>1</strong></div></div></section>
     <section class="panel"><h2>Open public context</h2><div class="stats"><div class='stat public'><span>CISA KEV</span><strong>1631</strong></div><div class='stat public'><span>Access-relevant KEV</span><strong>957</strong></div><div class='stat public'><span>NVD asset queries</span><strong>1458</strong></div><div class='stat public'><span>ATT&amp;CK techniques</span><strong>89</strong></div><div class='stat public'><span>URLhaus sample</span><strong>1000</strong></div><div class='stat public'><span>HIBP breach metadata</span><strong>1015</strong></div></div></section>
-    <section class="panel"><h2>Engine / live evidence</h2><div class="stats"><div class='stat live'><span>Foundry action readbacks</span><strong>5</strong></div><div class='stat engine'><span>Program reverse chains</span><strong>5</strong></div><div class='stat engine'><span>Cross-org hits</span><strong>1</strong></div></div><div class="caption">Foundry action readbacks and reverse-query outputs prove the operating workflow; credential-feed slots remain locked.</div></section>
+<section class="panel"><h2>Engine / live evidence</h2><div class="stats"><div class='stat live'><span>Approved provider rows</span><strong>150</strong></div><div class='stat live'><span>Foundry SQL counts</span><strong>14/14</strong></div><div class='stat live'><span>Foundry action readbacks</span><strong>5</strong></div><div class='stat engine'><span>Program reverse chains</span><strong>5</strong></div><div class='stat engine'><span>Cross-org hits</span><strong>1</strong></div></div><div class="caption">Foundry action readbacks, SQL counts, and reverse-query outputs prove the operating workflow; provider rows stay redacted.</div></section>
   </div>
 </main>
 </body>

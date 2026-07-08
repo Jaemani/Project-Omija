@@ -1,0 +1,162 @@
+[
+  {
+    "relationRid": "ri.ontology.main.relation.0b2b89f0-7e64-4369-a262-76a1ea61e73c",
+    "a": "Program",
+    "b": "Prime",
+    "a_to_b": "primes",
+    "b_to_a": "programs",
+    "datasetRid": "ri.foundry.main.dataset.28ff114b-82a8-4f37-9d99-d5fca519069f"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.0d50602c-94da-4828-b783-ea13c2b97ec6",
+    "a": "Prime",
+    "b": "Supplier",
+    "a_to_b": "suppliers",
+    "b_to_a": "primes",
+    "datasetRid": "ri.foundry.main.dataset.601847b8-224a-478d-9a2a-81dca3b682ac"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.22bc127a-5bff-4aa9-b52e-fa1830417c72",
+    "a": "Domain",
+    "b": "Prime",
+    "a_to_b": "primes",
+    "b_to_a": "domains",
+    "datasetRid": "ri.foundry.main.dataset.73a1c828-ea0d-4880-86f9-c7043342e49d"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.26a6dc8a-cb7d-4579-bac1-fe10c87dd6f0",
+    "a": "Identity",
+    "b": "CredentialExposure",
+    "a_to_b": "credentialExposures",
+    "b_to_a": "identity",
+    "datasetRid": "ri.foundry.main.dataset.23f1a49e-770a-4a02-a4de-172161808bf8"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.2b1d5504-a180-4630-84bc-b662dc2865dd",
+    "a": "ThreatSource",
+    "b": "CredentialExposure",
+    "a_to_b": "credentialExposures",
+    "b_to_a": "threatSource",
+    "datasetRid": "ri.foundry.main.dataset.ea8ea557-af14-4d8c-9e74-b7cc7e43c886"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.2e4e248c-f584-4e33-990f-3a7555e37054",
+    "a": "CredentialExposure",
+    "b": "RiskAssessment",
+    "a_to_b": "riskAssessments",
+    "b_to_a": "credentialExposures",
+    "datasetRid": "ri.foundry.main.dataset.e28ffd59-f086-49a4-a422-67caf8d1e990"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.2eca7fac-3e76-4aec-ab4c-9e695f12c2bf",
+    "a": null,
+    "b": null,
+    "a_to_b": null,
+    "b_to_a": null,
+    "datasetRid": null
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.2f559921-3553-4b8f-bb1b-002916a91728",
+    "a": "Program",
+    "b": "CompromiseIncident",
+    "a_to_b": "compromiseIncidents",
+    "b_to_a": "programs",
+    "datasetRid": "ri.foundry.main.dataset.ff5b517d-b12a-4eff-ab28-d6e84149b2f0"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.337ff4a6-5606-4c4e-a0ee-6e6b976ef90c",
+    "a": "Supplier",
+    "b": "CompromiseIncident",
+    "a_to_b": "compromiseIncidents",
+    "b_to_a": "suppliers",
+    "datasetRid": "ri.foundry.main.dataset.2c50d7f5-0e27-46e6-ad11-fa198f3b2504"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.3a18f0ab-db59-4718-a955-c286114f12cd",
+    "a": "Domain",
+    "b": "Supplier",
+    "a_to_b": "suppliers",
+    "b_to_a": "domains",
+    "datasetRid": "ri.foundry.main.dataset.e9013808-7d72-47c0-bca9-af6ece44907c"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.519efcfe-f2e2-4520-a908-6bd804d189ca",
+    "a": "Identity",
+    "b": "InfectedDevice",
+    "a_to_b": "infectedDevices",
+    "b_to_a": "identities",
+    "datasetRid": "ri.foundry.main.dataset.428466cf-94e3-4813-8aa6-9e75b5274d8f"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.5b84508b-87cd-46a6-99b7-8a9daa49cca5",
+    "a": "Domain",
+    "b": "CredentialExposure",
+    "a_to_b": "credentialExposures",
+    "b_to_a": "domain",
+    "datasetRid": "ri.foundry.main.dataset.e6a2583b-4174-4721-8d33-00fee045c629"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.7cfab37c-57d7-4e07-8642-3ef2eb01ed06",
+    "a": "CredentialExposure",
+    "b": "InfectedDevice",
+    "a_to_b": "infectedDevices",
+    "b_to_a": "credentialExposures",
+    "datasetRid": "ri.foundry.main.dataset.47c0b157-b1eb-4041-b14b-eb59000f7877"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.80171ae6-302a-406a-bf7c-681872d4b34e",
+    "a": "Identity",
+    "b": "CompromiseIncident",
+    "a_to_b": "compromiseIncidents",
+    "b_to_a": "identities",
+    "datasetRid": "ri.foundry.main.dataset.8e80e8bf-6f9c-42ed-83b0-566dba12d617"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.9a4d6824-9019-486a-b338-71b20f215f5f",
+    "a": "Domain",
+    "b": "CompromiseIncident",
+    "a_to_b": "compromiseIncidents",
+    "b_to_a": "domains",
+    "datasetRid": "ri.foundry.main.dataset.84ab7ac2-7674-4ab6-8129-2f8664a8117f"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.9b253e7a-83a6-4ec6-9867-20e7eaa94a16",
+    "a": "InfectedDevice",
+    "b": "NotificationDraft",
+    "a_to_b": "notificationDrafts",
+    "b_to_a": "infectedDevices",
+    "datasetRid": "ri.foundry.main.dataset.408ebba5-64b7-43b6-b9f6-7c14f2eba91f"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.a6dc680c-feb8-4e6d-a592-1966223f707b",
+    "a": "CredentialExposure",
+    "b": "NotificationDraft",
+    "a_to_b": "notificationDrafts",
+    "b_to_a": "credentialExposures",
+    "datasetRid": "ri.foundry.main.dataset.96ccaa25-72bb-4cd3-bef3-0cce36199bea"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.b53b4e28-071b-49c9-8ad0-f92b4a6194f1",
+    "a": "InfectedDevice",
+    "b": "RiskAssessment",
+    "a_to_b": "riskAssessments",
+    "b_to_a": "infectedDevices",
+    "datasetRid": "ri.foundry.main.dataset.d28efc77-801f-47b7-894b-f3e17ac450e3"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.d76f094b-7458-40e0-93b7-530c0ea7000f",
+    "a": "Domain",
+    "b": "Identity",
+    "a_to_b": "identities",
+    "b_to_a": "domain",
+    "datasetRid": "ri.foundry.main.dataset.a0b1f94e-f72c-4adb-81ad-61f8105e0d9c"
+  },
+  {
+    "relationRid": "ri.ontology.main.relation.fbb694a7-27ef-4238-ba21-a70aca04dfe3",
+    "a": "Supplier",
+    "b": "Supplier",
+    "a_to_b": "subcontractors",
+    "b_to_a": "subcontractsTo",
+    "datasetRid": "ri.foundry.main.dataset.68071022-0ede-4819-a212-0c36d5d60017"
+  }
+]

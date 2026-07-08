@@ -98,13 +98,13 @@ This separation is the core design choice. A supplier employee credential observ
 
 ## Data Boundary
 
-The public demo separates data into three layers:
+public demo separates data into three layers:
 
-1. Public OSINT context: real non-sensitive snapshots such as CISA KEV, NVD, FIRST EPSS, MITRE ATT&CK, CISA advisories, URLhaus aggregate metadata, and HIBP breach metadata.
-2. Sensitive exposure-provider signals: treated as live-only. Raw leaked credentials, cookies, tokens, and provider payloads are not stored in the repository or static demo pages.
-3. Synthetic incident scenario: fictional suppliers, credentials, and devices used to prove the reasoning engine safely.
+1. Public OSINT context: real non-sensitive snapshots CISA KEV, NVD, FIRST EPSS, MITRE ATT&CK, CISA advisories, URLhaus aggregate metadata, HIBP breach metadata.
+2. Approved StealthMole hackathon signals: used as sanitized row-level lineage. API keys, JWTs, raw provider envelopes, and reusable secret material are not stored in the repository or static demo pages.
+3. Synthetic incident scenario: fictional suppliers, credentials, devices used prove reasoning engine safely.
 
-The system keeps raw secrets out of the demo surface. Sensitive provider data would enter only through a normalization boundary that masks values, preserves provenance, and emits candidate objects for human review.
+system keeps API credentials and reusable secret material out of the demo surface. Approved hackathon provider rows enter through the normalization boundary, preserve provenance, and emit candidate objects for human review.
 
 ## What We Built
 
@@ -112,7 +112,7 @@ The system keeps raw secrets out of the demo surface. Sensitive provider data wo
 - A local SQLite validation engine that runs correlation, active-candidate detection, risk ranking, blast-radius propagation, and notification draft generation.
 - A static demo console showing steady-state monitoring, data coverage, public-context evidence, incident reasoning, and program-level rollup.
 - A private connector boundary for approved sensitive exposure-provider checks, with raw-secret blocking and normalized import validation.
-- A presentation-safe data evidence page showing public OSINT counts while keeping sensitive exposure signals live-only.
+- A presentation-safe data evidence and lineage pages showing public OSINT counts plus approved StealthMole hackathon API row-level lineage.
 
 ## Risk Logic
 
@@ -146,9 +146,9 @@ Omija demonstrates how OSINT and credential-exposure signals can become auditabl
    - 데이터 커버리지 맵.
    - 보여줄 내용: synthetic seed, public context, engine/live evidence, sensitive slot 분리.
 
-3. `out/data_evidence_brief.html`
-   - 공개 데이터/민감 데이터 경계.
-   - 보여줄 내용: CISA KEV/NVD/EPSS/ATT&CK 등 실제 공개 데이터 + StealthMole live-only 정책.
+3. `out/data_evidence_brief.html` / `out/data_lineage_live.html`
+   - 공개 데이터/StealthMole 해커톤 데이터 경계.
+   - 보여줄 내용: CISA KEV/NVD/EPSS/ATT&CK 등 실제 공개 데이터 + 승인된 StealthMole 해커톤 API row-level lineage.
 
 4. `out/omija_demo.html`
    - 사건 보고서 상단/트리아지.
@@ -210,7 +210,7 @@ uv run python scripts/omija_demo.py
 
 - "active compromise candidate"
 - "verification priority"
-- "live-only sensitive rail"
+- "approved hackathon lineage rail"
 - "synthetic incident scenario"
 - "public OSINT context snapshot"
 - "human-reviewed notification draft"

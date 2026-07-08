@@ -284,97 +284,45 @@ main{padding:0;display:grid;grid-template-columns:minmax(0,1fr)}
 <section><div class="wrap">
   <div class="sec-k">operational data lineage · provider → redaction → ontology → engine → Foundry</div>
   <div class="sec-h">승인된 StealthMole 라이브 run을 계보로 추적 — 원문은 잠그고, 안전 변환만 전 구간 표시</div>
-  <div class="sec-sub">승인된 라이브 run 실행됨 · 이 seed는 <b>0건 반환</b> · 동일 lineage는
-    synthetic 시나리오로 populated 시연. provider/redaction lane은 실제값, normalized 이후 라이브
-    카운트는 0이며 절대 조작하지 않는다.</div>
+  <div class="sec-sub">승인된 라이브 run 실행됨 · provider total <b>150건</b> · 제한 저장/정규화 <b>150건</b>. 공개 페이지에는 source_ref hash와 lineage만 표시한다.</div>
   <div class="cflag" style="margin:0 0 14px;display:inline-block">확정된 침해 아님 · raw secret 미저장</div>
   
   <div class="card">
     <div class="ch"><span class="ck">RUN SUMMARY</span><span class="lbl prov">LIVE_PROVIDER</span><span class="pchip live">LIVE·Foundry</span>
       <span class="cflag">확정된 침해 아님 · raw secret 미저장</span></div>
     <div class="cmeta">
-      <div><span class="ml">run generated</span><b>2026-07-04 23:46:31 UTC</b></div>
-      <div><span class="ml">seed (domain-level only)</span><b>domain:sup-a:supplier-a.example</b></div>
-      <div><span class="ml">obs_type · value</span><b>domain · supplier-a.example</b></div>
+      <div><span class="ml">run generated</span><b>2026-07-05 05:39:54 UTC</b></div>
+      <div><span class="ml">seed (domain-level only)</span><b>probe:domain:naver.com</b></div>
+      <div><span class="ml">obs_type · value</span><b>domain · naver.com</b></div>
       <div><span class="ml">raw_secret_removed</span><b class="ok">true</b></div>
     </div>
     <div class="scroll-x"><table class="mtbl">
       <thead><tr><th>module</th><th>status</th><th>returned</th><th>written</th><th>note</th></tr></thead>
-      <tbody><tr><td class='mono2'>CL</td><td class='ok'>200</td><td>0</td><td>0</td><td class='dim'></td></tr><tr><td class='mono2'>CDS</td><td class='ok'>200</td><td>0</td><td>0</td><td class='dim'></td></tr><tr><td class='mono2'>CB</td><td class='ok'>200</td><td>0</td><td>0</td><td class='dim'></td></tr><tr><td class='mono2'>DT</td><td class='warn'>403</td><td>0</td><td>0</td><td class='dim'>HTTPError</td></tr><tr><td class='mono2'>TT</td><td class='warn'>404</td><td>0</td><td>0</td><td class='dim'>HTTPError</td></tr></tbody></table></div>
-    <div class="cnote">이 seed는 <b>0건</b> 반환 — 승인된 라이브 run은 실행됐고 레코드가 없다는 것까지 정직하게 표시한다.</div>
+      <tbody><tr><td class='mono2'>CL</td><td class='ok'>200</td><td>50</td><td>50</td><td class='dim'></td></tr><tr><td class='mono2'>CDS</td><td class='ok'>200</td><td>50</td><td>50</td><td class='dim'></td></tr><tr><td class='mono2'>CB</td><td class='ok'>200</td><td>50</td><td>50</td><td class='dim'></td></tr><tr><td class='mono2'>DT</td><td class='warn'>n/a</td><td>0</td><td>0</td><td class='dim'></td></tr><tr><td class='mono2'>TT</td><td class='warn'>n/a</td><td>0</td><td>0</td><td class='dim'></td></tr></tbody></table></div>
+    <div class="cnote">이 run은 <b>150건</b> 반환 — 아래 계보가 실데이터로 채워진다.</div>
   </div>
   
 <details class="pnote"><summary>발표 노트 · RUN SUMMARY</summary>
-  <div class="pb">여기 핵심은 <b>승인된 라이브 run이 실제로 실행됐다</b>는 것. CL/CDS/CB는 200으로 붙었고 DT는 403, TT는 404 — 그리고 이 seed는 0건을 반환했다. 0건을 숨기지 않고 그대로 보여주는 것이 신뢰 장치다.</div>
-</details>
-</div></section>
-
-<section><div class="wrap">
-  <div class="sec-k">lineage swimlane · 좌→우 데이터 흐름</div>
-  <div class="sec-h">provider 원문에서 Foundry 링크·액션 감사까지, 한 줄로 흐르는 계보</div>
-  
-  <div class="scroll-x"><div class="swim"><div class="lane prov">
-        <div class="lt"><span class="lbl prov">LIVE_PROVIDER</span></div>
-        <div class="ltt">StealthMole API run</div>
-        <div class="lnum">0 <span class="u">(this run)</span></div>
-        <div class="ld">승인된 라이브 조회 · 모듈 상태는 실제값.</div>
-      </div><div class="arr" aria-hidden="true">→</div><div class="lane lock">
-        <div class="lt"><span class="lbl lock">PRIVATE_RAW</span></div>
-        <div class="ltt">raw envelope · private</div>
-        <div class="lnum">0 <span class="u">(this run)</span></div><div class="lsyn">locked · never exported</div>
-        <div class="ld">provider 원문 봉투는 gitignore 로컬에만 · export 금지.</div>
-      </div><div class="arr" aria-hidden="true">→</div><div class="lane lock">
-        <div class="lt"><span class="lbl lock">LOCKED_SECRET</span></div>
-        <div class="ltt">REDACTION boundary</div>
-        <div class="lnum">removed</div><div class="lsyn">password · cookie · token</div>
-        <div class="ld">경계에서 raw secret 폐기 · source_ref 해시 · masked_value 생성.</div>
-      </div><div class="arr" aria-hidden="true">→</div><div class="lane norm">
-        <div class="lt"><span class="lbl norm">NORMALIZED</span></div>
-        <div class="ltt">candidates</div>
-        <div class="lnum">0 <span class="u">(this run)</span></div><div class="lsyn">synthetic: 74</div>
-        <div class="ld">안전 필드만 normalize된 노출 후보.</div>
-      </div><div class="arr" aria-hidden="true">→</div><div class="lane onto">
-        <div class="lt"><span class="lbl onto">ONTOLOGY</span></div>
-        <div class="ltt">objects</div>
-        <div class="lnum">0 <span class="u">(this run)</span></div><div class="lsyn">synthetic: 74</div>
-        <div class="ld">CredentialExposure · InfectedDevice · ThreatSource · Identity · Domain.</div>
-      </div><div class="arr" aria-hidden="true">→</div><div class="lane eng">
-        <div class="lt"><span class="lbl eng">ENGINE</span></div>
-        <div class="ltt">decisions</div>
-        <div class="lnum">0 <span class="u">(this run)</span></div><div class="lsyn">synthetic: 74 평가 · 3 active</div>
-        <div class="ld">RiskAssessment · CompromiseIncident · ProgramExposure · NotificationDraft.</div>
-      </div><div class="arr" aria-hidden="true">→</div><div class="lane fdry">
-        <div class="lt"><span class="lbl fdry">LIVE_FOUNDRY</span></div>
-        <div class="ltt">of/targets + action audit</div>
-        <div class="lnum">5</div><div class="lsyn">transitions · 8 actions</div>
-        <div class="ld">of/targets 링크 데이터셋 스키마 OK · 액션 감사 readback 검증.</div>
-      </div></div></div>
-  <div class="swimcap">라이브 run 카운트는 REDACTION 이후 <b>0 (this run)</b> — 같은 계보를
-    합성 시나리오로 채운 값은 <b>synthetic: N</b>으로 별도 표기한다. 두 lane을 절대 섞지 않는다.
-    <span class="pchip live">LIVE·Foundry</span> 실제 provider/Foundry · <span class="pchip eng">ENGINE·실측</span> 실측 엔진 · <span class="pchip seed">SEED·가상</span> 합성 시드</div>
-  
-<details class="pnote"><summary>발표 노트 · SWIMLANE</summary>
-  <div class="pb">왼쪽 LIVE_PROVIDER는 실제 라이브 조회, PRIVATE_RAW는 잠긴 원문(export 금지), LOCKED_SECRET 경계에서 raw secret이 폐기된다. REDACTION 이후 라이브 카운트는 0 — 같은 파이프를 통과한 <b>synthetic: 74</b>는 별도 lane으로만 표기한다.</div>
+  <div class="pb">여기 핵심은 <b>승인된 StealthMole 해커톤 API run이 실제로 실행됐다</b>는 것. CL/CDS/CB가 200으로 붙었고, 반환 row는 normalization boundary를 지나 hashed lineage로만 공개된다. 원문 payload/API key/JWT는 저장하거나 표시하지 않고, 데모에는 필터링된 해커톤 데이터의 안전 변환만 사용한다.</div>
 </details>
 </div></section>
 
 <section><div class="wrap">
   <div class="sec-k">record-level lineage · 레코드 단위 계보</div>
-  <div class="sec-h">라이브 0건 정직한 empty-state + 명확히 SEED로 표기한 합성 예시</div>
-  
-    <div class="empty">
-      <div class="ek">RECORD-LEVEL · LIVE</div>
-      <div class="et">승인된 run이 sanitized row를 반환하면 여기에 레코드 단위 계보가 표시됩니다.</div>
-      <div class="ed">이 run은 0건 반환 — 표시할 라이브 레코드 없음. 가짜 레코드는 만들지 않는다.</div>
-    </div><div class="rec">
-        <div class="rhead">CDS #synthetic-b72c · ACTIVE 경로 <span class="pchip seed">SEED·가상</span></div>
-        <div class="rchain"><span class="rstep">InfectedDevice dev:b72c</span><span class="rarr">→</span><span class="rstep">CredentialExposure exp:b72c</span><span class="rarr">→</span><span class="rstep"><span class='of'>of</span> Identity id:sup-h</span><span class="rarr">→</span><span class="rstep"><span class='tg'>targets</span> Domain vpn.prime-x.example</span><span class="rarr">→</span><span class="rstep">CompromiseIncident incident:micro-h:active</span><span class="rarr">→</span><span class="rstep">RiskAssessment risk (즉시)</span><span class="rarr">→</span><span class="rstep">NotificationDraft draft:sup-h</span></div>
-        <div class="rrm"><b>fields_removed</b> password · cookie · token · raw payload not exported · source_ref hashed</div>
-      </div><div class="rec">
-        <div class="rhead">CDS #synthetic-a19f · 활성 조건 미충족 <span class="pchip seed">SEED·가상</span></div>
-        <div class="rchain"><span class="rstep">InfectedDevice dev:a19f</span><span class="rarr">→</span><span class="rstep">CredentialExposure exp:a19f</span><span class="rarr">→</span><span class="rstep"><span class='of'>of</span> Identity id:sup-a</span><span class="rarr">→</span><span class="rstep"><span class='tg'>targets</span> Domain vpn.prime-x.example</span><span class="rarr">→</span><span class="rstep">FlagActiveCompromise skipped — no live session cookie</span></div>
-        <div class="rrm"><b>fields_removed</b> password · cookie · token · raw payload not exported · source_ref hashed</div>
-      </div>
+  <div class="sec-h">라이브 sanitized row-level lineage</div>
+  <div class="rec">
+  <div class="rhead"><span class="lbl norm">NORMALIZED</span> CL sanitized lineage</div>
+  <div class="rchain"><span class="rstep">CL #427d9532be3e26a2</span><span class="rarr">→</span><span class="rstep">PRIVATE_RAW</span><span class="rarr">→</span><span class="rstep">REDACTION</span><span class="rarr">→</span><span class="rstep">CredentialExposure</span><span class="rarr">→</span><span class="rstep">InfectedDevice</span><span class="rarr">→</span><span class="rstep">Identity</span><span class="rarr">→</span><span class="rstep">ThreatSource</span><span class="rarr">→</span><span class="rstep">links: of, targets, sourced_from, evidenced_by</span><span class="rarr">→</span><span class="rstep">decisions: RiskAssessment</span></div>
+  <div class="rrm"><b>fields_removed</b> password · raw payload not exported · source_ref hashed</div>
+</div><div class="rec">
+  <div class="rhead"><span class="lbl norm">NORMALIZED</span> CL sanitized lineage</div>
+  <div class="rchain"><span class="rstep">CL #19f80065284e5a78</span><span class="rarr">→</span><span class="rstep">PRIVATE_RAW</span><span class="rarr">→</span><span class="rstep">REDACTION</span><span class="rarr">→</span><span class="rstep">CredentialExposure</span><span class="rarr">→</span><span class="rstep">InfectedDevice</span><span class="rarr">→</span><span class="rstep">Identity</span><span class="rarr">→</span><span class="rstep">ThreatSource</span><span class="rarr">→</span><span class="rstep">links: of, targets, sourced_from, evidenced_by</span><span class="rarr">→</span><span class="rstep">decisions: RiskAssessment</span></div>
+  <div class="rrm"><b>fields_removed</b> password · raw payload not exported · source_ref hashed</div>
+</div><div class="rec">
+  <div class="rhead"><span class="lbl norm">NORMALIZED</span> CL sanitized lineage</div>
+  <div class="rchain"><span class="rstep">CL #94e6230ef9464e2b</span><span class="rarr">→</span><span class="rstep">PRIVATE_RAW</span><span class="rarr">→</span><span class="rstep">REDACTION</span><span class="rarr">→</span><span class="rstep">CredentialExposure</span><span class="rarr">→</span><span class="rstep">InfectedDevice</span><span class="rarr">→</span><span class="rstep">Identity</span><span class="rarr">→</span><span class="rstep">ThreatSource</span><span class="rarr">→</span><span class="rstep">links: of, targets, sourced_from, evidenced_by</span><span class="rarr">→</span><span class="rstep">decisions: RiskAssessment</span></div>
+  <div class="rrm"><b>fields_removed</b> password · raw payload not exported · source_ref hashed</div>
+</div>
 </div></section>
 
 <section><div class="wrap">
@@ -416,7 +364,7 @@ main{padding:0;display:grid;grid-template-columns:minmax(0,1fr)}
   <div class="fev">
     <div class="fev-col">
       <div class="ch"><span class="ck">VERIFIED · Foundry lineage</span><span class="lbl fdry">LIVE_FOUNDRY</span><span class="pchip live">LIVE·Foundry</span></div>
-      <div class="fev-sub">MCP로 실사 — object/link이 backing dataset을 가지고 of/targets 데이터셋 스키마가 온전하다.</div>
+      <div class="fev-sub">MCP/SQL로 실사 — of/targets schema, action audit, live measurement count를 확인했다.</div>
       <div class="fev-row ok">
       <span class="fev-t">of 링크 (CredentialExposure→Identity)</span>
       <span class="fev-ds mono2">Seed/26_link_of</span>
@@ -425,6 +373,10 @@ main{padding:0;display:grid;grid-template-columns:minmax(0,1fr)}
       <span class="fev-t">targets 링크 (CredentialExposure→Domain)</span>
       <span class="fev-ds mono2">Seed/27_link_targets</span>
       <span class="fev-d">schema OK · left-CredentialExposure-primary-key · right-Domain-primary-key</span>
+    </div><div class="fev-row ok">
+      <span class="fev-t">Live provider rows 150건</span>
+      <span class="fev-ds mono2">out/foundry_live_measurement/measurement.json</span>
+      <span class="fev-d">schema PUT 14/14 · SQL count 14/14</span>
     </div><div class="fev-row ok">
       <span class="fev-t">워크플로 액션 8종</span>
       <span class="fev-ds mono2">ontology actions (merged proposal)</span>
@@ -440,22 +392,14 @@ main{padding:0;display:grid;grid-template-columns:minmax(0,1fr)}
     </div>
     </div>
     <div class="fev-col">
-      <div class="ch"><span class="ck">IN PROGRESS · 스키마 정비 중</span>
-        <span class="lbl wip">SCHEMA_REPAIR</span></div>
-      <div class="fev-sub">벤더중립 rename 시 raw CSV SNAPSHOT으로 스키마가 제거됨 — 재적재/스키마 적용 진행 중.
-        <b>Foundry E2E readback 완전 해결 주장 아님.</b></div>
+      <div class="ch"><span class="ck">IN PROGRESS · index refresh</span>
+        <span class="lbl wip">INDEX_REFRESH</span></div>
+      <div class="fev-sub">live PK가 OSDK object readback에 보일 때까지
+        <b>Foundry Ontology E2E 완료 주장 아님.</b></div>
       <div class="fev-row wip">
-      <span class="fev-t">CredentialExposure object</span>
-      <span class="fev-ds mono2">Seed/06_credential_exposure</span>
-      <span class="fev-d">schemaNotFound</span>
-    </div><div class="fev-row wip">
-      <span class="fev-t">ThreatSource object</span>
-      <span class="fev-ds mono2">Seed/08_threat_source</span>
-      <span class="fev-d">schemaNotFound</span>
-    </div><div class="fev-row wip">
-      <span class="fev-t">sourced_from 링크</span>
-      <span class="fev-ds mono2">Seed/28_link_sourced_from</span>
-      <span class="fev-d">schemaNotFound</span>
+      <span class="fev-t">Ontology object readback</span>
+      <span class="fev-ds mono2">out/foundry_live_measurement/readback_result.json</span>
+      <span class="fev-d">index refresh pending</span>
     </div>
     </div>
   </div>

@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-07-05T06:49:54.399527+00:00",
+  "source_dir": "out/foundry_live_measurement",
+  "ok": false,
+  "readback_count": 0,
+  "target_count": 7,
+  "results": [
+    {
+      "object_type": "Supplier",
+      "csv": "01_supplier.csv",
+      "primary_key": "probe-public",
+      "ok": false,
+      "error": "SmokeFailure",
+      "message": "Supplier.get('probe-public') returned None"
+    },
+    {
+      "object_type": "Program",
+      "csv": "03_program.csv",
+      "primary_key": "program:ba9c736f19e7f60b",
+      "ok": false,
+      "error": "SmokeFailure",
+      "message": "Program.get('program:ba9c736f19e7f60b') returned None"
+    },
+    {
+      "object_type": "Domain",
+      "csv": "04_domain.csv",
+      "primary_key": "naver.com",
+      "ok": false,
+      "error": "SmokeFailure",
+      "message": "Domain.get('naver.com') returned None"
+    },
+    {
+      "object_type": "Identity",
+      "csv": "05_identity.csv",
+      "primary_key": "id:live:427d9532be3e26a2",
+      "ok": false,
+      "error": "SmokeFailure",
+      "message": "Identity.get('id:live:427d9532be3e26a2') returned None"
+    },
+    {
+      "object_type": "CredentialExposure",
+      "csv": "06_credential_exposure.csv",
+      "primary_key": "exp:live:427d9532be3e26a2",
+      "ok": false,
+      "error": "SmokeFailure",
+      "message": "CredentialExposure.get('exp:live:427d9532be3e26a2') returned None"
+    },
+    {
+      "object_type": "InfectedDevice",
+      "csv": "07_infected_device.csv",
+      "primary_key": "dev:live:427d9532be3e26a2",
+      "ok": false,
+      "error": "SmokeFailure",
+      "message": "InfectedDevice.get('dev:live:427d9532be3e26a2') returned None"
+    },
+    {
+      "object_type": "ThreatSource",
+      "csv": "08_threat_source.csv",
+      "primary_key": "src:stealthmole:cl:427d9532be3e26a2",
+      "ok": false,
+      "error": "SmokeFailure",
+      "message": "ThreatSource.get('src:stealthmole:cl:427d9532be3e26a2') returned None"
+    }
+  ]
+}

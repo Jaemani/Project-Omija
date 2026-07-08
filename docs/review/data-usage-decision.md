@@ -1,74 +1,64 @@
 # 데모 데이터 사용 결정과 활용 가능성
 
-작성 조건: 민감 데이터 탐색·조회 시도 없음. 공개 문서와 현재 repo 상태만 기준.
+작성일: 2026-07-05. 본선 대비 업데이트. 해커톤용 StealthMole API 데이터는 이미 필터링된 승인 데이터로 확인되어 데모에 사용할 수 있다.
 
 ## 결론
 
-1. **호스팅/발표 화면:** 기업·자격증명·감염기기 개체는 synthetic 유지.
-2. **공개 데이터:** CISA KEV, NVD, MITRE ATT&CK, URLhaus aggregate, HIBP breach
-   metadata는 `PUBLIC_CONTEXT`로 사용 가능.
-3. **StealthMole:** 기술적으로 활용 가능성은 있지만, 지금 repo에서는 live 조회를
-   하지 않는다. 대신 공개 product/integration 문서에서 확인되는 field category와
-   workflow를 data contract 카드로 보여준다.
-4. **비공개 내부 검증:** 별도 승인·취급정책·비공개 환경이 있으면 raw가 아니라
-   aggregate/readback/field-presence 수준으로만 검증할 수 있다. hosted page에는 올리지
-   않는다.
+1. **StealthMole 해커톤 API 데이터는 사용한다.**
+   단, 공개 artifact에는 API key, JWT, raw provider envelope, password, cookie, token, full account dump를 넣지 않는다.
 
-## 왜 이렇게 나누는가
+2. **공개 OSINT는 실제 스냅샷으로 사용한다.**
+   CISA KEV, NVD, FIRST EPSS, MITRE ATT&CK, CISA RSS, URLhaus aggregate, HIBP breach metadata는 public context로 표시한다.
 
-- 실제 유출 자격증명은 피해자 데이터라서 hosted demo와 녹화 화면에 올리면 2차 노출
-  표면이 된다.
-- 그렇다고 데이터를 전부 가상으로만 두면 설득력이 떨어진다. 그래서 공개 데이터는
-  threat context로 넣고, private credential feed는 locked slot으로 표현한다.
-- 심사자가 봐야 할 핵심은 "데이터를 얼마나 긁었나"가 아니라 "신호가 들어오면
-  온톨로지가 어떤 판단을 강제하나"이다.
+3. **사건 시나리오는 synthetic 유지한다.**
+   협력사명, 프로그램명, credential/device 개체는 가상으로 두고, 판단 파이프라인과 온톨로지 경로를 증명한다.
 
-## StealthMole을 활용할 수 있는 방식
+4. **핵심 증명 방식은 lineage다.**
+   "실제 유출 원문을 보여준다"가 아니라 "승인 provider row가 redaction boundary를 지나 ontology object, link, engine decision, human workflow로 변환된다"를 보여준다.
 
-현재 가능한 방식:
+## 왜 정책을 바꾸는가
 
-- 공개 제품 페이지 기반으로 credential-protection field shape를 설명한다.
-- 공개 integration 문서 기반으로 "도메인 기준 사용자/credential context를 가져오는
-  risk-exchange류 워크플로가 가능하다"는 수준을 말한다.
-- 데모 UI에는 locked feed slot, expected fields, masking/audit requirements만 둔다.
+1차 심사 피드백은 명확했다. 컨셉은 흥미롭지만, data lineage와 실제 provider flow가 보이지 않아 아쉬웠다. 해커톤 API가 이미 필터링된 데이터라면 "민감 rail 잠금"만 강조하는 것은 방어적이고 설득력이 약하다.
 
-지금 하지 않는 방식:
+따라서 본선 버전은 approved filtered StealthMole row-level lineage를 보여준다. 대신 raw secret과 재사용 가능한 credential material은 계속 차단한다.
 
-- live API 호출;
-- 실제 leaked username/password/cookie/session token 표시;
-- private API 응답 저장;
-- raw record를 hosted HTML/JSON에 포함.
+## 표시 가능 / 금지
 
-## 공개 데이터 확보 결과
+표시 가능:
 
-`uv run python scripts/public_context_snapshot.py` 결과:
+- module: CL/CDS/CB/DT/TT
+- run id, seed id, query type/value
+- HTTP/module status, returned/written count
+- source_ref hash
+- account class, has_session_cookie boolean, infected_at timestamp, confidence
+- normalized object names: `CredentialExposure`, `InfectedDevice`, `ThreatSource`
+- link names: `of`, `targets`, `sourced_from`, `traverses`, `cites`
+- decision object names: `RiskAssessment`, `CompromiseIncident`, `ProgramExposure`, `NotificationDraft`
 
-```text
-CISA KEV total: 1631
-CISA KEV access-relevant: 863
-MITRE ATT&CK selected techniques: 234
-URLhaus sampled rows: 1000
-URLhaus stealer/loader-tagged sample count: 42
-HIBP public breach metadata count: 1015
-NVD vpn/sso/citrix/fortinet/ivanti query totals: 73 / 25 / 309 / 672 / 379
-```
+금지:
 
-이 데이터는 자격증명 증거가 아니라 "왜 VPN/SSO/mail/dev access surface를 감시해야
-하는가"를 설명하는 public context다.
-
-## 어디에 넣을지
-
-- `out/data_coverage_map.html`: 공개 데이터, synthetic seed, engine result,
-  locked sensitive slot을 한 화면에 표시.
-- `RiskAssessment.components.public_context`: KEV/NVD/ATT&CK 요약.
-- `ProgramExposure.components.threat_context`: URLhaus aggregate, program-facing
-  access surface context.
-- 발표 자료: HIBP/StealthMole 공개 자료는 "실제 유통 데이터가 어떤 형태인지"를
-  설명하는 참고자료로만 사용.
+- StealthMole access key / secret key
+- JWT / Bearer token / refresh token
+- raw provider response envelope
+- raw password, cookie, token, session value
+- full account dump
+- 개인 식별 가능한 불필요 원문
 
 ## 발표 문장
 
-> 실제 유출 자격증명은 시연 화면에 올릴 수 없는 피해자 데이터입니다. 그래서 개체는
-> synthetic으로 두고, 공개 threat context와 실제 엔진/readback으로 시스템을 증명합니다.
-> 승인된 private feed가 들어오면 같은 `of`, `targets`, `subcontractsTo`,
-> `traverses`, `cites` 경로를 타게 됩니다.
+> 첫 발표에서는 StealthMole rail을 너무 잠근 상태로 설명했습니다. 본선에서는 해커톤 API에서 이미 필터링된 승인 데이터를 사용해 row-level lineage를 보여줍니다. 단, API key, JWT, raw provider envelope, password/cookie/token은 공개 산출물에 남기지 않습니다. Omija가 보여주는 것은 유출 원문이 아니라, provider row가 온톨로지 객체와 판단 객체로 바뀌는 전 구간 계보입니다.
+
+## 현재 산출물 연결
+
+- `out/data_evidence_brief.html`: 공개 OSINT + approved StealthMole API 경계 설명.
+- `out/data_lineage_live.html`: provider -> redaction -> ontology -> engine -> Foundry lineage.
+- `out/data_lineage_live.json`: 공개 가능한 lineage summary. raw secret 없음.
+- `out/private_candidate_import.json`: private/ignored validation artifact. 커밋 금지.
+- `data/private_candidates/*.jsonl`: private raw/envelope probe. 커밋 금지.
+
+## 여전히 과장하면 안 되는 것
+
+- Band A는 침해 확정이 아니라 verify-first 후보.
+- `targets`는 로그인 성공이 아니라 관측 대상 자산 경로.
+- Foundry full E2E reasoning readback은 일부 backing dataset schema 이슈 때문에 완료 주장 금지.
+- NotificationDraft는 사람 검토용 초안이며 자동 발송 기능이 아니다.
